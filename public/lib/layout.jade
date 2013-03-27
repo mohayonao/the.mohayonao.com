@@ -35,7 +35,7 @@ html(lang="en")
           h2 #{items.name.toUpperCase()}
         ul(id="app-list")          
           each app in items.list
-            li(id=app.url,data-title=app.title,data-desc=app)
+            li(data-json=app)
               a(href=app.url,title=app.title) #{app.title}
     #content
       block content

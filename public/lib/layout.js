@@ -29,12 +29,11 @@
         };
       })();
       $('li', $sidebar).each(function(i, elem) {
-        var $li, id, imgurl, src, title;
+        var $li, imgurl, json, src;
 
         $li = $(elem);
-        id = $li.attr('id');
-        title = $li.attr('data-title');
-        src = /^https?:/.test(id) ? (imgurl = title.replace(/\s/g, '_'), "/lib/icon/" + imgurl + ".png") : "" + id + "appimage.png";
+        json = JSON.parse($li.attr('data-json'));
+        src = /^https?:/.test(json.url) ? (imgurl = json.title.replace(/\s/g, '_'), "/lib/icon/" + imgurl + ".png") : "" + json.url + "appimage.png";
         $('<img>').attr('src', src).on('load', function() {
           return show_app_image[id] = src;
         });

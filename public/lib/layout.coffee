@@ -28,13 +28,12 @@ $ ->
 
     $('li', $sidebar).each (i, elem)->
       $li = $(elem)
-      id  = $li.attr 'id'
-      title = $li.attr 'data-title'
-      src = if /^https?:/.test id
-        imgurl = title.replace /\s/g, '_'
+      json = JSON.parse $li.attr 'data-json'      
+      src = if /^https?:/.test json.url
+        imgurl = json.title.replace /\s/g, '_'
         "/lib/icon/#{imgurl}.png"
       else
-        "#{id}appimage.png"
+        "#{json.url}appimage.png"
       $('<img>').attr('src', src).on 'load', ->
         show_app_image[id] = src
       if app_name is id
