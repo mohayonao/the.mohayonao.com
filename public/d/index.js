@@ -877,15 +877,18 @@ if (typeof(window) !== "undefined") {
       c = Math.round(j/2-i/2);
       
       var baseurl = location.protocol + "//" + location.host + location.pathname;
+      if (baseurl[baseurl.length-1] !== "/") {
+        baseurl += "/";
+      }
       var text = $("#text").val();
       text = text.replace(/@/g, "{{AT}}");
       if (text[text.length-1] !== ";") {
         text += ";";
       }
       lis = [
-        "http://twitter.com/share?lang=ja",
+        "https://twitter.com/intent/tweet?lang=ja",
         "text=" + utf.URLencode(text),
-        "url=" + utf.URLencode(encodeURI(baseurl+"?"+text))
+        "url=" + utf.URLencode(encodeURI(baseurl+"/?"+text))
       ];
       
       url = lis.join('&');
