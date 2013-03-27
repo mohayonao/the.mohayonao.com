@@ -1,0 +1,25 @@
+extend ../lib/layout
+
+block config
+  - $.title = "Scalable Mario"
+  - $.path  = "/scalable-mario"
+  - $.jslist  = ["/lib/timbre.js", "/lib/subcollider.js", "/lib/scales.js", "/lib/tunings.js", "index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    div(style="margin-bottom:25px")
+      button(id="play").btn Play
+    div
+      label(for="scale") Scale
+      select(name="scale", id="scale")
+      button(id="random-scale") random
+    div
+      label(for="tuning") Tuning
+      select(name="tuning", id="tuning")
+      button(id="random-tuning") random
+    p use: 
+      ul
+        li: a(href="http://mohayonao.github.com/timbre.js") timbre.js
+        li: a(href="http://mohayonao.github.com/sub.js") subcollider.js

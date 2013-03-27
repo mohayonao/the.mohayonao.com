@@ -1,0 +1,18 @@
+extend ../lib/layout
+
+block config
+  - $.jslist  = ["/lib/Three-r48.js", "../Three.flashlike.js", "../bvh.js", "../motionman.js", "index.js"]
+  - $.csslist = ["../index.css"]
+
+block content
+  h1 #{$.title}
+  audio(id="audio",controls)
+  #container
+  #info
+    ul
+      li: a(href="../") index
+      li: a(href="../01/") 01
+      li: a(href="../02/") 02
+      li: a(href="../03/") 03
+      li: a(href="../04/") 04
+    a(href="http://perfume-global.com/") #prfm_global_site

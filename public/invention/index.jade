@@ -1,0 +1,21 @@
+extend ../lib/layout
+
+block config
+  - $.title = "Endless Invention"
+  - $.path  = "/invention"
+  - $.jslist  = ["/lib/pico.js", "/lib/reverb.js", "index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    canvas(id="canvas",width="150",height="200")
+    h2 1.choose
+    form
+      input(type="radio",id="normal",name="mode",value="normal",checked)
+      label(for="normal") Inventionen 13 a-moll
+      br
+      input(type="radio",id="markov",name="mode",value="markov")
+      label(for="markov") Markov Inventionen
+    h2 2.click J.S.Bach to play/pause music
+    h2 3.mouseover Y : control EFX Depth

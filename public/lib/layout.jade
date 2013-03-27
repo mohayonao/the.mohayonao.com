@@ -1,0 +1,41 @@
+- var $ = {}
+- $.title = "the.mohayonao.com"
+- $.path  = ""
+- $.jslist  = []
+- $.csslist = []
+
+block config
+
+doctype 5
+html(lang="en")
+  head
+    meta(charset="utf-8")
+    title #{$.title}
+    meta(name="viewport",content="width=device-width, initial-scale=1.0")
+    meta(property="og:title",content="#{$.title}")
+    meta(property="og:url",content="http://the.mohayonao.com#{$.path}/")
+    meta(property="og:image",content="http://the.mohayonao.com#{$.path}/appimage.png")
+    link(rel="shortcut icon", href="favicon.ico")
+    if $.csslist.length
+      for href in $.csslist
+        link(rel="stylesheet",href=href)
+    else
+      link(rel="stylesheet",href="/lib/layout.css")
+    script(src="/lib/jquery.js")
+    script(src="/lib/layout.js")
+    each src in $.jslist
+      script(src=src)
+  body
+    #sidebar
+      img(src="#{$.path}/appimage.png")
+      h1
+        a(href="/") the.mohayonao.com
+      each items in index
+        if items.name
+          h2 #{items.name.toUpperCase()}
+        ul(id="app-list")          
+          each app in items.list
+            li(id=app.url,data-title=app.title,data-desc=app)
+              a(href=app.url,title=app.title) #{app.title}
+    #content
+      block content

@@ -1,0 +1,32 @@
+extend ../lib/layout
+
+block config
+  - $.title = "Twitter Bot"
+  - $.path  = "/twitter-bot"
+  - $.jslist  = ["index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    ul
+      li: div
+        a(href="https://twitter.com/arenasore") @arenasore
+
+      li: div
+        a(href="https://twitter.com/amasakas") @amasakas
+
+      li: div
+        a(href="https://twitter.com/KenEtsuNews") @KenEtsuNews
+
+      li: div
+        a(href="https://twitter.com/metsubow") @metsubow
+                
+      li: div
+        a(href="https://twitter.com/AnsaiBot") @AnsaiBot
+
+      li: div
+        a(href="https://twitter.com/ji_sei") @ji_sei
+    
+      li: div
+        a(href="https://twitter.com/nanodeal") @nanodeal

@@ -1,0 +1,38 @@
+extend ../lib/layout
+
+block config
+  - $.title = "ドッ ドッ ドリドリ ドドドド ドリランド"
+  - $.path  = "/d"
+  - $.jslist  = ["/lib/pico.js", "index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    section.pull-left
+      h4 editor
+      div
+        textarea(cols=60,rows=8,id="text") ドッ ドッ ドリドリ ドドドド ドリランド
+      div
+        button(id="play") loading...
+        button(id="stop") stop
+        button(id="tweet") tweet this doriland
+      div
+        ul
+          li: a(href="https://gumroad.com/l/sEkz",target="gumroad") 課金して新しい機能を手にいれる($1)
+          li: a(href="https://gumroad.com/l/zOW" ,target="gumroad") 課金して新しい機能を手にいれる($2)
+          li: a(href="https://gumroad.com/l/pSMY",target="gumroad") 課金して新しい機能を手にいれる($5)
+    section.pull-left
+      h4 examples
+      ul
+        li: a(href="javascript:void(0)") ドッ ドッ ドリドリ ドドドド ドリランド
+        li: a(href="javascript:void(0)") ++|ドッ ドッ ドッドッ
+        li: a(href="javascript:void(0)") |ドッ ドッ ドリドリ -ド+ド-ド+ド ドリランド-
+        li: a(href="javascript:void(0)") |ラッラッラッドリ
+        li: a(href="javascript:void(0)") |++ドド--リラ
+        li: a(href="javascript:void(0)") |ドリラ +++ド--リ-ラ
+      ul
+        li: a(href="http://goo.gl/Af5DP") 曲1
+        li: a(href="http://goo.gl/uavLX") 曲2
+        li: a(href="http://goo.gl/ozeMO") 曲3
+        li: a(href="http://goo.gl/GcnRX") 曲4

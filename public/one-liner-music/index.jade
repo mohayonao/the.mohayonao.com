@@ -1,0 +1,21 @@
+extend ../lib/layout
+
+block config
+  - $.title = "One-Liner-Music"
+  - $.path  = "/one-liner-music"
+  - $.jslist  = ["/lib/pico.js", "/lib/MutekiTimer.js", "index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    div(style="margin-bottom:25px")
+      button(id="play") Play
+      button(id="tweet") Tweet
+    div(id="f1")
+      span function (t) {
+      div(id="f2")
+        input(type="text",id="func",placeholder="return")
+      span }
+    ul(id="history-container")
+      li(id="history") History

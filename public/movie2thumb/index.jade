@@ -1,0 +1,17 @@
+extend ../lib/layout
+
+block config
+  - $.title = "Movie to Thumbnails"
+  - $.path  = "/movie2thumb"
+  - $.jslist  = ["index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    div(id="thumbs", style="border:solid 1px gray; width:100%; height:100%")
+      div(style="padding:15px") drag a movie file(*.mp4) to get thumbnails
+    span.pull-right
+      div(style="font-size:smaller;font-weight:bold")
+        input(type="checkbox", id="shuffle", name="shuffle")
+        label(for="shuffle") Shuffle
