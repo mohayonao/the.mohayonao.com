@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>sine</title>
+    <meta name="viewport" content="width=320,initial-scale=1.0,user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="no">
+    <link rel="shortcut icon" href="./favicon.ico">
+  </head>
+  <body style="width:320px;margin:0;padding:0">
+    <div style="font-family:'helvetica';text-align:center;font-weight:bold">
+      <h1 style="margin:0;padding-top:20px">sine</h1>
+      <canvas id="view" style="width:320px;height:220px"></canvas>    
+      <div style="margin:0;padding-top:10px;width:320px;font-size:12px;list-style:none" id="text">
+        1. TAP to PLAY<br/>
+        2. PINCH IN/OUT to Change Frequency<br/>
+        3. THREE-FINGER SWIPE to Change Volume<br/>
+      </div>
+    </div>
+    <script>
+      window.onload = function() {
+        "use strict";
+        if (!/iphone/i.test(navigator.userAgent)) {
+          document.getElementById("text").innerHTML =
+            "This is an iPhone web app.<br/>Please open with an iPhone.";
+        }
+        if (typeof webkitAudioContext === "undefined") {
+          document.getElementById("text").innerHTML =
+            "Web Audio API is disabled.<br/>Please open with Mobile Safari on iOS6.";
+          return;
+        }
+        
+        var oscillator = null;
+        var envelope   = null;
+        var timerId    = null;
+        var frequency  = 880;
+        var volume     = 0.8;
+        var touchMode  = "none";
+        var D, V;
+      
+        var context = new webkitAudioContext();
+
+        var calc2pointsDistance = function(e) {
+            var x1 = e.touches[0].pageX
+              , y1 = e.touches[0].pageY
+              , x2 = e.touches[1].pageX
+              , y2 = e.touches[1].pageY;
+            return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+        };
+
+        var calcVolumeY = function(e) {
+          var y = 0;
+          for (var i = 0; i < e.touches.length; i++) {
+            y += e.touches[i].pageY;
+          }
+          return y / e.touches.length;
+        };
+
+        var touch = function(e) {
+          e.preventDefault();
+          
+          var ct = context.currentTime;
+          if (e.touches.length > 0) {
+            if (touchMode === 'none') {
+              if (oscillator) oscillator.disconnect();
+              if (envelope  ) envelope.disconnect();
+              if (timerId   ) clearTimeout(timerId);
+        
+              oscillator = context.createOscillator();
+              oscillator.frequency.value = frequency;
+            
+              envelope = context.createGainNode();
+              envelope.gain.linearRampToValueAtTime(0, ct);
+              envelope.gain.linearRampToValueAtTime(volume, ct + 0.01);
+
+              oscillator.connect(envelope);
+              envelope.connect(context.destination);
+          
+              oscillator.noteOn(ct);
+            }
+          } else {
+            envelope.gain.linearRampToValueAtTime(0, ct + 0.25);
+            oscillator.noteOff(ct + 0.25);
+            
+            timerId = setTimeout(function() {
+              if (oscillator) oscillator.disconnect();
+              if (envelope  ) envelope.disconnect();
+              oscillator = envelope = timerId = null;
+            }, 250);
+          }
+          
+          switch (e.touches.length) {
+            case 0:
+              touchMode = "none";
+              break;
+            case 1:
+              touchMode = "tap";
+              break;
+            case 2:
+              touchMode = "frequency"
+              D = calc2pointsDistance(e);
+              break;
+            default:
+              touchMode = "volume";
+              V = calcVolumeY(e);
+              break;
+          }
+        };
+        
+        window.addEventListener("touchstart", touch, false);
+        window.addEventListener("touchend"  , touch, false);
+        window.addEventListener("touchmove" , function(e) {
+          e.preventDefault();
+          var ct = context.currentTime;
+          switch (touchMode) {
+            case "frequency":
+              var d = calc2pointsDistance(e);
+              frequency *= Math.pow(2, (D - d) / 256);
+              frequency = Math.max(220, Math.min(7040, frequency));
+              oscillator.frequency.value = frequency;
+              D = d;
+              break;
+            case "volume":
+              var v = calcVolumeY(e);
+              volume += (V - v) * 0.01;
+              volume = Math.max(0, Math.min(1, volume));
+              envelope.gain.linearRampToValueAtTime(volume, ct);
+              V = v;
+              break;
+          }
+        }, false);
+        
+        (function() {
+          var requestAnimationFrame = window.requestAnimationFrame ||
+                                      window.webkitRequestAnimationFrame;
+          var view = document.getElementById("view");
+          var context = view.getContext("2d");
+
+          view.width  = 320;
+          view.height = 220;
+          context.fillStyle = "rgba(255,255,255,0.4)";
+          context.lineWidth = 2;
+          
+          var t1 = +new Date();
+          function animate() {
+            var t2 = +new Date();
+            var i0 = Math.floor((t2 - t1) * 0.25);
+            var dx = Math.sqrt(frequency * frequency) * 0.0001;
+            var r  = 100 * volume;
+
+            context.fillRect(0, 0, 320, 320);
+
+            switch (touchMode) {
+              case "tap":
+              case "frequency":
+              case "volume":        
+                context.strokeStyle = "rgba(  0,172,255,0.8)";
+                break;
+              default:
+                context.strokeStyle = "rgba(158,161,163,0.8)";
+            }
+            
+            context.beginPath();
+            for (var i = 0; i < 320; i++) {
+              context.lineTo(i, 110 - Math.sin((i + i0) * dx) * r);
+            }
+            context.stroke();
+            
+            requestAnimationFrame(animate);
+          }  
+          requestAnimationFrame(animate);
+        })();
+      };
+    </script>
+  </body>
+</html>

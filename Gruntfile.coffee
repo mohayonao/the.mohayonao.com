@@ -75,13 +75,13 @@ module.exports = (grunt)->
     fs.writeFileSync "#{path}/index.jade", """extend ../lib/layout
 
 block config
-  - var title = \"#{name}\"
-  - var path  = \"/#{name}\"
-  - var jslist  = [\"index.js\"]
-  - var csslist = [\"index.css\"]
+  - $.title = \"#{name}\"
+  - $.path  = \"/#{name}\"
+  - $.jslist  = [\"index.js\"]
+  - $.csslist = [\"index.css\"]
 
 block content
-  h1 \#{title}
+  h1 \#{$.title}
   \#container
 """
     console.log "create: #{path}/index.coffee"
