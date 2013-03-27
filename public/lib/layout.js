@@ -29,12 +29,12 @@
         };
       })();
       $('li', $sidebar).each(function(i, elem) {
-        var $li, id, src, title;
+        var $li, id, imgurl, src, title;
 
         $li = $(elem);
         id = $li.attr('id');
         title = $li.attr('data-title');
-        src = /^https?:/.test(id) ? "/lib/icon/" + title + ".png" : "" + id + "appimage.png";
+        src = /^https?:/.test(id) ? (imgurl = title.replace(/\s/g, '_'), "/lib/icon/" + imgurl + ".png") : "" + id + "appimage.png";
         $('<img>').attr('src', src).on('load', function() {
           return show_app_image[id] = src;
         });

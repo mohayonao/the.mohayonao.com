@@ -31,7 +31,8 @@ $ ->
       id  = $li.attr 'id'
       title = $li.attr 'data-title'
       src = if /^https?:/.test id
-        "/lib/icon/#{title}.png"
+        imgurl = title.replace /\s/g, '_'
+        "/lib/icon/#{imgurl}.png"
       else
         "#{id}appimage.png"
       $('<img>').attr('src', src).on 'load', ->
