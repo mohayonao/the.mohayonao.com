@@ -1,0 +1,36 @@
+application: mohayona-com
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: (.*)/
+  static_files: public\1/index.html
+  upload: public(.*)/index.html
+
+- url: /(.*)
+  static_files: public/\1
+  upload: public/(.*)  
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+
+skip_files:
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*/RCS/.*
+- ^(.*/)?\..*
+- ^(.*/)?.*\.bak$
+- ^(.*/)?node_modules/.*
+- ^(.*/)?Procfile
+- ^(.*/)?package\.json
+- ^(.*/)?.*\.coffee
+- ^(.*/)?.*\.jade
+- ^(.*/)?.*\.styl
