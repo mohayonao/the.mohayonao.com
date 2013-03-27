@@ -780,7 +780,7 @@ var DorilaSound = (function() {
     var compile = function(options) {
       var self = this;
       var text, tokens, t, o;
-      var list;
+      var list, mml;
       var i, imax;
       text = options.text;
       list = [];
@@ -789,7 +789,10 @@ var DorilaSound = (function() {
         for (i = 0; i < tokens.length; i++) {
           t = tokens[i].trim();
           if (t[0] === ";") {
-            list.push(new MMLTrack(this.sys, {mml:t.substr(1)}));
+            mml = t.substr(1).trim();
+            if (mml.length > 0) {
+              list.push(new MMLTrack(this.sys, {mml:mml}));
+            }
           } else {
             if (t[0] === ":") t = t.substr(1);
             o = {buffer:this._dorilandBuffer,
@@ -849,7 +852,7 @@ if (typeof(window) !== "undefined") {
       w.postMessage(result);
     });
     
-    $("li a").each(function() {
+    $("#song-list li a").each(function() {
       var text = $(this).text();
       $(this).on("click", function() {
         $("#text").val(text);
@@ -876,6 +879,9 @@ if (typeof(window) !== "undefined") {
       var baseurl = location.protocol + "//" + location.host + location.pathname;
       var text = $("#text").val();
       text = text.replace(/@/g, "{{AT}}");
+      if (text[text.length-1] !== ";") {
+        text += ";";
+      }
       lis = [
         "http://twitter.com/share?lang=ja",
         "text=" + utf.URLencode(text),

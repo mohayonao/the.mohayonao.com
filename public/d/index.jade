@@ -3,7 +3,7 @@ extend ../lib/layout
 block config
   - $.title = "ドッ ドッ ドリドリ ドドドド ドリランド"
   - $.path  = "/d"
-  - $.jslist  = ["/lib/pico.js", "index.js"]
+  - $.jslist  = ["/lib/pico.js", "/lib/utf.js", "index.js"]
   - $.csslist = ["index.css"]
 
 block content
@@ -24,7 +24,7 @@ block content
           li: a(href="https://gumroad.com/l/pSMY",target="gumroad") 課金して新しい機能を手にいれる($5)
     section.pull-left
       h4 examples
-      ul
+      ul(id="song-list")
         li: a(href="javascript:void(0)") ドッ ドッ ドリドリ ドドドド ドリランド
         li: a(href="javascript:void(0)") ++|ドッ ドッ ドッドッ
         li: a(href="javascript:void(0)") |ドッ ドッ ドリドリ -ド+ド-ド+ド ドリランド-
@@ -32,7 +32,7 @@ block content
         li: a(href="javascript:void(0)") |++ドド--リラ
         li: a(href="javascript:void(0)") |ドリラ +++ド--リ-ラ
       ul
-        li: a(href="http://goo.gl/Af5DP") 曲1
-        li: a(href="http://goo.gl/uavLX") 曲2
-        li: a(href="http://goo.gl/ozeMO") 曲3
-        li: a(href="http://goo.gl/GcnRX") 曲4
+        li: a(href="http://goo.gl/ABcGc") 曲1
+        li: a(href="http://goo.gl/5z8tw") 曲2
+        li: a(href="http://goo.gl/d0ikV") 曲3
+        li: a(href="http://goo.gl/qhvLj") 曲4
