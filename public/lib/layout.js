@@ -25,7 +25,7 @@
         return function(name) {
           var _ref6;
 
-          return $img.attr('src', (_ref6 = show_app_image[name]) != null ? _ref6 : '/appimage.png');
+          return $img.attr('src', (_ref6 = show_app_image[name]) != null ? _ref6 : 'appimage.png');
         };
       })();
       $('li', $sidebar).each(function(i, elem) {
@@ -46,10 +46,10 @@
         });
       });
       $('ul', $sidebar).on('mouseout', function() {
-        return show_app_image(app_name);
+        return show_app_image(null);
       });
       $('h1', $sidebar).on('mouseout', function() {
-        return show_app_image(app_name);
+        return show_app_image(null);
       });
       return $('h1', $sidebar).on('mouseover', function() {
         return show_app_image(null);

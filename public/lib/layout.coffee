@@ -24,7 +24,7 @@ $ ->
     show_app_image = do ->
       $img = $('img', $sidebar)
       (name)->
-        $img.attr 'src', show_app_image[name] ? '/appimage.png'
+        $img.attr 'src', show_app_image[name] ? 'appimage.png'
 
     $('li', $sidebar).each (i, elem)->
       $li = $(elem)
@@ -44,13 +44,14 @@ $ ->
         show_app_image id
 
     $('ul', $sidebar).on 'mouseout', ->
-      show_app_image app_name
+      show_app_image null
 
     $('h1', $sidebar).on 'mouseout', ->
-      show_app_image app_name
+      show_app_image null
 
     $('h1', $sidebar).on 'mouseover', ->
       show_app_image null
+      
   else if apps.isPhone
     $('#sidebar').hide()
     $('#content').css('margin-left':'0')
