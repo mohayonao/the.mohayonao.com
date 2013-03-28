@@ -40,7 +40,7 @@ $ ->
       $li = $(elem)
       media = $li.attr 'data-media'
       
-      if media is 'phone' or media is 'tablet'
+      if media is 'tablet' or media is 'phone'
         return $li.remove()
       
       $img = $('img', $li).remove().show()
@@ -60,7 +60,17 @@ $ ->
     $('h1', $sidebar).on 'mouseover', ->
       show_app_image null
       
+  else if apps.isTablet
+  
+    $('li', $sidebar).each (i, elem)->
+      $li = $(elem)
+      media = $li.attr 'data-media'
+      
+      if media is 'desktop' or media is 'phone'
+        return $li.remove()
+
   else if apps.isPhone
+    
     $('#sidebar').hide()
     $('#content').css('margin-left':'0')
   
@@ -70,7 +80,7 @@ $ ->
       $li = $(elem)
       media = $li.attr 'data-media'
       
-      if media is 'desktop'
+      if media is 'desktop' or media is 'tablet'
         return $li.remove()
-      
-      $img = $('img', $li).css(display:'block',width:'90px',height:'90px').show()
+
+        $('img', $li).css(display:'block',width:'90px',height:'90px').show()

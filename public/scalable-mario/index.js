@@ -28,8 +28,8 @@
         return x0 + Math.abs(index - i) * (x1 - x0);
       };
     }
-    master = T('reverb', {
-      room: 0.8
+    master = T('delay', {
+      time: "bpm104 l16"
     });
     baseScale = sc.Scale.major();
     baseRoot = 60;
@@ -93,13 +93,17 @@
         melo0.start();
         melo1.start();
         bass.start();
-        return $(this).text('Pause');
+        return $(this).css({
+          'color': 'red'
+        });
       } else {
         master.pause();
         melo0.stop();
         melo1.stop();
         bass.stop();
-        return $(this).text('Play');
+        return $(this).css({
+          'color': 'black'
+        });
       }
     });
     scales = (function() {

@@ -1,13 +1,13 @@
 extend ../lib/layout
 
 block config
-  - var title = "perfume"
-  - var path  = "/perfume"
-  - var jslist  = ["index.js"]
-  - var csslist = ["index.css"]
+  - $.title = "perfume"
+  - $.path  = "/perfume"
+  - $.jslist  = ["index.js"]
+  - $.csslist = ["index.css"]
 
 block content
-  h1 #{title}
+  h1 #{$.title}
   #container
     ul(id="list")
       li

@@ -65,7 +65,7 @@ $ ->
       x1 = @[i+1]
       x0 + Math.abs(index - i) * (x1 - x0)
   
-  master = T('reverb', {room:0.8})
+  master = T('delay', {time:"bpm104 l16"})
   baseScale = sc.Scale.major()
   baseRoot  = 60 # C3
   changeTuning   = sc.Tuning.et12()
@@ -113,13 +113,13 @@ $ ->
       melo0.start()
       melo1.start()
       bass.start()
-      $(this).text 'Pause'
+      $(this).css 'color': 'red'
     else
       master.pause()
       melo0.stop()
       melo1.stop()
       bass.stop()
-      $(this).text 'Play'
+      $(this).css 'color': 'black'
 
   scales = do ->
     scales = {}

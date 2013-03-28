@@ -46,7 +46,7 @@
 
         $li = $(elem);
         media = $li.attr('data-media');
-        if (media === 'phone' || media === 'tablet') {
+        if (media === 'tablet' || media === 'phone') {
           return $li.remove();
         }
         $img = $('img', $li).remove().show();
@@ -68,6 +68,16 @@
       return $('h1', $sidebar).on('mouseover', function() {
         return show_app_image(null);
       });
+    } else if (apps.isTablet) {
+      return $('li', $sidebar).each(function(i, elem) {
+        var $li, media;
+
+        $li = $(elem);
+        media = $li.attr('data-media');
+        if (media === 'desktop' || media === 'phone') {
+          return $li.remove();
+        }
+      });
     } else if (apps.isPhone) {
       $('#sidebar').hide();
       $('#content').css({
@@ -75,18 +85,18 @@
       });
       $appimage.empty();
       return $('li', $sidebar).each(function(i, elem) {
-        var $img, $li, media;
+        var $li, media;
 
         $li = $(elem);
         media = $li.attr('data-media');
-        if (media === 'desktop') {
+        if (media === 'desktop' || media === 'tablet') {
           return $li.remove();
+          return $('img', $li).css({
+            display: 'block',
+            width: '90px',
+            height: '90px'
+          }).show();
         }
-        return $img = $('img', $li).css({
-          display: 'block',
-          width: '90px',
-          height: '90px'
-        }).show();
       });
     }
   });
