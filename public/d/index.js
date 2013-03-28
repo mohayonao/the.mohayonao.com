@@ -868,33 +868,15 @@ if (typeof(window) !== "undefined") {
     }
     
     $("#tweet").on("click", function() {
-      var h = 550,
-      i = 250,
-      j = screen.height,
-      k = screen.width,
-      b,c, lis, url;
-      b = Math.round(k/2-h/2);
-      c = Math.round(j/2-i/2);
-      
-      var baseurl = location.protocol + "//" + location.host + location.pathname;
-      if (baseurl[baseurl.length-1] !== "/") {
-        baseurl += "/";
-      }
+      var url  = "http://" + location.host + "/d/";
       var text = $("#text").val();
       text = text.replace(/@/g, "{{AT}}");
       if (text[text.length-1] !== ";") {
         text += ";";
       }
-      lis = [
-        "https://twitter.com/intent/tweet?lang=ja",
-        "text=" + utf.URLencode(text),
-        "url=" + utf.URLencode(encodeURI(baseurl+"/?"+text))
-      ];
-      
-      url = lis.join('&');
-      window.open(url, "intent","width="+h+",height="+i+",left="+b+",top="+c);
+      apps.tweet({ text:text, url:url+"?"+encodeURI(text) });
     });
-
+    
     var w = null;
     if (typeof(Worker) !== "undefined") {
       (function() {

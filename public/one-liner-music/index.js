@@ -181,18 +181,15 @@
       return localStorage.setItem('history', JSON.stringify(history));
     };
     $('#tweet').on('click', function() {
-      var baseurl, func, h, lis, text, url, w, x, y;
+      var func, text, url;
 
-      w = 550;
-      h = 250;
-      x = Math.round(screen.width * 0.5 - w * 0.5);
-      y = Math.round(screen.height * 0.5 - h * 0.5);
-      baseurl = location.protocol + "//" + location.host + location.pathname;
+      url = "http://" + location.host + "/one-liner-music/";
       text = "いい曲できた";
       func = encodeURIComponent(processor.func);
-      lis = ["http://twitter.com/share?lang=ja", "text=" + text, "url=" + encodeURIComponent("" + baseurl + "?" + func + "&")];
-      url = lis.join("&");
-      return window.open(url, "intent", "width=" + w + ",height=" + h + ",left=" + x + ",top=" + y);
+      return apps.tweet({
+        text: text,
+        url: "" + url + "?" + func + "&"
+      });
     });
     if ((q = location.search.substr(1, location.search.length - 2))) {
       $func.val(decodeURIComponent(q));

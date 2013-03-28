@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $sidebar, app_name, apps, show_app_image, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+    var $appimage, $sidebar, apps, show_app_image, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
 
     if ((_ref = window.requestAnimationFrame) == null) {
       window.requestAnimationFrame = (_ref1 = (_ref2 = (_ref3 = (_ref4 = window.webkitRequestAnimationFrame) != null ? _ref4 : window.mozRequestAnimationFrame) != null ? _ref3 : window.oRequestAnimationFrame) != null ? _ref2 : window.msRequestAnimationFrame) != null ? _ref1 : function(f) {
@@ -10,38 +10,53 @@
     }
     ua = navigator.userAgent;
     apps = window.apps = {};
+    apps.name = (_ref5 = /^(\/[-\w]+\/)/.exec(location.pathname)) != null ? _ref5[1] : void 0;
     apps.isPhone = /(iPhone|iPod|Android)/i.test(navigator.userAgent);
     apps.isTablet = /(iPad|Android)/i.test(navigator.userAgent);
     apps.isDesktop = !(apps.isPhone || apps.isTablet);
     apps.isMouseDevice = apps.isDesktop;
     apps.isTouchDevice = !apps.isDesktop;
-    if (apps.isMouseDevice) {
-      app_name = (_ref5 = /^(\/[-\w]+\/)/.exec(location.pathname)) != null ? _ref5[1] : void 0;
-      $sidebar = $('#sidebar');
-      show_app_image = (function() {
-        var $img;
+    apps.tweet = function(opts) {
+      var features, h, l, t, url, w;
 
-        $img = $('img', $sidebar);
+      w = 550;
+      h = 250;
+      l = Math.round((screen.width - w) * 0.5);
+      t = Math.round((screen.height - h) * 0.5);
+      url = "https://twitter.com/share?" + ($.param(opts));
+      features = "width=" + w + ",height=" + h + ",left=" + l + ",top=" + t;
+      console.log(url);
+      return window.open(url, 'intent', features);
+    };
+    $sidebar = $('#sidebar');
+    $appimage = $('#appimage');
+    if (apps.isMouseDevice) {
+      show_app_image = (function() {
+        var $origin;
+
+        $origin = $('img', $appimage);
         return function(name) {
           var _ref6;
 
-          return $img.attr('src', (_ref6 = show_app_image[name]) != null ? _ref6 : 'appimage.png');
+          return $appimage.empty().append((_ref6 = show_app_image[name]) != null ? _ref6 : $origin);
         };
       })();
       $('li', $sidebar).each(function(i, elem) {
-        var $li, imgurl, json, src;
+        var $img, $li, media, url;
 
         $li = $(elem);
-        json = JSON.parse($li.attr('data-json'));
-        src = /^https?:/.test(json.url) ? (imgurl = json.title.replace(/\s/g, '_'), "/lib/icon/" + imgurl + ".png") : "" + json.url + "appimage.png";
-        $('<img>').attr('src', src).on('load', function() {
-          return show_app_image[id] = src;
-        });
-        if (app_name === id) {
+        media = $li.attr('data-media');
+        if (media === 'phone' || media === 'tablet') {
+          return $li.remove();
+        }
+        $img = $('img', $li).remove().show();
+        url = $('a', $li).attr('href');
+        show_app_image[url] = $img;
+        if (apps.name === url) {
           $li.css('list-style-image', 'url("/lib/list-style.gif")');
         }
         return $li.on('mouseover', function() {
-          return show_app_image(id);
+          return show_app_image(url);
         });
       });
       $('ul', $sidebar).on('mouseout', function() {
@@ -55,8 +70,23 @@
       });
     } else if (apps.isPhone) {
       $('#sidebar').hide();
-      return $('#content').css({
+      $('#content').css({
         'margin-left': '0'
+      });
+      $appimage.empty();
+      return $('li', $sidebar).each(function(i, elem) {
+        var $img, $li, media;
+
+        $li = $(elem);
+        media = $li.attr('data-media');
+        if (media === 'desktop') {
+          return $li.remove();
+        }
+        return $img = $('img', $li).css({
+          display: 'block',
+          width: '90px',
+          height: '90px'
+        }).show();
       });
     }
   });

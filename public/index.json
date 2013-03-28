@@ -3,11 +3,13 @@
     "list": [
       {
         "title": "Glitched Movie Player",
-        "url"  : "/glitchedmovie/"
+        "url"  : "/glitchedmovie/",
+        "media": "desktop"
       },
       {
         "title": "Movie to Thumbnails",
-        "url"  : "/movie2thumb/"
+        "url"  : "/movie2thumb/",
+        "media": "desktop"
       },
       { "title": "Formant Khoomii",
         "url"  : "/khoomii/"
@@ -30,7 +32,8 @@
       },
       {
         "title": "MiMi Grep",
-        "url"  : "/mimi/"
+        "url"  : "/mimi/",
+        "media": "desktop"
       },
       {
         "title": "Perfume",
@@ -39,6 +42,11 @@
       {
         "title": "Twitter Bot",
         "url"  : "/twitter-bot/"
+      },
+      {
+        "title": "Sine",
+        "url"  : "/sine/",
+        "media": "phone"
       }
     ]
   },

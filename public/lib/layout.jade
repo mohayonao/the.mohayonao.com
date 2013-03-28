@@ -27,7 +27,8 @@ html(lang="en")
       script(src=src)
   body
     #sidebar
-      img(src="#{$.path}/appimage.png")
+      div(id="appimage")
+       img(src="#{$.path}/appimage.png")
       h1
         a(href="/") the.mohayonao.com
       each items in index
@@ -35,7 +36,10 @@ html(lang="en")
           h2 #{items.name.toUpperCase()}
         ul(id="app-list")          
           each app in items.list
-            li(data-json=app)
-              a(href=app.url,title=app.title) #{app.title}
+            li(data-media=app.media)
+              - var icon = /^https?:/.test(app.url) ? "/lib/icon/"+app.title.replace(/\s/g,"")+".png" : app.url+"appimage.png";
+              a(href=app.url,title=app.title)
+                img(src=icon).hidden
+                span #{app.title}
     #content
       block content

@@ -10,37 +10,46 @@ $ ->
   ua = navigator.userAgent
   
   apps = window.apps = {}
+  
+  apps.name = (/^(\/[-\w]+\/)/.exec location.pathname)?[1]  
   apps.isPhone  = /(iPhone|iPod|Android)/i.test navigator.userAgent
   apps.isTablet = /(iPad|Android)/i.test navigator.userAgent
   apps.isDesktop = not (apps.isPhone or apps.isTablet)
   apps.isMouseDevice = apps.isDesktop
   apps.isTouchDevice = not apps.isDesktop
-  
-  if apps.isMouseDevice
-    app_name = (/^(\/[-\w]+\/)/.exec location.pathname)?[1]
+  apps.tweet = (opts)->
+    w = 550
+    h = 250
+    l = Math.round (screen.width  - w) * 0.5
+    t = Math.round (screen.height - h) * 0.5
+    url = "https://twitter.com/share?#{$.param(opts)}"
+    features = "width=#{w},height=#{h},left=#{l},top=#{t}"
+    console.log url
+    window.open url, 'intent', features
+        
+  $sidebar  = $('#sidebar')
+  $appimage = $('#appimage')
     
-    $sidebar = $('#sidebar')
-
+  if apps.isMouseDevice
     show_app_image = do ->
-      $img = $('img', $sidebar)
+      $origin = $('img', $appimage)
       (name)->
-        $img.attr 'src', show_app_image[name] ? 'appimage.png'
+        $appimage.empty().append show_app_image[name] ? $origin
 
     $('li', $sidebar).each (i, elem)->
       $li = $(elem)
-      json = JSON.parse $li.attr 'data-json'      
-      src = if /^https?:/.test json.url
-        imgurl = json.title.replace /\s/g, '_'
-        "/lib/icon/#{imgurl}.png"
-      else
-        "#{json.url}appimage.png"
-      $('<img>').attr('src', src).on 'load', ->
-        show_app_image[id] = src
-      if app_name is id
+      media = $li.attr 'data-media'
+      
+      if media is 'phone' or media is 'tablet'
+        return $li.remove()
+      
+      $img = $('img', $li).remove().show()
+      url  = $('a', $li).attr 'href'
+      show_app_image[url] = $img
+      if apps.name is url
         $li.css 'list-style-image', 'url("/lib/list-style.gif")'
-        
       $li.on 'mouseover', ->
-        show_app_image id
+        show_app_image url
 
     $('ul', $sidebar).on 'mouseout', ->
       show_app_image null
@@ -54,3 +63,14 @@ $ ->
   else if apps.isPhone
     $('#sidebar').hide()
     $('#content').css('margin-left':'0')
+  
+    $appimage.empty()
+    
+    $('li', $sidebar).each (i, elem)->
+      $li = $(elem)
+      media = $li.attr 'data-media'
+      
+      if media is 'desktop'
+        return $li.remove()
+      
+      $img = $('img', $li).css(display:'block',width:'90px',height:'90px').show()
