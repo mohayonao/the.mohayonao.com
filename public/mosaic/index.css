@@ -15,5 +15,15 @@ a :hover{text-decoration:underline}
 #content{font-family:'Courier New',monospace;font-size:16px;height:100%;margin-left:200px;padding:10px;}
 #content h1{margin-left:10px}
 #content #container{padding:10px}
-#content label{display:block}
-#content select{width:200px;margin-bottom:15px}
+#content{text-align:center;}
+#content h1{display:inline-block;margin-right:25px}
+#content #editor-container{width:100%}
+#content #editor{width:400px;height:400px;border:solid 1px #666;margin:0 auto;display:block}
+#content #dialog{width:400px;height:400px;border:solid 1px #666;margin:0 auto;display:block;font-size:48px;}
+#content #dialog span{display:inline-block}
+#content #dialog .caption{margin-top:20px}
+#content #dialog .lsf-icon{color:#666;cursor:pointer;width:80px}
+#content #dialog #frames,#content #dialog #speed{width:160px;border:solid 1px #000;margin-right:15px}
+#content #result{width:400px;height:400px;border:solid 1px #666;margin:0 auto;display:block}
+#content #msg{margin:5px}
+#content .button{margin:5px;font-size:32px}

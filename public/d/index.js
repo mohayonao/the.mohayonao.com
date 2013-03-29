@@ -839,14 +839,18 @@ if (typeof(window) !== "undefined") {
       var soundsystem = new DorilaSound(pico, result);
       if (result != null) {
         $("#play").on("click", function() {
-          var text = $("#text").val().trim();
-          soundsystem.init({text:text});
-          soundsystem.play();
-          pico.play(soundsystem);
+          var text;
+          if (pico.isPlaying) {
+            pico.pause();
+            $(this).css("color", "black");
+          } else {
+            text = $("#text").val().trim();
+            soundsystem.init({text:text});
+            soundsystem.play();
+            pico.play(soundsystem);
+            $(this).css("color", "red");
+          }
         }).text("play");
-        $("#stop").on("click", function() {
-          pico.pause();
-        });
         if (autoplay) $("#play").click();
       }
       w.postMessage(result);
@@ -856,6 +860,9 @@ if (typeof(window) !== "undefined") {
       var text = $(this).text();
       $(this).on("click", function() {
         $("#text").val(text);
+        if (pico.isPlaying) {
+          pico.pause();
+        }
         $("#play").click();
       });
     });

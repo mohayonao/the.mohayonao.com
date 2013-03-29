@@ -57,11 +57,11 @@
       if (isPlaying) {
         synth.play();
         timer.start();
-        return $(this).text('Pause');
+        return $(this).css('color', 'red');
       } else {
         synth.pause();
         timer.pause();
-        return $(this).text('Play');
+        return $(this).css('color', 'black');
       }
     });
     return 0;
