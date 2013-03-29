@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $btn, $msg, Application, BLACK, Editor, GRAY, NAVY, SIZE, app, conf_mode, drag_mode, dst, exec_mode, mask_mode, save_mode, src, trim_mode;
+    var $btn, $msg, Application, BLACK, Editor, GRAY, MosaicProcessor, NAVY, SIZE, app, conf_mode, drag_mode, dst, exec_mode, mask_mode, save_mode, src, trim_mode;
 
     SIZE = 400;
     BLACK = '#302833';
@@ -10,6 +10,15 @@
     Array.prototype.choose = function() {
       return this[(Math.random() * this.length) | 0];
     };
+    Array.prototype.shuffle = function() {
+      var a;
+
+      a = this.slice(0);
+      a.sort(function(x) {
+        return Math.random() - 0.5;
+      });
+      return a;
+    };
     String.prototype.times = function(n) {
       var i;
 
@@ -17,14 +26,14 @@
         var _i, _results;
 
         _results = [];
-        for (i = _i = 0; 0 <= n ? _i < n : _i > n; i = 0 <= n ? ++_i : --_i) {
+        for (i = _i = 0; _i < n; i = _i += 1) {
           _results.push(this);
         }
         return _results;
       }).call(this)).join('');
     };
     Editor = (function() {
-      var setEventListener;
+      var drawmask, setEventListener;
 
       function Editor(elem) {
         this.elem = elem;
@@ -154,25 +163,45 @@
       };
 
       Editor.prototype.draw = function() {
-        var i, imageData, x, y, _i, _ref;
+        var i, imageData, sh, sw, sx, sy, _i, _ref;
 
-        this.context.save();
         if (this.image) {
           imageData = this.getImageData();
           this.context.putImageData(imageData, 0, 0);
-        } else {
-          imageData = null;
-        }
-        this.context.fillStyle = '#000';
-        for (i = _i = 0, _ref = this.mask.data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-          if (this.mask.data[i]) {
-            x = ((i % this.mask.xmax) | 0) * this.mask.size;
-            y = ((i / this.mask.xmax) | 0) * this.mask.size;
-            this.context.fillRect(x, y, this.mask.size, this.mask.size);
+          for (i = _i = 0, _ref = this.mask.data.length; _i < _ref; i = _i += 1) {
+            if (this.mask.data[i]) {
+              sx = ((i % this.mask.xmax) | 0) * this.mask.size;
+              sy = ((i / this.mask.xmax) | 0) * this.mask.size;
+              sw = this.mask.size;
+              sh = this.mask.size;
+              drawmask(imageData, sx, sy, sw, sh);
+            }
           }
+          this.context.putImageData(imageData, 0, 0);
+          return imageData;
         }
-        this.context.restore();
-        return imageData;
+      };
+
+      drawmask = function(imageData, sx, sy, sw, sh) {
+        var data, i, _i, _results, _x, _y;
+
+        data = imageData.data;
+        _results = [];
+        for (_y = _i = 0; _i < sh; _y = _i += 1) {
+          _results.push((function() {
+            var _j, _results1;
+
+            _results1 = [];
+            for (_x = _j = 0; _j < sw; _x = _j += 1) {
+              i = ((sy + _y) * imageData.width + (sx + _x)) * 4;
+              data[i + 0] = 255 - data[i + 0];
+              data[i + 1] = 255 - data[i + 1];
+              _results1.push(data[i + 2] = 255 - data[i + 2]);
+            }
+            return _results1;
+          })());
+        }
+        return _results;
       };
 
       Editor.prototype.write = function(imageData) {
@@ -197,7 +226,8 @@
             y: y
           };
           e.preventDefault();
-          return e.stopPropagation();
+          e.stopPropagation();
+          return e.returnValue = false;
         });
         $elem.on('mousemove', function(e) {
           var dx, dy, x, y, _ref;
@@ -240,18 +270,18 @@
       });
     };
     Application = (function() {
-      var FRAMES, SPEED, mosaic;
+      var FRAMES, SPEED;
 
-      FRAMES = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+      FRAMES = [2, 3, 4, 6, 8, 10, 12];
 
-      SPEED = [10, 20, 30, 40, 50, 75, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000];
+      SPEED = [10, 25, 50, 100, 200, 250, 500, 1000];
 
       function Application(src, dst) {
         this.editor = new Editor(src);
         this.result = dst;
         this.prev_mode = null;
         this.next_mode = null;
-        this.frames = 8;
+        this.frames = 6;
         this.speed = 100;
       }
 
@@ -259,6 +289,9 @@
         var reader,
           _this = this;
 
+        if (this.editor.getMode() !== 'drag') {
+          return false;
+        }
         if (file && typeof file.type === 'string' && file.type.substr(0, 5) === 'image') {
           reader = new FileReader;
           reader.onload = function() {
@@ -279,21 +312,21 @@
         return this.editor.getImage();
       };
 
-      Application.prototype.setMode = function(value) {
-        this.editor.setMode(value);
-        switch (value) {
+      Application.prototype.setMode = function(mode, arg) {
+        this.editor.setMode(mode);
+        switch (mode) {
           case 'drag':
-            return drag_mode();
+            return drag_mode(arg);
           case 'trim':
-            return trim_mode();
+            return trim_mode(arg);
           case 'mask':
-            return mask_mode();
+            return mask_mode(arg);
           case 'conf':
-            return conf_mode();
+            return conf_mode(arg);
           case 'exec':
-            return exec_mode();
+            return exec_mode(arg);
           case 'save':
-            return save_mode();
+            return save_mode(arg);
         }
       };
 
@@ -345,7 +378,7 @@
       };
 
       Application.prototype.generate = function() {
-        var canvas, context, dfd, encoder, i, mask, processed, progress, saved, _i, _ref,
+        var canvas, context, dfd, encoder, i, mask, processed, processor, progress, saved, _i, _ref,
           _this = this;
 
         dfd = $.Deferred();
@@ -363,6 +396,7 @@
         encoder.setDelay(this.speed);
         encoder.setSize(this.editor.width, this.editor.height);
         encoder.setQuality(1);
+        processor = new MosaicProcessor(saved, mask);
         progress = function(context, count) {
           var height, imageData, width, _ref;
 
@@ -374,9 +408,9 @@
           };
         };
         encoder.start();
-        for (i = _i = 0, _ref = this.frames; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+        for (i = _i = 0, _ref = this.frames; _i < _ref; i = _i += 1) {
           context.putImageData(saved, 0, 0);
-          processed = this._process(context, mask);
+          processed = processor.process(context);
           encoder.addFrame(processed).then(progress(processed, i));
         }
         encoder.finish();
@@ -386,36 +420,80 @@
         return dfd.promise();
       };
 
-      Application.prototype._process = function(context, mask) {
-        var i, imageData, sh, sw, sx, sy, _i, _ref;
+      return Application;
 
-        for (i = _i = 0, _ref = mask.data.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+    })();
+    MosaicProcessor = (function() {
+      var build, fetchcolor;
+
+      function MosaicProcessor(image, mask) {
+        this.image = image;
+        this.mask = mask;
+        this.colormap = build(this.image, this.mask);
+      }
+
+      build = function(imageData, mask) {
+        var i, list, sh, sw, sx, sy, _i, _ref;
+
+        list = [];
+        for (i = _i = 0, _ref = mask.data.length; _i < _ref; i = _i += 1) {
+          if (mask.data[i]) {
+            sx = ((i % mask.xmax) | 0) * mask.size;
+            sy = ((i / mask.xmax) | 0) * mask.size;
+            sw = mask.size;
+            sh = mask.size;
+            list[i] = fetchcolor(imageData, sx, sy, sw, sh).shuffle();
+          }
+        }
+        return list;
+      };
+
+      fetchcolor = function(imageData, sx, sy, sw, sh) {
+        var b, colors, data, g, i, r, _i, _j, _x, _y;
+
+        colors = {};
+        data = imageData.data;
+        for (_y = _i = 0; _i < sh; _y = _i += 1) {
+          for (_x = _j = 0; _j < sw; _x = _j += 1) {
+            i = ((sy + _y) * imageData.width + (sx + _x)) * 4;
+            r = data[i + 0];
+            g = data[i + 1];
+            b = data[i + 2];
+            colors["" + r + "," + g + "," + b] = true;
+          }
+        }
+        return Object.keys(colors).map(function(x) {
+          return "rgb(" + x + ")";
+        });
+      };
+
+      MosaicProcessor.prototype.process = function(context) {
+        var i, imageData, mask, sh, sw, sx, sy, _i, _ref;
+
+        mask = this.mask;
+        for (i = _i = 0, _ref = mask.data.length; _i < _ref; i = _i += 1) {
           if (mask.data[i]) {
             sx = ((i % mask.xmax) | 0) * mask.size;
             sy = ((i / mask.xmax) | 0) * mask.size;
             sw = mask.size;
             sh = mask.size;
             imageData = context.getImageData(sx, sy, sw, sh);
-            context.fillStyle = mosaic(imageData, sw, sh);
+            context.fillStyle = this.mosaic(i);
             context.fillRect(sx, sy, sw, sh);
           }
         }
         return context;
       };
 
-      mosaic = function(imageData, w, h) {
-        var colors, x, y, _i, _j;
+      MosaicProcessor.prototype.mosaic = function(index) {
+        var color;
 
-        colors = [];
-        for (y = _i = 0; 0 <= h ? _i < h : _i > h; y = 0 <= h ? ++_i : --_i) {
-          for (x = _j = 0; 0 <= w ? _j < w : _j > w; x = 0 <= w ? ++_j : --_j) {
-            colors.push([imageData.data[(y + x) * 4 + 0], imageData.data[(y + x) * 4 + 1], imageData.data[(y + x) * 4 + 2]]);
-          }
-        }
-        return "rgb(" + (colors.choose().join(',')) + ")";
+        color = this.colormap[index].shift();
+        this.colormap[index].push(color);
+        return color;
       };
 
-      return Application;
+      return MosaicProcessor;
 
     })();
     src = document.getElementById('editor');
@@ -436,6 +514,9 @@
     $btn.on('click', function() {
       return typeof this.cmd === "function" ? this.cmd() : void 0;
     });
+    $btn.on('mousedown', function(e) {
+      return e.returnValue = false;
+    });
     $($btn[0]).on('click', function() {
       if (app.prev_mode !== null) {
         return app.setMode(app.prev_mode);
@@ -454,6 +535,9 @@
       val = $elem.attr('title') === 'plus' ? +1 : -1;
       app.setConfig(key, val);
       return $("#" + key).text(app.getConfig(key));
+    });
+    $('#dialog .lsf-icon').on('mousedown', function(e) {
+      return e.returnValue = false;
     });
     drag_mode = function() {
       $('#result').hide();
@@ -549,6 +633,7 @@
     conf_mode = function() {
       $('#result').hide();
       $('#editor').hide();
+      $('#download').hide();
       $('#dialog').show();
       $msg.text('4. Configuration');
       $btn.set([
@@ -598,24 +683,26 @@
       $(app.editor.elem).css('cursor', 'default');
       app.prev_mode = null;
       app.next_mode = null;
-      return app.generate().then(function(data) {
-        src = "data:image/gif;base64," + (btoa(data));
-        $('#editor').hide();
-        $('#dialog').hide();
-        $('#result').attr({
-          src: src
-        }).show();
-        return app.setMode('save');
-      }).progress(function(count) {
-        var msg;
+      return setTimeout(function() {
+        return app.generate().then(function(data) {
+          src = "data:image/gif;base64," + (btoa(data));
+          return app.setMode('save', src);
+        }).progress(function(count) {
+          var msg;
 
-        msg = '4. Processing: ';
-        msg += P1.times(count + 1);
-        msg += P0.times(countmax - count - 1);
-        return $msg.text(msg);
-      });
+          msg = '4. Processing: ';
+          msg += P1.times(count + 1);
+          msg += P0.times(countmax - count - 1);
+          return $msg.text(msg);
+        });
+      }, 0);
     };
-    save_mode = function() {
+    save_mode = function(src) {
+      $('#editor').hide();
+      $('#dialog').hide();
+      $('#result').attr({
+        src: src
+      }).show();
       $msg.text('6. Right-Click and use "Save As"');
       $btn.set([
         {
@@ -632,9 +719,15 @@
           enabled: false
         }
       ]);
+      if (/chrome/i.test(navigator.userAgent)) {
+        $('#download').attr({
+          href: src
+        });
+        $('#download').show();
+      }
       $(app.editor.elem).css('cursor', 'default');
       app.prev_mode = 'conf';
-      return app.next_mode = 'drag';
+      return app.next_mode = null;
     };
     return app.setMode('drag');
   });

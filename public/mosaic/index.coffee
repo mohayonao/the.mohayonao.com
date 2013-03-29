@@ -6,8 +6,12 @@ $ ->
   NAVY  = '#223a70'
   GRAY  = '#c0c6c9'
 
-  Array::choose = -> @[(Math.random() * @length)|0]
-  String::times = (n)-> (for i in [0...n] then @).join ''
+  Array::choose  = -> @[(Math.random() * @length)|0]
+  Array::shuffle = ->
+    a = @slice 0
+    a.sort (x) -> Math.random() - 0.5
+    a
+  String::times = (n)-> (for i in [0...n] by 1 then @).join ''
 
   class Editor
     constructor: (@elem)->
@@ -93,20 +97,28 @@ $ ->
         @context.getImageData 0, 0, @width, @height
 
     draw: ->
-      @context.save()
       if @image
         imageData = @getImageData()
         @context.putImageData imageData, 0, 0
-      else
-        imageData = null
-      @context.fillStyle = '#000'
-      for i in [0...@mask.data.length]
-        if @mask.data[i]
-          x = ((i % @mask.xmax)|0) * @mask.size
-          y = ((i / @mask.xmax)|0) * @mask.size
-          @context.fillRect x, y, @mask.size, @mask.size
-      @context.restore()
-      imageData
+
+        for i in [0...@mask.data.length] by 1
+          if @mask.data[i]
+            sx = ((i % @mask.xmax)|0) * @mask.size
+            sy = ((i / @mask.xmax)|0) * @mask.size
+            sw = @mask.size
+            sh = @mask.size
+            drawmask imageData, sx, sy, sw, sh
+        @context.putImageData imageData, 0, 0
+        imageData
+
+    drawmask = (imageData, sx, sy, sw, sh)->
+      data = imageData.data
+      for _y in [0...sh] by 1
+        for _x in [0...sw] by 1
+          i = ((sy + _y) * imageData.width + (sx + _x)) * 4
+          data[i + 0] = 255 - data[i + 0]
+          data[i + 1] = 255 - data[i + 1]
+          data[i + 2] = 255 - data[i + 2]
 
     write: (imageData)->
       @context.putImageData imageData, 0, 0
@@ -121,6 +133,7 @@ $ ->
         @mousedown = x:x, y:y
         e.preventDefault()
         e.stopPropagation()
+        e.returnValue = false
       $elem.on 'mousemove', (e)=>
         [x, y] = [e.offsetX, e.offsetY]
         if @mousedown
@@ -147,18 +160,21 @@ $ ->
       $btn[i].cmd = items.cmd
 
   class Application
-    FRAMES = [2..16]
-    SPEED  = [10,20,30,40,50,75,100,150,200,250,300,400,500,600,700,800,900,1000]
-    
+    FRAMES = [2,3,4,6,8,10,12]
+    SPEED  = [10,25,50,100,200,250,500,1000]
+
     constructor: (src, dst)->
       @editor = new Editor(src)
       @result = dst
       @prev_mode = null  
       @next_mode = null
-      @frames = 8
+      @frames = 6
       @speed  = 100
 
     setImage: (file)->
+      if @editor.getMode() != 'drag'
+        return false
+
       if file and typeof file.type is 'string' and file.type.substr(0, 5) is 'image'
         reader = new FileReader
         reader.onload = =>
@@ -171,15 +187,15 @@ $ ->
     getImage: ->
       @editor.getImage()
 
-    setMode: (value)->
-      @editor.setMode value      
-      switch value
-        when 'drag' then do drag_mode
-        when 'trim' then do trim_mode
-        when 'mask' then do mask_mode
-        when 'conf' then do conf_mode
-        when 'exec' then do exec_mode
-        when 'save' then do save_mode
+    setMode: (mode, arg)->
+      @editor.setMode mode
+      switch mode
+        when 'drag' then drag_mode arg
+        when 'trim' then trim_mode arg
+        when 'mask' then mask_mode arg
+        when 'conf' then conf_mode arg
+        when 'exec' then exec_mode arg
+        when 'save' then save_mode arg
     
     getMode: ->
       @editor.getMode()
@@ -230,6 +246,8 @@ $ ->
       encoder.setSize(@editor.width, @editor.height)
       encoder.setQuality(1)
 
+      processor = new MosaicProcessor saved, mask
+
       progress = (context, count)=>
         {width, height} = context.canvas
         imageData = context.getImageData 0, 0, width, height
@@ -238,39 +256,60 @@ $ ->
           dfd.notify count
           
       encoder.start()
-      for i in [0...@frames]
+      for i in [0...@frames] by 1
         context.putImageData saved, 0, 0
-        processed = @_process context, mask
+        processed = processor.process context
         encoder.addFrame(processed).then progress(processed, i)
       encoder.finish()
 
       encoder.stream().getData().then (data)=>
         dfd.resolve data
       dfd.promise()
+  
+  class MosaicProcessor
+    constructor: (@image, @mask)->
+      @colormap = build @image, @mask
 
-    _process: (context, mask)->
-      for i in [0...mask.data.length]
+    build = (imageData, mask)->
+      list = []
+      for i in [0...mask.data.length] by 1
+        if mask.data[i]
+          sx = ((i % mask.xmax)|0) * mask.size
+          sy = ((i / mask.xmax)|0) * mask.size
+          sw = mask.size
+          sh = mask.size
+          list[i] = fetchcolor(imageData, sx, sy, sw, sh).shuffle()
+      list
+    
+    fetchcolor = (imageData, sx, sy, sw, sh)->
+      colors = {}
+      data = imageData.data
+      for _y in [0...sh] by 1
+        for _x in [0...sw] by 1
+          i = ((sy + _y) * imageData.width + (sx + _x)) * 4
+          r = data[i + 0]
+          g = data[i + 1]
+          b = data[i + 2]
+          colors[ "#{r},#{g},#{b}" ] = true
+      Object.keys(colors).map (x)-> "rgb(#{x})"
+    
+    process: (context)->
+      mask = @mask
+      for i in [0...mask.data.length] by 1
         if mask.data[i]
           sx = ((i % mask.xmax)|0) * mask.size
           sy = ((i / mask.xmax)|0) * mask.size
           sw = mask.size
           sh = mask.size
           imageData = context.getImageData sx, sy, sw, sh
-          context.fillStyle = mosaic imageData, sw, sh
+          context.fillStyle = @mosaic i
           context.fillRect sx, sy, sw, sh
       context
 
-    mosaic = (imageData, w, h)->
-      colors = []
-      for y in [0...h]
-        for x in [0...w]
-          colors.push [
-            imageData.data[(y + x) * 4 + 0]
-            imageData.data[(y + x) * 4 + 1]
-            imageData.data[(y + x) * 4 + 2]
-          ]
-      "rgb(#{colors.choose().join(',')})"
-
+    mosaic: (index)->
+      color = @colormap[index].shift()
+      @colormap[index].push color
+      color
 
   src = document.getElementById 'editor'
   dst = document.getElementById 'result'
@@ -289,6 +328,7 @@ $ ->
       app.setMode 'trim'
 
   $btn.on 'click', -> @cmd?()
+  $btn.on 'mousedown', (e)-> e.returnValue = false
 
   $($btn[0]).on 'click', ->
     if app.prev_mode != null
@@ -303,6 +343,9 @@ $ ->
     val = if $elem.attr('title') is 'plus' then +1 else -1
     app.setConfig key, val
     $("##{key}").text app.getConfig key
+
+  $('#dialog .lsf-icon').on 'mousedown', (e)->
+    e.returnValue = false
 
   drag_mode = ->
     $('#result').hide()
@@ -362,7 +405,8 @@ $ ->
 
   conf_mode = ->
     $('#result').hide()
-    $('#editor').hide()    
+    $('#editor').hide()
+    $('#download').hide()    
     $('#dialog').show()
     $msg.text '4. Configuration'
     $btn.set [
@@ -392,20 +436,22 @@ $ ->
     $(app.editor.elem).css 'cursor', 'default'
     app.prev_mode = null
     app.next_mode = null
-    app.generate().then( (data)->
-      src = "data:image/gif;base64,#{btoa(data)}"
-      $('#editor').hide()
-      $('#dialog').hide()
-      $('#result').attr(src:src).show()
-      app.setMode 'save'
-    ).progress( (count)->
-      msg = '4. Processing: '
-      msg += P1.times(count + 1)
-      msg += P0.times(countmax - count - 1)
-      $msg.text msg
-    )
-
-  save_mode = ->
+    setTimeout ->
+      app.generate().then( (data)->
+        src = "data:image/gif;base64,#{btoa(data)}"
+        app.setMode 'save', src
+      ).progress( (count)->
+        msg = '4. Processing: '
+        msg += P1.times(count + 1)
+        msg += P0.times(countmax - count - 1)
+        $msg.text msg
+      )
+    , 0
+  
+  save_mode = (src)->
+    $('#editor').hide()
+    $('#dialog').hide()
+    $('#result').attr(src:src).show()
     $msg.text '6. Right-Click and use "Save As"'
     $btn.set [
       { icon:'back'  , enabled:true  },
@@ -413,8 +459,11 @@ $ ->
       { icon:'eraser', enabled:false },
       { icon:'next'  , enabled:false },
     ]
+    if /chrome/i.test navigator.userAgent
+      $('#download').attr href:src
+      $('#download').show()
     $(app.editor.elem).css 'cursor', 'default'
     app.prev_mode = 'conf'
-    app.next_mode = 'drag'
+    app.next_mode = null
 
   app.setMode 'drag'
