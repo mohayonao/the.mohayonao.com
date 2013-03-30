@@ -109,7 +109,7 @@
     $('#tweet').on('click', function() {
       var text, url;
 
-      url = "http://" + location.host + "/scalable-mario/?";
+      url = "http://" + location.host + "/scalable-mario/";
       url += "?" + apps.param({
         s: $scale.val(),
         t: $tuning.val()
