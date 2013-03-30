@@ -126,7 +126,9 @@ $ ->
     setEventListener = (elem)->
       $elem = $(elem)
       $elem.on 'mousedown', (e)=>
-        [x, y] = [e.offsetX, e.offsetY]
+        offset = $elem.offset()
+        x = e.offsetX ? (e.pageX - offset.left)
+        y = e.offsetY ? (e.pageY - offset.top)
         switch @mode
           when 'mask'
             @paint x, y
@@ -135,7 +137,9 @@ $ ->
         e.stopPropagation()
         e.returnValue = false
       $elem.on 'mousemove', (e)=>
-        [x, y] = [e.offsetX, e.offsetY]
+        offset = $elem.offset()
+        x = e.offsetX ? (e.pageX - offset.left)
+        y = e.offsetY ? (e.pageY - offset.top)
         if @mousedown
           switch @mode
             when 'trim'
@@ -144,7 +148,7 @@ $ ->
               @move dx, dy
             when 'mask'
               @paint x, y
-          @mousedown = x:e.offsetX, y:e.offsetY
+          @mousedown = x:x, y:y
       $elem.on 'mouseup', =>
         @mousedown = null
       $elem.on 'mouseout', =>

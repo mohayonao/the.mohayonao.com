@@ -214,9 +214,11 @@
 
         $elem = $(elem);
         $elem.on('mousedown', function(e) {
-          var x, y, _ref;
+          var offset, x, y, _ref, _ref1;
 
-          _ref = [e.offsetX, e.offsetY], x = _ref[0], y = _ref[1];
+          offset = $elem.offset();
+          x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
+          y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
           switch (_this.mode) {
             case 'mask':
               _this.paint(x, y);
@@ -230,9 +232,11 @@
           return e.returnValue = false;
         });
         $elem.on('mousemove', function(e) {
-          var dx, dy, x, y, _ref;
+          var dx, dy, offset, x, y, _ref, _ref1;
 
-          _ref = [e.offsetX, e.offsetY], x = _ref[0], y = _ref[1];
+          offset = $elem.offset();
+          x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
+          y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
           if (_this.mousedown) {
             switch (_this.mode) {
               case 'trim':
@@ -244,8 +248,8 @@
                 _this.paint(x, y);
             }
             return _this.mousedown = {
-              x: e.offsetX,
-              y: e.offsetY
+              x: x,
+              y: y
             };
           }
         });
