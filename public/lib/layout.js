@@ -25,8 +25,25 @@
       t = Math.round((screen.height - h) * 0.5);
       url = "https://twitter.com/share?" + ($.param(opts));
       features = "width=" + w + ",height=" + h + ",left=" + l + ",top=" + t;
-      console.log(url);
       return window.open(url, 'intent', features);
+    };
+    apps.param = $.param;
+    apps.deparam = function(str) {
+      var items, key, obj, x, _i, _len, _ref6;
+
+      obj = {};
+      _ref6 = str.split('&');
+      for (_i = 0, _len = _ref6.length; _i < _len; _i++) {
+        x = _ref6[_i];
+        items = x.split('=');
+        key = decodeURIComponent(items[0]);
+        if (items.length === 1) {
+          obj[key] = true;
+        } else {
+          obj[key] = decodeURIComponent(items[1]);
+        }
+      }
+      return obj;
     };
     $sidebar = $('#sidebar');
     $appimage = $('#appimage');

@@ -24,9 +24,20 @@ $ ->
     t = Math.round (screen.height - h) * 0.5
     url = "https://twitter.com/share?#{$.param(opts)}"
     features = "width=#{w},height=#{h},left=#{l},top=#{t}"
-    console.log url
     window.open url, 'intent', features
-        
+
+  apps.param = $.param
+  apps.deparam = (str)->
+    obj = {}    
+    for x in str.split '&'
+      items = x.split '='
+      key = decodeURIComponent items[0]
+      if items.length is 1
+        obj[key] = true
+      else
+        obj[key] = decodeURIComponent items[1]
+    obj
+  
   $sidebar  = $('#sidebar')
   $appimage = $('#appimage')
     

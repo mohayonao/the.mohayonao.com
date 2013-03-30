@@ -850,7 +850,7 @@ if (typeof(window) !== "undefined") {
             pico.play(soundsystem);
             $(this).css("color", "red");
           }
-        }).text("play");
+        }).text("Play");
         if (autoplay) $("#play").click();
       }
       w.postMessage(result);

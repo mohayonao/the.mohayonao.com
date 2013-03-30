@@ -121,6 +121,12 @@ $ ->
       bass.stop()
       $(this).css 'color': 'black'
 
+  $('#tweet').on 'click', ->
+    url  = "http://#{location.host}/scalable-mario/?"
+    url += "?" + apps.param(s:$scale.val(),t:$tuning.val())
+    text = "#{changeScale.name} なマリオの曲"
+    apps.tweet text:text, url:url
+
   scales = do ->
     scales = {}
     sc.ScaleInfo.names().forEach (key)->
@@ -154,8 +160,16 @@ $ ->
     $tuning.append $("<option>").attr({value:key}).text(tunings[key].name)
   $('#random-tuning').on 'click', ->
     $tuning.val( Object.keys(tunings).choose() ).change()
+
+  if (q = location.search.substr(1))
+    params = apps.deparam q
+    s = params.s
+    t = params.t
+  else
+    s = 'major'
+    t = 'et12'
     
-  $scale.val('major').change()
-  $tuning.val('et12').change()
+  $scale.val(s).change()
+  $tuning.val(t).change()
     
   0

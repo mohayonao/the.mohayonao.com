@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $scale, $tuning, baseRoot, baseScale, bass, calcFrequency, changeRootFreq, changeScale, changeTuning, env, master, melo0, melo1, scales, sheet, synth, tunings;
+    var $scale, $tuning, baseRoot, baseScale, bass, calcFrequency, changeRootFreq, changeScale, changeTuning, env, master, melo0, melo1, params, q, s, scales, sheet, synth, t, tunings;
 
     melo0 = 't104 l16 q4 $\no6 eere rcer gr8. > gr8.<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 r8gg-fd#re r>g#a<c r>a<cd r8gg-fd#re < rcrc cr8.> r8gg-fd#re r>g#a<c r>a<cd r8e-r8dr8cr8.r4\no6 r8gg-fd#re r>g#a<c r>a<cd r8gg-fd#re < rcrc cr8.> r8gg-fd#re r>g#a<c r>a<cd r8e-r8dr8cr8.r4\no6 ccrc rcdr ecr>a gr8.< ccrc rcde r2 ccrc rcdr ecr>a gr8.<\no6 eere rcer gr8. > gr8.<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 ecr>g r8g#r a<frf> ar8. l12b<aa agf l16ecr>a gr8.< ecr>g r8g#r a<frf> ar8. l12b<ff fed l16c>grg cr8.<\no6 ecr>g r8g#r a<frf> ar8. l12b<aa agf l16ecr>a gr8.< ecr>g r8g#r a<frf> ar8. l12b<ff fed l16c>grg cr8.<\no6 ccrc rcdr ecr>a gr8.< ccrc rcde r2 ccrc rcdr ecr>a gr8.';
     sheet = [0, 1, 1, 2, 2, 3, 0, 1, 1, 4, 4, 3];
@@ -106,6 +106,20 @@
         });
       }
     });
+    $('#tweet').on('click', function() {
+      var text, url;
+
+      url = "http://" + location.host + "/scalable-mario/?";
+      url += "?" + apps.param({
+        s: $scale.val(),
+        t: $tuning.val()
+      });
+      text = "" + changeScale.name + " なマリオの曲";
+      return apps.tweet({
+        text: text,
+        url: url
+      });
+    });
     scales = (function() {
       scales = {};
       sc.ScaleInfo.names().forEach(function(key) {
@@ -158,8 +172,16 @@
     $('#random-tuning').on('click', function() {
       return $tuning.val(Object.keys(tunings).choose()).change();
     });
-    $scale.val('major').change();
-    $tuning.val('et12').change();
+    if ((q = location.search.substr(1))) {
+      params = apps.deparam(q);
+      s = params.s;
+      t = params.t;
+    } else {
+      s = 'major';
+      t = 'et12';
+    }
+    $scale.val(s).change();
+    $tuning.val(t).change();
     return 0;
   });
 
