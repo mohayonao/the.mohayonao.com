@@ -1,0 +1,34 @@
+extend ../lib/layout
+
+block config
+  - $.title = "hyper ukulele notation"
+  - $.path  = "/ukulele"
+  - $.jslist  = ["/lib/timbre.js","index.js","lelenofu.js","lelenofu-timbre.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    div
+      button(id="play",class="lsf-icon",title="play") Play
+      button(id="tweet",class="lsf-icon",title="twitter") Tweet this song
+      button(class="lsf-icon",title="help")
+        a(href="./howto.html",target="howto") How to write hyper ukulele notation
+    div
+      textarea(id="data",rows=12).
+        !200
+        !DdDdxDxD,xDxDDuDu,DuDuxDxD,DuDuDuD-_DdDdxDx,DxDxDDuDu,DuDuxDxD,DuDuDuD-
+        F = = = _ E7 = Am C;
+        !D-D-DuDu,D-D-DuD-,D-D-DuDu,D-uD-uDX,D-D-DuDu,D-D-DuD-,D-D-DuDu,D-uD-uD-
+        F G7 C C7 _ F G7 Em7 Am;
+        F G7 C C7 _ F G7 Em7 !DxDxDxX- Am;
+        !P-------,P-------,D-D-DuD-,D-D-DuDu
+        Dm Em7 E7 Am _
+        !D-D-DuD-,D-D-DuD-,D-D-DuD-,D-D-DuDu
+        Dm Em G Am;
+        Dm Em7 E7 Am _ Dm Em !DuD-DuDX G !DxDxDdDX Am;
+        !D-D-DuDu,D-D-DuD-,D-D-DuDu,D-uD-uDX,D-D-DuDu,D-D-DuD-,D-D-DuDu,D-uD-uD-
+        F G7 C C7 _ F G7 Em7 Am;
+        F G7 C C7 _ F G7 Em7 Am;
+    div
+      img(id="result")

@@ -1,0 +1,14 @@
+extend ../lib/layout
+
+block config
+  - $.title = "canvas"
+  - $.path  = "/canvas"
+  - $.jslist  = ["index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    ul
+      li: a(href="./binalize/") binalize
+      li: a(href="./gray/") grayscale

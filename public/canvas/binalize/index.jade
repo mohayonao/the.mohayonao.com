@@ -1,0 +1,14 @@
+extend ../../lib/layout
+
+block config
+  - $.title = "canvas/binalize/"
+  - $.path  = "/canvas/binalize/"
+  - $.jslist  = ["index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    img(id="src",src="../sample01.jpg").hidden
+    canvas(id="result")
+    input(id="param",type="range",min=0,max=100,step=5,value=40)
