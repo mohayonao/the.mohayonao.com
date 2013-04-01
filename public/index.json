@@ -7,6 +7,10 @@
         "media": "desktop"
       },
       {
+        "title": "hyper ukulele notation",
+        "url"  : "/ukulele/"
+      },
+      {
         "title": "Glitched Movie Player",
         "url"  : "/glitchedmovie/",
         "media": "desktop"

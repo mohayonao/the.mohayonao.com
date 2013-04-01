@@ -1,21 +1,27 @@
 - var $ = {}
+- $.lang  = "en"
 - $.title = "the.mohayonao.com"
+- $.desc  = ""
 - $.path  = ""
 - $.jslist  = []
 - $.csslist = []
 
 block config
 
+- var rootpath = $.path.length === 0 ? "" : /^(\/[-\w]+)/.exec($.path)[0];
+- var make_iconpath = function(app) { return /^https?:/.test(app.url) ? "/lib/icon/"+app.title.replace(/\s/g,"")+".png" : app.url+"appimage.png" };
+
 doctype 5
-html(lang="ja")
+html(lang="#{$.lang}")
   head
     meta(charset="utf-8")
     title #{$.title}
+    meta(name="description",content="#{$.desc}")
     meta(name="viewport",content="width=device-width, initial-scale=1.0")
     meta(property="og:title",content="#{$.title}")
     meta(property="og:url",content="http://the.mohayonao.com#{$.path}/")
-    meta(property="og:image",content="http://the.mohayonao.com#{$.path}/appimage.png")
-    link(rel="shortcut icon", href="favicon.ico")
+    meta(property="og:image",content="http://the.mohayonao.com#{rootpath}/appimage.png")
+    link(rel="shortcut icon", href="#{rootpath}/favicon.ico")
     link(rel="stylesheet",href="/lib/LigatureSymbols-2.11.css")
     if $.csslist.length
       for href in $.csslist
@@ -29,7 +35,7 @@ html(lang="ja")
   body
     #sidebar
       div(id="appimage")
-       img(src="#{$.path}/appimage.png")
+       img(src="#{rootpath}/appimage.png")
       h1
         a(href="/") the.mohayonao.com
       each items in index
@@ -38,9 +44,8 @@ html(lang="ja")
         ul(id="app-list")          
           each app in items.list
             li(data-media=app.media)
-              - var icon = /^https?:/.test(app.url) ? "/lib/icon/"+app.title.replace(/\s/g,"")+".png" : app.url+"appimage.png";
               a(href=app.url,title=app.title)
-                img(src=icon).hidden
+                img(src="#{make_iconpath(app)}").hidden
                 span #{app.title}
     #content
       block content
