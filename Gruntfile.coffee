@@ -37,7 +37,8 @@ module.exports = (grunt)->
           map[m[1]] = JSON.parse m[2]
     list = index[0].list
     for i in [0...list.length] by 1
-      list[i] = dict[list[i]]
+      if typeof list[i] is 'string'
+        list[i] = dict[list[i]]
     index:index
   
   grunt.initConfig

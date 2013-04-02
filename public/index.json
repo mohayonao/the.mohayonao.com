@@ -12,7 +12,12 @@
       "invention",
       "mimi",
       "perfume",
-      "twitter-bot"
+      "twitter-bot",
+      {
+        "title": "sine",
+        "path" : "/sine/",
+        "media": "phone"
+      }
     ]
   },
   {

@@ -213,37 +213,37 @@
           break;
         case 'X':
           volume = [0.6, 0.6, 0.6, 0.6];
-          delay = [70, 50, 30, 0];
+          delay = [50, 40, 20, 0];
           mute = true;
           break;
         case 'D':
           volume = [0.85, 0.88, 0.9, 1];
-          delay = [70, 50, 30, 0];
+          delay = [50, 40, 20, 0];
           mute = false;
           break;
         case 'd':
           volume = [0.62, 0.63, 0.65, 0.7];
-          delay = [70, 50, 30, 0];
+          delay = [60, 40, 20, 0];
           mute = false;
           break;
         case 'P':
           volume = [1, 0.9, 0.88, 0.85];
-          delay = [0, 60, 120, 180];
+          delay = [0, 40, 80, 100];
           mute = false;
           break;
         case 'p':
           volume = [0.7, 0.65, 0.63, 0.62];
-          delay = [0, 60, 120, 180];
+          delay = [0, 40, 80, 100];
           mute = false;
           break;
         case 'U':
           volume = [1, 0.9, 0.88, 0.85];
-          delay = [0, 30, 50, 70];
+          delay = [0, 20, 40, 50];
           mute = false;
           break;
         case 'u':
           volume = [0.7, 0.65, 0.63, 0.62];
-          delay = [0, 30, 50, 70];
+          delay = [0, 20, 40, 60];
           mute = false;
           break;
         default:
@@ -279,7 +279,7 @@
             a: 10,
             r: 150
           }, T('osc', {
-            wave: 'tri(25)',
+            wave: 'fami(25)',
             freq: freq,
             mul: mul * 0.75
           })).bang().appendTo(send);

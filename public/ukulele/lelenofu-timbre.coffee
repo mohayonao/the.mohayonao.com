@@ -135,31 +135,31 @@ class Sequencer
         mute   = true
       when 'X'
         volume = [0.6, 0.6, 0.6, 0.6]
-        delay  = [70, 50, 30, 0]
+        delay  = [50, 40, 20, 0]
         mute   = true
       when 'D'
         volume = [0.85, 0.88, 0.9, 1]
-        delay  = [70, 50, 30, 0]
+        delay  = [50, 40, 20, 0]
         mute   = false
       when 'd'
         volume = [0.62, 0.63, 0.65, 0.7]
-        delay  = [70, 50, 30, 0]
+        delay  = [60, 40, 20, 0]
         mute   = false
       when 'P'
         volume = [1, 0.9, 0.88, 0.85]
-        delay  = [0, 60, 120, 180]
+        delay  = [0, 40, 80, 100]
         mute   = false
       when 'p'
         volume = [0.7, 0.65, 0.63, 0.62]
-        delay  = [0, 60, 120, 180]
+        delay  = [0, 40, 80, 100]
         mute   = false
       when 'U'
         volume = [1, 0.9, 0.88, 0.85]
-        delay  = [0, 30, 50, 70]
+        delay  = [0, 20, 40, 50]
         mute   = false
       when 'u'
         volume = [0.7, 0.65, 0.63, 0.62]
-        delay  = [0, 30, 50, 70]
+        delay  = [0, 20, 40, 60]
         mute   = false
       else
         form = volume = delay = [ 0, 0, 0, 0 ]
@@ -180,7 +180,7 @@ class Sequencer
       else
         send = that.send
         T('perc', {a:10,r:150},
-          T('osc', {wave:'tri(25)',freq:freq,mul:mul*0.75})
+          T('osc', {wave:'fami(25)',freq:freq,mul:mul*0.75})
         ).bang().appendTo send
       T('pluck', {freq:freq*2,mul:mul*0.8}).bang().appendTo send
 
