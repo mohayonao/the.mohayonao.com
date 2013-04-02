@@ -1,6 +1,6 @@
 module.exports = (grunt)->
   'use strict'
-
+  
   String::countOf = (char)->
     res = 0
     for i in [0...@length] by 1
@@ -8,15 +8,17 @@ module.exports = (grunt)->
     res
   String::times = (times)->
     (for i in [0...times] by 1 then @).join ''
-    
+
   GRUNT_CHANGED_PATH = '.grunt-changed-file'
   if grunt.file.exists GRUNT_CHANGED_PATH
     changed = grunt.file.read GRUNT_CHANGED_PATH
-    grunt.file.delete GRUNT_CHANGED_PATH
-    changed_only = (file)-> file is changed
+    grunt.file.delete GRUNT_CHANGED_PATH    
+    changed_only = (file)->file is changed
   else
-    changed_only = -> true
-  
+    changed_only = (file)->
+      console.log "CHANGED: #{file} PASS"
+      true
+    
   data = do ->
     index = grunt.file.readJSON 'public/index.json'
     dict = {}
@@ -79,14 +81,12 @@ module.exports = (grunt)->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
 
   grunt.event.on 'watch', (action, changed)->
-    if action is 'changed'
-      if not /(layout|index\.json)/.test changed
-        grunt.file.write GRUNT_CHANGED_PATH, changed
+    if not /(layout|index\.json)/.test changed
+      grunt.file.write GRUNT_CHANGED_PATH, changed
   
   grunt.registerTask 'default', ['watch']
   grunt.registerTask 'index'  , ['jade']
   grunt.registerTask 'build'  , ['jade', 'stylus', 'coffee']
-  grunt.registerTask 'none', -> 0
   
   grunt.registerTask 'new_app', (name)->
     fs = require 'fs'
@@ -96,7 +96,7 @@ module.exports = (grunt)->
       process.exit 0
 
     depth = name.countOf('/') + 1
-    rel = '../'.times depth
+    rel   = '../'.times depth
 
     console.log "mkdir : #{path}"
     fs.mkdirSync path
@@ -122,3 +122,9 @@ block content
     if depth is 1
       grunt.file.copy 'public/lib/appimage.png', "#{path}/appimage.png"
       grunt.file.copy 'public/lib/favicon.ico' , "#{path}/favicon.ico"
+
+    path = "public/#{name}"
+    grunt.config.set ['jade'  ,'files','filter'], (file)-> file is "#{path}/index.jade"
+    grunt.config.set ['stylus','files','filter'], (file)-> file is "#{path}/index.styl"
+    grunt.config.set ['coffee','files','filter'], (file)-> file is "#{path}/index.coffee"
+    grunt.task.run 'build'
