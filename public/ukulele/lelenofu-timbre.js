@@ -83,7 +83,7 @@
     };
 
     fetch = function() {
-      var cmd, count, lop;
+      var cmd, count, i, lop, prev, stroke, _i, _ref;
 
       cmd = this.list[this.i1++];
       if (!cmd) {
@@ -155,7 +155,16 @@
             this.shuffle = cmd.shuffle;
           }
           if (cmd.stroke) {
-            this.stroke = cmd.stroke.split(/[,_]/);
+            stroke = cmd.stroke;
+            prev = '';
+            for (i = _i = 0, _ref = stroke.length; _i < _ref; i = _i += 1) {
+              stroke[i] = stroke[i].replace(/_/g, '');
+              if (stroke[i] === '=') {
+                stroke[i] = prev;
+              }
+              prev = stroke[i];
+            }
+            this.stroke = stroke;
           }
           this.setBpm(this.bpm);
       }
@@ -267,20 +276,17 @@
         } else {
           send = that.send;
           T('perc', {
-            a: 0,
-            r: 500
-          }, T('tri', {
-            freq: freq * 0.5,
-            mul: 0.4
+            a: 10,
+            r: 150
+          }, T('osc', {
+            wave: 'tri(25)',
+            freq: freq,
+            mul: mul * 0.75
           })).bang().appendTo(send);
         }
-        T('pluck', {
+        return T('pluck', {
           freq: freq * 2,
           mul: mul * 0.8
-        }).bang().appendTo(send);
-        return T('pluck', {
-          freq: freq * 1,
-          mul: mul * 1.0
         }).bang().appendTo(send);
       };
     };

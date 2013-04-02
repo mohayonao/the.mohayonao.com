@@ -46,17 +46,25 @@ $ ->
       when 'pause' then $('#play').css 'color', 'black'
 
   $result = $('#result')
-  $('#data').on 'keyup', ->
-    app.update( $(this).val().trim() ).then (data)->
+  
+  value = if (q = location.search.substr(1, location.search.length - 1))
+    decodeURIComponent q
+  else ''
+  
+  editor = CodeMirror.fromTextArea document.getElementById('data'),
+    mode:'ukulele', theme:'ukulele', value:value, workTime:200
+  editor.update = ->
+    app.update( editor.getValue().trim() ).then (data)->
       $result.css width:"#{data.width}px", height:"#{data.height}px"
       $result.attr 'src', lelenofu.getImageSrc data
-
+  editor.on 'update', editor.update
+  
   $('#play').on 'click', ->
     if app.isPlaying
       app.pause()
     else
       app.play()
-
+  
   $('#tweet').on 'click', ->
     if app.data
       data = encodeURIComponent app.data      
@@ -65,7 +73,4 @@ $ ->
       url += "?#{data}"
       apps.tweet url:url
 
-  if (q = location.search.substr(1, location.search.length - 1))
-    $('#data').val decodeURIComponent q
-
-  $('#data').keyup()
+  editor.update()

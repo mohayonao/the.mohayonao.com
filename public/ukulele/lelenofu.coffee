@@ -1,5 +1,8 @@
 'use strict'
 
+String::times = (times)->
+  (for i in [0...times] by 1 then @).join ''
+
 CHORDS =
   'C':'3000', 'Cm':'3330', 'C7':'1000', 'CM7':'2000', 'Cm7':'3333',
   'Cdim':'3232', 'Cm7(b5)':'3233', 'Caug':'3001', 'Csus4':'3355',
@@ -129,21 +132,26 @@ drawStroke = (ctx, form)->
     return unless form.stroke
 
     [x, y] = [form.x,form.y]
-    for _ in form.stroke.toLowerCase()
+    prev = ''
+    for stroke in form.stroke
+      if stroke is '='
+        stroke = ' '.times prev.length
+      prev = stroke
+      for _ in stroke
         switch _
-            when "p", "d"
-                ctx.fillRect x  , y, 4, 1
-                ctx.fillRect x  , y, 1, 6
-                ctx.fillRect x+4, y, 1, 6
-            when "u"
-                for [ _x , _y ] in [[0,0],[1,2],[2,4],[3,2],[4,0]]
-                    ctx.fillRect x+_x, y+_y, 1, 2
-            when "x"
-                for [ _x , _y ] in [[0,1],[0,5],[1,2],[1,4],[2,3]]
-                    ctx.fillRect x+  _x, y+_y, 1, 1
-                    ctx.fillRect x+4-_x, y+_y, 1, 1
-            when '_'
-              x += 8
+          when "p", "d"
+            ctx.fillRect x  , y, 4, 1
+            ctx.fillRect x  , y, 1, 6
+            ctx.fillRect x+4, y, 1, 6
+          when "u"
+            for [ _x , _y ] in [[0,0],[1,2],[2,4],[3,2],[4,0]]
+              ctx.fillRect x+_x, y+_y, 1, 2
+          when "x"
+            for [ _x , _y ] in [[0,1],[0,5],[1,2],[1,4],[2,3]]
+              ctx.fillRect x+  _x, y+_y, 1, 1
+              ctx.fillRect x+4-_x, y+_y, 1, 1
+          when '_'
+            x += 8
         x += 8 if _ != ','
 
 drawSegno = (ctx, form)->
@@ -195,8 +203,10 @@ drawMap =
 prevForm = null
 getForm = (name)->
     if name.charAt(0) is "!"
-        m = /^(\d+)?(:3)?([-PpDdUuXx,_]+)?/.exec name.substr(1)
-        return { type:"!", bpm:m[1], shuffle:!!m[2], stroke:m[3] }
+      m = /^(\d+)?(:3)?([-PpDdUuXx,_=]+)?/.exec name.substr(1)
+      if m[3]
+        stroke = m[3].toLowerCase().split ','
+      return type:"!", bpm:m[1], shuffle:!!m[2], stroke:stroke
 
     form = CHORDS[name]
     if form != undefined
@@ -211,7 +221,7 @@ getForm = (name)->
     else
         { type:name, name:name }
 
-re = /(?:!\d*(?::3)?[-PpDdUuXx,_]*)|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g
+re = /(?:!\d*(?::3)?[-PpDdUuXx,_=]*)|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g
 
 parse = (src)-> while true
     m = re.exec src

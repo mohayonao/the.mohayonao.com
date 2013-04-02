@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $result, Application, app, q;
+    var $result, Application, app, editor, q, value;
 
     Application = (function() {
       function Application() {
@@ -68,15 +68,23 @@
       }
     };
     $result = $('#result');
-    $('#data').on('keyup', function() {
-      return app.update($(this).val().trim()).then(function(data) {
+    value = (q = location.search.substr(1, location.search.length - 1)) ? decodeURIComponent(q) : '';
+    editor = CodeMirror.fromTextArea(document.getElementById('data'), {
+      mode: 'ukulele',
+      theme: 'ukulele',
+      value: value,
+      workTime: 200
+    });
+    editor.update = function() {
+      return app.update(editor.getValue().trim()).then(function(data) {
         $result.css({
           width: "" + data.width + "px",
           height: "" + data.height + "px"
         });
         return $result.attr('src', lelenofu.getImageSrc(data));
       });
-    });
+    };
+    editor.on('update', editor.update);
     $('#play').on('click', function() {
       if (app.isPlaying) {
         return app.pause();
@@ -97,10 +105,7 @@
         });
       }
     });
-    if ((q = location.search.substr(1, location.search.length - 1))) {
-      $('#data').val(decodeURIComponent(q));
-    }
-    return $('#data').keyup();
+    return editor.update();
   });
 
 }).call(this);

@@ -2,6 +2,20 @@
   'use strict';
   var CHORDS, drawChordForm, drawCoda, drawMap, drawParen, drawRepeat, drawRepeatLine, drawRepeatNum, drawRepeatStr, drawSegno, drawStroke, getForm, getImageData, getImageSrc, parse, prevForm, re;
 
+  String.prototype.times = function(times) {
+    var i;
+
+    return ((function() {
+      var _i, _results;
+
+      _results = [];
+      for (i = _i = 0; _i < times; i = _i += 1) {
+        _results.push(this);
+      }
+      return _results;
+    }).call(this)).join('');
+  };
+
   CHORDS = {
     'C': '3000',
     'Cm': '3330',
@@ -329,46 +343,60 @@
   };
 
   drawStroke = function(ctx, form) {
-    var x, y, _, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _results, _x, _y;
+    var prev, stroke, x, y, _, _i, _len, _ref, _ref1, _results, _x, _y;
 
     if (!form.stroke) {
       return;
     }
     _ref = [form.x, form.y], x = _ref[0], y = _ref[1];
-    _ref1 = form.stroke.toLowerCase();
+    prev = '';
+    _ref1 = form.stroke;
     _results = [];
     for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-      _ = _ref1[_i];
-      switch (_) {
-        case "p":
-        case "d":
-          ctx.fillRect(x, y, 4, 1);
-          ctx.fillRect(x, y, 1, 6);
-          ctx.fillRect(x + 4, y, 1, 6);
-          break;
-        case "u":
-          _ref2 = [[0, 0], [1, 2], [2, 4], [3, 2], [4, 0]];
-          for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-            _ref3 = _ref2[_j], _x = _ref3[0], _y = _ref3[1];
-            ctx.fillRect(x + _x, y + _y, 1, 2);
-          }
-          break;
-        case "x":
-          _ref4 = [[0, 1], [0, 5], [1, 2], [1, 4], [2, 3]];
-          for (_k = 0, _len2 = _ref4.length; _k < _len2; _k++) {
-            _ref5 = _ref4[_k], _x = _ref5[0], _y = _ref5[1];
-            ctx.fillRect(x + _x, y + _y, 1, 1);
-            ctx.fillRect(x + 4 - _x, y + _y, 1, 1);
-          }
-          break;
-        case '_':
-          x += 8;
+      stroke = _ref1[_i];
+      if (stroke === '=') {
+        stroke = ' '.times(prev.length);
       }
-      if (_ !== ',') {
-        _results.push(x += 8);
-      } else {
-        _results.push(void 0);
-      }
+      prev = stroke;
+      _results.push((function() {
+        var _j, _k, _l, _len1, _len2, _len3, _ref2, _ref3, _ref4, _ref5, _results1;
+
+        _results1 = [];
+        for (_j = 0, _len1 = stroke.length; _j < _len1; _j++) {
+          _ = stroke[_j];
+          switch (_) {
+            case "p":
+            case "d":
+              ctx.fillRect(x, y, 4, 1);
+              ctx.fillRect(x, y, 1, 6);
+              ctx.fillRect(x + 4, y, 1, 6);
+              break;
+            case "u":
+              _ref2 = [[0, 0], [1, 2], [2, 4], [3, 2], [4, 0]];
+              for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
+                _ref3 = _ref2[_k], _x = _ref3[0], _y = _ref3[1];
+                ctx.fillRect(x + _x, y + _y, 1, 2);
+              }
+              break;
+            case "x":
+              _ref4 = [[0, 1], [0, 5], [1, 2], [1, 4], [2, 3]];
+              for (_l = 0, _len3 = _ref4.length; _l < _len3; _l++) {
+                _ref5 = _ref4[_l], _x = _ref5[0], _y = _ref5[1];
+                ctx.fillRect(x + _x, y + _y, 1, 1);
+                ctx.fillRect(x + 4 - _x, y + _y, 1, 1);
+              }
+              break;
+            case '_':
+              x += 8;
+          }
+          if (_ !== ',') {
+            _results1.push(x += 8);
+          } else {
+            _results1.push(void 0);
+          }
+        }
+        return _results1;
+      })());
     }
     return _results;
   };
@@ -491,15 +519,18 @@
   prevForm = null;
 
   getForm = function(name) {
-    var form, i, m;
+    var form, i, m, stroke;
 
     if (name.charAt(0) === "!") {
-      m = /^(\d+)?(:3)?([-PpDdUuXx,_]+)?/.exec(name.substr(1));
+      m = /^(\d+)?(:3)?([-PpDdUuXx,_=]+)?/.exec(name.substr(1));
+      if (m[3]) {
+        stroke = m[3].toLowerCase().split(',');
+      }
       return {
         type: "!",
         bpm: m[1],
         shuffle: !!m[2],
-        stroke: m[3]
+        stroke: stroke
       };
     }
     form = CHORDS[name];
@@ -534,7 +565,7 @@
     }
   };
 
-  re = /(?:!\d*(?::3)?[-PpDdUuXx,_]*)|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g;
+  re = /(?:!\d*(?::3)?[-PpDdUuXx,_=]*)|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g;
 
   parse = function(src) {
     var m, _results;

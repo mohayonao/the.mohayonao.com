@@ -3,8 +3,8 @@ extend ../lib/layout
 block config
   - $.title = "hyper ukulele notation"
   - $.path  = "/ukulele/"
-  - $.jslist  = ["/lib/timbre.js","index.js","lelenofu.js","lelenofu-timbre.js"]
-  - $.csslist = ["index.css"]
+  - $.jslist  = ["/lib/codemirror.js","ukulele-mode.js","/lib/timbre.js","index.js","lelenofu.js","lelenofu-timbre.js"]
+  - $.csslist = ["/lib/codemirror.css","index.css"]
 
 block content
   h1 #{$.title}
@@ -17,18 +17,19 @@ block content
     div
       textarea(id="data",rows=12).
         !200
-        !DdDdxDxD,xDxDDuDu,DuDuxDxD,DuDuDuD-_DdDdxDx,DxDxDDuDu,DuDuxDxD,DuDuDuD-
+        !DuDuxDxD,xDxDDuDu,DuDuxDxD,DuDuDuD-,_DuDuxDx,DxDxDDuDu,DuDuxDxD,DuDuDuD-
         F = = = _ E7 = Am C;
-        !D-D-DuDu,D-D-DuD-,D-D-DuDu,D-uD-uDX,D-D-DuDu,D-D-DuD-,D-D-DuDu,D-uD-uD-
+        !D-D-DuD-,=,=,D-uD-uDX,D-D-DuD-,=,D-D-DuDu,D-uD-uD-
         F G7 C C7 _ F G7 Em7 Am;
         F G7 C C7 _ F G7 Em7 !DxDxDxX- Am;
-        !P-------,P-------,D-D-DuD-,D-D-DuDu
+        !P-----x-,=,D-D-DuD-,D-D-DuDu
         Dm Em7 E7 Am _
-        !D-D-DuD-,D-D-DuD-,D-D-DuD-,D-D-DuDu
-        Dm Em G Am;
-        Dm Em7 E7 Am _ Dm Em !DuD-DuDX G !DxDxDdDX Am;
-        !D-D-DuDu,D-D-DuD-,D-D-DuDu,D-uD-uDX,D-D-DuDu,D-D-DuD-,D-D-DuDu,D-uD-uD-
+        !D-D-DuD-,D-D-DuD-,D-D-DuDu,D-uD-uD-
+        Dm Em7 G Am;
+        !D-D-DuD-
+        Dm Em7 E7 Am _ Dm Em7 !DuDxDuDX G !DxDxDuDX Am;
+        !D-D-DuD-,D-D-DuD-,D-D-DuDu,D-uD-uDX,D-D-DuD-,D-D-DuD-,D-D-DuDu,D-uD-uD-
         F G7 C C7 _ F G7 Em7 Am;
-        F G7 C C7 _ F G7 Em7 Am;
+        F G7 C C7 _ F G7 Em7 Am
     div
       img(id="result")

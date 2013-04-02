@@ -97,7 +97,15 @@ class Timeline extends timbre.Object
       when '!'
         if cmd.bpm     then @bpm     = cmd.bpm
         if cmd.shuffle then @shuffle = cmd.shuffle
-        if cmd.stroke  then @stroke  = cmd.stroke.split /[,_]/
+        if cmd.stroke
+          stroke = cmd.stroke
+          prev = ''
+          for i in [0...stroke.length] by 1
+            stroke[i] = stroke[i].replace /_/g, ''
+            if stroke[i] is '='
+              stroke[i] = prev
+            prev = stroke[i]
+          @stroke = stroke
         @setBpm @bpm
     fetch.call @
 
@@ -171,11 +179,10 @@ class Sequencer
         T('noise', {mul:0.4}).appendTo send
       else
         send = that.send
-        T('perc', {a:0, r:500},
-          T('tri', {freq:freq*0.5,mul:0.4})
+        T('perc', {a:10,r:150},
+          T('osc', {wave:'tri(25)',freq:freq,mul:mul*0.75})
         ).bang().appendTo send
       T('pluck', {freq:freq*2,mul:mul*0.8}).bang().appendTo send
-      T('pluck', {freq:freq*1,mul:mul*1.0}).bang().appendTo send
 
   eof: ->
     @pause()
