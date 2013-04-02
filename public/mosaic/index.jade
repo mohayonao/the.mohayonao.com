@@ -2,9 +2,10 @@ extend ../lib/layout
 
 block config
   - $.title = "gif.mosaic"
-  - $.path  = "/mosaic"
+  - $.path  = "/mosaic/"
   - $.jslist  = ["/lib/GIFEncoder.js","index.js"]
   - $.csslist = ["index.css"]
+  - $.media = "desktop"
 
 block content
   h1 #{$.title}

@@ -1,62 +1,18 @@
 [
   {
     "list": [
-      {
-        "title": "gif.mosaic",
-        "url"  : "/mosaic/",
-        "media": "desktop"
-      },
-      {
-        "title": "hyper ukulele notation",
-        "url"  : "/ukulele/"
-      },
-      {
-        "title": "Glitched Movie Player",
-        "url"  : "/glitchedmovie/",
-        "media": "desktop"
-      },
-      {
-        "title": "Movie to Thumbnails",
-        "url"  : "/movie2thumb/",
-        "media": "desktop"
-      },
-      { "title": "Formant Khoomii",
-        "url"  : "/khoomii/"
-      },
-      {
-        "title": "Scalable Mario",
-        "url"  : "/scalable-mario/"
-      },
-      {
-        "title": "One Liner Music",
-        "url"  : "/one-liner-music/"
-      },
-      {
-        "title": "1bit Music",
-        "url"  : "/1bit/"
-      },
-      {
-        "title": "Endless Invention",
-        "url"  : "/invention/"
-      },
-      {
-        "title": "MiMi Grep",
-        "url"  : "/mimi/",
-        "media": "desktop"
-      },
-      {
-        "title": "Perfume",
-        "url"  : "/perfume/"
-      },
-      {
-        "title": "Twitter Bot",
-        "url"  : "/twitter-bot/"
-      },
-      {
-        "title": "Sine",
-        "url"  : "/sine/",
-        "media": "phone"
-      }
+      "mosaic",
+      "ukulele",
+      "glitchedmovie",
+      "movie2thumb",
+      "khoomii",
+      "scalable-mario",
+      "one-liner-music",
+      "1bit",
+      "invention",
+      "mimi",
+      "perfume",
+      "twitter-bot"
     ]
   },
   {
@@ -64,15 +20,15 @@
     "list": [
       {
         "title": "timbre.js",
-        "url"  : "http://mohayonao.github.com/timbre.js"
+        "path" : "http://mohayonao.github.com/timbre.js"
       },
       {
         "title": "subcollider.js",
-        "url"  : "http://mohayonao.github.com/subcollider.js"
+        "path" : "http://mohayonao.github.com/subcollider.js"
       },
       {
         "title": "pico.js",
-        "url"  : "https://github.com/mohayonao/pico.js"
+        "path" : "https://github.com/mohayonao/pico.js"
       }
     ]
   },
@@ -81,15 +37,15 @@
     "list": [
       {
         "title": "GitHub",
-        "url"  : "https://github.com/mohayonao"
+        "path" : "https://github.com/mohayonao"
       },
       {
         "title": "Twitter",
-        "url"  : "https://twitter.com/mohayonao"
+        "path" : "https://twitter.com/mohayonao"
       },
       {
         "title": "Hatena Blog",
-        "url"  : "http://mohayonao.hatenablog.com/"
+        "path" : "http://mohayonao.hatenablog.com/"
       }
     ]
   }
