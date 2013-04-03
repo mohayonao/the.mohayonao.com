@@ -1,20 +1,6 @@
 (function() {
   'use strict';
-  var CHORDS, drawChordForm, drawCoda, drawMap, drawParen, drawRepeat, drawRepeatLine, drawRepeatNum, drawRepeatStr, drawSegno, drawStroke, getForm, getImageData, getImageSrc, parse, prevForm, re;
-
-  String.prototype.times = function(times) {
-    var i;
-
-    return ((function() {
-      var _i, _results;
-
-      _results = [];
-      for (i = _i = 0; _i < times; i = _i += 1) {
-        _results.push(this);
-      }
-      return _results;
-    }).call(this)).join('');
-  };
+  var CHORDS, calculate, drawChordForm, drawCoda, drawMap, drawParen, drawRepeat, drawRepeatLine, drawRepeatNum, drawRepeatStr, drawSegno, drawStroke, getForm, getImageData, getImageSrc, parse, prev, re;
 
   CHORDS = {
     'C': '3000',
@@ -343,7 +329,7 @@
   };
 
   drawStroke = function(ctx, form) {
-    var prev, stroke, x, y, _, _i, _len, _ref, _ref1, _results, _x, _y;
+    var i, prev, stroke, x, y, _, _i, _len, _ref, _ref1, _results, _x, _y;
 
     if (!form.stroke) {
       return;
@@ -355,7 +341,15 @@
     for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
       stroke = _ref1[_i];
       if (stroke === '=') {
-        stroke = ' '.times(prev.length);
+        stroke = ((function() {
+          var _j, _ref2, _results1;
+
+          _results1 = [];
+          for (i = _j = 0, _ref2 = prev.length; _j < _ref2; i = _j += 1) {
+            _results1.push(' ');
+          }
+          return _results1;
+        })()).join('');
       }
       prev = stroke;
       _results.push((function() {
@@ -365,20 +359,20 @@
         for (_j = 0, _len1 = stroke.length; _j < _len1; _j++) {
           _ = stroke[_j];
           switch (_) {
-            case "p":
-            case "d":
+            case 'p':
+            case 'd':
               ctx.fillRect(x, y, 4, 1);
               ctx.fillRect(x, y, 1, 6);
               ctx.fillRect(x + 4, y, 1, 6);
               break;
-            case "u":
+            case 'u':
               _ref2 = [[0, 0], [1, 2], [2, 4], [3, 2], [4, 0]];
               for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
                 _ref3 = _ref2[_k], _x = _ref3[0], _y = _ref3[1];
                 ctx.fillRect(x + _x, y + _y, 1, 2);
               }
               break;
-            case "x":
+            case 'x':
               _ref4 = [[0, 1], [0, 5], [1, 2], [1, 4], [2, 3]];
               for (_l = 0, _len3 = _ref4.length; _l < _len3; _l++) {
                 _ref5 = _ref4[_l], _x = _ref5[0], _y = _ref5[1];
@@ -432,12 +426,12 @@
     name = (function() {
       switch (form.name) {
         case '^':
-          return "Fin";
+          return 'Fin';
         case '<':
           if (form.hasSegno) {
-            return "D.S.";
+            return 'D.S.';
           } else {
-            return "D.C.";
+            return 'D.C.';
           }
       }
     })();
@@ -491,23 +485,23 @@
       width: 16,
       func: drawParen
     },
-    "!": {
+    '!': {
       width: 0,
       func: drawStroke
     },
-    "$": {
+    '$': {
       width: 0,
       func: drawSegno
     },
-    "*": {
+    '*': {
       width: 0,
       func: drawCoda
     },
-    "<": {
+    '<': {
       width: 16,
       func: drawRepeatStr
     },
-    "^": {
+    '^': {
       width: 16,
       func: drawRepeatStr
     },
@@ -516,36 +510,34 @@
     }
   };
 
-  prevForm = null;
+  prev = null;
 
-  getForm = function(name) {
-    var form, i, m, stroke;
+  getForm = function(m) {
+    var form, index, name, stroke;
 
-    if (name.charAt(0) === "!") {
-      m = /^(\d+)?(:3)?([-PpDdUuXx,_=]+)?/.exec(name.substr(1));
+    name = m[0];
+    if (name.charAt(0) === '!') {
       if (m[3]) {
         stroke = m[3].toLowerCase().split(',');
       }
       return {
-        type: "!",
+        type: '!',
         bpm: m[1],
         shuffle: !!m[2],
         stroke: stroke
       };
     }
-    form = CHORDS[name];
-    if (form !== void 0) {
-      return prevForm = {
+    if ((form = CHORDS[name]) !== void 0) {
+      return prev = {
         type: '#',
         name: name,
         form: form
       };
     }
-    i = name.indexOf('@');
-    if (i !== -1) {
-      form = name.substr(i + 1);
-      name = name.substr(0, i);
-      return prevForm = {
+    if ((index = name.indexOf('@')) !== -1) {
+      form = name.substr(index(+1));
+      name = name.substr(0, index);
+      return prev = {
         type: '#',
         name: name,
         form: form
@@ -554,35 +546,30 @@
     if (name === '=') {
       return {
         type: '=',
-        name: prevForm.name,
-        form: prevForm.form
-      };
-    } else {
-      return {
-        type: name,
-        name: name
+        name: prev.name,
+        form: prev.form
       };
     }
+    return {
+      type: name,
+      name: name
+    };
   };
 
-  re = /(?:!\d*(?::3)?[-PpDdUuXx,_=]*)|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g;
+  re = /(?:!(\d*)(:3)?([-PpDdUuXx,_=]*))|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g;
 
   parse = function(src) {
     var m, _results;
 
     _results = [];
-    while (true) {
-      m = re.exec(src);
-      if (m === null) {
-        break;
-      }
-      _results.push(getForm(m[0]));
+    while ((m = re.exec(src))) {
+      _results.push(getForm(m));
     }
     return _results;
   };
 
-  getImageData = function(src, opts) {
-    var canvas, ctx, h, hasSegno, list, m, strokeOnly, w, x, y, _, _i, _len, _ref;
+  calculate = function(src) {
+    var h, hasSegno, list, m, strokeOnly, w, x, y, _, _ref;
 
     _ref = [8, 8, 8, 8], x = _ref[0], y = _ref[1], w = _ref[2], h = _ref[3];
     hasSegno = false;
@@ -600,10 +587,10 @@
           strokeOnly = false;
         }
         if (strokeOnly) {
-          if (_.type !== "!") {
+          if (_.type !== '!') {
             strokeOnly = false;
           }
-        } else if (_.type === "!") {
+        } else if (_.type === '!') {
           strokeOnly = true;
         }
         _ref3 = [x, y, m.func], _.x = _ref3[0], _.y = _ref3[1], _.func = _ref3[2];
@@ -611,10 +598,10 @@
           _.y -= 6;
         }
         switch (_.type) {
-          case "$":
+          case '$':
             hasSegno = true;
             break;
-          case "<":
+          case '<':
             _.hasSegno = hasSegno;
         }
         x += m.width;
@@ -628,28 +615,46 @@
       }
       return _results;
     })();
-    canvas = document.createElement('canvas');
-    canvas.width = w;
-    canvas.height = h + 64;
-    ctx = canvas.getContext('2d');
-    if (opts != null ? opts.background : void 0) {
-      ctx.fillStyle = opts.background;
-      ctx.fillRect(0, 0, w, h + 64);
+    return {
+      list: list,
+      width: w,
+      height: h
+    };
+  };
+
+  getImageData = function(src, opts) {
+    var calced, canvas, ctx, _, _i, _len, _ref;
+
+    if (opts == null) {
+      opts = {};
     }
-    ctx.strokeStyle = (opts != null ? opts.color : void 0) || '#000';
-    ctx.fillStyle = (opts != null ? opts.color : void 0) || '#000';
-    for (_i = 0, _len = list.length; _i < _len; _i++) {
-      _ = list[_i];
+    calced = calculate(src);
+    canvas = document.createElement('canvas');
+    canvas.width = calced.width;
+    canvas.height = canvas.height + 64;
+    ctx = canvas.getContext('2d');
+    if (opts.background) {
+      ctx.fillStyle = opts.background;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    ctx.strokeStyle = opts.color || '#000';
+    ctx.fillStyle = opts.color || '#000';
+    _ref = calced.list;
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      _ = _ref[_i];
       if (_.func) {
         _.func(ctx, _);
       }
     }
-    return ctx.getImageData(0, 0, w, h + 64);
+    return ctx.getImageData(0, 0, canvas.width, canvas.height);
   };
 
   getImageSrc = function(src, opts) {
     var canvas, imgData;
 
+    if (opts == null) {
+      opts = {};
+    }
     if (typeof src === 'string') {
       src = getImageData(src, opts);
     }

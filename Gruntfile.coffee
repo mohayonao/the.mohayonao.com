@@ -1,6 +1,6 @@
 module.exports = (grunt)->
   'use strict'
-  
+    
   String::countOf = (char)->
     res = 0
     for i in [0...@length] by 1
@@ -13,11 +13,9 @@ module.exports = (grunt)->
   if grunt.file.exists GRUNT_CHANGED_PATH
     changed = grunt.file.read GRUNT_CHANGED_PATH
     grunt.file.delete GRUNT_CHANGED_PATH    
-    changed_only = (file)->file is changed
+    changed_only = (file)-> file is changed
   else
-    changed_only = (file)->
-      console.log "CHANGED: #{file} PASS"
-      true
+    changed_only = (file)-> true
     
   data = do ->
     index = grunt.file.readJSON 'public/index.json'
@@ -42,6 +40,12 @@ module.exports = (grunt)->
     index:index
   
   grunt.initConfig
+    connect:
+      server:
+        options:
+          port: 3000
+          base: 'public'
+          hostname: '0.0.0.0'
     watch:
       jade:
         files: 'public/**/*.jade'
@@ -75,7 +79,8 @@ module.exports = (grunt)->
         src    : 'public/**/*.coffee'
         ext    : '.js'
         filter : changed_only
-  
+
+  grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-stylus'
@@ -83,9 +88,10 @@ module.exports = (grunt)->
 
   grunt.event.on 'watch', (action, changed)->
     if not /(layout|index\.json)/.test changed
+      grunt.cli.tasks.push ["--changed=#{changed}"]
       grunt.file.write GRUNT_CHANGED_PATH, changed
   
-  grunt.registerTask 'default', ['watch']
+  grunt.registerTask 'default', ['connect', 'watch']
   grunt.registerTask 'index'  , ['jade']
   grunt.registerTask 'build'  , ['jade', 'stylus', 'coffee']
   

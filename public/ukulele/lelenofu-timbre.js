@@ -41,7 +41,27 @@
     };
 
     Timeline.prototype.setList = function(list) {
+      var cmd, i, prev, stroke, _i, _j, _ref, _ref1;
+
       this.list = list;
+      for (i = _i = 0, _ref = this.list.length; _i < _ref; i = _i += 1) {
+        cmd = this.list[i];
+        if (cmd.type === '!') {
+          if (cmd.stroke) {
+            stroke = cmd.stroke;
+            prev = '';
+            for (i = _j = 0, _ref1 = stroke.length; _j < _ref1; i = _j += 1) {
+              stroke[i] = stroke[i].replace(/_/g, '');
+              if (stroke[i] === '=') {
+                stroke[i] = prev;
+              }
+              prev = stroke[i];
+            }
+            cmd.stroke = stroke;
+          }
+        }
+      }
+      console.log(this.list);
       return this.reset();
     };
 
@@ -83,7 +103,7 @@
     };
 
     fetch = function() {
-      var cmd, count, i, lop, prev, stroke, _i, _ref;
+      var cmd, count, lop;
 
       cmd = this.list[this.i1++];
       if (!cmd) {
@@ -155,16 +175,7 @@
             this.shuffle = cmd.shuffle;
           }
           if (cmd.stroke) {
-            stroke = cmd.stroke;
-            prev = '';
-            for (i = _i = 0, _ref = stroke.length; _i < _ref; i = _i += 1) {
-              stroke[i] = stroke[i].replace(/_/g, '');
-              if (stroke[i] === '=') {
-                stroke[i] = prev;
-              }
-              prev = stroke[i];
-            }
-            this.stroke = stroke;
+            this.stroke = cmd.stroke;
           }
           this.setBpm(this.bpm);
       }

@@ -1,8 +1,5 @@
 'use strict'
 
-String::times = (times)->
-  (for i in [0...times] by 1 then @).join ''
-
 CHORDS =
   'C':'3000', 'Cm':'3330', 'C7':'1000', 'CM7':'2000', 'Cm7':'3333',
   'Cdim':'3232', 'Cm7(b5)':'3233', 'Caug':'3001', 'Csus4':'3355',
@@ -73,213 +70,210 @@ CHORDS =
   'B6':'2231', 'B7(9)':'4232', 'BM7(9)':'4133', 'BmM7':'2223', 'Badd9':'4234'
 
 drawChordForm = (ctx, form)->
-    paddingTop = 16
-    [ flet_num, flet_width, flet_height ]  = [ 5, 12, 8 ]
+  paddingTop = 16
+  [ flet_num, flet_width, flet_height ]  = [ 5, 12, 8 ]
 
-    max_flet = 0
-    for x in form.form
-        if x > max_flet then max_flet = +x
-    max_flet -= 4
-    if max_flet < 0 then max_flet = 0
+  max_flet = 0
+  for x in form.form
+    if x > max_flet then max_flet = +x
+  max_flet -= 4
+  if max_flet < 0 then max_flet = 0
 
-    ctx.fillText form.name, form.x, form.y + 10
-    for i in [ 0..flet_num ]
-        continue if max_flet != 0 and i == 0
-        x = if i is 0 then 0 else 2 + (i - 1) * flet_width
-        x = form.x + x
-        y = form.y + paddingTop
-        h = flet_height * 3
-        ctx.fillRect x, y, 1, h
-        if max_flet != 0 and i != flet_num
-            ctx.fillText i + max_flet, x, y + 37
-    for i in [ 0..3 ]
-        x = form.x
-        w = flet_width * flet_num - (flet_width >> 1)
-        y = form.y + (i * flet_height) + paddingTop
-        ctx.fillRect x, y, w, 1
-    for x, i in form.form
-        if x is '0' then continue
-        x = form.x + 3 + flet_width * (x - 1 - max_flet) + 4
-        y = form.y + i * flet_height + paddingTop
-        ctx.fillRect x - 1, y - 2, 5, 5
+  ctx.fillText form.name, form.x, form.y + 10
+  for i in [ 0..flet_num ]
+    continue if max_flet != 0 and i == 0
+    x = if i is 0 then 0 else 2 + (i - 1) * flet_width
+    x = form.x + x
+    y = form.y + paddingTop
+    h = flet_height * 3
+    ctx.fillRect x, y, 1, h
+    if max_flet != 0 and i != flet_num
+      ctx.fillText i + max_flet, x, y + 37
+  for i in [ 0..3 ]
+    x = form.x
+    w = flet_width * flet_num - (flet_width >> 1)
+    y = form.y + (i * flet_height) + paddingTop
+    ctx.fillRect x, y, w, 1
+  for x, i in form.form
+    if x is '0' then continue
+    x = form.x + 3 + flet_width * (x - 1 - max_flet) + 4
+    y = form.y + i * flet_height + paddingTop
+    ctx.fillRect x - 1, y - 2, 5, 5
 
 drawRepeat = (ctx, form)->
-    [x,y] = [form.x,form.y]
-    p = if form.name is '|:' then [0,3,6,6] else [7,5,0,0]
-    ctx.fillRect x + p[0], y + 4     , 2, 38
-    ctx.fillRect x + p[1], y + 4     , 1, 38
-    ctx.fillRect x + p[2], y + 4 + 11, 3, 3
-    ctx.fillRect x + p[3], y + 4 + 23, 3, 3
+  [x,y] = [form.x,form.y]
+  p = if form.name is '|:' then [0,3,6,6] else [7,5,0,0]
+  ctx.fillRect x + p[0], y + 4     , 2, 38
+  ctx.fillRect x + p[1], y + 4     , 1, 38
+  ctx.fillRect x + p[2], y + 4 + 11, 3, 3
+  ctx.fillRect x + p[3], y + 4 + 23, 3, 3
 
 drawRepeatLine = (ctx, form)->
-    ctx.fillRect form.x, form.y + 7, 1, 34
-    ctx.fillRect form.x, form.y + 7, 6, 1
+  ctx.fillRect form.x, form.y + 7, 1, 34
+  ctx.fillRect form.x, form.y + 7, 6, 1
 
 drawRepeatNum = (ctx, form)->
-    ctx.fillText form.name, form.x, form.y + 10
+  ctx.fillText form.name, form.x, form.y + 10
 
 drawParen = (ctx, form)->
-    [x,y] = [form.x,form.y+1.5]
-    p = if form.name is '('
-        [[4,2],[3,4],[2,6],[1,18],[2,6],[3,4],[4,2]]
-    else
-        [[1,2],[2,4],[3,6],[4,18],[3,6],[2,4],[1,2]]
-    for [ _x, _y ] in p
-        ctx.fillRect x + _x, y, 1, _y
-        y += _y
+  [x,y] = [form.x,form.y+1.5]
+  p = if form.name is '('
+    [[4,2],[3,4],[2,6],[1,18],[2,6],[3,4],[4,2]]
+  else
+    [[1,2],[2,4],[3,6],[4,18],[3,6],[2,4],[1,2]]
+  for [ _x, _y ] in p
+    ctx.fillRect x + _x, y, 1, _y
+    y += _y
 
 drawStroke = (ctx, form)->
-    return unless form.stroke
+  return unless form.stroke
 
-    [x, y] = [form.x,form.y]
-    prev = ''
-    for stroke in form.stroke
-      if stroke is '='
-        stroke = ' '.times prev.length
-      prev = stroke
-      for _ in stroke
-        switch _
-          when "p", "d"
-            ctx.fillRect x  , y, 4, 1
-            ctx.fillRect x  , y, 1, 6
-            ctx.fillRect x+4, y, 1, 6
-          when "u"
-            for [ _x , _y ] in [[0,0],[1,2],[2,4],[3,2],[4,0]]
-              ctx.fillRect x+_x, y+_y, 1, 2
-          when "x"
-            for [ _x , _y ] in [[0,1],[0,5],[1,2],[1,4],[2,3]]
-              ctx.fillRect x+  _x, y+_y, 1, 1
-              ctx.fillRect x+4-_x, y+_y, 1, 1
-          when '_'
-            x += 8
-        x += 8 if _ != ','
+  [x, y] = [form.x,form.y]
+  prev = ''
+  for stroke in form.stroke
+    if stroke is '='
+      stroke = (for i in [0...prev.length] by 1 then ' ').join ''
+    prev = stroke
+    for _ in stroke
+      switch _
+        when 'p', 'd'
+          ctx.fillRect x  , y, 4, 1
+          ctx.fillRect x  , y, 1, 6
+          ctx.fillRect x+4, y, 1, 6
+        when 'u'
+          for [ _x , _y ] in [[0,0],[1,2],[2,4],[3,2],[4,0]]
+            ctx.fillRect x+_x, y+_y, 1, 2
+        when 'x'
+          for [ _x , _y ] in [[0,1],[0,5],[1,2],[1,4],[2,3]]
+            ctx.fillRect x+  _x, y+_y, 1, 1
+            ctx.fillRect x+4-_x, y+_y, 1, 1
+        when '_'
+          x += 8
+      x += 8 if _ != ','
 
 drawSegno = (ctx, form)->
-    [x, y] = [form.x ,form.y]
-    ctx.fillRect x+1, y  , 3, 1
-    ctx.fillRect x+1, y+1, 1, 1
-    ctx.fillRect x+2, y+2, 1, 2
-    ctx.fillRect x+3, y+4, 1, 1
-    ctx.fillRect x+1, y+5, 3, 1
-    ctx.fillRect x  , y+3, 1, 1
-    ctx.fillRect x+4, y+2, 1, 1
+  [x, y] = [form.x ,form.y]
+  ctx.fillRect x+1, y  , 3, 1
+  ctx.fillRect x+1, y+1, 1, 1
+  ctx.fillRect x+2, y+2, 1, 2
+  ctx.fillRect x+3, y+4, 1, 1
+  ctx.fillRect x+1, y+5, 3, 1
+  ctx.fillRect x  , y+3, 1, 1
+  ctx.fillRect x+4, y+2, 1, 1
 
 drawCoda = (ctx, form)->
-    [x, y] = [form.x, form.y]
-    ctx.fillRect x  , y+1, 1, 3
-    ctx.fillRect x+1, y  , 3, 1
-    ctx.fillRect x+1, y+4, 3, 1
-    ctx.fillRect x+4, y+1, 1, 3
-    ctx.fillRect x+2, y-1, 1, 7
-    ctx.fillRect x-1, y+2, 7, 1
+  [x, y] = [form.x, form.y]
+  ctx.fillRect x  , y+1, 1, 3
+  ctx.fillRect x+1, y  , 3, 1
+  ctx.fillRect x+1, y+4, 3, 1
+  ctx.fillRect x+4, y+1, 1, 3
+  ctx.fillRect x+2, y-1, 1, 7
+  ctx.fillRect x-1, y+2, 7, 1
 
 drawRepeatStr = (ctx, form)->
-    name = switch form.name
-        when '^' then "Fin"
-        when '<' then (if form.hasSegno then "D.S." else "D.C.")
-    ctx.fillText name, form.x-4, form.y+52
+  name = switch form.name
+    when '^' then 'Fin'
+    when '<' then (if form.hasSegno then 'D.S.' else 'D.C.')
+  ctx.fillText name, form.x-4, form.y+52
 
 drawMap =
-    '#' : { width:64, func:drawChordForm }
-    '_' : { width:16 }
-    '=' : { width:64 }
-    '|:': { width:16, func:drawRepeat }
-    ':|': { width:16, func:drawRepeat }
-    '-' : { width:10, func:drawRepeatLine }
-    '1' : { width: 6, func:drawRepeatNum }
-    '2' : { width: 6, func:drawRepeatNum }
-    '3' : { width: 6, func:drawRepeatNum }
-    '4' : { width: 6, func:drawRepeatNum }
-    '(' : { width:16, func:drawParen }
-    ')' : { width:16, func:drawParen }
-    "!" : { width: 0, func:drawStroke }
-    "$" : { width: 0, func:drawSegno  }
-    "*" : { width: 0, func:drawCoda   }
-    "<" : { width:16, func:drawRepeatStr }
-    "^" : { width:16, func:drawRepeatStr }
-    ';' : { width:-1,  }
+  '#' : width:64, func:drawChordForm
+  '_' : width:16
+  '=' : width:64
+  '|:': width:16, func:drawRepeat
+  ':|': width:16, func:drawRepeat
+  '-' : width:10, func:drawRepeatLine
+  '1' : width: 6, func:drawRepeatNum
+  '2' : width: 6, func:drawRepeatNum
+  '3' : width: 6, func:drawRepeatNum
+  '4' : width: 6, func:drawRepeatNum
+  '(' : width:16, func:drawParen
+  ')' : width:16, func:drawParen
+  '!' : width: 0, func:drawStroke
+  '$' : width: 0, func:drawSegno
+  '*' : width: 0, func:drawCoda
+  '<' : width:16, func:drawRepeatStr
+  '^' : width:16, func:drawRepeatStr
+  ';' : width:-1
 
+prev = null
 
-prevForm = null
-getForm = (name)->
-    if name.charAt(0) is "!"
-      m = /^(\d+)?(:3)?([-PpDdUuXx,_=]+)?/.exec name.substr(1)
-      if m[3]
-        stroke = m[3].toLowerCase().split ','
-      return type:"!", bpm:m[1], shuffle:!!m[2], stroke:stroke
+getForm = (m)->
+  name = m[0]
+  if name.charAt(0) is '!'
+    if m[3]
+      stroke = m[3].toLowerCase().split ','
+    return type:'!', bpm:m[1], shuffle:!!m[2], stroke:stroke
+  if (form = CHORDS[name]) != undefined
+    return prev = type:'#', name:name, form:form
+  if (index = name.indexOf '@') != -1
+    form = name.substr(index +1)
+    name = name.substr(0, index)
+    return prev = type:'#', name:name, form:form
+  if name is '='
+    return type:'=', name:prev.name, form:prev.form
+  type:name, name:name
 
-    form = CHORDS[name]
-    if form != undefined
-        return prevForm = { type:'#', name:name, form:form }
-    i = name.indexOf '@'
-    if i != -1
-        form = name.substr(i + 1)
-        name = name.substr(0, i)
-        return prevForm = { type:'#', name:name, form:form }
-    if name is '='
-        { type:'=', name:prevForm.name, form:prevForm.form }
-    else
-        { type:name, name:name }
+re = /(?:!(\d*)(:3)?([-PpDdUuXx,_=]*))|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g
 
-re = /(?:!\d*(?::3)?[-PpDdUuXx,_=]*)|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g
+parse = (src)->
+  while (m = re.exec src) then getForm m
 
-parse = (src)-> while true
-    m = re.exec src
-    break if m is null
-    getForm m[0]
+calculate = (src)->
+  [ x, y, w, h ] = [ 8, 8, 8, 8 ]
+  hasSegno   = false
+  strokeOnly = false
+  list = for _ in parse(src)
+    m = drawMap[_.type]
+    if m.width is -1
+      [ x, y ] = if strokeOnly then [ 8, y + 12 ] else [ 8, y + 64 ]
+      strokeOnly = false
+    if strokeOnly
+       if _.type != '!' then strokeOnly = false
+    else if _.type is '!' then strokeOnly = true
+    [ _.x, _.y, _.func ] = [ x, y, m.func ]
+    if m.width is 0 then _.y -= 6
+    switch _.type
+      when '$' then   hasSegno = true
+      when '<' then _.hasSegno = hasSegno
+    x += m.width
+    if w < x then w = x
+    if h < y then h = y
+    _
+  list:list, width:w, height:h
 
-getImageData = (src, opts)->
-    [ x, y, w, h ] = [ 8, 8, 8, 8 ]
-    hasSegno   = false
-    strokeOnly = false
-    list = for _ in parse(src)
-        m = drawMap[_.type]
-        if m.width is -1
-            [ x, y ] = if strokeOnly then [ 8, y + 12 ] else [ 8, y + 64 ]
-            strokeOnly = false
-        if strokeOnly
-             if _.type != "!" then strokeOnly = false
-        else if _.type is "!" then strokeOnly = true
-        [ _.x, _.y, _.func ] = [ x, y, m.func ]
-        if m.width is 0 then _.y -= 6
-        switch _.type
-            when "$" then   hasSegno = true
-            when "<" then _.hasSegno = hasSegno
-        x += m.width
-        if w < x then w = x
-        if h < y then h = y
-        _
+getImageData = (src, opts={})->
+  calced = calculate src
 
-    canvas = document.createElement 'canvas'
-    canvas.width  = w
-    canvas.height = h + 64
-    ctx = canvas.getContext '2d'
+  canvas = document.createElement 'canvas'
+  canvas.width  = calced.width
+  canvas.height = canvas.height + 64
+  ctx = canvas.getContext '2d'
 
-    if opts?.background
-        ctx.fillStyle = opts.background
-        ctx.fillRect 0, 0, w, h + 64
-    ctx.strokeStyle = opts?.color or '#000'
-    ctx.fillStyle   = opts?.color or '#000'
-    for _ in list
-        _.func ctx, _ if _.func
+  if opts.background
+    ctx.fillStyle = opts.background
+    ctx.fillRect 0, 0, canvas.width, canvas.height
+  ctx.strokeStyle = opts.color or '#000'
+  ctx.fillStyle   = opts.color or '#000'
+  for _ in calced.list
+    _.func ctx, _ if _.func
+  ctx.getImageData 0, 0, canvas.width, canvas.height
 
-    ctx.getImageData 0, 0, w, h + 64
+getImageSrc = (src, opts={})->
+  if typeof src is 'string'
+    src = getImageData src, opts
+  if src instanceof ImageData
+    imgData = src
+  else return ''
 
-getImageSrc = (src, opts)->
-    if typeof src is 'string'
-        src = getImageData src, opts
-    if src instanceof ImageData
-        imgData = src
-    else return ''
+  canvas = document.createElement 'canvas'
+  canvas.width  = imgData.width
+  canvas.height = imgData.height
+  canvas.getContext('2d').putImageData imgData, 0, 0
 
-    canvas = document.createElement 'canvas'
-    canvas.width  = imgData.width
-    canvas.height = imgData.height
-    canvas.getContext('2d').putImageData imgData, 0, 0
-
-    canvas.toDataURL 'image/png'
+  canvas.toDataURL 'image/png'
 
 window.lelenofu =
-    parse: parse
-    getImageData: getImageData
-    getImageSrc : getImageSrc
+  parse: parse
+  getImageData: getImageData
+  getImageSrc : getImageSrc

@@ -26,6 +26,19 @@ class Timeline extends timbre.Object
 
   setList: (list)->
     @list = list
+    for i in [0...@list.length] by 1
+      cmd = @list[i]
+      if cmd.type is '!'
+        if cmd.stroke
+          stroke = cmd.stroke
+          prev = ''
+          for i in [0...stroke.length] by 1
+            stroke[i] = stroke[i].replace /_/g, ''
+            if stroke[i] is '='
+              stroke[i] = prev
+            prev = stroke[i]
+          cmd.stroke = stroke
+    console.log @list
     @reset()
 
   setBpm: (bpm)->
@@ -97,15 +110,7 @@ class Timeline extends timbre.Object
       when '!'
         if cmd.bpm     then @bpm     = cmd.bpm
         if cmd.shuffle then @shuffle = cmd.shuffle
-        if cmd.stroke
-          stroke = cmd.stroke
-          prev = ''
-          for i in [0...stroke.length] by 1
-            stroke[i] = stroke[i].replace /_/g, ''
-            if stroke[i] is '='
-              stroke[i] = prev
-            prev = stroke[i]
-          @stroke = stroke
+        if cmd.stroke  then @stroke  = cmd.stroke
         @setBpm @bpm
     fetch.call @
 
@@ -169,7 +174,7 @@ class Sequencer
       if form[i] is 0 then continue
       freq = @midicps.at(form[i])
       mul  = volume[i]
-      @sched.sched delay[i], sched_pluck this, freq, mul, mute
+      @sched.sched delay[i], sched_pluck(this, freq, mul, mute)
     0
 
   sched_pluck = (that, freq, mul, mute)->
