@@ -1,6 +1,10 @@
 (function() {
   'use strict';
-  var CHORDS, calculate, drawChordForm, drawCoda, drawMap, drawParen, drawRepeat, drawRepeatLine, drawRepeatNum, drawRepeatStr, drawSegno, drawStroke, getForm, getImageData, getImageSrc, parse, prev, re;
+  var CHORDS, Sequencer, Timeline, calculate, drawChordForm, drawCoda, drawMap, drawParen, drawRepeat, drawRepeatLine, drawRepeatNum, drawRepeatStr, drawSegno, drawStroke, exports, getForm, getImageData, getImageSrc, parse,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  exports = {};
 
   CHORDS = {
     'C': '3000',
@@ -510,63 +514,69 @@
     }
   };
 
-  prev = null;
+  getForm = (function() {
+    var prev;
 
-  getForm = function(m) {
-    var form, index, name, stroke;
+    prev = null;
+    return function(m) {
+      var form, index, name, stroke;
 
-    name = m[0];
-    if (name.charAt(0) === '!') {
-      if (m[3]) {
-        stroke = m[3].toLowerCase().split(',');
+      name = m[0];
+      if (name.charAt(0) === '!') {
+        if (m[3]) {
+          stroke = m[3].toLowerCase().split(',');
+        }
+        return {
+          type: '!',
+          bpm: m[1],
+          shuffle: !!m[2],
+          stroke: stroke
+        };
+      }
+      if ((form = CHORDS[name]) !== void 0) {
+        return prev = {
+          type: '#',
+          name: name,
+          form: form
+        };
+      }
+      if ((index = name.indexOf('@')) !== -1) {
+        form = name.substr(index(+1));
+        name = name.substr(0, index);
+        return prev = {
+          type: '#',
+          name: name,
+          form: form
+        };
+      }
+      if (name === '=') {
+        return {
+          type: '=',
+          name: prev.name,
+          form: prev.form
+        };
       }
       return {
-        type: '!',
-        bpm: m[1],
-        shuffle: !!m[2],
-        stroke: stroke
+        type: name,
+        name: name
       };
-    }
-    if ((form = CHORDS[name]) !== void 0) {
-      return prev = {
-        type: '#',
-        name: name,
-        form: form
-      };
-    }
-    if ((index = name.indexOf('@')) !== -1) {
-      form = name.substr(index(+1));
-      name = name.substr(0, index);
-      return prev = {
-        type: '#',
-        name: name,
-        form: form
-      };
-    }
-    if (name === '=') {
-      return {
-        type: '=',
-        name: prev.name,
-        form: prev.form
-      };
-    }
-    return {
-      type: name,
-      name: name
     };
-  };
+  })();
 
-  re = /(?:!(\d*)(:3)?([-PpDdUuXx,_=]*))|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g;
+  parse = (function() {
+    var re;
 
-  parse = function(src) {
-    var m, _results;
+    re = /(?:!(\d*)(:3)?([-PpDdUuXx,_=]*))|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g;
+    return function(src) {
+      var m, _results;
 
-    _results = [];
-    while ((m = re.exec(src))) {
-      _results.push(getForm(m));
-    }
-    return _results;
-  };
+      _results = [];
+      while ((m = re.exec(src))) {
+        _results.push(getForm(m));
+      }
+      return _results;
+    };
+  })();
 
   calculate = function(src) {
     var h, hasSegno, list, m, strokeOnly, w, x, y, _, _ref;
@@ -670,10 +680,370 @@
     return canvas.toDataURL('image/png');
   };
 
-  window.lelenofu = {
-    parse: parse,
-    getImageData: getImageData,
-    getImageSrc: getImageSrc
-  };
+  exports.parse = parse;
+
+  exports.getImageData = getImageData;
+
+  exports.getImageSrc = getImageSrc;
+
+  if (typeof timbre !== 'undefined') {
+    Timeline = (function(_super) {
+      var fetch;
+
+      __extends(Timeline, _super);
+
+      function Timeline(_args) {
+        Timeline.__super__.constructor.call(this, 1, _args);
+        timbre.fn.timer(this);
+        timbre.fn.fixKR(this);
+      }
+
+      Timeline.prototype.reset = function() {
+        var _;
+
+        _ = this._;
+        _.shuffle = false;
+        _.stroke = ['D-u-'];
+        _.currentcmd = null;
+        _.loopIgnore = false;
+        _.codaIgnore = false;
+        _.repeat = false;
+        _.loopStack = [
+          {
+            index: 0,
+            maxCount: 2,
+            count: 1
+          }
+        ];
+        _.segnoIndex = 0;
+        _.samples = 0;
+        _.samplesIncr = 0;
+        _.beat = 0;
+        this.setBpm(120);
+        _.i1 = 0;
+        _.i2 = _.stroke.length;
+        return _.i3 = _.stroke[_.i2 % _.stroke.length].length;
+      };
+
+      Timeline.prototype.setList = function(list) {
+        var cmd, i, prev, stroke, _, _i, _j, _ref, _ref1;
+
+        _ = this._;
+        _.list = list;
+        for (i = _i = 0, _ref = _.list.length; _i < _ref; i = _i += 1) {
+          cmd = _.list[i];
+          if (cmd.stroke) {
+            stroke = cmd.stroke;
+            prev = '';
+            for (i = _j = 0, _ref1 = stroke.length; _j < _ref1; i = _j += 1) {
+              stroke[i] = stroke[i].replace(/_/g, '');
+              if (stroke[i] === '=') {
+                stroke[i] = prev;
+              }
+              prev = stroke[i];
+            }
+            cmd.stroke = stroke;
+          }
+        }
+        return this.reset();
+      };
+
+      Timeline.prototype.setBpm = function(bpm) {
+        var l, _;
+
+        _ = this._;
+        l = _.shuffle ? 'l12' : 'l8';
+        _.samplesIncr = timbre.timevalue("bpm" + bpm + " " + l);
+        _.samplesIncr *= timbre.samplerate * 0.001;
+        _.bpm = bpm;
+        return _.i2 = _.i3 = 0;
+      };
+
+      Timeline.prototype.process = function(tickID) {
+        var form, stroke, _;
+
+        _ = this._;
+        if (_.samples <= 0) {
+          if (!_.shuffle || _.beat % 3 !== 1) {
+            if (_.i3 >= _.stroke[_.i2 % _.stroke.length].length) {
+              _.i3 = 0;
+              _.i2 += 1;
+              _.currentcmd = fetch.call(this);
+            }
+            if (_.currentcmd === null) {
+              _.samples = Infinity;
+              return this.emit('end');
+            }
+            form = _.currentcmd.form;
+            stroke = _.stroke[_.i2 % _.stroke.length].charAt(_.i3++);
+            if (stroke !== '-') {
+              this.emit('data', {
+                form: form,
+                stroke: stroke
+              });
+            }
+          }
+          _.samples += _.samplesIncr;
+          _.beat += 1;
+        }
+        _.samples -= _.cellsize;
+        return this;
+      };
+
+      fetch = function() {
+        var cmd, count, lop, _;
+
+        _ = this._;
+        cmd = _.list[_.i1++];
+        if (!cmd) {
+          return null;
+        }
+        if (!(_.loopIgnore || _.codaIgnore)) {
+          if (cmd.type === '#' || cmd.type === '=') {
+            return cmd;
+          }
+        }
+        if (_.codaIgnore && cmd.type !== '*') {
+          return fetch.call(this);
+        }
+        switch (cmd.type) {
+          case '|:':
+            _.loopStack.push({
+              index: _.i1,
+              maxCount: 2,
+              count: 1
+            });
+            break;
+          case ':|':
+            lop = _.loopStack[_.loopStack.length - 1];
+            _.loopIgnore = false;
+            if (lop) {
+              if (lop.count < lop.maxCount) {
+                lop.count += 1;
+                _.i1 = lop.index;
+              } else {
+                _.loopStack.pop();
+              }
+            }
+            break;
+          case '1':
+          case '2':
+          case '3':
+          case '4':
+            lop = _.loopStack[_.loopStack.length - 1];
+            if (lop) {
+              count = +cmd.type;
+              _.loopIgnore = lop.count !== count;
+              if (lop.maxCount < count) {
+                lop.maxCount = count;
+              }
+            }
+            break;
+          case '$':
+            _.segnoIndex = _.i1;
+            break;
+          case '*':
+            if (_.repeat) {
+              _.codaIgnore = !_.codaIgnore;
+            }
+            break;
+          case '<':
+            if (!repeat) {
+              _.repeat = true;
+              _.i1 = _.segnoIndex;
+            }
+            break;
+          case '^':
+            if (_.repeat) {
+              return null;
+            }
+            break;
+          case '!':
+            if (cmd.bpm) {
+              _.bpm = cmd.bpm;
+            }
+            if (cmd.shuffle) {
+              _.shuffle = cmd.shuffle;
+            }
+            if (cmd.stroke) {
+              _.stroke = cmd.stroke;
+            }
+            this.setBpm(_.bpm);
+        }
+        return fetch.call(this);
+      };
+
+      return Timeline;
+
+    })(timbre.Object);
+    timbre.fn.register('ukulele-timeline', Timeline);
+    Sequencer = (function() {
+      var emit, pattern, sched;
+
+      function Sequencer() {
+        this.tl = T('ukulele-timeline');
+        this.tl.emit = emit.bind(this);
+        this.sched = T('schedule');
+        this.midicps = T('midicps');
+        this.send = T('lpf', {
+          freq: 2800,
+          Q: 4,
+          mul: 0.6
+        });
+        this.master = T('delay', {
+          time: 120,
+          fb: 0.6,
+          mix: 0.15
+        }, this.send);
+      }
+
+      pattern = {
+        x: {
+          volume: [0, 0, 0, 0],
+          delay: [0, 0, 0, 0],
+          mute: true
+        },
+        X: {
+          volume: [0.6, 0.6, 0.6, 0.6],
+          delay: [50, 40, 20, 0],
+          mute: true
+        },
+        D: {
+          volume: [0.8, 0.8, 0.9, 1.0],
+          delay: [50, 40, 20, 0],
+          mute: false
+        },
+        d: {
+          volume: [0.6, 0.6, 0.7, 0.7],
+          delay: [60, 40, 20, 0],
+          mute: false
+        },
+        P: {
+          volume: [1.0, 0.9, 0.9, 0.8],
+          delay: [0, 40, 80, 95],
+          mute: false
+        },
+        p: {
+          volume: [0.7, 0.7, 0.6, 0.6],
+          delay: [0, 40, 80, 95],
+          mute: false
+        },
+        U: {
+          volume: [1.0, 0.9, 0.8, 0.8],
+          delay: [0, 20, 40, 50],
+          mute: false
+        },
+        u: {
+          volume: [0.7, 0.7, 0.6, 0.6],
+          delay: [0, 20, 40, 60],
+          mute: false
+        }
+      };
+
+      sched = function(that, freq, mul, mute) {
+        return function() {
+          var send;
+
+          if (mute) {
+            send = T('perc', {
+              r: 15
+            }).bang().appendTo(that.send);
+            T('noise', {
+              mul: 0.4
+            }).appendTo(send);
+          } else {
+            send = that.send;
+            T('perc', {
+              a: 10,
+              r: 150
+            }, T('osc', {
+              wave: 'fami(25)',
+              freq: freq,
+              mul: mul * 0.75
+            })).bang().appendTo(send);
+          }
+          return T('pluck', {
+            freq: freq * 2,
+            mul: mul * 0.6
+          }).bang().appendTo(send);
+        };
+      };
+
+      emit = function(type, opts) {
+        var form, func, i, p, stroke, _i;
+
+        switch (type) {
+          case 'data':
+            form = opts.form, stroke = opts.stroke;
+            form = [69 + (form.charAt(0) | 0), 64 + (form.charAt(1) | 0), 60 + (form.charAt(2) | 0), 67 + (form.charAt(3) | 0)];
+            if ((p = pattern[stroke])) {
+              this.send.nodes.splice(0);
+              for (i = _i = 0; _i < 3; i = ++_i) {
+                if (form[i] === 0 || p.volume[i] === 0) {
+                  continue;
+                }
+                func = sched(this, this.midicps.at(form[i]), p.volume[i], p.mute);
+                this.sched.sched(p.delay[i], func);
+              }
+            }
+            break;
+          case 'end':
+            this.emit('end');
+        }
+        return 0;
+      };
+
+      Sequencer.prototype.play = function(data) {
+        this.send.nodes.splice(0);
+        this.tl.setList(parse(data));
+        this.tl.start();
+        this.sched.start();
+        return this.master.play();
+      };
+
+      Sequencer.prototype.pause = function() {
+        this.tl.stop();
+        this.sched.stop();
+        return this.master.pause();
+      };
+
+      return Sequencer;
+
+    })();
+    exports.Sequencer = Sequencer;
+  }
+
+  if (typeof CodeMirror !== 'undefined') {
+    CodeMirror.defineMode('ukulele', function() {
+      var chord, repeat, stroke;
+
+      stroke = /^!\d*(?::3)?[-PpDdUuXx,_=]*/;
+      chord = /^[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?/;
+      repeat = /^([-1234$<^*]|\|:|:\|)/;
+      return {
+        token: function(stream, state) {
+          switch (false) {
+            case !stream.eat(';'):
+              return 'newline';
+            case !stream.eat(/[()]/):
+              return 'blacket';
+            case !stream.eat(/[_=]/):
+              return 'space';
+            case !stream.match(stroke):
+              return 'stroke';
+            case !stream.match(chord):
+              return 'chord';
+            case !stream.match(repeat):
+              return 'repeat';
+            default:
+              stream.next();
+              return null;
+          }
+        }
+      };
+    });
+  }
+
+  window.ukulele = exports;
 
 }).call(this);

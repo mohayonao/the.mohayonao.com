@@ -5,8 +5,8 @@ $ ->
     constructor: ->
       @data      = null
       @imageData = null
-      @sequencer = new lelenofu.Sequencer()
-      @sequencer.eof = => @pause()
+      @sequencer = new ukulele.Sequencer()
+      @sequencer.emit = => @pause()
       @isPlaying = false
       @timerId = 0
       @prev = null
@@ -21,7 +21,7 @@ $ ->
           clearTimeout @timerId
         @timerId = setTimeout =>
           @data      = data
-          @imageData = lelenofu.getImageData data
+          @imageData = ukulele.getImageData data
           dfd.resolve @imageData
         , 200
       else
@@ -31,7 +31,7 @@ $ ->
 
     play: ->
       @isPlaying = true      
-      @sequencer.play lelenofu.parse(@data)
+      @sequencer.play @data
       @onStateChange? 'play'
 
     pause: ->
@@ -56,7 +56,7 @@ $ ->
   editor.update = ->
     app.update( editor.getValue().trim() ).then (data)->
       $result.css width:"#{data.width}px", height:"#{data.height}px"
-      $result.attr 'src', lelenofu.getImageSrc data
+      $result.attr 'src', ukulele.getImageSrc data
   editor.on 'update', editor.update
   
   $('#play').on 'click', ->

@@ -15,10 +15,3 @@ a :hover{text-decoration:underline}
 #content{font-family:'Courier New',monospace;font-size:16px;height:100%;margin-left:200px;padding:10px;}
 #content h1{margin-left:10px}
 #content #container{padding:10px}
-.cm-s-ukulele .cm-chord{color:#5a5cad;font-weight:bold}
-.cm-s-ukulele .cm-stroke{color:#3f7f7f}
-.cm-s-ukulele .cm-newline{color:#000}
-.cm-s-ukulele .cm-repeat{color:#6c8cd5}
-.cm-s-ukulele .cm-blacket{color:#6c8cd5}
-.cm-s-ukulele .cm-space{color:#808080}
-.cm-s-ukulele{font-family:'Courier',monospace;border:1px solid #808080;color:#000;margin-bottom:25px}

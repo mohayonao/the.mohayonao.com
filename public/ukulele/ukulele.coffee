@@ -1,5 +1,7 @@
 'use strict'
 
+exports = {}
+
 CHORDS =
   'C':'3000', 'Cm':'3330', 'C7':'1000', 'CM7':'2000', 'Cm7':'3333',
   'Cdim':'3232', 'Cm7(b5)':'3233', 'Caug':'3001', 'Csus4':'3355',
@@ -68,6 +70,7 @@ CHORDS =
   'B':'2234', 'Bm':'2224', 'B7':'2232', 'BM7':'1234', 'Bm7':'2222',
   'Bdim':'2121', 'Bm7(b5)':'2122', 'Baug':'2334', 'Bsus4':'2244',
   'B6':'2231', 'B7(9)':'4232', 'BM7(9)':'4133', 'BmM7':'2223', 'Badd9':'4234'
+
 
 drawChordForm = (ctx, form)->
   paddingTop = 16
@@ -196,28 +199,28 @@ drawMap =
   '^' : width:16, func:drawRepeatStr
   ';' : width:-1
 
-prev = null
+getForm = do ->
+  prev = null
+  (m)->
+    name = m[0]
+    if name.charAt(0) is '!'
+      if m[3]
+        stroke = m[3].toLowerCase().split ','
+      return type:'!', bpm:m[1], shuffle:!!m[2], stroke:stroke
+    if (form = CHORDS[name]) != undefined
+      return prev = type:'#', name:name, form:form
+    if (index = name.indexOf '@') != -1
+      form = name.substr(index +1)
+      name = name.substr(0, index)
+      return prev = type:'#', name:name, form:form
+    if name is '='
+      return type:'=', name:prev.name, form:prev.form
+    type:name, name:name
 
-getForm = (m)->
-  name = m[0]
-  if name.charAt(0) is '!'
-    if m[3]
-      stroke = m[3].toLowerCase().split ','
-    return type:'!', bpm:m[1], shuffle:!!m[2], stroke:stroke
-  if (form = CHORDS[name]) != undefined
-    return prev = type:'#', name:name, form:form
-  if (index = name.indexOf '@') != -1
-    form = name.substr(index +1)
-    name = name.substr(0, index)
-    return prev = type:'#', name:name, form:form
-  if name is '='
-    return type:'=', name:prev.name, form:prev.form
-  type:name, name:name
-
-re = /(?:!(\d*)(:3)?([-PpDdUuXx,_=]*))|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g
-
-parse = (src)->
-  while (m = re.exec src) then getForm m
+parse = do ->
+  re = /(?:!(\d*)(:3)?([-PpDdUuXx,_=]*))|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g
+  (src)->
+    while (m = re.exec src) then getForm m
 
 calculate = (src)->
   [ x, y, w, h ] = [ 8, 8, 8, 8 ]
@@ -273,7 +276,224 @@ getImageSrc = (src, opts={})->
 
   canvas.toDataURL 'image/png'
 
-window.lelenofu =
-  parse: parse
-  getImageData: getImageData
-  getImageSrc : getImageSrc
+exports.parse = parse
+exports.getImageData = getImageData
+exports.getImageSrc  = getImageSrc
+
+
+if typeof timbre != 'undefined'
+  
+  class Timeline extends timbre.Object
+    constructor: (_args)->
+      super 1, _args
+      timbre.fn.timer @
+      timbre.fn.fixKR @
+    
+    reset: ->
+      _ = @_
+      _.shuffle = false
+      _.stroke  = ['D-u-']
+      _.currentcmd  = null
+      _.loopIgnore  = false
+      _.codaIgnore  = false
+      _.repeat      = false
+      _.loopStack   = [index:0, maxCount:2, count:1]
+      _.segnoIndex  = 0
+      _.samples     = 0
+      _.samplesIncr = 0
+      _.beat = 0
+      @setBpm 120
+      
+      _.i1 = 0
+      _.i2 = _.stroke.length
+      _.i3 = _.stroke[_.i2 % _.stroke.length].length
+
+    setList: (list)->
+      _ = @_
+      _.list = list
+      for i in [0..._.list.length] by 1
+        cmd = _.list[i]
+        if cmd.stroke
+          stroke = cmd.stroke
+          prev = ''
+          for i in [0...stroke.length] by 1
+            stroke[i] = stroke[i].replace /_/g, ''
+            if stroke[i] is '='
+              stroke[i] = prev
+            prev = stroke[i]
+          cmd.stroke = stroke
+      @reset()
+
+    setBpm: (bpm)->
+      _ = @_
+      l = if _.shuffle then 'l12' else 'l8'
+      _.samplesIncr  = timbre.timevalue "bpm#{bpm} #{l}"
+      _.samplesIncr *= timbre.samplerate * 0.001
+      _.bpm = bpm
+      _.i2 = _.i3 = 0
+
+    process: (tickID)->
+      _ = @_
+      if _.samples <= 0
+        if not _.shuffle or _.beat % 3 != 1
+          if _.i3 >= _.stroke[_.i2 % _.stroke.length].length
+            _.i3 = 0
+            _.i2 += 1
+            _.currentcmd = fetch.call @
+              
+          if _.currentcmd is null
+            _.samples = Infinity
+            return @emit 'end'
+          
+          form   = _.currentcmd.form
+          stroke = _.stroke[_.i2 % _.stroke.length].charAt _.i3++
+
+          if stroke != '-'
+           @emit 'data', {form:form, stroke:stroke}
+
+        _.samples += _.samplesIncr
+        _.beat    += 1
+      _.samples -= _.cellsize
+      @
+
+    fetch = ->
+      _ = @_
+      cmd = _.list[_.i1++]
+
+      unless cmd
+        return null
+      
+      if not (_.loopIgnore or _.codaIgnore)
+        if cmd.type is '#' or cmd.type is '='
+          return cmd  
+
+      if _.codaIgnore and cmd.type != '*'
+        return fetch.call @
+
+      switch cmd.type
+        when '|:'
+          _.loopStack.push index:_.i1, maxCount:2, count:1
+        when ':|'
+          lop = _.loopStack[_.loopStack.length - 1]
+          _.loopIgnore = false
+          if lop
+            if lop.count < lop.maxCount
+              lop.count += 1
+              _.i1 = lop.index
+            else _.loopStack.pop()
+        when '1', '2', '3', '4'
+          lop = _.loopStack[_.loopStack.length - 1]
+          if lop
+            count = +cmd.type
+            _.loopIgnore = (lop.count != count)
+            if lop.maxCount < count then lop.maxCount = count
+        when '$'
+            _.segnoIndex = _.i1
+        when '*'
+          if _.repeat then _.codaIgnore = not _.codaIgnore
+        when '<'
+          if not repeat
+            _.repeat = true
+            _.i1 = _.segnoIndex
+        when '^'
+          return null if _.repeat
+        when '!'
+          if cmd.bpm     then _.bpm     = cmd.bpm
+          if cmd.shuffle then _.shuffle = cmd.shuffle
+          if cmd.stroke  then _.stroke  = cmd.stroke
+          @setBpm _.bpm
+      fetch.call @
+
+  timbre.fn.register 'ukulele-timeline', Timeline
+  
+  class Sequencer
+    constructor: ->
+      @tl = T('ukulele-timeline')
+      @tl.emit = emit.bind @
+      @sched   = T('schedule')
+      @midicps = T('midicps')
+      @send    = T('lpf', {freq:2800,Q:4,mul:0.6})
+      @master  = T('delay', {time:120,fb:0.6,mix:0.15}, @send)
+
+    pattern =
+      x: volume:[0  ,0  ,0  ,0  ], delay:[ 0, 0, 0, 0], mute:true
+      X: volume:[0.6,0.6,0.6,0.6], delay:[50,40,20, 0], mute:true
+      D: volume:[0.8,0.8,0.9,1.0], delay:[50,40,20, 0], mute:false
+      d: volume:[0.6,0.6,0.7,0.7], delay:[60,40,20, 0], mute:false
+      P: volume:[1.0,0.9,0.9,0.8], delay:[ 0,40,80,95], mute:false
+      p: volume:[0.7,0.7,0.6,0.6], delay:[ 0,40,80,95], mute:false
+      U: volume:[1.0,0.9,0.8,0.8], delay:[ 0,20,40,50], mute:false
+      u: volume:[0.7,0.7,0.6,0.6], delay:[ 0,20,40,60], mute:false
+
+    sched = (that, freq, mul, mute)->
+      ->
+        if mute
+          send = T('perc', {r:15}).bang().appendTo that.send
+          T('noise', {mul:0.4}).appendTo send
+        else
+          send = that.send
+          T('perc', {a:10,r:150},
+            T('osc', {wave:'fami(25)',freq:freq,mul:mul*0.75})
+          ).bang().appendTo send
+        T('pluck', {freq:freq*2,mul:mul*0.6}).bang().appendTo send
+
+    emit = (type, opts)->
+      switch type
+        when 'data'
+          {form, stroke} = opts
+          form = [
+              69 + (form.charAt(0)|0)
+              64 + (form.charAt(1)|0)
+              60 + (form.charAt(2)|0)
+              67 + (form.charAt(3)|0)
+          ]
+          if (p = pattern[stroke])
+            @send.nodes.splice 0
+            for i in [0...3]
+              if form[i] is 0 or p.volume[i] is 0 then continue
+              func = sched(@, @midicps.at(form[i]), p.volume[i], p.mute)
+              @sched.sched p.delay[i], func
+        when 'end'
+          @emit 'end'
+      0
+
+    play: (data)->
+      @send.nodes.splice 0      
+      @tl.setList parse(data)
+      @tl.start()
+      @sched.start()
+      @master.play()
+    
+    pause: ->
+      @tl.stop()
+      @sched.stop()
+      @master.pause()
+
+  exports.Sequencer = Sequencer 
+
+
+if typeof CodeMirror != 'undefined'
+  CodeMirror.defineMode 'ukulele', ->
+    stroke = /^!\d*(?::3)?[-PpDdUuXx,_=]*/
+    chord  = /^[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?/
+    repeat = /^([-1234$<^*]|\|:|:\|)/
+
+    token: (stream, state)->
+      switch
+        when stream.eat ';'
+          'newline'
+        when stream.eat /[()]/
+          'blacket'
+        when stream.eat /[_=]/
+          'space'
+        when stream.match stroke
+          'stroke'
+        when stream.match chord
+          'chord'
+        when stream.match repeat
+          'repeat'
+        else
+          stream.next()
+          null
+
+window.ukulele = exports

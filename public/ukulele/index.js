@@ -9,8 +9,8 @@
 
         this.data = null;
         this.imageData = null;
-        this.sequencer = new lelenofu.Sequencer();
-        this.sequencer.eof = function() {
+        this.sequencer = new ukulele.Sequencer();
+        this.sequencer.emit = function() {
           return _this.pause();
         };
         this.isPlaying = false;
@@ -33,7 +33,7 @@
           }
           this.timerId = setTimeout(function() {
             _this.data = data;
-            _this.imageData = lelenofu.getImageData(data);
+            _this.imageData = ukulele.getImageData(data);
             return dfd.resolve(_this.imageData);
           }, 200);
         } else {
@@ -45,7 +45,7 @@
 
       Application.prototype.play = function() {
         this.isPlaying = true;
-        this.sequencer.play(lelenofu.parse(this.data));
+        this.sequencer.play(this.data);
         return typeof this.onStateChange === "function" ? this.onStateChange('play') : void 0;
       };
 
@@ -81,7 +81,7 @@
           width: "" + data.width + "px",
           height: "" + data.height + "px"
         });
-        return $result.attr('src', lelenofu.getImageSrc(data));
+        return $result.attr('src', ukulele.getImageSrc(data));
       });
     };
     editor.on('update', editor.update);
