@@ -44,8 +44,10 @@ $ ->
   if apps.isMouseDevice
     show_app_image = do ->
       $origin = $('img', $appimage)
-      (name)->
-        $appimage.empty().append show_app_image[name] ? $origin
+      func = (name)->
+        $appimage.empty().append show_app_image[name] ? $origin[0]
+      func['default'] = $($origin[1]).remove().show()
+      func
 
     $('li', $sidebar).each (i, elem)->
       $li = $(elem)
@@ -69,7 +71,7 @@ $ ->
       show_app_image null
 
     $('h1', $sidebar).on 'mouseover', ->
-      show_app_image null
+      show_app_image 'default'
       
   else if apps.isTablet
   

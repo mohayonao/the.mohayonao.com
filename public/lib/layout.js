@@ -49,14 +49,16 @@
     $appimage = $('#appimage');
     if (apps.isMouseDevice) {
       show_app_image = (function() {
-        var $origin;
+        var $origin, func;
 
         $origin = $('img', $appimage);
-        return function(name) {
+        func = function(name) {
           var _ref6;
 
-          return $appimage.empty().append((_ref6 = show_app_image[name]) != null ? _ref6 : $origin);
+          return $appimage.empty().append((_ref6 = show_app_image[name]) != null ? _ref6 : $origin[0]);
         };
+        func['default'] = $($origin[1]).remove().show();
+        return func;
       })();
       $('li', $sidebar).each(function(i, elem) {
         var $img, $li, media, url;
@@ -83,7 +85,7 @@
         return show_app_image(null);
       });
       return $('h1', $sidebar).on('mouseover', function() {
-        return show_app_image(null);
+        return show_app_image('default');
       });
     } else if (apps.isTablet) {
       return $('li', $sidebar).each(function(i, elem) {
