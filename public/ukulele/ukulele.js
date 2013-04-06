@@ -344,6 +344,7 @@
     _results = [];
     for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
       stroke = _ref1[_i];
+      stroke = stroke.toLowerCase();
       if (stroke === '=') {
         stroke = ((function() {
           var _j, _ref2, _results1;
@@ -524,7 +525,7 @@
       name = m[0];
       if (name.charAt(0) === '!') {
         if (m[3]) {
-          stroke = m[3].toLowerCase().split(',');
+          stroke = m[3].split(',');
         }
         return {
           type: '!',
@@ -641,7 +642,7 @@
     calced = calculate(src);
     canvas = document.createElement('canvas');
     canvas.width = calced.width;
-    canvas.height = canvas.height + 64;
+    canvas.height = calced.height + 64;
     ctx = canvas.getContext('2d');
     if (opts.background) {
       ctx.fillStyle = opts.background;
@@ -790,8 +791,18 @@
         return this;
       };
 
+      Timeline.prototype.test = function() {
+        var cmd, _results;
+
+        _results = [];
+        while ((cmd = fetch.call(this))) {
+          _results.push(console.log(cmd));
+        }
+        return _results;
+      };
+
       fetch = function() {
-        var cmd, count, lop, _;
+        var cmd, i, maxCount, peek, t, _, _i, _ref, _ref1;
 
         _ = this._;
         cmd = _.list[_.i1++];
@@ -808,36 +819,42 @@
         }
         switch (cmd.type) {
           case '|:':
+            maxCount = 2;
+            for (i = _i = _ref = _.i1, _ref1 = _.list.length; _ref <= _ref1 ? _i < _ref1 : _i > _ref1; i = _ref <= _ref1 ? ++_i : --_i) {
+              t = _.list[i].type;
+              if (t === '|:') {
+                break;
+              }
+              if ((1 <= +t && +t <= 4)) {
+                maxCount = +t;
+              }
+            }
             _.loopStack.push({
               index: _.i1,
-              maxCount: 2,
+              maxCount: maxCount,
               count: 1
             });
             break;
           case ':|':
-            lop = _.loopStack[_.loopStack.length - 1];
-            _.loopIgnore = false;
-            if (lop) {
-              if (lop.count < lop.maxCount) {
-                lop.count += 1;
-                _.i1 = lop.index;
-              } else {
-                _.loopStack.pop();
+            peek = _.loopStack[_.loopStack.length - 1];
+            if (!_.loopIgnore) {
+              if (peek) {
+                if (peek.count < peek.maxCount) {
+                  peek.count += 1;
+                  _.i1 = peek.index;
+                } else {
+                  _.loopStack.pop();
+                }
               }
             }
+            _.loopIgnore = false;
             break;
           case '1':
           case '2':
           case '3':
           case '4':
-            lop = _.loopStack[_.loopStack.length - 1];
-            if (lop) {
-              count = +cmd.type;
-              _.loopIgnore = lop.count !== count;
-              if (lop.maxCount < count) {
-                lop.maxCount = count;
-              }
-            }
+            peek = _.loopStack[_.loopStack.length - 1];
+            _.loopIgnore = peek.count !== +cmd.type;
             break;
           case '$':
             _.segnoIndex = _.i1;
@@ -848,7 +865,7 @@
             }
             break;
           case '<':
-            if (!repeat) {
+            if (!_.repeat) {
               _.repeat = true;
               _.i1 = _.segnoIndex;
             }

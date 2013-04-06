@@ -15,3 +15,4 @@ a :hover{text-decoration:underline}
 #content{font-family:'Courier New',monospace;font-size:16px;height:100%;margin-left:200px;padding:10px;}
 #content h1{margin-left:10px}
 #content #container{padding:10px}
+#content #demo{width:150px}

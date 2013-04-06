@@ -47,12 +47,14 @@ $ ->
 
   $result = $('#result')
   
+  editor = CodeMirror.fromTextArea document.getElementById('data'),
+    mode:'ukulele', theme:'ukulele', workTime:200
+
   value = if (q = location.search.substr(1, location.search.length - 1))
     decodeURIComponent q
   else ''
-  
-  editor = CodeMirror.fromTextArea document.getElementById('data'),
-    mode:'ukulele', theme:'ukulele', value:value, workTime:200
+  editor.setValue value
+      
   editor.update = ->
     app.update( editor.getValue().trim() ).then (data)->
       $result.css width:"#{data.width}px", height:"#{data.height}px"
@@ -69,8 +71,17 @@ $ ->
     if app.data
       data = encodeURIComponent app.data      
       url = "http://#{location.host}/ukulele/"
-      url = "http://the.mohayonao.com/ukulele/"
       url += "?#{data}"
       apps.tweet url:url
+
+  do ->
+    $demo = $('#demo')
+    demo.forEach (value, i)->
+      $option = $('<option>').text("demo 0#{i+1}").appendTo $demo
+    $demo.on 'change', ->
+      editor.setValue demo[@selectedIndex]
+      editor.update()
+    if value is ''
+      $demo.change()
 
   editor.update()

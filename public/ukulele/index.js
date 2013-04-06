@@ -68,13 +68,13 @@
       }
     };
     $result = $('#result');
-    value = (q = location.search.substr(1, location.search.length - 1)) ? decodeURIComponent(q) : '';
     editor = CodeMirror.fromTextArea(document.getElementById('data'), {
       mode: 'ukulele',
       theme: 'ukulele',
-      value: value,
       workTime: 200
     });
+    value = (q = location.search.substr(1, location.search.length - 1)) ? decodeURIComponent(q) : '';
+    editor.setValue(value);
     editor.update = function() {
       return app.update(editor.getValue().trim()).then(function(data) {
         $result.css({
@@ -98,13 +98,29 @@
       if (app.data) {
         data = encodeURIComponent(app.data);
         url = "http://" + location.host + "/ukulele/";
-        url = "http://the.mohayonao.com/ukulele/";
         url += "?" + data;
         return apps.tweet({
           url: url
         });
       }
     });
+    (function() {
+      var $demo;
+
+      $demo = $('#demo');
+      demo.forEach(function(value, i) {
+        var $option;
+
+        return $option = $('<option>').text("demo 0" + (i + 1)).appendTo($demo);
+      });
+      $demo.on('change', function() {
+        editor.setValue(demo[this.selectedIndex]);
+        return editor.update();
+      });
+      if (value === '') {
+        return $demo.change();
+      }
+    })();
     return editor.update();
   });
 

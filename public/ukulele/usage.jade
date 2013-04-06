@@ -5,7 +5,7 @@ html(lang="ja")
     title how to write hyper ukulele notation
     link(rel="shortcut icon", href="favicon.ico")
     style.
-      .s { font-family:'Courier',monospace; display:inline-block; width:120px; }
+      .s { font-family:'Courier',monospace; display:inline-block; min-width:120px; }
       .d { display:inline-block; min-width:250px; }
       img { vertical-align:middle; }
       code {
@@ -89,7 +89,7 @@ html(lang="ja")
 
     h2 ストローク記法
     p
-      ストローク記法は ! に続けてテンポとシャッフルの有無を指定(省略可)して、ストロークの方法を書きます。
+      ストローク記法は ! に続けてテンポとシャッフルの有無を指定(省略可)して、ストローク(8分音符ずつ)の方法を書きます。
 
     ul
       li
@@ -99,20 +99,81 @@ html(lang="ja")
         span.s !120:3
         span.d テンポを 120 にする (シャッフルする)
       li
-        span.s !D-du
-        span.d ダウン(強)、のばす、ダウン(弱)、アップ(弱)
+        span.s Dd
+        span.d ダウン(強/弱)
       li
-        span.s !P---
-        span.d 親指ダウン(強)、のばす、のばす、のばす
+        span.s Uu
+        span.d アップ(強/弱)
       li
-        span.s !D--x
-        span.d ダウン(強)、のばす、のばす、ミュート
+        span.s Pp
+        span.d 親指ダウン(強/弱)
       li
-        span.s !D--X
-        span.d ダウン(強)、のばす、のばす、ミュート (ノイズあり)
+        span.s Xx
+        span.d ミュート(強/弱)
       li
-        span.s !D-u-,D-u-
-        span.d カンマでコードチェンジする
+        span.s -
+        span.d のばす
       li
-        span.s !D-u-,=,=,DXXX
-        span.d カンマでコードチェンジする ( = は直前と同じストローク)
+        span.s ,
+        span.d コードチェンジ
+      li
+        span.s =
+        span.d 直前と同じストローク
+
+    h2 ストローク記法クックブック
+    ul
+      li
+        span.s !DuDu
+        ul: li ジャジャジャジャ
+      li
+        span.s !:3DuDu
+        ul: li ジャンジャジャンジャ
+      li
+        span.s !D-Du
+        ul: li ジャンジャジャ
+      li
+        span.s !DxDx
+        ul: li ジャッジャッ
+      li
+        span.s !Duxu
+        ul: li ジャジャッジャ
+      li
+        span.s !DuXu
+        ul: li ジャジャツジャ
+      li
+        span.s !DuD,U-dUd
+        ul: li ジャジャジャ ジャンジャジャジャ
+      li
+        span.s !XUXU
+        ul: li ンジャンジャ
+        
+    h2 リピート記法クックブック
+    ul
+      li
+        span.s AB |: CDEF :| G
+        ul: li AB CDEF CDEF G
+      li
+        span.s ABCDEF :| G
+        ul: li ABCDEF ABCDEF G
+      li
+        span.s AB |: CDE :||: FG :|
+        ul: li AB CDE CDE FG FG
+      li
+        span.s AB |: C 1-DE :| 2-FG
+        ul: li AB CDE CFG
+      li
+        span.s A |: B 1-CD :| 2-EF :| 3-G
+        ul: li AB BCD BEF BG
+      li
+        span.s ABCD^ EFG<
+        ul: li ABCDEFG ABCD
+      li
+        span.s AB $CDE^ FG<
+        ul: li ABCDEFG CDE
+      li
+        span.s AB $CD *EF < *G
+        ul: li ABCDEF CDG
+      li
+        span.s AB |: CDE^ :| FG <
+        ul: li AB CDE CDE FG AB CDE
+          

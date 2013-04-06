@@ -134,6 +134,7 @@ drawStroke = (ctx, form)->
   [x, y] = [form.x,form.y]
   prev = ''
   for stroke in form.stroke
+    stroke = stroke.toLowerCase()
     if stroke is '='
       stroke = (for i in [0...prev.length] by 1 then ' ').join ''
     prev = stroke
@@ -205,7 +206,7 @@ getForm = do ->
     name = m[0]
     if name.charAt(0) is '!'
       if m[3]
-        stroke = m[3].toLowerCase().split ','
+        stroke = m[3].split ','
       return type:'!', bpm:m[1], shuffle:!!m[2], stroke:stroke
     if (form = CHORDS[name]) != undefined
       return prev = type:'#', name:name, form:form
@@ -247,10 +248,10 @@ calculate = (src)->
 
 getImageData = (src, opts={})->
   calced = calculate src
-
+  
   canvas = document.createElement 'canvas'
   canvas.width  = calced.width
-  canvas.height = canvas.height + 64
+  canvas.height = calced.height + 64
   ctx = canvas.getContext '2d'
 
   if opts.background
@@ -356,6 +357,9 @@ if typeof timbre != 'undefined'
       _.samples -= _.cellsize
       @
 
+    test: ->
+      while (cmd = fetch.call @) then console.log cmd
+
     fetch = ->
       _ = @_
       cmd = _.list[_.i1++]
@@ -372,27 +376,34 @@ if typeof timbre != 'undefined'
 
       switch cmd.type
         when '|:'
-          _.loopStack.push index:_.i1, maxCount:2, count:1
+          maxCount = 2
+          for i in [_.i1..._.list.length]
+            t = _.list[i].type
+            if t is '|:'
+              break
+            if 1<= +t <= 4
+              maxCount = +t
+          _.loopStack.push index:_.i1, maxCount:maxCount, count:1
         when ':|'
-          lop = _.loopStack[_.loopStack.length - 1]
+          peek = _.loopStack[_.loopStack.length - 1]
+          if not _.loopIgnore
+            if peek
+              if peek.count < peek.maxCount
+                peek.count += 1
+                _.i1 = peek.index              
+              else
+                _.loopStack.pop()
           _.loopIgnore = false
-          if lop
-            if lop.count < lop.maxCount
-              lop.count += 1
-              _.i1 = lop.index
-            else _.loopStack.pop()
         when '1', '2', '3', '4'
-          lop = _.loopStack[_.loopStack.length - 1]
-          if lop
-            count = +cmd.type
-            _.loopIgnore = (lop.count != count)
-            if lop.maxCount < count then lop.maxCount = count
+          peek = _.loopStack[_.loopStack.length - 1]
+          _.loopIgnore = (peek.count != +cmd.type)
+              
         when '$'
             _.segnoIndex = _.i1
         when '*'
           if _.repeat then _.codaIgnore = not _.codaIgnore
         when '<'
-          if not repeat
+          if not _.repeat
             _.repeat = true
             _.i1 = _.segnoIndex
         when '^'
@@ -460,6 +471,7 @@ if typeof timbre != 'undefined'
     play: (data)->
       @send.nodes.splice 0      
       @tl.setList parse(data)
+      # @tl.test()
       @tl.start()
       @sched.start()
       @master.play()

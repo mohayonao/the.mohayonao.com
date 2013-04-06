@@ -3,33 +3,19 @@ extend ../lib/layout
 block config
   - $.title = "hyper ukulele notation"
   - $.path  = "/ukulele/"
-  - $.jslist  = ["/lib/codemirror.js","/lib/timbre.js","ukulele.js","index.js"]
+  - $.jslist  = ["/lib/codemirror.js","/lib/timbre.js","ukulele.js","demo.js","index.js"]
   - $.csslist = ["/lib/codemirror.css","ukulele.css","index.css"]
 
 block content
   h1 #{$.title}
   #container
     div
+      select(id="demo")    
       button(id="play",class="lsf-icon",title="play") Play
       button(id="tweet",class="lsf-icon",title="twitter") Tweet this song
       button(class="lsf-icon",title="help")
         a(href="./usage.html",target="usage") How to write hyper ukulele notation
     div
-      textarea(id="data",rows=12).
-        !200
-        !DuDuxDxD,xDxDDuDu,DuDuxDxD,DuDuDuD-,_DuDuxDx,DxDxDDuDu,DuDuxDxD,DuDuDuD-
-        F = = = _ E7 = Am C;
-        !D-D-DuD-,=,=,D-uD-uDX,D-D-DuD-,=,D-D-DuDu,D-uD-uD-
-        F G7 C C7 _ F G7 Em7 Am;
-        F G7 C C7 _ F G7 Em7 !DxDxDxX- Am;
-        !P-------,=,D-D-DuD-,D-D-DuDu
-        Dm Em7 E7 Am _
-        !D-D-DuD-,D-D-DuD-,D-D-DuDu,D-uD-uD-
-        Dm Em7 G Am;
-        !D-D-DuD-
-        Dm Em7 E7 Am _ Dm Em7 !DuDxDuDX G !DxDxDuDX Am;
-        !D-D-DuD-,D-D-DuD-,D-D-DuDu,D-uD-uDX,D-D-DuD-,D-D-DuD-,D-D-DuDu,D-uD-uD-
-        F G7 C C7 _ F G7 Em7 Am;
-        F G7 C C7 _ F G7 Em7 Am
+      textarea(id="data",rows=12)
     div
       img(id="result")
