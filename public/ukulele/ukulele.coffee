@@ -430,11 +430,11 @@ if typeof timbre != 'undefined'
       x: volume:[0  ,0  ,0  ,0  ], delay:[ 0, 0, 0, 0], mute:true
       X: volume:[0.6,0.6,0.6,0.6], delay:[50,40,20, 0], mute:true
       D: volume:[0.8,0.8,0.9,1.0], delay:[50,40,20, 0], mute:false
-      d: volume:[0.6,0.6,0.7,0.7], delay:[60,40,20, 0], mute:false
+      d: volume:[0.7,0.7,0.8,0.8], delay:[60,40,20, 0], mute:false
       P: volume:[1.0,0.9,0.9,0.8], delay:[ 0,40,80,95], mute:false
-      p: volume:[0.7,0.7,0.6,0.6], delay:[ 0,40,80,95], mute:false
+      p: volume:[0.8,0.8,0.7,0.7], delay:[ 0,40,80,95], mute:false
       U: volume:[1.0,0.9,0.8,0.8], delay:[ 0,20,40,50], mute:false
-      u: volume:[0.7,0.7,0.6,0.6], delay:[ 0,20,40,60], mute:false
+      u: volume:[0.8,0.8,0.7,0.7], delay:[ 0,20,40,60], mute:false
 
     sched = (that, freq, mul, mute)->
       ->

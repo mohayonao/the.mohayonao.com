@@ -931,7 +931,7 @@
           mute: false
         },
         d: {
-          volume: [0.6, 0.6, 0.7, 0.7],
+          volume: [0.7, 0.7, 0.8, 0.8],
           delay: [60, 40, 20, 0],
           mute: false
         },
@@ -941,7 +941,7 @@
           mute: false
         },
         p: {
-          volume: [0.7, 0.7, 0.6, 0.6],
+          volume: [0.8, 0.8, 0.7, 0.7],
           delay: [0, 40, 80, 95],
           mute: false
         },
@@ -951,7 +951,7 @@
           mute: false
         },
         u: {
-          volume: [0.7, 0.7, 0.6, 0.6],
+          volume: [0.8, 0.8, 0.7, 0.7],
           delay: [0, 20, 40, 60],
           mute: false
         }
