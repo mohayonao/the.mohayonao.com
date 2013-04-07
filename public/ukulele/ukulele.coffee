@@ -220,7 +220,9 @@ getForm = do ->
 
 parse = do ->
   re = /(?:!(\d*)(:3)?([-PpDdUuXx,_=]*))|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g
+  comment = /\'[\w\W]*$/
   (src)->
+    src = src.split('\n').map( (x)-> x.replace(comment, '') ).join ''
     while (m = re.exec src) then getForm m
 
 calculate = (src)->
@@ -504,6 +506,9 @@ if typeof CodeMirror != 'undefined'
           'chord'
         when stream.match repeat
           'repeat'
+        when stream.eat "'"
+          stream.skipToEnd()
+          'comment'
         else
           stream.next()
           null

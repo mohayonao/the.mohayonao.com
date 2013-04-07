@@ -33,6 +33,7 @@ if false
   demo.push 'AB |: CDE^ :| FG <'
 
 demo.push '''
+' Ob-La-Di, Ob-La-Da
 $|: !120:3DuDu
  F= C7= C7= F=;
 _F= Bb= FC7 F=;

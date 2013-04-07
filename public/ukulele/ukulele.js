@@ -565,12 +565,16 @@
   })();
 
   parse = (function() {
-    var re;
+    var comment, re;
 
     re = /(?:!(\d*)(:3)?([-PpDdUuXx,_=]*))|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g;
+    comment = /\'[\w\W]*$/;
     return function(src) {
       var m, _results;
 
+      src = src.split('\n').map(function(x) {
+        return x.replace(comment, '');
+      }).join('');
       _results = [];
       while ((m = re.exec(src))) {
         _results.push(getForm(m));
@@ -1052,6 +1056,9 @@
               return 'chord';
             case !stream.match(repeat):
               return 'repeat';
+            case !stream.eat("'"):
+              stream.skipToEnd();
+              return 'comment';
             default:
               stream.next();
               return null;
