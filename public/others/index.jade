@@ -1,14 +1,27 @@
 extend ../lib/layout
 
 block config
-  - $.title = "Twitter Bot"
-  - $.path  = "/twitter-bot/"
+  - $.title = "others"
+  - $.path  = "/others/"
   - $.jslist  = ["index.js"]
   - $.csslist = ["index.css"]
 
 block content
   h1 #{$.title}
   #container
+    h2 app
+    ul
+      li: div
+        a(href="/d/") ドッドッドリドリドドドドドリランド
+  
+    h2 canvas
+    ul
+      li: div
+        a(href="/canvas/gray/") gray
+      li: div
+        a(href="/canvas/binalize/") binalize
+
+    h2 twitter-bot
     ul
       li: div
         a(href="https://twitter.com/arenasore") @arenasore
