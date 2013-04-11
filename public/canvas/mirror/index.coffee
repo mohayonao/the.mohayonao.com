@@ -36,7 +36,8 @@ $ ->
       context.putImageData imageData, 0, 0
 
   animate = (now)->
-    processor.process video, canvas
+    apps.stats ->
+      processor.process video, canvas
     requestAnimationFrame animate
 
   video  = document.getElementById 'cam'

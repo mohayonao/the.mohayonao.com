@@ -44,7 +44,9 @@
 
     })();
     animate = function(now) {
-      processor.process(video, canvas);
+      apps.stats(function() {
+        return processor.process(video, canvas);
+      });
       return requestAnimationFrame(animate);
     };
     video = document.getElementById('cam');

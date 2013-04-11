@@ -37,7 +37,20 @@ $ ->
       else
         obj[key] = decodeURIComponent items[1]
     obj
-  
+
+  stats = new Stats
+  apps.stats = (func)->
+    stats.domElement.style.position = 'absolute'
+    stats.domElement.style.right    = '0px'
+    stats.domElement.style.top      = '0px'
+    document.body.appendChild stats.domElement
+
+    apps.stats = (func)->
+      stats.begin()
+      do func
+      stats.end()
+    do func
+    
   $sidebar  = $('#sidebar')
   $appimage = $('#appimage')
     

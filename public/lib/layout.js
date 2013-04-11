@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $appimage, $sidebar, apps, show_app_image, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+    var $appimage, $sidebar, apps, show_app_image, stats, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
 
     if ((_ref = window.requestAnimationFrame) == null) {
       window.requestAnimationFrame = (_ref1 = (_ref2 = (_ref3 = (_ref4 = window.webkitRequestAnimationFrame) != null ? _ref4 : window.mozRequestAnimationFrame) != null ? _ref3 : window.oRequestAnimationFrame) != null ? _ref2 : window.msRequestAnimationFrame) != null ? _ref1 : function(f) {
@@ -44,6 +44,19 @@
         }
       }
       return obj;
+    };
+    stats = new Stats;
+    apps.stats = function(func) {
+      stats.domElement.style.position = 'absolute';
+      stats.domElement.style.right = '0px';
+      stats.domElement.style.top = '0px';
+      document.body.appendChild(stats.domElement);
+      apps.stats = function(func) {
+        stats.begin();
+        func();
+        return stats.end();
+      };
+      return func();
     };
     $sidebar = $('#sidebar');
     $appimage = $('#appimage');
