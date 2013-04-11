@@ -1,37 +1,72 @@
 (function() {
   $(function() {
     'use strict';
-    var canvas, context, draw, image;
+    var ImageProcessor, animate, canvas, func, image, onerror, onsuccess, processor, video;
 
-    canvas = document.getElementById('result');
-    canvas.width = 512;
-    canvas.height = 512;
-    context = canvas.getContext('2d');
-    draw = function(param) {
+    func = function(imageData) {
       var data, gray, i, _i, _ref;
 
-      if (image.saved) {
-        image.imageData.data.set(image.saved);
-        data = image.imageData.data;
-        for (i = _i = 0, _ref = data.length; _i < _ref; i = _i += 4) {
-          gray = 0.114 * data[i] + 0.587 * data[i + 1] + 0.299 * data[i + 2];
-          data[i + 0] = data[i + 0] * (1 - param) + gray * param;
-          data[i + 1] = data[i + 1] * (1 - param) + gray * param;
-          data[i + 2] = data[i + 2] * (1 - param) + gray * param;
-        }
-        return context.putImageData(image.imageData, 0, 0);
+      data = imageData.data;
+      for (i = _i = 0, _ref = data.length; _i < _ref; i = _i += 4) {
+        gray = 0.114 * data[i] + 0.587 * data[i + 1] + 0.299 * data[i + 2];
+        data[i + 0] = gray;
+        data[i + 1] = gray;
+        data[i + 2] = gray;
       }
+      return 0;
     };
-    $('#param').on('change', function() {
-      return draw($(this).val() * 0.01);
-    });
+    ImageProcessor = (function() {
+      function ImageProcessor(func) {
+        this.func = func;
+        this.canvas = document.createElement('canvas');
+        this.width = this.canvas.width = 256;
+        this.height = this.canvas.height = 256;
+        this.context = this.canvas.getContext('2d');
+      }
+
+      ImageProcessor.prototype.setSize = function(width, height) {
+        this.width = this.canvas.width = width;
+        return this.height = this.canvas.height = height;
+      };
+
+      ImageProcessor.prototype.process = function(src, dst) {
+        var context, imageData;
+
+        context = dst.getContext('2d');
+        this.context.drawImage(src, 0, 0, src.width, src.height);
+        imageData = this.context.getImageData(0, 0, this.width, this.height);
+        if (typeof this.func === "function") {
+          this.func(imageData);
+        }
+        return context.putImageData(imageData, 0, 0);
+      };
+
+      return ImageProcessor;
+
+    })();
+    animate = function(now) {
+      processor.process(video, canvas);
+      return requestAnimationFrame(animate);
+    };
+    video = document.getElementById('cam');
+    canvas = document.getElementById('canvas');
+    processor = new ImageProcessor(func);
     image = document.getElementById('src');
-    return $(image).on('load', function() {
-      context.drawImage(this, 0, 0, this.width, this.height, 0, 0, canvas.width, canvas.height);
-      image.imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-      image.saved = new Uint8ClampedArray(image.imageData.data);
-      return draw(1);
+    $(image).on('load', function() {
+      processor.setSize(this.width, this.height);
+      return processor.process(this, canvas);
     });
+    onsuccess = function(stream) {
+      video.src = window.webkitURL.createObjectURL(stream);
+      return requestAnimationFrame(animate);
+    };
+    onerror = function(error) {
+      return console.log(error);
+    };
+    return navigator.webkitGetUserMedia({
+      audio: false,
+      video: true
+    }, onsuccess, onerror);
   });
 
 }).call(this);
