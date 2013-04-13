@@ -1,0 +1,10 @@
+extend ../lib/layout
+
+block config
+  - $.title = "falling-sushi"
+  - $.path  = "/falling-sushi/"
+  - $.jslist  = ["index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  canvas(id="canvas")
