@@ -18,7 +18,7 @@ $ ->
     
     _load: ->
       img = new Image
-      img.src = "./img/#{('000'+@num).substr(-3)}.png"
+      img.src = "/lib/img/sushi/#{('000'+@num).substr(-3)}.png"
       img.onload = =>
         @dfd.resolve img
       @_load = =>

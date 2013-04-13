@@ -28,7 +28,7 @@
           _this = this;
 
         img = new Image;
-        img.src = "./img/" + (('000' + this.num).substr(-3)) + ".png";
+        img.src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
         img.onload = function() {
           return _this.dfd.resolve(img);
         };
