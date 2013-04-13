@@ -72,7 +72,7 @@
     rand = function(min, max) {
       var _ref;
 
-      if (typeof max === 'undefined') {
+      if (max == null) {
         _ref = [0, min], min = _ref[0], max = _ref[1];
       }
       return Math.random() * (max - min) + min;

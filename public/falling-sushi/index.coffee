@@ -39,7 +39,7 @@ $ ->
       context.drawImage @img, 0, 0, @img.width, @img.height, x, y, size, size
 
   rand = (min, max)->
-    if typeof max is 'undefined'
+    if not max?
       [min, max] = [0, min]
     Math.random() * (max - min) + min
       
