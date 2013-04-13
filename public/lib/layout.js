@@ -45,15 +45,20 @@
       }
       return obj;
     };
-    apps.animate = function(func) {
-      var prev, _animate;
+    apps.animate = function(opts) {
+      var func, ifps, prev, _animate, _ref6;
 
+      func = arguments[arguments.length - 1];
+      ifps = 1000 / ((_ref6 = opts.fps) != null ? _ref6 : 60);
       prev = 0;
       _animate = function(now) {
-        var result;
+        var dt, result;
 
-        result = func(now, now - prev);
-        prev = now;
+        dt = now - prev;
+        if (dt > ifps) {
+          result = func(now, dt);
+          prev = now;
+        }
         if (result !== false) {
           return requestAnimationFrame(_animate);
         }

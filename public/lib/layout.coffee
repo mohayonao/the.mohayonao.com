@@ -38,11 +38,16 @@ $ ->
         obj[key] = decodeURIComponent items[1]
     obj
 
-  apps.animate = (func)->
+  apps.animate = (opts)->
+    func = arguments[arguments.length-1]
+    ifps = 1000 / (opts.fps ? 60)
+
     prev = 0
     _animate = (now)->
-      result = func(now, now - prev)
-      prev = now
+      dt = now - prev
+      if dt > ifps
+        result = func(now, dt)
+        prev = now
       if result != false
         requestAnimationFrame _animate
     requestAnimationFrame _animate
