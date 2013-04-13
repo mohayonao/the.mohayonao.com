@@ -45,6 +45,21 @@
       }
       return obj;
     };
+    apps.animate = function(func) {
+      var prev, _animate;
+
+      prev = 0;
+      _animate = function(now) {
+        var result;
+
+        result = func(now, now - prev);
+        prev = now;
+        if (result !== false) {
+          return requestAnimationFrame(_animate);
+        }
+      };
+      return requestAnimationFrame(_animate);
+    };
     stats = new Stats;
     apps.stats = function(func) {
       stats.domElement.style.position = 'absolute';

@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var IMAGE_NUM, ImageLoader, OBJECT_NUM, SUSHI_SIZE, Sushi, animate, canvas, context, i, objects, prev, rand;
+    var IMAGE_NUM, ImageLoader, OBJECT_NUM, SUSHI_SIZE, Sushi, canvas, context, i, objects, rand;
 
     OBJECT_NUM = 200;
     IMAGE_NUM = 75;
@@ -93,19 +93,16 @@
     objects.sort(function(a, b) {
       return a.z - b.z;
     });
-    prev = 0;
-    animate = function(now) {
-      apps.stats(function() {
-        var o, time, _i, _results;
+    return apps.animate(function(now, dt) {
+      return apps.stats(function() {
+        var o, _i, _results;
 
-        time = now - prev;
-        prev = now;
         context.clearRect(0, 0, canvas.width, canvas.height);
         _results = [];
         for (i = _i = 0; _i < OBJECT_NUM; i = _i += 1) {
           o = objects[i];
           o.x += rand(-1, 1);
-          o.y += o.z * time * 0.1;
+          o.y += o.z * dt * 0.1;
           o.draw(context);
           if (o.y > canvas.height + SUSHI_SIZE * 5) {
             _results.push(objects[i] = new Sushi(rand(IMAGE_NUM) | 0, rand(canvas.width), SUSHI_SIZE * -5, o.z));
@@ -115,9 +112,7 @@
         }
         return _results;
       });
-      return requestAnimationFrame(animate);
-    };
-    return requestAnimationFrame(animate);
+    });
   });
 
 }).call(this);

@@ -30,12 +30,7 @@ $ ->
       @func? imageData
       
       context.putImageData imageData, 0, 0
-
-  animate = (now)->
-    apps.stats ->
-      processor.process video, canvas
-    requestAnimationFrame animate
-
+  
   video  = document.getElementById 'cam'
   canvas = document.getElementById 'canvas'
   processor = new ImageProcessor func
@@ -47,7 +42,9 @@ $ ->
   
   onsuccess = (stream)->
     video.src = window.webkitURL.createObjectURL stream
-    requestAnimationFrame animate    
+    apps.animate ->
+      apps.stats ->
+        processor.process video, canvas
 
   onerror = (error)->
     console.log error

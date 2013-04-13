@@ -38,6 +38,15 @@ $ ->
         obj[key] = decodeURIComponent items[1]
     obj
 
+  apps.animate = (func)->
+    prev = 0
+    _animate = (now)->
+      result = func(now, now - prev)
+      prev = now
+      if result != false
+        requestAnimationFrame _animate
+    requestAnimationFrame _animate
+
   stats = new Stats
   apps.stats = (func)->
     stats.domElement.style.position = 'absolute'

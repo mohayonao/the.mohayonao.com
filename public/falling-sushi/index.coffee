@@ -57,18 +57,14 @@ $ ->
     )
   objects.sort (a, b)-> a.z - b.z
 
-  prev = 0
-  animate = (now)->
+  apps.animate (now, dt)->
     apps.stats ->
-      time = now - prev
-      prev = now
-    
       context.clearRect 0, 0, canvas.width, canvas.height
 
       for i in [0...OBJECT_NUM] by 1
         o = objects[i]
         o.x += rand(-1, 1)
-        o.y += o.z * time * 0.1
+        o.y += o.z * dt * 0.1
         o.draw context
         
         if o.y > canvas.height + SUSHI_SIZE * 5
@@ -78,6 +74,3 @@ $ ->
             SUSHI_SIZE * -5,
             o.z
           )
-    requestAnimationFrame animate
-
-  requestAnimationFrame animate

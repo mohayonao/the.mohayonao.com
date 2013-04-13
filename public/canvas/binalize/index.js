@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var ImageProcessor, animate, canvas, func, image, onerror, onsuccess, processor, threshold, video;
+    var ImageProcessor, canvas, func, image, onerror, onsuccess, processor, threshold, video;
 
     threshold = 64;
     func = function(imageData) {
@@ -43,12 +43,6 @@
       return ImageProcessor;
 
     })();
-    animate = function(now) {
-      apps.stats(function() {
-        return processor.process(video, canvas);
-      });
-      return requestAnimationFrame(animate);
-    };
     video = document.getElementById('cam');
     canvas = document.getElementById('canvas');
     processor = new ImageProcessor(func);
@@ -59,7 +53,11 @@
     });
     onsuccess = function(stream) {
       video.src = window.webkitURL.createObjectURL(stream);
-      return requestAnimationFrame(animate);
+      return apps.animate(function() {
+        return apps.stats(function() {
+          return processor.process(video, canvas);
+        });
+      });
     };
     onerror = function(error) {
       return console.log(error);
