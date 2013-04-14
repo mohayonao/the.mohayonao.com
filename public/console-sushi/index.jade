@@ -1,0 +1,21 @@
+extend ../lib/layout
+
+block config
+  - $.title = "console-sushi"
+  - $.path  = "/console-sushi/"
+  - $.jslist  = ["index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    h2 1. Open the Console (use Google Chrome)
+    h2 2. Order the Sushi
+    div
+      button(data-num=00) まぐろ
+      button(data-num=72) いか    
+      button(data-num=71) えび
+      button(data-num=60) はまち      
+      button(data-num=70) サーモン
+      button(data-num=18) うなぎ
+      button(data-num=27) たまご
