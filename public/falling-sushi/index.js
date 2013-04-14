@@ -93,25 +93,25 @@
     objects.sort(function(a, b) {
       return a.z - b.z;
     });
-    return apps.animate(function(now, dt) {
-      return apps.stats(function() {
-        var o, _i, _results;
+    return apps.animate({
+      fps: 40
+    }, function(now, dt) {
+      var o, _i, _results;
 
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        _results = [];
-        for (i = _i = 0; _i < OBJECT_NUM; i = _i += 1) {
-          o = objects[i];
-          o.x += rand(-1, 1);
-          o.y += o.z * dt * 0.1;
-          o.draw(context);
-          if (o.y > canvas.height + SUSHI_SIZE * 5) {
-            _results.push(objects[i] = new Sushi(rand(IMAGE_NUM) | 0, rand(canvas.width), SUSHI_SIZE * -5, o.z));
-          } else {
-            _results.push(void 0);
-          }
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      _results = [];
+      for (i = _i = 0; _i < OBJECT_NUM; i = _i += 1) {
+        o = objects[i];
+        o.x += rand(-1, 1);
+        o.y += o.z * dt * 0.1;
+        o.draw(context);
+        if (o.y > canvas.height + SUSHI_SIZE * 5) {
+          _results.push(objects[i] = new Sushi(rand(IMAGE_NUM) | 0, rand(canvas.width), SUSHI_SIZE * -5, o.z));
+        } else {
+          _results.push(void 0);
         }
-        return _results;
-      });
+      }
+      return _results;
     });
   });
 

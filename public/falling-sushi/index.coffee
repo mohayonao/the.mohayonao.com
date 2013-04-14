@@ -57,20 +57,18 @@ $ ->
     )
   objects.sort (a, b)-> a.z - b.z
 
-  apps.animate (now, dt)->
-    apps.stats ->
-      context.clearRect 0, 0, canvas.width, canvas.height
-
-      for i in [0...OBJECT_NUM] by 1
-        o = objects[i]
-        o.x += rand(-1, 1)
-        o.y += o.z * dt * 0.1
-        o.draw context
-        
-        if o.y > canvas.height + SUSHI_SIZE * 5
-          objects[i] = new Sushi(
-            rand(IMAGE_NUM)|0,
-            rand(canvas.width),
-            SUSHI_SIZE * -5,
-            o.z
-          )
+  apps.animate fps:40, (now, dt)->
+    context.clearRect 0, 0, canvas.width, canvas.height
+    for i in [0...OBJECT_NUM] by 1
+      o = objects[i]
+      o.x += rand(-1, 1)
+      o.y += o.z * dt * 0.1
+      o.draw context
+      
+      if o.y > canvas.height + SUSHI_SIZE * 5
+        objects[i] = new Sushi(
+          rand(IMAGE_NUM)|0,
+          rand(canvas.width),
+          SUSHI_SIZE * -5,
+          o.z
+        )
