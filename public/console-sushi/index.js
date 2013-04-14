@@ -51,7 +51,7 @@
 
         dfd = $.Deferred();
         new ImageLoader().load(this.num).then(function(img) {
-          var a, b, canvas, colors, context, data, g, i, r;
+          var b, canvas, colors, context, data, g, i, r;
 
           canvas = document.createElement('canvas');
           canvas.width = _this.width;
@@ -66,14 +66,10 @@
 
             _results = [];
             for (i = _i = 0, _ref = data.length - 4; _i < _ref; i = _i += 4) {
-              a = data[i + 4] / 255;
-              r = ((data[i + 0] * a) + (255 * (1 - a))) | 0;
-              g = ((data[i + 1] * a) + (255 * (1 - a))) | 0;
-              b = ((data[i + 2] * a) + (255 * (1 - a))) | 0;
-              r = ('00' + r.toString(16)).substr(-2);
-              g = ('00' + g.toString(16)).substr(-2);
-              b = ('00' + b.toString(16)).substr(-2);
-              _results.push("color:#" + r + g + b);
+              r = ('00' + data[i + 0].toString(16)).substr(-2);
+              g = ('00' + data[i + 1].toString(16)).substr(-2);
+              b = ('00' + data[i + 2].toString(16)).substr(-2);
+              _results.push("#" + r + g + b);
             }
             return _results;
           })();
@@ -100,24 +96,6 @@
 
         this.width = width != null ? width : 128;
         this.height = height != null ? height : 24;
-        this.text = ((function() {
-          var _i, _ref, _results;
-
-          _results = [];
-          for (i = _i = 0, _ref = this.width; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-            _results.push('%c\u2588');
-          }
-          return _results;
-        }).call(this)).join('');
-        this.pad = (function() {
-          var _i, _ref, _results;
-
-          _results = [];
-          for (i = _i = 0, _ref = this.width; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-            _results.push('color:#ffffff');
-          }
-          return _results;
-        }).call(this);
         this.data = (function() {
           var _i, _ref, _results;
 
@@ -139,14 +117,37 @@
       };
 
       SushiLane.prototype.draw = function() {
-        var data, i, _i, _ref;
+        var css, data, items, j, list, val, _i, _len;
 
+        list = (function() {
+          var _i, _j, _len, _ref, _ref1, _results;
+
+          _ref = this.data;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            data = _ref[_i];
+            val = [];
+            css = [];
+            for (j = _j = 0, _ref1 = Math.min(data.length, this.width); _j < _ref1; j = _j += 1) {
+              if (data[j] !== data[j - 1]) {
+                val.push('%c');
+                css.push("color:" + data[j]);
+              }
+              val.push('\u2588');
+            }
+            if (css[css.length - 1] === 'color:#ffffff') {
+              val.splice(val.lastIndexOf('%c'));
+              css.pop();
+            }
+            data.splice(0, 3);
+            _results.push([val.join('')].concat(css));
+          }
+          return _results;
+        }).call(this);
         console.clear();
-        for (i = _i = 0, _ref = this.data.length; _i < _ref; i = _i += 1) {
-          data = (this.data[i].concat(this.pad)).slice(0, this.width);
-          console.log.apply(console, [this.text].concat(data));
-          this.data[i].shift();
-          this.data[i].push('color:#ffffff');
+        for (_i = 0, _len = list.length; _i < _len; _i++) {
+          items = list[_i];
+          console.log.apply(console, items);
         }
         return 0;
       };
@@ -158,7 +159,7 @@
     lane = new SushiLane(width);
     setInterval(function() {
       return lane.draw();
-    }, 500);
+    }, 750);
     return $('button', '#container').on('click', function() {
       var num;
 

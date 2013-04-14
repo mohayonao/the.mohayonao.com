@@ -37,14 +37,10 @@ $ ->
         data = context.getImageData(0, 0, canvas.width, canvas.height).data
         
         colors = for i in [0...data.length-4] by 4
-          a  = data[i+4] / 255
-          r = ((data[i+0] * a) + (255 * (1-a)))|0
-          g = ((data[i+1] * a) + (255 * (1-a)))|0
-          b = ((data[i+2] * a) + (255 * (1-a)))|0
-          r = ('00'+r.toString(16)).substr -2
-          g = ('00'+g.toString(16)).substr -2
-          b = ('00'+b.toString(16)).substr -2
-          "color:##{r}#{g}#{b}"
+          r = ('00'+data[i+0].toString(16)).substr -2
+          g = ('00'+data[i+1].toString(16)).substr -2
+          b = ('00'+data[i+2].toString(16)).substr -2
+          "##{r}#{g}#{b}"
         
         data = for i in [0...@height]
           colors.splice 0, @width
@@ -54,8 +50,6 @@ $ ->
 
   class SushiLane
     constructor: (@width=128, @height=24)->
-      @text = ('%c\u2588' for i in [0...@width]).join ''
-      @pad  = ('color:#ffffff'  for i in [0...@width])
       @data = ([] for i in [0...@height])
     
     put: (data)->
@@ -64,12 +58,22 @@ $ ->
       0
 
     draw: ->
+      list = for data in @data
+        val = []
+        css = []
+        for j in [0...Math.min(data.length, @width)] by 1
+          if data[j] != data[j-1]
+            val.push '%c'
+            css.push "color:#{data[j]}"
+          val.push '\u2588'
+        if css[css.length-1] is 'color:#ffffff'
+          val.splice val.lastIndexOf '%c'
+          css.pop()
+        data.splice 0, 3
+        [val.join ''].concat css
       console.clear()
-      for i in [0...@data.length] by 1
-        data = (@data[i].concat @pad).slice 0, @width
-        console.log.apply console, [@text].concat data
-        @data[i].shift()
-        @data[i].push 'color:#ffffff'
+      for items in list
+        console.log.apply console, items
       0
 
   width = ((window.innerWidth - 120) / 8)|0
@@ -77,7 +81,7 @@ $ ->
   
   setInterval ->
     lane.draw()
-  , 500
+  , 750
 
   $('button', '#container').on 'click', ->
     num = ($(this).attr 'data-num')|0
