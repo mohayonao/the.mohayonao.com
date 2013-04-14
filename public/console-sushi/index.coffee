@@ -37,10 +37,7 @@ $ ->
         data = context.getImageData(0, 0, canvas.width, canvas.height).data
         
         colors = for i in [0...data.length-4] by 4
-          r = ('00'+data[i+0].toString(16)).substr -2
-          g = ('00'+data[i+1].toString(16)).substr -2
-          b = ('00'+data[i+2].toString(16)).substr -2
-          "##{r}#{g}#{b}"
+          (data[i] << 16) + (data[i+1] << 8) + data[i+2]
         
         data = for i in [0...@height]
           colors.splice 0, @width
@@ -64,15 +61,15 @@ $ ->
         for j in [0...Math.min(data.length, @width)] by 1
           if data[j] != data[j-1]
             val.push '%c'
-            css.push "color:#{data[j]}"
+            css.push data[j]
           val.push '\u2588'
-        if css[css.length-1] is 'color:#ffffff'
+        if css[css.length-1] is 0xffffff
           val.splice val.lastIndexOf '%c'
           css.pop()
         val.push "%c#{i}"
-        css.push 'color:#ffffff'
+        css.push 0xffffff
         data.splice 0, 3
-        [val.join ''].concat css
+        [val.join ''].concat css.map (x) -> "color:##{('000000'+x.toString(16)).substr -6}"
       console.clear()
       for items in list
         console.log.apply console, items

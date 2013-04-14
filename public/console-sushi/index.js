@@ -51,7 +51,7 @@
 
         dfd = $.Deferred();
         new ImageLoader().load(this.num).then(function(img) {
-          var b, canvas, colors, context, data, g, i, r;
+          var canvas, colors, context, data, i;
 
           canvas = document.createElement('canvas');
           canvas.width = _this.width;
@@ -66,10 +66,7 @@
 
             _results = [];
             for (i = _i = 0, _ref = data.length - 4; _i < _ref; i = _i += 4) {
-              r = ('00' + data[i + 0].toString(16)).substr(-2);
-              g = ('00' + data[i + 1].toString(16)).substr(-2);
-              b = ('00' + data[i + 2].toString(16)).substr(-2);
-              _results.push("#" + r + g + b);
+              _results.push((data[i] << 16) + (data[i + 1] << 8) + data[i + 2]);
             }
             return _results;
           })();
@@ -131,18 +128,20 @@
             for (j = _j = 0, _ref1 = Math.min(data.length, this.width); _j < _ref1; j = _j += 1) {
               if (data[j] !== data[j - 1]) {
                 val.push('%c');
-                css.push("color:" + data[j]);
+                css.push(data[j]);
               }
               val.push('\u2588');
             }
-            if (css[css.length - 1] === 'color:#ffffff') {
+            if (css[css.length - 1] === 0xffffff) {
               val.splice(val.lastIndexOf('%c'));
               css.pop();
             }
             val.push("%c" + i);
-            css.push('color:#ffffff');
+            css.push(0xffffff);
             data.splice(0, 3);
-            _results.push([val.join('')].concat(css));
+            _results.push([val.join('')].concat(css.map(function(x) {
+              return "color:#" + (('000000' + x.toString(16)).substr(-6));
+            })));
           }
           return _results;
         }).call(this);
