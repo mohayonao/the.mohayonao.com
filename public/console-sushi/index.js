@@ -117,15 +117,15 @@
       };
 
       SushiLane.prototype.draw = function() {
-        var css, data, items, j, list, val, _i, _len;
+        var css, data, i, items, j, list, val, _i, _len;
 
         list = (function() {
           var _i, _j, _len, _ref, _ref1, _results;
 
           _ref = this.data;
           _results = [];
-          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-            data = _ref[_i];
+          for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+            data = _ref[i];
             val = [];
             css = [];
             for (j = _j = 0, _ref1 = Math.min(data.length, this.width); _j < _ref1; j = _j += 1) {
@@ -139,6 +139,8 @@
               val.splice(val.lastIndexOf('%c'));
               css.pop();
             }
+            val.push("%c" + i);
+            css.push('color:#ffffff');
             data.splice(0, 3);
             _results.push([val.join('')].concat(css));
           }

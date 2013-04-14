@@ -58,7 +58,7 @@ $ ->
       0
 
     draw: ->
-      list = for data in @data
+      list = for data, i in @data
         val = []
         css = []
         for j in [0...Math.min(data.length, @width)] by 1
@@ -69,6 +69,8 @@ $ ->
         if css[css.length-1] is 'color:#ffffff'
           val.splice val.lastIndexOf '%c'
           css.pop()
+        val.push "%c#{i}"
+        css.push 'color:#ffffff'
         data.splice 0, 3
         [val.join ''].concat css
       console.clear()
