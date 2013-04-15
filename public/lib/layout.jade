@@ -49,6 +49,8 @@ html(lang="#{$.lang}")
               a(href=app.path,title=app.title)
                 img(src="#{make_iconpath(app)}").hidden
                 span #{app.title}
+      h2
+        a(href="https://github.com/mohayonao/apps/tree/master/public#{$.path}",target="github") VIEW SOURCE ON GITHUB
     #content
       block content
 

@@ -1,14 +1,14 @@
 module.exports = (grunt)->
   'use strict'
-    
+  
   String::countOf = (char)->
     res = 0
     for i in [0...@length] by 1
       res += 1 if @[i] is char
     res
   String::times = (times)->
-    (for i in [0...times] by 1 then @).join ''
-
+    (@ for i in [0...times] by 1).join ''
+  
   GRUNT_CHANGED_PATH = '.grunt-changed-file'
   if grunt.file.exists GRUNT_CHANGED_PATH
     changed = grunt.file.read GRUNT_CHANGED_PATH
@@ -16,7 +16,7 @@ module.exports = (grunt)->
     changed_only = (file)-> file is changed
   else
     changed_only = (file)-> true
-    
+  
   data = do ->
     index = grunt.file.readJSON 'public/index.json'
     dict = {}
@@ -88,7 +88,6 @@ module.exports = (grunt)->
 
   grunt.event.on 'watch', (action, changed)->
     if not /(layout|index\.json)/.test changed
-      grunt.cli.tasks.push ["--changed=#{changed}"]
       grunt.file.write GRUNT_CHANGED_PATH, changed
   
   grunt.registerTask 'default', ['connect', 'watch']
@@ -96,20 +95,20 @@ module.exports = (grunt)->
   grunt.registerTask 'build'  , ['jade', 'stylus', 'coffee']
   
   grunt.registerTask 'new_app', (name)->
-    fs = require 'fs'
-    path = "#{__dirname}/public/#{name}"
-    if fs.existsSync path
+    path = "public/#{name}"
+    if grunt.file.exists path
       console.warn "App already exists: #{name}"
       process.exit 0
 
     depth = name.countOf('/') + 1
     rel   = '../'.times depth
 
-    console.log "mkdir : #{path}"
-    fs.mkdirSync path
-
+    console.log "mkdir : #{path}/"
+    grunt.file.mkdir path
+  
     console.log "create: #{path}/index.jade"
-    fs.writeFileSync "#{path}/index.jade", """extend #{rel}lib/layout
+    grunt.file.write "#{path}/index.jade", """
+extend #{rel}lib/layout
 
 block config
   - $.title = \"#{name}\"
@@ -119,12 +118,25 @@ block config
 
 block content
   h1 \#{$.title}
-  \#container\n
+  \#container
+    
 """
+
     console.log "create: #{path}/index.coffee"
-    fs.writeFileSync "#{path}/index.coffee", "$ ->\n  'use strict'\n  "
+    grunt.file.write "#{path}/index.coffee", """
+$ ->
+  'use strict'
+
+  
+"""
+    
     console.log "create: #{path}/index.styl"
-    fs.writeFileSync "#{path}/index.styl", "@import \"#{rel}lib/layout\"\n\n#content\n  0"
+    grunt.file.write "#{path}/index.styl", """
+@import \"#{rel}lib/layout\"
+
+#content
+  0
+"""
 
     if depth is 1
       grunt.file.copy 'public/lib/appimage.png', "#{path}/appimage.png"
