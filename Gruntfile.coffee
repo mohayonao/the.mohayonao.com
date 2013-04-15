@@ -1,14 +1,11 @@
 module.exports = (grunt)->
   'use strict'
   
-  String::countOf = (char)->
-    res = 0
-    for i in [0...@length] by 1
-      res += 1 if @[i] is char
-    res
+  String::countOf = (str)->
+    (1 while (i = @.indexOf(str, i) + 1)).length
   String::times = (times)->
     (@ for i in [0...times] by 1).join ''
-  
+    
   GRUNT_CHANGED_PATH = '.grunt-changed-file'
   if grunt.file.exists GRUNT_CHANGED_PATH
     changed = grunt.file.read GRUNT_CHANGED_PATH

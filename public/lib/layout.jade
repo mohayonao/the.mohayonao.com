@@ -9,7 +9,7 @@
 block config
 
 - var rootpath = $.path.length === 0 ? "" : /^(\/[-\w]+)/.exec($.path)[0];
-- var make_iconpath = function(app) { return /^https?:/.test(app.path) ? "/lib/icon/"+app.title.replace(/\s/g,"")+".png" : app.path+"appimage.png" };
+- var make_iconpath = function(app) { return /^https?:/.test(app.path) ? "/lib/img/icon/"+app.title.replace(/\s/g,"")+".png" : app.path+"appimage.png" };
 
 doctype 5
 html(lang="#{$.lang}")
