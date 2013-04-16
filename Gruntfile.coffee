@@ -137,7 +137,6 @@ $ ->
 
     if depth is 1
       grunt.file.copy 'public/lib/appimage.png', "#{path}/appimage.png"
-      grunt.file.copy 'public/lib/favicon.ico' , "#{path}/favicon.ico"
 
     path = "public/#{name}"
     grunt.config.set ['jade'  ,'files','filter'], (file)-> file is "#{path}/index.jade"
