@@ -28,6 +28,10 @@ skip_files:
 - ^(.*/)?.*/RCS/.*
 - ^(.*/)?\..*
 - ^(.*/)?.*\.bak$
+- ^(.*/)?\.git/.*
+- ^(.*/)?\.gitignore
+- ^(.*/)?\.DS_Store
+- ^(.*/)?tools/.*
 - ^(.*/)?node_modules/.*
 - ^(.*/)?Procfile
 - ^(.*/)?package\.json
