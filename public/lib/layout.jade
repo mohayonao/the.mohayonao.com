@@ -37,7 +37,6 @@ html(lang="#{$.lang}")
     #sidebar
       div(id="appimage")
        img(src="#{rootpath}/appimage.png")
-       img(src="/appimage.png").hidden
       h1
         a(href="/") the.mohayonao.com
       each items in index
@@ -45,9 +44,9 @@ html(lang="#{$.lang}")
           h2 #{items.name.toUpperCase()}
         ul(id="app-list")
           each app in items.list
-            li(data-media=app.media)
+            - style = app.path === $.path ? 'list-style-image:url(/lib/list-style.gif)' : null
+            li(data-media=app.media,style=style)
               a(href=app.path,title=app.title)
-                img(src="#{make_iconpath(app)}").hidden
                 span #{app.title}
       h2
         a(href="https://github.com/mohayonao/apps/tree/master/public#{$.path}",target="github") VIEW SOURCE ON GITHUB

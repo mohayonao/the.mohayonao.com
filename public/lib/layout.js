@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $appimage, $sidebar, apps, show_app_image, stats, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+    var $appimage, $sidebar, apps, stats, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
 
     if ((_ref = window.requestAnimationFrame) == null) {
       window.requestAnimationFrame = (_ref1 = (_ref2 = (_ref3 = (_ref4 = window.webkitRequestAnimationFrame) != null ? _ref4 : window.mozRequestAnimationFrame) != null ? _ref3 : window.oRequestAnimationFrame) != null ? _ref2 : window.msRequestAnimationFrame) != null ? _ref1 : function(f) {
@@ -81,44 +81,14 @@
     $sidebar = $('#sidebar');
     $appimage = $('#appimage');
     if (apps.isMouseDevice) {
-      show_app_image = (function() {
-        var $origin, func;
-
-        $origin = $('img', $appimage);
-        func = function(name) {
-          var _ref6;
-
-          return $appimage.empty().append((_ref6 = show_app_image[name]) != null ? _ref6 : $origin[0]);
-        };
-        func['default'] = $($origin[1]).remove().show();
-        return func;
-      })();
-      $('li', $sidebar).each(function(i, elem) {
-        var $img, $li, media, url;
+      return $('li', $sidebar).each(function(i, elem) {
+        var $li, media;
 
         $li = $(elem);
         media = $li.attr('data-media');
         if (media === 'tablet' || media === 'phone') {
           return $li.remove();
         }
-        $img = $('img', $li).remove().show();
-        url = $('a', $li).attr('href');
-        show_app_image[url] = $img;
-        if (apps.name === url) {
-          $li.css('list-style-image', 'url("/lib/list-style.gif")');
-        }
-        return $li.on('mouseover', function() {
-          return show_app_image(url);
-        });
-      });
-      $('ul', $sidebar).on('mouseout', function() {
-        return show_app_image(null);
-      });
-      $('h1', $sidebar).on('mouseout', function() {
-        return show_app_image(null);
-      });
-      return $('h1', $sidebar).on('mouseover', function() {
-        return show_app_image('default');
       });
     } else if (apps.isTablet) {
       return $('li', $sidebar).each(function(i, elem) {
