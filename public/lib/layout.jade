@@ -1,7 +1,7 @@
 - var $ = {}
 - $.lang  = "en"
 - $.title = "the.mohayonao.com"
-- $.desc  = ""
+- $.desc  = null
 - $.path  = ""
 - $.jslist  = []
 - $.csslist = []
@@ -10,17 +10,19 @@ block config
 
 - var rootpath = $.path.length === 0 ? "" : /^(\/[-\w]+)/.exec($.path)[0];
 - var make_iconpath = function(app) { return /^https?:/.test(app.path) ? "/lib/img/icon/"+app.title.replace(/\s/g,"")+".png" : app.path+"appimage.png" };
+- var desc = $.desc || $.title;
 
 doctype 5
 html(lang="#{$.lang}")
   head
     meta(charset="utf-8")
     title #{$.title}
-    meta(name="description",content="#{$.desc}")
+    meta(name="description",content="#{desc}")
     meta(name="viewport",content="width=device-width, initial-scale=1.0")
     meta(property="og:title",content="#{$.title}")
     meta(property="og:url",content="http://the.mohayonao.com#{$.path}")
     meta(property="og:image",content="http://the.mohayonao.com#{rootpath}/appimage.png")
+    meta(property="og:description",content="#{desc}")
     link(rel="shortcut icon", href="/favicon.ico")
     link(rel="stylesheet",href="/lib/LigatureSymbols-2.11.css")
     if $.csslist.length
