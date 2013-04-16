@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "imagemagick": "~0.1.3",
+    "opts": "~1.2.2"
+  }
+}
