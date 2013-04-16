@@ -7,27 +7,25 @@ $ ->
   
   class ImageLoader
     map = {}
-    
-    constructor: ->
+    constructor: (@src)->
       @dfd = $.Deferred()
+      if not map[@src]
+        map[@src] = @
+      map[@src]
     
-    load: (@num)->
-      if not map[@num]
-        map[@num] = @
-      map[@num]._load()
-    
-    _load: ->
+    load: ->
       img = new Image
-      img.src = "/lib/img/sushi/#{('000'+@num).substr(-3)}.png"
+      img.src = @src
       img.onload = =>
         @dfd.resolve img
-      @_load = =>
+      @load = =>
         @dfd.promise()
       @dfd.promise()
 
   class Sushi
     constructor: (@num, @x, @y, @z)->
-      new ImageLoader().load(@num).then (img)=>
+      src = "/lib/img/sushi/#{('000'+@num).substr(-3)}.png"
+      new ImageLoader(src).load().then (img)=>
         @img = img
 
     draw: (context)->

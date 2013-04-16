@@ -8,28 +8,25 @@
 
       map = {};
 
-      function ImageLoader() {
+      function ImageLoader(src) {
+        this.src = src;
         this.dfd = $.Deferred();
+        if (!map[this.src]) {
+          map[this.src] = this;
+        }
+        map[this.src];
       }
 
-      ImageLoader.prototype.load = function(num) {
-        this.num = num;
-        if (!map[this.num]) {
-          map[this.num] = this;
-        }
-        return map[this.num]._load();
-      };
-
-      ImageLoader.prototype._load = function() {
+      ImageLoader.prototype.load = function() {
         var img,
           _this = this;
 
         img = new Image;
-        img.src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
+        img.src = this.src;
         img.onload = function() {
           return _this.dfd.resolve(img);
         };
-        this._load = function() {
+        this.load = function() {
           return _this.dfd.promise();
         };
         return this.dfd.promise();
@@ -41,16 +38,17 @@
     SushiText = (function() {
       function SushiText(num, width, height) {
         this.num = num;
-        this.width = width != null ? width : 29;
-        this.height = height != null ? height : 24;
+        this.width = width != null ? width : 35;
+        this.height = height != null ? height : 20;
       }
 
       SushiText.prototype.load = function() {
-        var dfd,
+        var dfd, src,
           _this = this;
 
         dfd = $.Deferred();
-        new ImageLoader().load(this.num).then(function(img) {
+        src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
+        new ImageLoader(src).load().then(function(img) {
           var canvas, colors, context, data, i;
 
           canvas = document.createElement('canvas');
@@ -92,7 +90,7 @@
         var i;
 
         this.width = width != null ? width : 128;
-        this.height = height != null ? height : 24;
+        this.height = height != null ? height : 20;
         this.data = (function() {
           var _i, _ref, _results;
 
@@ -156,7 +154,7 @@
       return SushiLane;
 
     })();
-    width = ((window.innerWidth - 120) / 8) | 0;
+    width = ((window.innerWidth - 90) / 8) | 0;
     lane = new SushiLane(width);
     setInterval(function() {
       return lane.draw();

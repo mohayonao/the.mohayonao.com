@@ -11,28 +11,25 @@
 
       map = {};
 
-      function ImageLoader() {
+      function ImageLoader(src) {
+        this.src = src;
         this.dfd = $.Deferred();
+        if (!map[this.src]) {
+          map[this.src] = this;
+        }
+        map[this.src];
       }
 
-      ImageLoader.prototype.load = function(num) {
-        this.num = num;
-        if (!map[this.num]) {
-          map[this.num] = this;
-        }
-        return map[this.num]._load();
-      };
-
-      ImageLoader.prototype._load = function() {
+      ImageLoader.prototype.load = function() {
         var img,
           _this = this;
 
         img = new Image;
-        img.src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
+        img.src = this.src;
         img.onload = function() {
           return _this.dfd.resolve(img);
         };
-        this._load = function() {
+        this.load = function() {
           return _this.dfd.promise();
         };
         return this.dfd.promise();
@@ -43,13 +40,15 @@
     })();
     Sushi = (function() {
       function Sushi(num, x, y, z) {
-        var _this = this;
+        var src,
+          _this = this;
 
         this.num = num;
         this.x = x;
         this.y = y;
         this.z = z;
-        new ImageLoader().load(this.num).then(function(img) {
+        src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
+        new ImageLoader(src).load().then(function(img) {
           return _this.img = img;
         });
       }

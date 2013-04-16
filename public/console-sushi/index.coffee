@@ -1,32 +1,30 @@
 $ ->
   'use strict'
-    
+
   class ImageLoader
     map = {}
-    
-    constructor: ->
+    constructor: (@src)->
       @dfd = $.Deferred()
+      if not map[@src]
+        map[@src] = @
+      map[@src]
     
-    load: (@num)->
-      if not map[@num]
-        map[@num] = @
-      map[@num]._load()
-    
-    _load: ->
+    load: ->
       img = new Image
-      img.src = "/lib/img/sushi/#{('000'+@num).substr(-3)}.png"
+      img.src = @src
       img.onload = =>
         @dfd.resolve img
-      @_load = =>
+      @load = =>
         @dfd.promise()
       @dfd.promise()
-
+  
   class SushiText
-    constructor: (@num, @width=29, @height=24)->
+    constructor: (@num, @width=35, @height=20)->
             
     load: ->
       dfd = $.Deferred()
-      new ImageLoader().load(@num).then (img)=>
+      src = "/lib/img/sushi/#{('000'+@num).substr(-3)}.png"
+      new ImageLoader(src).load().then (img)=>
         canvas = document.createElement 'canvas'
         canvas.width  = @width
         canvas.height = @height
@@ -46,7 +44,7 @@ $ ->
       dfd.promise()
 
   class SushiLane
-    constructor: (@width=128, @height=24)->
+    constructor: (@width=128, @height=20)->
       @data = ([] for i in [0...@height])
     
     put: (data)->
@@ -75,7 +73,7 @@ $ ->
         console.log.apply console, items
       0
 
-  width = ((window.innerWidth - 120) / 8)|0
+  width = ((window.innerWidth - 90) / 8)|0
   lane = new SushiLane width
   
   setInterval ->
