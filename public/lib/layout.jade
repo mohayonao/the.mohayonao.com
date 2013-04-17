@@ -5,6 +5,7 @@
 - $.path  = ""
 - $.jslist  = []
 - $.csslist = []
+- $.ligature = false
 
 block config
 
@@ -24,9 +25,10 @@ html(lang="#{$.lang}")
     meta(property="og:image",content="http://the.mohayonao.com#{rootpath}/appimage.png")
     meta(property="og:description",content="#{desc}")
     link(rel="shortcut icon", href="/favicon.ico")
-    link(rel="stylesheet",href="/lib/LigatureSymbols-2.11.css")
+    if $.ligature
+      link(rel="stylesheet",href="/lib/LigatureSymbols-2.11.css")
     if $.csslist.length
-      for href in $.csslist
+      each href in $.csslist
         link(rel="stylesheet",href=href)
     else
       link(rel="stylesheet",href="/lib/layout.css")
