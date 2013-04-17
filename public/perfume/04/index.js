@@ -205,7 +205,7 @@ window.onload = function() {
     audio.play();
   });
   $(audio).one("play", function() {
-    if (main) main();
+    if (main) main(audio);
     animate();
   });
   audio.loop = true;
@@ -335,7 +335,7 @@ window.onload = function() {
   
   var main;
   if (window.webkitAudioContext) {
-    main = function() {
+    main = function(audio) {
       var audioContext = new webkitAudioContext();
       var media = audioContext.createMediaElementSource(audio);
       var node  = audioContext.createJavaScriptNode(1024, 1, 1);
@@ -357,7 +357,7 @@ window.onload = function() {
       gain.connect(audioContext.destination);
     };
   } else if (audio.mozSetup) {
-    main = function() {
+    main = function(audio) {
       var output = new Audio();
       audio.addEventListener("loadedmetadata", function(e) {
         audio.volume = 0;

@@ -158,7 +158,7 @@ window.onload = function() {
     audio.play();
   });
   $(audio).one("play", function() {
-    if (main) main();
+    if (main) main(audio);
     animate();
   });
   audio.loop = true;
@@ -173,10 +173,11 @@ window.onload = function() {
     };
     
     $this.process = function(stream) {
-      var x = 0;      
+      var x = 0;
       for (var i = 0, imax = stream.length; i < imax; i++) {
         x += stream[i] * stream[i];
       }
+        
       this.level = Math.sqrt(x / stream.length);
     };
     
@@ -185,7 +186,7 @@ window.onload = function() {
   
   var main;
   if (window.webkitAudioContext) {
-    main = function() {
+    main = function(audio) {
       var audioContext = new webkitAudioContext();
       var media = audioContext.createMediaElementSource(audio);
       var node  = audioContext.createJavaScriptNode(1024, 1, 1);
@@ -197,11 +198,11 @@ window.onload = function() {
       };
       
       media.connect(node);
-      media.connect(audioContext.destination);      
+      media.connect(audioContext.destination);
       node.connect(audioContext.destination);
     };
   } else if (audio.mozSetup) {
-    main = function() {
+    main = function(audio) {
       processor = new AudioProcessor();
       audio.addEventListener("MozAudioAvailable", function(e) {
         processor.process(e.frameBuffer);
