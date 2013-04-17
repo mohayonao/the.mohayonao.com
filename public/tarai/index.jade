@@ -1,0 +1,22 @@
+extend ../lib/layout
+
+block config
+  - $.title = "tarai-music"
+  - $.path  = "/tarai/"
+  - $.jslist  = ["/lib/timbre.js", "/lib/subcollider.js", "/lib/scales.js", "index.js"]
+  - $.csslist = ["index.css"]
+  - $.ligature = true
+
+block content
+  h1 #{$.title}
+  #container
+    div(style="margin-bottom:25px")
+      button(id="play",class="lsf-icon",title="play") Play
+    p inspired from:
+      ul
+        li: a(href="http://d.hatena.ne.jp/aike/20120723") SuperColliderで竹内関数音楽 - aikeの日記
+        li: a(href="http://en.wikipedia.org/wiki/Tak_(function)") Tak function
+    p use:
+      ul
+        li: a(href="http://mohayonao.github.com/timbre.js") timbre.js
+        li: a(href="http://mohayonao.github.com/sub.js") subcollider.js
