@@ -8,10 +8,10 @@ $ ->
   class ImageLoader
     map = {}
     constructor: (@src)->
-      @dfd = $.Deferred()
       if not map[@src]
+        @dfd = new $.Deferred
         map[@src] = @
-      map[@src]
+      return map[@src]
     
     load: ->
       img = new Image
@@ -19,8 +19,8 @@ $ ->
       img.onload = =>
         @dfd.resolve img
       @load = =>
-        @dfd.promise()
-      @dfd.promise()
+        do @dfd.promise
+      do @load
 
   class Sushi
     constructor: (@num, @x, @y, @z)->

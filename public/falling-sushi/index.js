@@ -13,11 +13,11 @@
 
       function ImageLoader(src) {
         this.src = src;
-        this.dfd = $.Deferred();
         if (!map[this.src]) {
+          this.dfd = new $.Deferred;
           map[this.src] = this;
         }
-        map[this.src];
+        return map[this.src];
       }
 
       ImageLoader.prototype.load = function() {
@@ -32,7 +32,7 @@
         this.load = function() {
           return _this.dfd.promise();
         };
-        return this.dfd.promise();
+        return this.load();
       };
 
       return ImageLoader;
