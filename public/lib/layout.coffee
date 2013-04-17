@@ -51,23 +51,26 @@ $ ->
       if result != false
         requestAnimationFrame _animate
     requestAnimationFrame _animate
-
-  stats = new Stats
+  
   apps.stats = (func)->
-    stats.domElement.style.position = 'absolute'
-    stats.domElement.style.right    = '0px'
-    stats.domElement.style.top      = '0px'
-    document.body.appendChild stats.domElement
-
+    elem = $('<script>').attr async:true, src:'/lib/stats.js'
+    elem.insertBefore $('script')[0]
     apps.stats = (func)->
-      stats.begin()
+      if Stats?
+        stats = new Stats
+        stats.domElement.style.position = 'absolute'
+        stats.domElement.style.right    = '0px'
+        stats.domElement.style.top      = '0px'
+        document.body.appendChild stats.domElement
+        apps.stats = (func)->
+          do stats.begin
+          do func
+          do stats.end
       do func
-      stats.end()
     do func
     
-  $sidebar  = $('#sidebar')
-  $appimage = $('#appimage')
-    
+  $sidebar = $('#sidebar')
+  
   if apps.isMouseDevice
 
     $('li', $sidebar).each (i, elem)->
@@ -89,7 +92,7 @@ $ ->
     $('#sidebar').hide()
     $('#content').css('margin-left':'0')
   
-    $appimage.empty()
+    $('#appimage').empty()
     
     $('li', $sidebar).each (i, elem)->
       $li = $(elem)
@@ -97,5 +100,3 @@ $ ->
       
       if media is 'desktop' or media is 'tablet'
         return $li.remove()
-
-        $('img', $li).css(display:'block',width:'90px',height:'90px').show()

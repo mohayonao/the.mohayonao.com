@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $appimage, $sidebar, apps, stats, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+    var $sidebar, apps, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
 
     if ((_ref = window.requestAnimationFrame) == null) {
       window.requestAnimationFrame = (_ref1 = (_ref2 = (_ref3 = (_ref4 = window.webkitRequestAnimationFrame) != null ? _ref4 : window.mozRequestAnimationFrame) != null ? _ref3 : window.oRequestAnimationFrame) != null ? _ref2 : window.msRequestAnimationFrame) != null ? _ref1 : function(f) {
@@ -65,21 +65,34 @@
       };
       return requestAnimationFrame(_animate);
     };
-    stats = new Stats;
     apps.stats = function(func) {
-      stats.domElement.style.position = 'absolute';
-      stats.domElement.style.right = '0px';
-      stats.domElement.style.top = '0px';
-      document.body.appendChild(stats.domElement);
+      var elem;
+
+      elem = $('<script>').attr({
+        async: true,
+        src: '/lib/stats.js'
+      });
+      elem.insertBefore($('script')[0]);
       apps.stats = function(func) {
-        stats.begin();
-        func();
-        return stats.end();
+        var stats;
+
+        if (typeof Stats !== "undefined" && Stats !== null) {
+          stats = new Stats;
+          stats.domElement.style.position = 'absolute';
+          stats.domElement.style.right = '0px';
+          stats.domElement.style.top = '0px';
+          document.body.appendChild(stats.domElement);
+          apps.stats = function(func) {
+            stats.begin();
+            func();
+            return stats.end();
+          };
+        }
+        return func();
       };
       return func();
     };
     $sidebar = $('#sidebar');
-    $appimage = $('#appimage');
     if (apps.isMouseDevice) {
       return $('li', $sidebar).each(function(i, elem) {
         var $li, media;
@@ -105,7 +118,7 @@
       $('#content').css({
         'margin-left': '0'
       });
-      $appimage.empty();
+      $('#appimage').empty();
       return $('li', $sidebar).each(function(i, elem) {
         var $li, media;
 
@@ -113,11 +126,6 @@
         media = $li.attr('data-media');
         if (media === 'desktop' || media === 'tablet') {
           return $li.remove();
-          return $('img', $li).css({
-            display: 'block',
-            width: '90px',
-            height: '90px'
-          }).show();
         }
       });
     }
