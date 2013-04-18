@@ -43,8 +43,7 @@ $ ->
   onsuccess = (stream)->
     video.src = window.webkitURL.createObjectURL stream
     apps.animate ->
-      apps.stats ->
-        processor.process video, canvas
+      processor.process video, canvas
 
   onerror = (error)->
     console.log error

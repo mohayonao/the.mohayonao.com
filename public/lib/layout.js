@@ -65,33 +65,6 @@
       };
       return requestAnimationFrame(_animate);
     };
-    apps.stats = function(func) {
-      var elem;
-
-      elem = $('<script>').attr({
-        async: true,
-        src: '/lib/stats.js'
-      });
-      elem.insertBefore($('script')[0]);
-      apps.stats = function(func) {
-        var stats;
-
-        if (typeof Stats !== "undefined" && Stats !== null) {
-          stats = new Stats;
-          stats.domElement.style.position = 'absolute';
-          stats.domElement.style.right = '0px';
-          stats.domElement.style.top = '0px';
-          document.body.appendChild(stats.domElement);
-          apps.stats = function(func) {
-            stats.begin();
-            func();
-            return stats.end();
-          };
-        }
-        return func();
-      };
-      return func();
-    };
     $sidebar = $('#sidebar');
     if (apps.isMouseDevice) {
       return $('li', $sidebar).each(function(i, elem) {

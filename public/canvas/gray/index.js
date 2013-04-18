@@ -55,9 +55,7 @@
     onsuccess = function(stream) {
       video.src = window.webkitURL.createObjectURL(stream);
       return apps.animate(function() {
-        return apps.stats(function() {
-          return processor.process(video, canvas);
-        });
+        return processor.process(video, canvas);
       });
     };
     onerror = function(error) {

@@ -51,23 +51,6 @@ $ ->
       if result != false
         requestAnimationFrame _animate
     requestAnimationFrame _animate
-  
-  apps.stats = (func)->
-    elem = $('<script>').attr async:true, src:'/lib/stats.js'
-    elem.insertBefore $('script')[0]
-    apps.stats = (func)->
-      if Stats?
-        stats = new Stats
-        stats.domElement.style.position = 'absolute'
-        stats.domElement.style.right    = '0px'
-        stats.domElement.style.top      = '0px'
-        document.body.appendChild stats.domElement
-        apps.stats = (func)->
-          do stats.begin
-          do func
-          do stats.end
-      do func
-    do func
     
   $sidebar = $('#sidebar')
   
