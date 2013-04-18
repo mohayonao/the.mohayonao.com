@@ -27,7 +27,7 @@ $ ->
   tarai = new Tarai
   tarai.init 10, 5, 0
   
-  scale = sc.Scale.kumoi()
+  scale = new sc.Scale [0,2,3,7,9], 12, 'Kumoi'
   baseRoot  = 62 # D3
   
   pattern = [ 0,0,1,1,2,2,1,1,0,0,1,1,2,2,1,1 ]
