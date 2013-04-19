@@ -134,7 +134,7 @@
             context.strokeStyle = '#006';
             context.fillStyle = 'rgba(255,255,0,0.5)';
             left = this.detector.detect.right;
-            if (left.y < y) {
+            if (left.y * scale < this.height - y) {
               left.y = -1;
             } else if (left.y !== -1) {
               x = this.width - left.x * scale;

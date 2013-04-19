@@ -100,9 +100,9 @@ if typeof window != 'undefined'
         if @detector.detect
           context.strokeStyle = '#006'
           context.fillStyle   = 'rgba(255,255,0,0.5)'
-          
+
           left = @detector.detect.right
-          if left.y < y
+          if left.y * scale < @height - y
             left.y = -1
           else if left.y != -1
             x = @width - left.x * scale
