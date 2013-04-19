@@ -159,7 +159,7 @@
     setInterval(function() {
       return lane.draw();
     }, 750);
-    return $('button', '#container').on('click', function() {
+    return $('button', '#unit').on('click', function() {
       var num;
 
       num = ($(this).attr('data-num')) | 0;

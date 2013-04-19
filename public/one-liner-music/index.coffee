@@ -139,7 +139,5 @@ $ ->
 
   commit()
 
-  if apps.isDesktop
-    $('#play').click()
-  else if apps.isPhone
+  if apps.isPhone
     $('#history-container').hide()

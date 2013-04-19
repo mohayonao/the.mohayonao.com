@@ -197,9 +197,7 @@
       $func.val(history[0]);
     }
     commit();
-    if (apps.isDesktop) {
-      return $('#play').click();
-    } else if (apps.isPhone) {
+    if (apps.isPhone) {
       return $('#history-container').hide();
     }
   });

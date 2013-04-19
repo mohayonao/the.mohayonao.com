@@ -3,7 +3,7 @@ window.onload = function() {
 
   var container, width, height;
   var camera, scene, renderer;
-  container = document.getElementById('container')
+  container = document.getElementById('unit')
   
   width  = $(container).width();
   height = 640; // $(container).height();
@@ -170,9 +170,6 @@ window.onload = function() {
   } else {
     audio.src = "../perfume.mp3";
   }
-  $(audio).on("loadeddata", function() {
-    audio.play();
-  });
   $(audio).one("play", function() {
     animate();  
   });

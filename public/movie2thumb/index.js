@@ -21,7 +21,7 @@
     resizeContainer = (function() {
       var $container;
 
-      $container = $('#container');
+      $container = $('#unit');
       return function() {
         $container.height(($container.width() * 0.75) | 0);
         return typeof app !== "undefined" && app !== null ? app.resize() : void 0;

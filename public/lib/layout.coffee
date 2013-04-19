@@ -53,33 +53,26 @@ $ ->
     requestAnimationFrame _animate
     
   $sidebar = $('#sidebar')
-  
-  if apps.isMouseDevice
 
-    $('li', $sidebar).each (i, elem)->
-      $li = $(elem)
-      media = $li.attr 'data-media'
-      if media is 'tablet' or media is 'phone'
-        return $li.remove()
+  switch
+    when apps.isMouseDevice
+      $('li', $sidebar).each (i, elem)->
+        $li = $(elem)
+        media = $li.attr 'data-media'
+        if media is 'tablet' or media is 'phone'
+          return $li.remove()
       
-  else if apps.isTablet
-  
-    $('li', $sidebar).each (i, elem)->
-      $li = $(elem)
-      media = $li.attr 'data-media'
-      if media is 'desktop' or media is 'phone'
-        return $li.remove()
+    when apps.isTablet
+      $('li', $sidebar).each (i, elem)->
+        $li = $(elem)
+        media = $li.attr 'data-media'
+        if media is 'desktop' or media is 'phone'
+          return $li.remove()
 
-  else if apps.isPhone
-    
-    $('#sidebar').hide()
-    $('#content').css('margin-left':'0')
-  
-    $('#appimage').empty()
-    
-    $('li', $sidebar).each (i, elem)->
-      $li = $(elem)
-      media = $li.attr 'data-media'
-      
-      if media is 'desktop' or media is 'tablet'
-        return $li.remove()
+    when apps.isPhone
+      $('li', $sidebar).each (i, elem)->
+        $li = $(elem)
+        media = $li.attr 'data-media'
+        
+        if media is 'desktop' or media is 'tablet'
+          return $li.remove()

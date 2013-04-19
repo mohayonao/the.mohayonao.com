@@ -20,7 +20,7 @@
     resizeContainer = (function() {
       var $container;
 
-      $container = $('#container');
+      $container = $('#unit');
       return function() {
         return $container.height(($container.width() * 0.75) | 0);
       };
