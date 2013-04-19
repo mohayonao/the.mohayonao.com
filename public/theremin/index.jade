@@ -1,0 +1,16 @@
+extend ../lib/layout
+
+block config
+  - $.title = "webcam-theremin"
+  - $.path  = "/theremin/"
+  - $.jslist  = ["/lib/timbre.js", "/lib/subcollider.js", "index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #container
+    canvas(id="canvas",width=320,height=240)
+    video(id="cam",width=640,height=480,autoplay).hidden
+    h2 1. Accept to use your webcam (use WebRTC)
+    h2 2. Right hand: control pitch
+    h2 3. Left hand: switch on/off
