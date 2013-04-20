@@ -83,8 +83,6 @@ if typeof window != 'undefined'
         @func? imageData
 
         context = dst.getContext '2d'
-        context.fillStyle   = 'rgba(255,255,0,0.5)'
-
         context.putImageData imageData, 0, 0
 
         scale = @width / @detector.width

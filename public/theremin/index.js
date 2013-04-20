@@ -122,7 +122,6 @@
             this.func(imageData);
           }
           context = dst.getContext('2d');
-          context.fillStyle = 'rgba(255,255,0,0.5)';
           context.putImageData(imageData, 0, 0);
           scale = this.width / this.detector.width;
           x = (this.width / 5) | 0;
