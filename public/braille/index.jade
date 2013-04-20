@@ -1,0 +1,24 @@
+extend ../lib/layout
+
+block config
+  - $.title = "braille portrait"
+  - $.path  = "/braille/"
+  - $.jslist  = ["index.js"]
+  - $.csslist = ["index.css"]
+  - $.media = "desktop"
+  - $.ligature = true
+
+block content
+  h1 #{$.title}
+  #unit
+    div(id="msg")
+    div(id="editor-container")
+      canvas(id="editor")
+      textarea(id="result")
+    div(id="controller")
+      span(class="button lsf-icon")
+      span(class="button lsf-icon")
+      span(class="button lsf-icon")
+      span(class="button lsf-icon")
+    div(id="inspired",style="margin-top:25px") inspired by: 
+      a(href="http://blog.netswitch.jp/2013/04/15/braille-pattern-imaging").jp 点字が拓く新しい世界 | netswitch!
