@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $btn, $msg, Application, BLACK, Editor, GRAY, MosaicProcessor, NAVY, SIZE, app, conf_mode, drag_mode, dst, exec_mode, mask_mode, save_mode, src, trim_mode;
+    var $btn, $msg, Application, BLACK, Editor, GRAY, MosaicProcessor, NAVY, SIZE, app, conf_mode, drag_mode, dst, exec_mode, image, mask_mode, save_mode, src, trim_mode;
 
     SIZE = 400;
     BLACK = '#302833';
@@ -308,6 +308,9 @@
             return image.src = reader.result;
           };
           reader.readAsDataURL(file);
+        }
+        if (file instanceof Image) {
+          this.editor.setImage(file);
         }
         return true;
       };
@@ -733,7 +736,13 @@
       app.prev_mode = 'conf';
       return app.next_mode = null;
     };
-    return app.setMode('drag');
+    app.setMode('drag');
+    image = new Image;
+    image.onload = function() {
+      app.setImage(image);
+      return app.setMode('drag');
+    };
+    return image.src = '/canvas/sample01.jpg';
   });
 
 }).call(this);

@@ -156,8 +156,10 @@ $ ->
           image.onload = => @editor.setImage image
           image.src = reader.result
         reader.readAsDataURL file
+        
       if file instanceof Image
         @editor.setImage file
+        
       true
 
     getImage: ->

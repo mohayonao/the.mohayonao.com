@@ -186,6 +186,10 @@ $ ->
           image.onload = => @editor.setImage image
           image.src = reader.result
         reader.readAsDataURL file
+
+      if file instanceof Image
+        @editor.setImage file
+        
       true
 
     getImage: ->
@@ -471,3 +475,9 @@ $ ->
     app.next_mode = null
 
   app.setMode 'drag'
+
+  image = new Image
+  image.onload = ->
+    app.setImage image
+    app.setMode 'drag'
+  image.src = '/canvas/sample01.jpg'
