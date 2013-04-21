@@ -17,7 +17,7 @@ $ ->
       @mode  = 'drag'
       @position  = x:0, y:0
       @zoom      = 1
-      @threshold = 64
+      @threshold = 128
 
       setEventListener.call @, @elem
 
@@ -260,7 +260,6 @@ $ ->
   drag_mode = ->
     $('#result').hide()
     $('#editor').show()
-    $('#inspired').hide()
     $msg.text '1. Drag a image'
     $btn.set [
       { icon:'back'   , enabled:false },
@@ -275,7 +274,6 @@ $ ->
   trim_mode = ->
     $('#result').hide()
     $('#editor').show()
-    $('#inspired').hide()
     app.editor.draw()
     $msg.text '2. Triming'
     $btn.set [
@@ -291,7 +289,6 @@ $ ->
   thre_mode = ->
     $('#result').hide()
     $('#editor').show()
-    $('#inspired').hide()
     app.editor.draw()
     $msg.text '3. Threshold'
     $btn.set [
@@ -311,12 +308,11 @@ $ ->
   save_mode = (src)->
     $('#editor').hide()
     $('#result').attr(src:src).show()
-    $('#inspired').show()
     $msg.text '6. Copy and Paste'
     $btn.set [
       { icon:'back'  , enabled:true  },
-      { icon:'write' , enabled:false },
-      { icon:'eraser', enabled:false },
+      { icon:'up'    , enabled:false },
+      { icon:'down'  , enabled:false },
       { icon:'next'  , enabled:false },
     ]
     $(app.editor.elem).css 'cursor', 'default'

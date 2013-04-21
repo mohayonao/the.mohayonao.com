@@ -24,7 +24,7 @@
           y: 0
         };
         this.zoom = 1;
-        this.threshold = 64;
+        this.threshold = 128;
         setEventListener.call(this, this.elem);
       }
 
@@ -384,7 +384,6 @@
     drag_mode = function() {
       $('#result').hide();
       $('#editor').show();
-      $('#inspired').hide();
       $msg.text('1. Drag a image');
       $btn.set([
         {
@@ -408,7 +407,6 @@
     trim_mode = function() {
       $('#result').hide();
       $('#editor').show();
-      $('#inspired').hide();
       app.editor.draw();
       $msg.text('2. Triming');
       $btn.set([
@@ -439,7 +437,6 @@
     thre_mode = function() {
       $('#result').hide();
       $('#editor').show();
-      $('#inspired').hide();
       app.editor.draw();
       $msg.text('3. Threshold');
       $btn.set([
@@ -474,17 +471,16 @@
       $('#result').attr({
         src: src
       }).show();
-      $('#inspired').show();
       $msg.text('6. Copy and Paste');
       $btn.set([
         {
           icon: 'back',
           enabled: true
         }, {
-          icon: 'write',
+          icon: 'up',
           enabled: false
         }, {
-          icon: 'eraser',
+          icon: 'down',
           enabled: false
         }, {
           icon: 'next',
