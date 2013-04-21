@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $btn, $msg, Application, BLACK, Editor, GRAY, NAVY, SIZE, app, drag_mode, dst, save_mode, src, thre_mode, trim_mode;
+    var $btn, $msg, Application, BLACK, Editor, GRAY, NAVY, SIZE, app, drag_mode, dst, image, save_mode, src, thre_mode, trim_mode;
 
     SIZE = 400;
     BLACK = '#302833';
@@ -238,6 +238,9 @@
             return image.src = reader.result;
           };
           reader.readAsDataURL(file);
+        }
+        if (file instanceof Image) {
+          this.editor.setImage(file);
         }
         return true;
       };
@@ -496,7 +499,13 @@
         });
       }, 0);
     };
-    return app.setMode('drag');
+    app.setMode('drag');
+    image = new Image;
+    image.onload = function() {
+      app.setImage(image);
+      return app.setMode('drag');
+    };
+    return image.src = '/canvas/sample01.jpg';
   });
 
 }).call(this);
