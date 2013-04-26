@@ -1,0 +1,10 @@
+extend ../lib/layout
+
+block config
+  - $.title = "concept"
+  - $.path  = "/concept/"
+  - $.jslist  = ["/lib/ace.js","/lib/underscore.js","/lib/coffee-script.js","/lib/pico.js","./stomp/stomp.js", "index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  #editor
