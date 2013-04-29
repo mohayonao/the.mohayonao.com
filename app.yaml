@@ -35,6 +35,5 @@ skip_files:
 - ^(.*/)?node_modules/.*
 - ^(.*/)?Procfile
 - ^(.*/)?package\.json
-- ^(.*/)?.*\.coffee
 - ^(.*/)?.*\.jade
 - ^(.*/)?.*\.styl
