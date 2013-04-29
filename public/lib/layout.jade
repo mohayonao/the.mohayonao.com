@@ -20,7 +20,7 @@ html(lang="#{$.lang}")
     meta(property="og:title",content="#{$.title}")
     meta(property="og:url",content="http://the.mohayonao.com#{$.path}")
     meta(property="og:image",content="http://the.mohayonao.com#{rootpath}/appimage.png")
-    link(rel="shortcut icon", href="/favicon.ico")
+    link(rel="shortcut icon", href="favicon.ico", id="favicon")
     if $.ligature
       link(rel="stylesheet",href="/lib/LigatureSymbols-2.11.css")
     if $.csslist.length
