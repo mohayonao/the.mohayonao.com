@@ -20,4 +20,6 @@ a :hover{text-decoration:underline}
 #content{margin-left:0}
 }body{overflow:hidden}
 #sidebar{display:none}
-#editor{position:absolute;top:0;bottom:0;left:0;right:0;font-size:16px}
+#editor{position:absolute;top:0;bottom:0;left:0;right:0;font-size:14px}
+.ace_comment{color:#ea5506 !important;font-family:serif !important;font-weight:bold;}
+.ace_comment span{font-weight:bold}

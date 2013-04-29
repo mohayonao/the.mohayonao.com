@@ -1,51 +1,81 @@
 (function() {
   $(function() {
     'use strict';
-    var editor, gotoHash;
+    var changeFavicon, current, editor, gotoHash;
 
+    sc.use('prototype');
     editor = ace.edit('editor');
     editor.setTheme('ace/theme/github');
+    editor.setPrintMarginColumn(-1);
     editor.getSession().setTabSize(4);
     editor.getSession().setMode('ace/mode/coffee');
     editor.focus();
     editor.commands.addCommand({
       name: 'play',
-      bindKey: {
-        win: 'Ctrl-Enter',
-        mac: 'Command-Enter'
-      },
+      bindKey: 'Ctrl-Enter',
       exec: function(editor) {
-        var code, sess;
+        var code, err, sess;
 
         sess = editor.session;
         code = sess.getTextRange(editor.getSelectionRange());
         if (code === '') {
           code = sess.getLine(editor.getCursorPosition().row);
         }
-        code = CoffeeScript.compile(code, {
-          bare: true
-        });
-        return eval.call(window, code);
+        try {
+          return eval.call(window, CoffeeScript.compile(code, {
+            bare: true
+          }));
+        } catch (_error) {
+          err = _error;
+          return console.warn(err);
+        }
       }
     });
     editor.commands.addCommand({
       name: 'stop',
-      bindKey: {
-        win: 'Ctrl-.',
-        mac: 'Command-.'
-      },
+      bindKey: 'Ctrl-.',
       exec: function(editor) {
-        return stomp.clear();
+        timbre.reset();
+        return timbre.pause();
       }
     });
+    editor.getSession().selection.on('changeCursor', function(e) {
+      return localStorage.setItem("" + current + ".cursor", JSON.stringify({
+        pos: editor.getCursorPosition(),
+        row: editor.getFirstVisibleRow()
+      }));
+    });
+    changeFavicon = function(mode) {
+      return $('#favicon').attr({
+        href: "" + mode + ".gif"
+      });
+    };
+    changeFavicon('pause');
+    timbre.on('play', function() {
+      return changeFavicon('play');
+    });
+    timbre.on('pause', function() {
+      return changeFavicon('pause');
+    });
+    current = null;
     window.goto = function(page) {
+      var prev;
+
+      prev = current;
       return $.get("./docs/" + page + ".coffee").then(function(res) {
-        var url;
+        var obj, url;
 
         url = "" + location.origin + location.pathname + "\#" + page;
         window.history.pushState(null, null, url);
         editor.setValue(res);
-        return editor.gotoLine(0);
+        obj = localStorage.getItem("" + page + ".cursor");
+        if (obj) {
+          obj = JSON.parse(obj);
+          editor.moveCursorTo(obj.row, 0);
+          editor.moveCursorToPosition(obj.pos);
+        }
+        editor.clearSelection();
+        return current = page;
       });
     };
     window.reload = function() {
@@ -61,9 +91,7 @@
         return goto('index');
       }
     });
-    gotoHash();
-    stomp.require("SinOsc");
-    return stomp.play();
+    return gotoHash();
   });
 
 }).call(this);
