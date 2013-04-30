@@ -22,4 +22,6 @@
 
   goto("chapter03");
 
+  goto("extra-examples-01");
+
 }).call(this);

@@ -35,3 +35,5 @@ T("sin.ar"
 (goto "chapter01") # Oscillator and Envelope
 (goto "chapter02") # Definition of Synth
 (goto "chapter03") # Audio Buffer
+
+(goto "extra-examples-01") # demo
