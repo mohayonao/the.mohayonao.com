@@ -1,15 +1,52 @@
 (function() {
   $(function() {
     'use strict';
-    var changeFavicon, current, editor, gotoHash;
+    var blink, cache, changeFavicon, current, editor, getCssRule, gotoHash;
 
     sc.use('prototype');
     editor = ace.edit('editor');
-    editor.setTheme('ace/theme/github');
+    editor.setTheme('ace/theme/monokai');
     editor.setPrintMarginColumn(-1);
-    editor.getSession().setTabSize(4);
+    editor.getSession().setTabSize(2);
     editor.getSession().setMode('ace/mode/coffee');
     editor.focus();
+    cache = {};
+    getCssRule = function(selector) {
+      var rule, rules, sheet, sheets, _i, _j, _len, _len1, _ref;
+
+      if (cache[selector]) {
+        return cache[selector];
+      }
+      sheets = [].slice.call(document.styleSheets).reverse();
+      for (_i = 0, _len = sheets.length; _i < _len; _i++) {
+        sheet = sheets[_i];
+        rules = [].slice.call((_ref = sheet.cssRules) != null ? _ref : sheet.rules).reverse();
+        for (_j = 0, _len1 = rules.length; _j < _len1; _j++) {
+          rule = rules[_j];
+          if (rule.selectorText.indexOf(selector) !== -1) {
+            cache[selector] = rule;
+            return rule;
+          }
+        }
+      }
+      return null;
+    };
+    blink = function(selector) {
+      var rule, savedBackground;
+
+      rule = getCssRule(selector);
+      if (!rule) {
+        return;
+      }
+      if (!rule.savedBackground) {
+        rule.savedBackground = rule.style.getPropertyValue('background');
+      }
+      savedBackground = rule.savedBackground;
+      rule.style.setProperty('background', '#e60033');
+      return setTimeout(function() {
+        return rule.style.setProperty('background', savedBackground);
+      }, 250);
+    };
     editor.commands.addCommand({
       name: 'play',
       bindKey: 'Ctrl-Enter',
@@ -20,6 +57,9 @@
         code = sess.getTextRange(editor.getSelectionRange());
         if (code === '') {
           code = sess.getLine(editor.getCursorPosition().row);
+          blink('.ace_marker-layer .ace_active-line');
+        } else {
+          blink('.ace_marker-layer .ace_selection');
         }
         try {
           return eval.call(window, CoffeeScript.compile(code, {

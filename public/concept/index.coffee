@@ -4,11 +4,35 @@ $ ->
   sc.use 'prototype'
 
   editor = ace.edit 'editor'
-  editor.setTheme 'ace/theme/github'
+  editor.setTheme 'ace/theme/monokai'
   editor.setPrintMarginColumn -1
-  editor.getSession().setTabSize 4
+  editor.getSession().setTabSize 2
   editor.getSession().setMode 'ace/mode/coffee'
   editor.focus()
+
+  cache = {}
+  getCssRule = (selector)->
+    return cache[selector] if cache[selector]
+
+    sheets = [].slice.call(document.styleSheets).reverse()
+    for sheet in sheets
+      rules = [].slice.call(sheet.cssRules ? sheet.rules).reverse()
+      for rule in rules
+        if rule.selectorText.indexOf(selector) != -1
+          cache[selector] = rule
+          return rule
+    return null
+
+  blink = (selector)->
+    rule = getCssRule selector
+    return unless rule
+    if not rule.savedBackground
+      rule.savedBackground = rule.style.getPropertyValue 'background'
+    savedBackground = rule.savedBackground
+    rule.style.setProperty 'background', '#e60033'
+    setTimeout ->
+      rule.style.setProperty 'background', savedBackground
+    , 250
 
   editor.commands.addCommand
     name: 'play'
@@ -16,7 +40,11 @@ $ ->
     exec: (editor)->
       sess = editor.session
       code = sess.getTextRange editor.getSelectionRange()
-      code = sess.getLine(editor.getCursorPosition().row) if code is ''
+      if code is ''
+        code = sess.getLine(editor.getCursorPosition().row)
+        blink '.ace_marker-layer .ace_active-line'
+      else
+        blink '.ace_marker-layer .ace_selection'
       try
         eval.call window, CoffeeScript.compile(code, bare:true)
       catch err

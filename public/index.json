@@ -1,6 +1,11 @@
 [
   {
     "list": [
+      {
+        "title": "timbre.js - the concept book",
+        "path" : "/concept/",
+        "media": "desktop"
+      },
       "mosaic",
       "ukulele",
       "theremin",
