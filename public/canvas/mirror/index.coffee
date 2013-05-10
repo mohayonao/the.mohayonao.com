@@ -1,18 +1,5 @@
 $ ->
   'use strict'
-
-  func = (imageData)->
-    data = imageData.data
-    width  = imageData.width
-    height = imageData.height
-    for y in [0...height] by 1
-      for x in [0...width>>1] by 1
-        i = ((y + 0) * width + x    ) * 4
-        j = ((y + 1) * width - x - 1) * 4
-        [ data[i+0], data[j+0] ] = [ data[j+0], data[i+0] ]
-        [ data[i+1], data[j+1] ] = [ data[j+1], data[i+1] ]
-        [ data[i+2], data[j+2] ] = [ data[j+2], data[i+2] ]
-    0
   
   class ImageProcessor
     constructor: (@func)->
@@ -27,11 +14,12 @@ $ ->
   
     process: (src, dst)->
       context = dst.getContext '2d'
+
+      @context.translate src.width, 0
+      @context.scale -1, 1
       @context.drawImage src, 0, 0, src.width, src.height
       
       imageData = @context.getImageData 0, 0, @width, @height
-      
-      @func? imageData
       
       context.putImageData imageData, 0, 0
   
