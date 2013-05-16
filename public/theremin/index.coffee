@@ -7,19 +7,6 @@ if typeof window != 'undefined'
   $ ->
     sc.use 'prototype'
     timbre.setup samplerate:timbre.samplerate * 0.5
-    
-    mirror = (imageData)->
-      data = imageData.data
-      width  = imageData.width
-      height = imageData.height
-      for y in [0...height] by 1
-        for x in [0...width>>1] by 1
-          i = ((y + 0) * width + x    ) * 4
-          j = ((y + 1) * width - x - 1) * 4
-          [ data[i+0], data[j+0] ] = [ data[j+0], data[i+0] ]
-          [ data[i+1], data[j+1] ] = [ data[j+1], data[i+1] ]
-          [ data[i+2], data[j+2] ] = [ data[j+2], data[i+2] ]
-      0
 
     class DetectProcessor
       constructor: ->
@@ -62,12 +49,13 @@ if typeof window != 'undefined'
     
     
     class ImageProcessor
-      constructor: (@func)->
+      constructor: ->
         @detector = new DetectProcessor
         @canvas   = document.createElement 'canvas'
         @width    = @canvas.width  = 320
         @height   = @canvas.height = 240
         @context  = @canvas.getContext '2d'
+        @mirror   = false
 
       setSize: (width, height)->
         @width  = @canvas.width  = width
@@ -75,12 +63,13 @@ if typeof window != 'undefined'
     
       process: (src, dst)->
         @detector.process src
-        
-        @context.drawImage src, 0, 0, src.width, src.height, 0, 0, @width, @height
-        
+
+        if not @mirror
+          @context.translate src.width, 0
+          @context.scale -1, 1
+          @mirror = true
+        @context.drawImage src, 0, 0, src.width, src.height, @width, 0, @width, @height
         imageData = @context.getImageData 0, 0, @width, @height
-        
-        @func? imageData
 
         context = dst.getContext '2d'
         context.putImageData imageData, 0, 0
@@ -138,7 +127,7 @@ if typeof window != 'undefined'
     
     video  = document.getElementById 'cam'
     canvas = document.getElementById 'canvas'
-    processor = new ImageProcessor mirror
+    processor = new ImageProcessor
     sound     = new SoundProcessor
     
     processor.callback = (opts)->

@@ -2,11 +2,12 @@ $ ->
   'use strict'
   
   class ImageProcessor
-    constructor: (@func)->
+    constructor: ->
       @canvas = document.createElement 'canvas'
       @width  = @canvas.width  = 256
       @height = @canvas.height = 256
       @context = @canvas.getContext '2d'
+      @mirror = false
 
     setSize: (width, height)->
       @width  = @canvas.width  = width
@@ -15,8 +16,10 @@ $ ->
     process: (src, dst)->
       context = dst.getContext '2d'
 
-      @context.translate src.width, 0
-      @context.scale -1, 1
+      if not @mirror
+        @context.translate src.width, 0
+        @context.scale -1, 1
+        @mirror = true
       @context.drawImage src, 0, 0, src.width, src.height
       
       imageData = @context.getImageData 0, 0, @width, @height
@@ -25,7 +28,7 @@ $ ->
   
   video  = document.getElementById 'cam'
   canvas = document.getElementById 'canvas'
-  processor = new ImageProcessor func
+  processor = new ImageProcessor
   
   image = document.getElementById('src')
   $(image).on 'load', ->

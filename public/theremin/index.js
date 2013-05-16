@@ -8,29 +8,12 @@
 
   if (typeof window !== 'undefined') {
     $(function() {
-      var DetectProcessor, ImageProcessor, SoundProcessor, canvas, mirror, onerror, onsuccess, processor, sound, video;
+      var DetectProcessor, ImageProcessor, SoundProcessor, canvas, onerror, onsuccess, processor, sound, video;
 
       sc.use('prototype');
       timbre.setup({
         samplerate: timbre.samplerate * 0.5
       });
-      mirror = function(imageData) {
-        var data, height, i, j, width, x, y, _i, _j, _ref, _ref1, _ref2, _ref3;
-
-        data = imageData.data;
-        width = imageData.width;
-        height = imageData.height;
-        for (y = _i = 0; _i < height; y = _i += 1) {
-          for (x = _j = 0, _ref = width >> 1; _j < _ref; x = _j += 1) {
-            i = ((y + 0) * width + x) * 4;
-            j = ((y + 1) * width - x - 1) * 4;
-            _ref1 = [data[j + 0], data[i + 0]], data[i + 0] = _ref1[0], data[j + 0] = _ref1[1];
-            _ref2 = [data[j + 1], data[i + 1]], data[i + 1] = _ref2[0], data[j + 1] = _ref2[1];
-            _ref3 = [data[j + 2], data[i + 2]], data[i + 2] = _ref3[0], data[j + 2] = _ref3[1];
-          }
-        }
-        return 0;
-      };
       DetectProcessor = (function() {
         var _onmessage, _send;
 
@@ -98,13 +81,13 @@
 
       })();
       ImageProcessor = (function() {
-        function ImageProcessor(func) {
-          this.func = func;
+        function ImageProcessor() {
           this.detector = new DetectProcessor;
           this.canvas = document.createElement('canvas');
           this.width = this.canvas.width = 320;
           this.height = this.canvas.height = 240;
           this.context = this.canvas.getContext('2d');
+          this.mirror = false;
         }
 
         ImageProcessor.prototype.setSize = function(width, height) {
@@ -116,11 +99,13 @@
           var context, imageData, left, right, scale, x, y;
 
           this.detector.process(src);
-          this.context.drawImage(src, 0, 0, src.width, src.height, 0, 0, this.width, this.height);
-          imageData = this.context.getImageData(0, 0, this.width, this.height);
-          if (typeof this.func === "function") {
-            this.func(imageData);
+          if (!this.mirror) {
+            this.context.translate(src.width, 0);
+            this.context.scale(-1, 1);
+            this.mirror = true;
           }
+          this.context.drawImage(src, 0, 0, src.width, src.height, this.width, 0, this.width, this.height);
+          imageData = this.context.getImageData(0, 0, this.width, this.height);
           context = dst.getContext('2d');
           context.putImageData(imageData, 0, 0);
           scale = this.width / this.detector.width;
@@ -198,7 +183,7 @@
       })();
       video = document.getElementById('cam');
       canvas = document.getElementById('canvas');
-      processor = new ImageProcessor(mirror);
+      processor = new ImageProcessor;
       sound = new SoundProcessor;
       processor.callback = function(opts) {
         var amp, degree, freq;
