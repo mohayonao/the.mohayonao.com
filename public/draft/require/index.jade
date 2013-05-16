@@ -1,0 +1,12 @@
+extend ../../lib/layout
+
+block config
+  - $.title = "draft/require"
+  - $.path  = "/draft/require/"
+  - $.jslist  = ["libs/timbre-core.js", "index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #unit
+    
