@@ -8,6 +8,7 @@ $ ->
   editor.setPrintMarginColumn -1
   editor.getSession().setTabSize 2
   editor.getSession().setMode 'ace/mode/coffee'
+  editor.setSelectionStyle 'text'
   editor.focus()
 
   cache = {}
