@@ -159,8 +159,8 @@ var ENZSoundSystem = (function() {
             }
         }
         for (i = j = 0, imax = L.length; i < imax; ++i) {
-          L[i] = stream[j++];
-          R[i] = stream[j++];
+          L[i] = stream[j++] * 0.6;
+          R[i] = stream[j++] * 0.6;
         }
         return stream;
     };
