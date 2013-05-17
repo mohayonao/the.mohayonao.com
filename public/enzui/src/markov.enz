@@ -1,0 +1,114 @@
+# patch[0]
+$ZOOM=1
+$XY=0,0
+
+[a -260,-130 keydown];
+[b -260,-100 ezkeyboard];
+[c -260,-70 n: 60 min=24 max=96];
+(a:1->1:b);
+(b:1->1:c);
+
+
+[anal -210,-70 anal];
+(b:1->1:anal);
+
+[metro_t -130,-160 t:];
+[metro_0 -160,-70 m: 0];
+[metro_n -50,-160 n: 250 min=50 max=1000];
+[metro -130,-70 metro 250];
+[metro_b -130,-40 b:];
+[c0 -150,-180 c: auto play];
+[c1 -50,-180 c: speed];
+(metro_t:1->1:metro);
+(metro_t:1->1:metro_0);
+(metro_n:1->2:metro);
+(metro:1->1:metro_b);
+
+
+[prob -210,-10 prob];
+[prob_0 -150,-10 m: 0];
+(anal:1->1:prob);
+(anal:2->1:prob);
+(metro_b:1->1:prob);
+(metro_0:1->1:prob);
+(prob:2->1:prob_0);
+(prob_0:1->1:metro_t);
+
+[mtof -260,20 mtof];
+[send -260,50 s freq];
+(c:1->1:mtof);
+(prob:1->1:mtof);
+(mtof:1->1:send);
+
+
+[r -40,-90 r freq];
+
+[c1    -40,-30 cycle~];
+(r:1->1:c1);
+
+[c2c    50,-180 c: 4/3']
+[c2dial 50,-160 dial];
+[c2dmul 50,-90 / 128.0];
+[c2mul  40,-60 * 1.333];
+[c2     40,-30 cycle~];
+[c2amp  40,0 *~];
+(r:1->1:c2mul);
+(c2dial:1->1:c2dmul);
+(c2dmul:1->2:c2amp);
+(c2mul:1->1:c2);
+(c2:1->1:c2amp);
+
+[c3c    130,-180 c: 8/5']
+[c3dial 130,-160 dial];
+[c3dmul 130,-90 / 128.0];
+[c3mul  120,-60 * 1.6];
+[c3     120,-30 cycle~];
+[c3amp  120,0 *~];
+(r:1->1:c3mul);
+(c3dial:1->1:c3dmul);
+(c3dmul:1->2:c3amp);
+(c3mul:1->1:c3);
+(c3:1->1:c3amp);
+
+[c4c    210,-180 c: 2']
+[c4dial 210,-160 dial];
+[c4dmul 210,-90 / 128.0];
+[c4mul  200,-60 * 2];
+[c4     200,-30 cycle~];
+[c4amp  200,0 *~];
+(r:1->1:c4mul);
+(c4dial:1->1:c4dmul);
+(c4dmul:1->2:c4amp);
+(c4mul:1->1:c4);
+(c4:1->1:c4amp); 
+
+
+[SUM 0,60 sum! 1 0 0 0];
+[MIXER -40,90 /~ 1];
+(c2dmul:1->2:SUM);
+(c3dmul:1->3:SUM);
+(c4dmul:1->4:SUM);
+(SUM:1->2:MIXER);
+(c1:1->1:MIXER);
+(c2amp:1->1:MIXER);
+(c3amp:1->1:MIXER);
+(c4amp:1->1:MIXER);
+
+[AMP_M 120,50,80,40 m: 1.0, 0.0 2500];
+[AMP_L 120,100 line~];
+(r:1->1:AMP_M);
+(AMP_M:1->1:AMP_L);
+
+
+[AMP -40,130 *~];
+[DAC -40,160 dac~];
+(MIXER:1->1:AMP);
+(AMP_L:1->2:AMP);
+(AMP:1->1:DAC);
+(AMP:1->2:DAC);
+
+__END__
+マルコフ連鎖自動作曲のパッチです
+[asdfghjk]で演奏できます.
+[autoplay] をオンにすると演奏した結果を元に自動的に演奏します.
+3つ並んだダイヤルで音色を操作できます.

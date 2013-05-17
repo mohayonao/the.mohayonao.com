@@ -1,0 +1,27 @@
+extend ../lib/layout
+
+block config
+  - $.title = "enzui"
+  - $.path  = "/enzui/"
+  - $.jslist  = ["/lib/pico.js", "enzui.js","index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #unit
+    div#ctrl
+      label(for="src") SOURCE: 
+      select(id="src",name="src")
+        option(value="") Please select a program
+        option(value="tarai") Tak Function
+        option(value="markov") Markov Chain Composer
+        option(value="fm") FM Synthesis
+      button(id="load") load
+      #desc.jp
+        かつて作っていた Max/MSP風のヴィジュアルプログラム言語です.<br>
+        [RUN]で実行できます.  <br>
+        三角マークの数字はドラッグで値を変更, [●]はボタン, [×]はトグルスイッチです.<br>
+        ダブルクリックとかで編集もできる (細かいことは忘れた)
+    #enzui
+    div(id="download") download: 
+      a(href="enzui.js") enzui.js
