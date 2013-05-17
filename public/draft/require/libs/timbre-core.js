@@ -1,8 +1,12 @@
 ;(function(global) {
   "use strict";
 
+  var Deferred = $.Deferred;
+
   var timbre = function() {
+    console.log("timbre.js");
   };
+  timbre.modules = {};
 
   // require
   (function() {
@@ -18,68 +22,73 @@
       scriptHead = scripts[0];
       scriptUrl  = m && m[1];
     })();
-    var loadScript = function(path, callback) {
-      if (!/^https?:\/\//.test(path)) {
-        path = scriptUrl + "/" + path + ".js";
+    var normalizeModule = function(parentId, moduleName) {
+      if (moduleName.indexOf("!") !== -1) {
+        var chunks = moduleName.split("!");
+        return normalizeModule(parentId, chunks[0]) + "!" + normalizeModule(parentId, chunks[1]);
       }
+      if (moduleName.charAt(0) == ".") {
+        var base = parentId.split("/").slice(0, -1).join("/");
+        moduleName = base + "/" + moduleName;
+
+        while(moduleName.indexOf(".") !== -1 && previous != moduleName) {
+          var previous = moduleName;
+          moduleName = moduleName.replace(/\/\.\//, "/").replace(/[^\/]+\/\.\.\//, "");
+        }
+      }
+
+      return moduleName;
+    };
+    var name2path = function(name) {
+      if (!/^https?:\/\//.test(name)) {
+        name = scriptUrl + "/" + name + ".js";
+      }
+      return name;
+    };
+    var loadScript = function(name) {
+      var path = name2path(name);
       var script = document.createElement("script");
-      script.async  = true;
-      script.src    = path;
-      script.onload = script.onreadystatechange = function() {
-        delete script.onload;
-        delete script.onreadystatechange;
-        if (callback) callback();
-      };
+      script.async = true;
+      script.src   = path;
       scriptHead.parentNode.insertBefore(script, scriptHead);
     };
 
     var _modules = {};
 
-    // TODO: queuing???
-    // a [b,c] => [b,c,a]   -> load b
-    // b [c]   => [c,b,c,a] -> load c
-    // c []    => [c,b,c,a]
-    // defined c => [b,c,a]
-    // defined b => [c,a]
-    // skipped c => [a]
-    // defined a => []
     timbre.define = function(name, deps, define) {
-      if (_modules[name]) {
-        console.log("skipped " + name);
-        return;
-      }
       if (arguments.length === 2) {
         define = deps;
         deps   = null;
       }
-      
+
+      var dfd = _modules[name] || (_modules[name] = new Deferred());
+
       if (deps) {
-        if (Array.isArray(deps)) {
-          timbre.require(deps.shift(), function() {
-            if (deps.length) {
-              timbre.define(name, deps, define);
-            } else {
-              _modules[name] = define(timbre);
-            }
-          });
-        } else {
-          timbre.require(deps, function() {
-            _modules[name] = define(timbre);
-          });
+        if (!Array.isArray(deps)) {
+          deps = [deps]
         }
+        $.when.apply(null, deps.map(timbre.require)).then(function() {
+          timbre.modules[name] = define(timbre);
+          dfd.resolve(timbre);
+        });
       } else {
-        _modules[name] = define(timbre);
+        timbre.modules[name] = define(timbre);
+        dfd.resolve(timbre);
       }
+      return dfd.promise();
     };
     
-    timbre.require = function(name, callback) {
+    timbre.require = function(name) {
+      name = normalizeModule("", name);
       if (_modules[name]) {
-        if (callback) callback();
-        return _modules[name];
+        console.log("%crequire: " + name, "color:gray;text-decoration:line-through");
+        return _modules[name].promise();
       } else if (name) {
-        loadScript(name, callback);
+        console.log("require: " + name);
+        var dfd = _modules[name] = new Deferred();
+        loadScript(name);
+        return dfd.promise();
       }
-      return null;
     };
   })();
   

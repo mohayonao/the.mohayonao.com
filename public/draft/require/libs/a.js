@@ -1,12 +1,9 @@
 timbre.define("a", ["b","c"], function(T) {
   "use strict";
-  var b = T.require("b");
-  var c = T.require("c");
-  console.log("load A; b:" + typeof(b) + ", c:" + typeof(c));
+  var b = T.modules.b;
+  var c = T.modules.c;
   function A() {
-    A.a = "a";
-    A.b = b;
-    A.c = c;
   }
+  console.log("%cdefined A; b:" + typeof(b) + ", c:" + typeof(c), "color:green");
   return A;
 });

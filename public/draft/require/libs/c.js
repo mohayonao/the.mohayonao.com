@@ -1,8 +1,7 @@
 timbre.define("c", function(T) {
   "use strict";
-  console.log("load C;");
   function C() {
-    C.c = "c";
   }
+  console.log("%cdefined C;", "color:green");
   return C;
 });

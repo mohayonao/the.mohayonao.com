@@ -1,4 +1,5 @@
 $ ->
   'use strict'
 
-  timbre.require('a')
+  timbre.require('a').then (T)->
+    console.log T
