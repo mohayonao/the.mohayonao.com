@@ -1,12 +1,61 @@
 ;(function(global) {
   "use strict";
 
-  var Deferred = $.Deferred;
-
   var timbre = function() {
     console.log("timbre.js");
   };
   timbre.modules = {};
+
+  var Deferred = (function() {
+    // implement a bare-bones
+    function Deferred() {
+      var _pendings   = [];
+      var _isResolved = false;
+      var _resolveValue;
+      this.resolve = function(resolveValue) {
+        if (!_isResolved) {
+          _isResolved   = true;
+          _resolveValue = resolveValue;
+          _pendings.forEach(function(callback) {
+            callback.call(this, _resolveValue);
+          }, this);
+          _pendings = null;
+        }
+        return this;
+      };
+      this.then = function(callback) {
+        if (_isResolved) {
+          callback.call(this, _resolveValue);
+        } else {
+          _pendings.push(callback);
+        }
+        return this;
+      };
+      this.promise = function() {
+        return new Promise(this);  
+      };
+    }
+    function Promise(that) {
+      this.then = function(callback) {
+        that.then(callback);
+        return this;
+      };
+    }
+    Deferred.when = function() {
+      var dfd = new Deferred();
+      var count = arguments.length;
+      for (var i = 0, imax = count; i < imax; i++) {
+        arguments[i].then(function() {
+          count -= 1;
+          if (!count) {
+            dfd.resolve();
+          }
+        });
+      };
+      return dfd.promise();
+    };
+    return Deferred;
+  })();
 
   // require
   (function() {
@@ -67,7 +116,7 @@
         if (!Array.isArray(deps)) {
           deps = [deps]
         }
-        $.when.apply(null, deps.map(timbre.require)).then(function() {
+        Deferred.when.apply(null, deps.map(timbre.require)).then(function() {
           timbre.modules[name] = define(timbre);
           dfd.resolve(timbre);
         });
