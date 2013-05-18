@@ -57,7 +57,8 @@
     };
     return Deferred;
   })();
-
+  timbre.Deferred = Deferred;
+  
   // require
   (function() {
     var scriptHead, scriptUrl;
