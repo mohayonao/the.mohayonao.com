@@ -18,4 +18,5 @@ a :hover{text-decoration:underline}
 #content #unit{padding:10px}
 @media screen and (max-width: 650px){#sidebar{display:none}
 #content{margin-left:0}
-}
+}#sidebar{display:none}
+#content{margin-left:0}
