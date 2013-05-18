@@ -44,14 +44,15 @@
     Deferred.when = function() {
       var dfd = new Deferred();
       var count = arguments.length;
-      for (var i = 0, imax = count; i < imax; i++) {
-        arguments[i].then(function() {
-          count -= 1;
-          if (!count) {
-            dfd.resolve();
-          }
-        });
+      var countdown = function() {
+        count -= 1;
+        if (!count) {
+          dfd.resolve();
+        }
       };
+      for (var i = 0, imax = count; i < imax; i++) {
+        arguments[i].then(countdown);
+      }
       return dfd.promise();
     };
     return Deferred;
@@ -61,9 +62,9 @@
   (function() {
     var scriptHead, scriptUrl;
     (function() {
-      var scripts = document.getElementsByTagName("script");
+      var m, scripts = document.getElementsByTagName("script");
       for (var i = 0; i < scripts.length; i++) {
-        var m, src = scripts[i].src || scripts[i].getAttribute("src");
+        var src = scripts[i].src || scripts[i].getAttribute("src");
         if (!src) continue;
         if ((m = src.match(/^(.*)\/timbre(\-\w+)?\.js(\?|$)/)))
           break;
@@ -114,7 +115,7 @@
 
       if (deps) {
         if (!Array.isArray(deps)) {
-          deps = [deps]
+          deps = [deps];
         }
         Deferred.when.apply(null, deps.map(timbre.require)).then(function() {
           timbre.modules[name] = define(timbre);
