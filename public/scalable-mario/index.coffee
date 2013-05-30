@@ -48,23 +48,6 @@ $ ->
   o3 [a-r8<e-r8a-r gr8cr8>gr]3
   '''
   
-  sc.use 'prototype'
-
-  sc.Scale::degreeToFreq2 = (degree, rootFreq, octave)->
-    @degreeToRatio2(degree, octave) * rootFreq
-
-  sc.Scale::degreeToRatio2 = (degree, octave)->
-    octave += (degree / @_degrees.length)|0
-    _index   =  degree % @_degrees.length
-    @ratios().blendAt(_index) * Math.pow(@octaveRatio(), octave)
-
-  unless Array::blendAt
-    Array::blendAt = (index) ->
-      i  = Math.ceil(index) - 1
-      x0 = @[i] ? @[i+1]
-      x1 = @[i+1]
-      x0 + Math.abs(index - i) * (x1 - x0)
-  
   master = T('delay', {time:"bpm104 l16"})
   baseScale = sc.Scale.major()
   baseRoot  = 60 # C3

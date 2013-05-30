@@ -2,24 +2,6 @@
 # 全選択してから [Ctrl+Enter] で開始
 # 停止するときは [Ctrl+.]
 
-rrand = (a, b)->
-  Math.random() * (b - a) + a
-
-exprand = (a, b)->
-  a = 0.001 if a < 0.001  
-  z = 0
-  while z < 0.001 then z = do Math.random
-  Math.pow b/a, z*a
-
-gcd = (a, b)->
-  [a, b] = [a|0, b|0]
-  while b != 0
-    [a, b] = [b, a % b]
-  a
-
-Number::rand = -> Math.random() * @
-
-
 crotale = T("SynthDef", def:({params})->
   [freq, index, dur, bus, ratioa, ratiob, attack, decay] = params
   factor = gcd ratioa, ratiob
@@ -40,10 +22,10 @@ T("task", do:Infinity, init: ->
   offset   : 0
   range    : range
   envs     : [[0, 0.9], [0.01, 0.9], [0.1, 0.8], [0.8, 0.01]],
-  repeat   : sc.fill(10, ->
+  repeat   : Array.fill(10, ->
     [ (rrand(range, range+24)|0).midicps(), 3, 2.1 - exprand(0.1, 2.0), 0, 1, 1, 0, 0.9]
   )
-  next     : sc.fill(10, ->
+  next     : Array.fill(10, ->
     [3, 0.75, 0.5, 0.25, 0.125].choose()
   )
   freq     : rrand(range, range*2)|0

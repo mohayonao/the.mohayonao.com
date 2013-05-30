@@ -1,5 +1,5 @@
 describe 'deferred', ->
-  Deferred = timbre.Deferred
+  Deferred = timbre.modules.Deferred
   
   it 'new', ->
     assert.instanceOf new Deferred(), Deferred
@@ -45,3 +45,8 @@ describe 'deferred', ->
       assert.equal a, 10
       assert.equal b, 20
       done()
+
+  it 'empty when', ->
+    a = 0
+    Deferred.when().then -> a = 10
+    assert.equal a, 10

@@ -2,7 +2,7 @@
   describe('deferred', function() {
     var Deferred;
 
-    Deferred = timbre.Deferred;
+    Deferred = timbre.modules.Deferred;
     it('new', function() {
       return assert.instanceOf(new Deferred(), Deferred);
     });
@@ -46,7 +46,7 @@
       });
       return assert.equal(a, 100);
     });
-    return it('when', function(done) {
+    it('when', function(done) {
       var a, b, dfd1, dfd2;
 
       dfd1 = new Deferred();
@@ -65,6 +65,15 @@
         assert.equal(b, 20);
         return done();
       });
+    });
+    return it('empty when', function() {
+      var a;
+
+      a = 0;
+      Deferred.when().then(function() {
+        return a = 10;
+      });
+      return assert.equal(a, 10);
     });
   });
 

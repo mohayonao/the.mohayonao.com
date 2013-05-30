@@ -1,7 +1,7 @@
 $ ->
   'use strict'
 
-  sc.use 'prototype'
+  sc.use 'global'
 
   editor = ace.edit 'editor'
   editor.setTheme 'ace/theme/monokai'

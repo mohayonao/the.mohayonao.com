@@ -1,36 +1,5 @@
 (function() {
-  var crotale, exprand, gcd, rrand;
-
-  rrand = function(a, b) {
-    return Math.random() * (b - a) + a;
-  };
-
-  exprand = function(a, b) {
-    var z;
-
-    if (a < 0.001) {
-      a = 0.001;
-    }
-    z = 0;
-    while (z < 0.001) {
-      z = Math.random();
-    }
-    return Math.pow(b / a, z * a);
-  };
-
-  gcd = function(a, b) {
-    var _ref, _ref1;
-
-    _ref = [a | 0, b | 0], a = _ref[0], b = _ref[1];
-    while (b !== 0) {
-      _ref1 = [b, a % b], a = _ref1[0], b = _ref1[1];
-    }
-    return a;
-  };
-
-  Number.prototype.rand = function() {
-    return Math.random() * this;
-  };
+  var crotale;
 
   crotale = T("SynthDef", {
     def: function(_arg) {
@@ -69,10 +38,10 @@
         offset: 0,
         range: range,
         envs: [[0, 0.9], [0.01, 0.9], [0.1, 0.8], [0.8, 0.01]],
-        repeat: sc.fill(10, function() {
+        repeat: Array.fill(10, function() {
           return [(rrand(range, range + 24) | 0).midicps(), 3, 2.1 - exprand(0.1, 2.0), 0, 1, 1, 0, 0.9];
         }),
-        next: sc.fill(10, function() {
+        next: Array.fill(10, function() {
           return [3, 0.75, 0.5, 0.25, 0.125].choose();
         }),
         freq: rrand(range, range * 2) | 0

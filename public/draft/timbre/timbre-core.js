@@ -44,22 +44,110 @@
     Deferred.when = function() {
       var dfd = new Deferred();
       var count = arguments.length;
-      var countdown = function() {
-        count -= 1;
-        if (!count) {
-          dfd.resolve();
+      if (count) {
+        var countdown = function() {
+          count -= 1;
+          if (!count) {
+            dfd.resolve();
+          }
+        };
+        for (var i = 0, imax = count; i < imax; i++) {
+          arguments[i].then(countdown);
         }
-      };
-      for (var i = 0, imax = count; i < imax; i++) {
-        arguments[i].then(countdown);
+      } else {
+        dfd.resolve();
       }
       return dfd.promise();
     };
     return Deferred;
   })();
-  timbre.Deferred = Deferred;
-  
+  timbre.modules.Deferred = Deferred;
+
   // require
+  (function() {
+    var _requires = {}, _defines = {}, scriptStack = [];
+    timbre.define = function(name, deps, payload) {
+      if (!_requires[name]) {
+        _requires[name] = new Deferred();
+      }
+      if (!_defines[name]) {
+        _defines[name] = new Deferred();
+      }
+      console.log(scriptStack);
+      if (arguments.length === 2) {
+        payload = deps;
+        deps    = [];
+      }
+      if (!Array.isArray(deps)) {
+        deps = [ deps ];
+      }
+      _requires[name].then(function() {
+        Deferred.when.apply(null, deps.map(timbre.require)).then(function() {
+          if (typeof payload === "function") {
+            timbre.modules[name] = payload(timbre);
+          } else {
+            timbre.modules[name] = payload;
+          }
+          _defines[name].resolve();
+        });
+      });
+    };
+    timbre.require = function(path) {
+      var name = resolveModuleName(path);
+      if (!_requires[name]) {
+        _requires[name] = new Deferred();
+        loadScript(resolvePath(path, name));
+      }
+      if (!_defines[name]) {
+        _defines[name] = new Deferred();
+      }
+      _requires[name].resolve();
+      return _defines[name].promise();
+    };
+    var scriptHead, scriptUrl;
+    (function() {
+      var m, scripts = document.getElementsByTagName("script");
+      for (var i = 0; i < scripts.length; i++) {
+        var src = scripts[i].src || scripts[i].getAttribute("src");
+        if (!src) continue;
+        if ((m = src.match(/^(.*)\/timbre(\-\w+)?\.js(\?|$)/)))
+          break;
+      }
+      scriptHead = scripts[0];
+      scriptUrl  = m && m[1];
+    })();
+    var loadScript = function(filepath, name) {
+      var script = document.createElement("script");
+      script.async = true;
+      script.src   = filepath;
+      scriptStack.push(filepath);
+      script.onload = function() {
+        console.log("LOAD");
+      };
+      script.onerror = function() {
+        console.log("ERROR");
+      };
+      scriptHead.parentNode.insertBefore(script, scriptHead);
+    };
+    var resolveModuleName = function(path) {
+      var items = path.split("/");
+      var name = items[items.length-1];
+      name = name.replace(/\.js$/, "");
+      return name;
+    };
+    var resolvePath = function(path) {
+      if (path.match(/^(https?:)?\/\//)) {
+        return path;
+      }
+      if (!path.match(/\.js$/)) {
+        path += ".js";
+      }
+      return path;
+    };
+    timbre.require.resolvePath = resolvePath;
+  })();
+  
+  /*
   (function() {
     var scriptHead, scriptUrl;
     (function() {
@@ -142,6 +230,7 @@
       }
     };
   })();
+  */
   
   // exports
   var exports = timbre;

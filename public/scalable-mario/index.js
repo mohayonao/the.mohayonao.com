@@ -7,27 +7,6 @@
     sheet = [0, 1, 1, 2, 2, 3, 0, 1, 1, 4, 4, 3];
     melo1 = 't104 l16 q4 $\no5 f#f#rf# rf#f#r gr8. >gr8.\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no6 r8ee-d>b<rc r>efa rfab< r8ee-d>b<rc rgrg gr8. r8ee-d>b<rc r>efa rfab< r8cr8>fr8er8.r4\no6 r8ee-d>b<rc r>efa rfab< r8ee-d>b<rc rgrg gr8. r8ee-d>b<rc r>efa rfab< r8cr8>fr8er8.r4\no5 a-a-ra- ra-b-r <c>grf er8. a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.\no5 f#f#rf# rf#f#r gr8. >gr8.\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no6 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.< c>gre r8er  f<drd> fr8. l12g<dd dc>b l16er8.r4\no6 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.< c>gre r8er  f<drd> fr8. l12g<dd dc>b l16er8.r4\no5 a-a-ra- ra-b-r <c>grf er8. a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.';
     bass = 't104 l16 q4 $\no4 ddrd rddr <br8.>gr8.\no4 gr8er8cr rfrg rg-fr l12e<ce l16frde rcr>a bgr8\no4 gr8er8cr rfrg rg-fr l12e<ce l16frde rcr>a bgr8\no4 cr8gr8<cr >fr8<ccr>fr cr8er8g<c < rfrf fr >>gr cr8gr8<cr >fr8<ccr>fr> a-r<a-r> b-<b-r8> l16cr8>g grcr\no4 cr8gr8<cr >fr8<ccr>fr cr8er8g<c < rfrf fr >>gr cr8gr8<cr >fr8<ccr>fr> a-r<a-r> b-<b-r8> l16cr8>g grcr\no3 [a-r8<e-r8a-r gr8cr8>gr]3\no4 ddrd rddr <br8.>gr8.\no4 gr8er8cr rfrg rg-fr l12e<ce l16frde rcr>a bgr8\no4 gr8er8cr rfrg rg-fr l12e<ce l16frde rcr>a bgr8\no4 crre gr<cr> fr<cr cc>fr drrf grbr gr<cr cc>gr crre gr<cr> fr<cr cc>fr grrg l12gab l16 <cr>gr cr8.\no4 crre gr<cr> fr<cr cc>fr drrf grbr gr<cr cc>gr crre gr<cr> fr<cr cc>fr grrg l12gab l16 <cr>gr cr8.\no3 [a-r8<e-r8a-r gr8cr8>gr]3';
-    sc.use('prototype');
-    sc.Scale.prototype.degreeToFreq2 = function(degree, rootFreq, octave) {
-      return this.degreeToRatio2(degree, octave) * rootFreq;
-    };
-    sc.Scale.prototype.degreeToRatio2 = function(degree, octave) {
-      var _index;
-
-      octave += (degree / this._degrees.length) | 0;
-      _index = degree % this._degrees.length;
-      return this.ratios().blendAt(_index) * Math.pow(this.octaveRatio(), octave);
-    };
-    if (!Array.prototype.blendAt) {
-      Array.prototype.blendAt = function(index) {
-        var i, x0, x1, _ref;
-
-        i = Math.ceil(index) - 1;
-        x0 = (_ref = this[i]) != null ? _ref : this[i + 1];
-        x1 = this[i + 1];
-        return x0 + Math.abs(index - i) * (x1 - x0);
-      };
-    }
     master = T('delay', {
       time: "bpm104 l16"
     });

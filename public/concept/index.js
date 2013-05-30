@@ -3,7 +3,7 @@
     'use strict';
     var blink, cache, changeFavicon, current, editor, getCssRule, gotoHash;
 
-    sc.use('prototype');
+    sc.use('global');
     editor = ace.edit('editor');
     editor.setTheme('ace/theme/monokai');
     editor.setPrintMarginColumn(-1);
