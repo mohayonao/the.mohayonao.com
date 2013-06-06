@@ -1,71 +1,60 @@
 var Deferred = (function() {
-  var PENDING = 0, RESOLVED = 1, REJECTED = 2;
   function Deferred() {
-    var _pendings = [];
-    var _status   = PENDING;
-    var _value    = null;
-    var done = function(status, value) {
-      if (_status === PENDING) {
-        _status = status;
-        _value  = value;
-        _pendings.forEach(function(items) {
-          if (items.type === status) {
-            items.callback(value);
-          }
-        });
-        _pendings = null;
-      }
-    };
-    var then = function(status, callback) {
-      if (typeof callback === "function") {
-        if (_status === status) {
-          callback(_value);
-        } else if (_status === PENDING) {
-          _pendings.push({type:status, callback:callback});
-        }
-      }
-    };
-    var chain = function(callback, next, which) {
-      if (typeof callback === "function") {
-        return function(value) {
-          var res = callback(value);
-          if (res && typeof res.then === "function") {
-            res.then(function(value) {
-              next.resolve(value);
-            }, function(value) {
-              next.reject(value);
-            });
-          } else {
-            which(res);
-          }
-        };
-      }
-    };
-    this.resolve = function(value) {
-      done(RESOLVED, value);
-      return this;
-    };
-    this.reject = function(value) {
-      done(REJECTED, value);
-      return this;
-    };
-    this.then = function(resolved, rejected) {
-      var next = new Deferred();
-      then(RESOLVED, chain(resolved, next, next.resolve));
-      then(REJECTED, chain(rejected, next, next.reject ));
-      return next.promise();
-    };
-    this.promise = function() {
-      return new Promise(this);
-    };
+    this.status = "PENDING";
+    this.value  = null;
+    this._pendings = [];
   }
+  Deferred.prototype.resolve = function(value) {
+    return done(this, "RESOLVED", value);
+  };
+  Deferred.prototype.reject = function(value) {
+    return done(this, "REJECTED", value);
+  };
+  Deferred.prototype.then = function(resolved, rejected) {
+    var next = new Deferred();
+    then(this, "RESOLVED", chain(resolved, next, next.resolve));
+    then(this, "REJECTED", chain(rejected, next, next.reject ));
+    return next.promise();
+  };
+  Deferred.prototype.promise = function() {
+    return new Promise(this);
+  };
+  var done = function(that, status, value) {
+    if (that.status === "PENDING") {
+      that.status = status;
+      that.value  = value;
+      that._pendings.forEach(function(items) {
+        if (items.type === status) { items.callback(value); }
+      });
+      that._pendings = null;
+    }
+    return that;
+  };
+  var then = function(that, status, callback) {
+    if (typeof callback === "function") {
+      if (that.status === status) {
+        callback(that.value);
+      } else if (that.status === "PENDING") {
+        that._pendings.push({type:status, callback:callback});
+      }
+    }
+  };
+  var chain = function(callback, next, which) {
+    if (typeof callback === "function") {
+      return function(value) {
+        var res = callback(value);
+        if (res && typeof res.then === "function") {
+          res.then(function(value) { next.resolve(value); },
+                   function(value) { next.reject (value); });
+        } else { which.call(next, res); }
+      };
+    }
+  };
   function Promise(dfd) {
     this.then = function(resolved, rejected) {
       return dfd.then(resolved, rejected);
     };
-    this.promise = function() {
-      return this;
-    };
+    this.promise = function() { return this; };
   }
   Deferred.when = function() {
     var dfd = new Deferred();
