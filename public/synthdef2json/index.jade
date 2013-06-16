@@ -1,0 +1,37 @@
+extend ../lib/layout
+
+block config
+  - $.title = "synthdef2json"
+  - $.path  = "/synthdef2json/"
+  - $.jslist  = ["/lib/ace.js","index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #unit
+    p drag a *.scsyndef file
+    #editor.
+      {
+        "version": "only 2",
+        "defs": [
+          {
+            "name": "name of the definition",
+            "consts": [ "constant value", "..." ],
+            "params": {
+              "values": [ "initial parameter", "..." ],
+              "names": [ "parameter name", "index of value", "..." ]
+            },
+            "specs": [
+              [ "name of the UGen",
+                "rate (0=scalar, 1=control, 2=audio)",
+                "special index",
+                [ "index of UGen", "index of UGen output", "..." ],
+                [ "rate", "..." ]
+              ]
+            ],
+            "variants": {
+              "name of the variant": [ "initial value", "..." ]
+            }
+          }
+        ]
+      }
