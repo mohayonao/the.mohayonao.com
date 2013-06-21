@@ -119,7 +119,7 @@
       };
 
       readParamsJSON = function(num) {
-        var i, names, values, _i, _ref;
+        var i, indices, names, values, _i, _ref;
 
         values = (function() {
           var _i, _results;
@@ -130,13 +130,16 @@
           }
           return _results;
         }).call(this);
+        indices = [];
         names = [];
         for (i = _i = 0, _ref = this.int32(); _i < _ref; i = _i += 1) {
-          names.push(this.text(), this.int32());
+          names.push(this.text());
+          indices.push(this.int32());
         }
         return {
-          values: values,
-          names: names
+          names: names,
+          indices: indices,
+          values: values
         };
       };
 
@@ -234,8 +237,9 @@
         str.push(tab(6) + ("'name': '" + def.name + "',"));
         str.push(tab(6) + ("'consts': [ " + (def.consts.join(', ')) + " ],"));
         str.push(tab(6) + "'params': {");
-        str.push(tab(8) + ("'values': [ " + (def.params.values.join(', ')) + " ],"));
-        str.push(tab(8) + ("'names': [ " + (def.params.names.map(val).join(', ')) + " ]"));
+        str.push(tab(8) + ("'names': [ " + (def.params.names.map(val).join(', ')) + " ],"));
+        str.push(tab(8) + ("'indices': [ " + (def.params.indices.join(', ')) + " ],"));
+        str.push(tab(8) + ("'values': [ " + (def.params.values.join(', ')) + " ]"));
         str.push(tab(6) + "},");
         str.push(tab(6) + "'specs': [");
         for (j = _j = 0, _ref1 = def.specs.length; _j < _ref1; j = _j += 1) {

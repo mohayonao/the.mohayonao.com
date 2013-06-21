@@ -60,10 +60,13 @@ $ ->
       obj
 
     readParamsJSON = (num)->
-      values = ( @float32() for i in [0...num] by 1 )
-      names  = []
-      names.push @text(), @int32() for i in [0...@int32()] by 1
-      values:values, names:names
+      values  = ( @float32() for i in [0...num] by 1 )
+      indices = []
+      names   = []
+      for i in [0...@int32()] by 1
+        names.push   @text()
+        indices.push @int32() 
+      names:names, indices:indices, values:values
 
     readSpecListJSON = (num)->
       readSpecJSON.call @ for i in [0...num] by 1
@@ -106,8 +109,9 @@ $ ->
       str.push tab(6) + "'name': '#{def.name}',"
       str.push tab(6) + "'consts': [ #{ def.consts.join ', ' } ],"
       str.push tab(6) + "'params': {"
-      str.push tab(8) + "'values': [ #{ def.params.values.join ', ' } ],"
-      str.push tab(8) + "'names': [ #{ def.params.names.map(val).join ', ' } ]"
+      str.push tab(8) + "'names': [ #{ def.params.names.map(val).join ', ' } ],"
+      str.push tab(8) + "'indices': [ #{ def.params.indices.join ', ' } ],"
+      str.push tab(8) + "'values': [ #{ def.params.values.join ', ' } ]"
       str.push tab(6) + "},"
       str.push tab(6) + "'specs': ["
       for j in [0...def.specs.length] by 1
