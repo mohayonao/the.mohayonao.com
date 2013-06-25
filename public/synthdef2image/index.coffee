@@ -182,6 +182,9 @@ $ ->
       @context.font = '12pt normal'
       @context.strokeStyle = '#333'
       @context.lineWidth   = 2
+      @context.fillStyle   = '#fff'
+      @context.fillRect 0, 0, @width, @height
+      @context.fillStyle   = '#333'
       for x in @builded
         for {name, boxList, x, y} in @builded
           @context.fillText name, x, y + 15
@@ -297,11 +300,23 @@ $ ->
           prev.next = list[i]
       boxList
 
+  render = (data)->
+    json = new SynthDefParser().toJSON data
+    if json
+      renderer = new SynthDefRenderer
+      $('#result').attr src:renderer.toDataURL json
+
   main = (file)->
     reader = new FileReader
     reader.onload = (e)->
-      json = new SynthDefParser().toJSON new Uint8Array(e.target.result)
-      if json
-        renderer = new SynthDefRenderer
-        $('#result').attr src:renderer.toDataURL json
+      render new Uint8Array(e.target.result)
     reader.readAsArrayBuffer file
+
+  xhr = new XMLHttpRequest
+  xhr.open 'GET', './default.scsyndef'
+  xhr.responseType = 'arraybuffer'
+  xhr.onreadystatechange = ->
+    if xhr.readyState is 4
+      if xhr.response
+        render new Uint8Array(xhr.response)
+  xhr.send()

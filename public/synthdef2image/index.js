@@ -4,7 +4,7 @@
 
   $(function() {
     'use strict';
-    var BinaryOpUGenMap, Box, Inlet, Outlet, SynthDefParser, SynthDefRenderer, UnaryOpUGenMap, main, _ref;
+    var BinaryOpUGenMap, Box, Inlet, Outlet, SynthDefParser, SynthDefRenderer, UnaryOpUGenMap, main, render, xhr, _ref;
 
     $(window).on('dragover', function() {
       return false;
@@ -390,6 +390,9 @@
         this.context.font = '12pt normal';
         this.context.strokeStyle = '#333';
         this.context.lineWidth = 2;
+        this.context.fillStyle = '#fff';
+        this.context.fillRect(0, 0, this.width, this.height);
+        this.context.fillStyle = '#333';
         _ref1 = this.builded;
         for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
           x = _ref1[_i];
@@ -636,23 +639,37 @@
       return SynthDefRenderer;
 
     })();
-    return main = function(file) {
+    render = function(data) {
+      var json, renderer;
+
+      json = new SynthDefParser().toJSON(data);
+      if (json) {
+        renderer = new SynthDefRenderer;
+        return $('#result').attr({
+          src: renderer.toDataURL(json)
+        });
+      }
+    };
+    main = function(file) {
       var reader;
 
       reader = new FileReader;
       reader.onload = function(e) {
-        var json, renderer;
-
-        json = new SynthDefParser().toJSON(new Uint8Array(e.target.result));
-        if (json) {
-          renderer = new SynthDefRenderer;
-          return $('#result').attr({
-            src: renderer.toDataURL(json)
-          });
-        }
+        return render(new Uint8Array(e.target.result));
       };
       return reader.readAsArrayBuffer(file);
     };
+    xhr = new XMLHttpRequest;
+    xhr.open('GET', './default.scsyndef');
+    xhr.responseType = 'arraybuffer';
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        if (xhr.response) {
+          return render(new Uint8Array(xhr.response));
+        }
+      }
+    };
+    return xhr.send();
   });
 
 }).call(this);
