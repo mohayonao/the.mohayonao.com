@@ -212,10 +212,16 @@ $ ->
     remakeSpecList = (def)->
       specList = []
       argName = do ->
-        '0_' + (def.params.indices.map (i)->def.params.names[i]).join ', '
-      specList.push
-        name: argName
-        rate: -1, spId:0, inputs:[], outputs: (1 for _ in def.params.names)
+        index = 0
+        a = for i in [0...def.params.values.length] by 1
+          if def.params.indices[index+1] is i
+            index += 1
+          def.params.names[index]
+        '0_' + a.join ', '
+      if argName isnt '0_'
+        specList.push
+          name: argName
+          rate: -1, spId:0, inputs:[], outputs: (1 for _ in def.params.values)
       def.consts = def.consts.map (x)-> +x.toFixed 5
       origin = for [ name, rate, spId, inputs, outputs ], i in def.specs
         name:"#{i}_#{name}", rate:rate, spId:spId, inputs:inputs, outputs:outputs
@@ -274,10 +280,13 @@ $ ->
           inlet.from.forEach (outlet)->
             walkIn outlet.parent, box.y - 50
       walkIn boxList[boxList.length-1]
-      # ???
+      walkRemain = (box, y=10)->
+        box.y = y
+        box.outlets.forEach (outlet)->
+          outlet.to.forEach (inlet)-> walkRemain inlet.parent, y + 50
       for box in boxList
         if box.y is 0
-          box.y = 10
+          walkRemain box
       boxList
     
     layoutX = (boxList)->

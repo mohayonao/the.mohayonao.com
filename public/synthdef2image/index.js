@@ -450,27 +450,42 @@
 
         specList = [];
         argName = (function() {
-          return '0_' + (def.params.indices.map(function(i) {
-            return def.params.names[i];
-          })).join(', ');
-        })();
-        specList.push({
-          name: argName,
-          rate: -1,
-          spId: 0,
-          inputs: [],
-          outputs: (function() {
-            var _i, _len, _ref1, _results;
+          var a, i, index;
 
-            _ref1 = def.params.names;
+          index = 0;
+          a = (function() {
+            var _i, _ref1, _results;
+
             _results = [];
-            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-              _ = _ref1[_i];
-              _results.push(1);
+            for (i = _i = 0, _ref1 = def.params.values.length; _i < _ref1; i = _i += 1) {
+              if (def.params.indices[index + 1] === i) {
+                index += 1;
+              }
+              _results.push(def.params.names[index]);
             }
             return _results;
-          })()
-        });
+          })();
+          return '0_' + a.join(', ');
+        })();
+        if (argName !== '0_') {
+          specList.push({
+            name: argName,
+            rate: -1,
+            spId: 0,
+            inputs: [],
+            outputs: (function() {
+              var _i, _len, _ref1, _results;
+
+              _ref1 = def.params.values;
+              _results = [];
+              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+                _ = _ref1[_i];
+                _results.push(1);
+              }
+              return _results;
+            })()
+          });
+        }
         def.consts = def.consts.map(function(x) {
           return +x.toFixed(5);
         });
@@ -564,7 +579,7 @@
       };
 
       layoutY = function(boxList) {
-        var box, walkIn, walkOut, _i, _len;
+        var box, walkIn, walkOut, walkRemain, _i, _len;
 
         walkOut = function(box, y) {
           if (y == null) {
@@ -592,10 +607,21 @@
           });
         };
         walkIn(boxList[boxList.length - 1]);
+        walkRemain = function(box, y) {
+          if (y == null) {
+            y = 10;
+          }
+          box.y = y;
+          return box.outlets.forEach(function(outlet) {
+            return outlet.to.forEach(function(inlet) {
+              return walkRemain(inlet.parent, y + 50);
+            });
+          });
+        };
         for (_i = 0, _len = boxList.length; _i < _len; _i++) {
           box = boxList[_i];
           if (box.y === 0) {
-            box.y = 10;
+            walkRemain(box);
           }
         }
         return boxList;
