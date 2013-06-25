@@ -1,0 +1,15 @@
+extend ../lib/layout
+
+block config
+  - $.title = "synthdef2image"
+  - $.path  = "/synthdef2image/"
+  - $.jslist  = ["index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #unit
+    ol
+      li drag a *.scsyndef file
+      li right-click and use "Save As"
+    img#result
