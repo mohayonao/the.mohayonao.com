@@ -143,8 +143,8 @@ $ ->
         m = @context.measureText @name
         w = Math.ceil(m.width * 0.1) * 10 + 10
         if @rate isnt 0
-          w = Math.max 20, w, Math.max(@inputs.length, @outputs.length) * 15
-        w
+          w = Math.max w, Math.max(@inputs.length, @outputs.length) * 15
+        Math.max 30, w
       @height = 20
       @inlets  = ( new Inlet(@, i)  for i in [0...@inputs .length>>1] by 1 )
       @outlets = ( new Outlet(@, i) for i in [0...@outputs.length   ] by 1 )

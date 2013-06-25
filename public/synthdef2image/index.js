@@ -305,9 +305,9 @@
           m = _this.context.measureText(_this.name);
           w = Math.ceil(m.width * 0.1) * 10 + 10;
           if (_this.rate !== 0) {
-            w = Math.max(20, w, Math.max(_this.inputs.length, _this.outputs.length) * 15);
+            w = Math.max(w, Math.max(_this.inputs.length, _this.outputs.length) * 15);
           }
-          return w;
+          return Math.max(30, w);
         })();
         this.height = 20;
         this.inlets = (function() {
