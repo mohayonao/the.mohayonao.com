@@ -377,7 +377,7 @@
 
     })();
     SynthDefRenderer = (function() {
-      var layout, layoutX, layoutY, makeBoxList, remakeSpecList;
+      var layout, layoutI, layoutX, layoutY, makeBoxList, remakeSpecList;
 
       function SynthDefRenderer() {}
 
@@ -450,18 +450,33 @@
 
         specList = [];
         argName = (function() {
-          var a, i, index;
+          var a, i, index, nameIndices;
 
-          index = 0;
+          nameIndices = (function() {
+            var _i, _ref1, _results;
+
+            _results = [];
+            for (i = _i = 0, _ref1 = def.params.names.length; _i < _ref1; i = _i += 1) {
+              _results.push({
+                name: def.params.names[i],
+                index: def.params.indices[i]
+              });
+            }
+            return _results;
+          })();
+          nameIndices.sort(function(a, b) {
+            return a.index - b.index;
+          });
+          index = -1;
           a = (function() {
             var _i, _ref1, _results;
 
             _results = [];
             for (i = _i = 0, _ref1 = def.params.values.length; _i < _ref1; i = _i += 1) {
-              if (def.params.indices[index + 1] === i) {
+              if (nameIndices[index + 1].index === i) {
                 index += 1;
               }
-              _results.push(def.params.names[index]);
+              _results.push(nameIndices[index].name);
             }
             return _results;
           })();
@@ -470,6 +485,7 @@
         if (argName !== '0_') {
           specList.push({
             name: argName,
+            args: true,
             rate: -1,
             spId: 0,
             inputs: [],
@@ -568,8 +584,9 @@
       layout = function(boxList, offsetX, offsetY) {
         var box, _i, _len;
 
-        boxList = layoutY(boxList);
-        boxList = layoutX(boxList);
+        layoutY(boxList);
+        layoutX(boxList);
+        layoutI(boxList);
         for (_i = 0, _len = boxList.length; _i < _len; _i++) {
           box = boxList[_i];
           box.x += offsetX;
@@ -579,56 +596,58 @@
       };
 
       layoutY = function(boxList) {
-        var box, walkIn, walkOut, walkRemain, _i, _len;
+        var calcY, changed, i, minY, remain, walk, _i;
 
-        walkOut = function(box, y) {
-          if (y == null) {
-            y = 10;
-          }
-          box.y = Math.max(y, box.y);
-          return box.outlets.forEach(function(outlet) {
-            return outlet.to.forEach(function(inlet) {
-              return walkOut(inlet.parent, box.y + 50);
-            });
-          });
+        calcY = function(box, selector, defaultValue) {
+          return box.outlets.reduce(function(y, outlet) {
+            return selector(y, outlet.to.reduce(function(y, inlet) {
+              return selector(y, inlet.parent.y - 50);
+            }, defaultValue));
+          }, defaultValue);
         };
-        walkOut(boxList[0]);
-        walkIn = function(box, y) {
-          if (y == null) {
-            y = 10;
-          }
-          if (box.y === 0) {
-            box.y = Math.max(y, box.y);
-          }
-          return box.inlets.forEach(function(inlet) {
-            return inlet.from.forEach(function(outlet) {
-              return walkIn(outlet.parent, box.y - 50);
+        remain = boxList.slice().reverse();
+        walk = function(box) {
+          var index;
+
+          index = remain.indexOf(box);
+          if (index !== -1) {
+            remain.splice(index, 1);
+            box.y = calcY(box, Math.max, 0);
+            return box.inlets.forEach(function(inlet) {
+              return inlet.from.forEach(function(outlet) {
+                return walk(outlet.parent);
+              });
             });
-          });
-        };
-        walkIn(boxList[boxList.length - 1]);
-        walkRemain = function(box, y) {
-          if (y == null) {
-            y = 10;
           }
-          box.y = y;
-          return box.outlets.forEach(function(outlet) {
-            return outlet.to.forEach(function(inlet) {
-              return walkRemain(inlet.parent, y + 50);
-            });
-          });
         };
-        for (_i = 0, _len = boxList.length; _i < _len; _i++) {
-          box = boxList[_i];
-          if (box.y === 0) {
-            walkRemain(box);
+        while (remain.length) {
+          walk(remain[0]);
+        }
+        for (i = _i = 0; _i < 100; i = ++_i) {
+          changed = false;
+          boxList.forEach(function(box) {
+            var y;
+
+            y = calcY(box, Math.min, Infinity);
+            if (y < box.y) {
+              box.y = y;
+              return changed = true;
+            }
+          });
+          if (!changed) {
+            break;
           }
         }
-        return boxList;
+        minY = boxList.reduce((function(minY, box) {
+          return Math.min(minY, box.y);
+        }), 0);
+        return boxList.forEach(function(box) {
+          return box.y -= minY;
+        });
       };
 
       layoutX = function(boxList) {
-        var box, i, key, list, map, prev, _i, _j, _k, _l, _len, _len1, _len2, _ref1, _ref2;
+        var box, i, key, list, map, prev, _i, _j, _k, _len, _len1, _len2, _ref1, _results;
 
         map = {};
         for (_i = 0, _len = boxList.length; _i < _len; _i++) {
@@ -639,6 +658,7 @@
           map[box.y].push(box);
         }
         _ref1 = Object.keys(map).reverse();
+        _results = [];
         for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
           key = _ref1[_j];
           list = map[key];
@@ -653,13 +673,70 @@
           list.sort(function(a, b) {
             return a.maxOutX - b.maxOutX;
           });
-          for (i = _l = 1, _ref2 = list.length; _l < _ref2; i = _l += 1) {
-            prev = list[i - 1];
-            list[i].x = prev.getX() + prev.width + 10;
-            prev.next = list[i];
-          }
+          _results.push((function() {
+            var _l, _ref2, _results1;
+
+            _results1 = [];
+            for (i = _l = 1, _ref2 = list.length; _l < _ref2; i = _l += 1) {
+              prev = list[i - 1];
+              list[i].x = prev.getX() + prev.width + 10;
+              _results1.push(prev.next = list[i]);
+            }
+            return _results1;
+          })());
         }
-        return boxList;
+        return _results;
+      };
+
+      layoutI = function(boxList) {
+        var findBox;
+
+        findBox = function(x1, y1, x2, y2) {
+          var map;
+
+          map = {};
+          boxList.forEach(function(box) {
+            var y;
+
+            y = box.getY();
+            if ((y1 < y && y < y2) && box.getX() === x1) {
+              if (!map[y] || y < map[y].getY()) {
+                return map[y] = box;
+              }
+            }
+          });
+          return Object.keys(map).map(function(key) {
+            return map[key];
+          });
+        };
+        return boxList.forEach(function(box) {
+          return box.outlets.forEach(function(outlet) {
+            var x1, y1;
+
+            x1 = outlet.getX();
+            y1 = outlet.getY();
+            return outlet.to.forEach(function(inlet) {
+              var x2, y2;
+
+              x2 = inlet.getX();
+              y2 = inlet.getY();
+              if (x1 === x2) {
+                return findBox(x1, y1, x2, y2).forEach(function(box) {
+                  var prev, _ref1, _ref2, _results;
+
+                  box.x = x2 + 15;
+                  _ref1 = [box, box.next], prev = _ref1[0], box = _ref1[1];
+                  _results = [];
+                  while (box) {
+                    box.x = prev.getX() + prev.width + 10;
+                    _results.push((_ref2 = [box, box.next], prev = _ref2[0], box = _ref2[1], _ref2));
+                  }
+                  return _results;
+                });
+              }
+            });
+          });
+        });
       };
 
       return SynthDefRenderer;

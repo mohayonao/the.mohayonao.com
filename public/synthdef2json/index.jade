@@ -9,7 +9,10 @@ block config
 block content
   h1 #{$.title}
   #unit
-    p drag a *.scsyndef file
+    ol
+      li drag a *.scsyndef file
+      li see also: 
+        a(href="../synthdef2image") synthdef2image
     #editor.
       {
         "version": "only 2",

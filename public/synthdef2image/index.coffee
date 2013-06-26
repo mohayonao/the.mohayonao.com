@@ -212,15 +212,17 @@ $ ->
     remakeSpecList = (def)->
       specList = []
       argName = do ->
-        index = 0
+        nameIndices = for i in [0...def.params.names.length] by 1
+          name:def.params.names[i], index:def.params.indices[i]
+        nameIndices.sort (a, b)-> a.index - b.index
+        index = -1
         a = for i in [0...def.params.values.length] by 1
-          if def.params.indices[index+1] is i
-            index += 1
-          def.params.names[index]
+          index += 1 if nameIndices[index+1].index is i
+          nameIndices[index].name
         '0_' + a.join ', '
       if argName isnt '0_'
         specList.push
-          name: argName
+          name: argName, args:true
           rate: -1, spId:0, inputs:[], outputs: (1 for _ in def.params.values)
       def.consts = def.consts.map (x)-> +x.toFixed 5
       origin = for [ name, rate, spId, inputs, outputs ], i in def.specs
@@ -259,36 +261,39 @@ $ ->
       boxList
 
     layout = (boxList, offsetX, offsetY)->
-      boxList = layoutY boxList
-      boxList = layoutX boxList
+      layoutY boxList
+      layoutX boxList
+      layoutI boxList
       for box in boxList
         box.x += offsetX
         box.y += offsetY
       boxList
-
     layoutY = (boxList)->
-      walkOut = (box, y=10)->
-        box.y = Math.max(y, box.y)
-        box.outlets.forEach (outlet)->
-          outlet.to.forEach (inlet)->
-            walkOut inlet.parent, box.y + 50
-      walkOut boxList[0]
-      walkIn = (box, y=10)->
-        if box.y is 0
-          box.y = Math.max(y, box.y)
-        box.inlets.forEach (inlet)->
-          inlet.from.forEach (outlet)->
-            walkIn outlet.parent, box.y - 50
-      walkIn boxList[boxList.length-1]
-      walkRemain = (box, y=10)->
-        box.y = y
-        box.outlets.forEach (outlet)->
-          outlet.to.forEach (inlet)-> walkRemain inlet.parent, y + 50
-      for box in boxList
-        if box.y is 0
-          walkRemain box
-      boxList
-    
+      calcY = (box, selector, defaultValue)->
+        box.outlets.reduce (y, outlet)->
+          selector y, outlet.to.reduce (y, inlet)->
+            selector y, inlet.parent.y - 50
+          , defaultValue
+        , defaultValue
+      remain = boxList.slice().reverse()
+      walk = (box)->
+        index = remain.indexOf box
+        if index isnt -1
+          remain.splice index, 1
+          box.y = calcY box, Math.max, 0
+          box.inlets.forEach (inlet)-> inlet.from.forEach (outlet)-> walk outlet.parent
+      while remain.length then walk remain[0]
+      for i in [0...100]
+        changed = false
+        boxList.forEach (box)->
+          y = calcY box, Math.min, Infinity
+          if y < box.y
+            box.y = y
+            changed = true
+        if not changed then break
+      minY = boxList.reduce ((minY, box)->Math.min(minY, box.y)), 0
+      boxList.forEach (box)-> box.y -= minY
+
     layoutX = (boxList)->
       map = {}
       for box in boxList
@@ -307,7 +312,30 @@ $ ->
           prev = list[i-1]
           list[i].x = prev.getX() + prev.width + 10
           prev.next = list[i]
-      boxList
+
+    layoutI = (boxList)->
+      findBox = (x1, y1, x2, y2)->
+        map = {}
+        boxList.forEach (box)->
+          y = box.getY()
+          if y1 < y < y2 and box.getX() is x1
+            if not map[y] or y < map[y].getY()
+              map[y] = box
+        Object.keys(map).map (key)-> map[key]
+      
+      boxList.forEach (box)->
+        box.outlets.forEach (outlet)->
+          x1 = outlet.getX()
+          y1 = outlet.getY()
+          outlet.to.forEach (inlet)->
+            x2 = inlet.getX()
+            y2 = inlet.getY()
+            if x1 is x2 then findBox(x1, y1, x2, y2).forEach (box)->
+              box.x = x2 + 15
+              [ prev, box ] = [ box, box.next ]
+              while box
+                box.x = prev.getX() + prev.width + 10
+                [ prev, box ] = [ box, box.next ]
 
   render = (data)->
     json = new SynthDefParser().toJSON data

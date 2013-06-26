@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var blink, cache, changeFavicon, current, editor, getCssRule, gotoHash;
+    var blink, cache, changeFavicon, current, editor, getCssRule, hashchange;
 
     sc.use('global');
     editor = ace.edit('editor');
@@ -99,40 +99,41 @@
       return changeFavicon('pause');
     });
     current = null;
-    window.goto = function(page) {
-      var prev;
-
-      prev = current;
-      return $.get("./docs/" + page + ".coffee").then(function(res) {
-        var obj, url;
-
-        url = "" + location.origin + location.pathname + "\#" + page;
-        window.history.pushState(null, null, url);
-        editor.setValue(res);
-        obj = localStorage.getItem("" + page + ".cursor");
-        if (obj) {
-          obj = JSON.parse(obj);
-          editor.moveCursorTo(obj.row, 0);
-          editor.moveCursorToPosition(obj.pos);
-        }
-        editor.clearSelection();
-        return current = page;
-      });
-    };
-    window.reload = function() {
-      return location.reload();
-    };
-    $(window).on('hashchange', gotoHash = function() {
+    hashchange = function() {
       var hash;
 
       hash = location.hash.substr(1);
       if (hash !== '') {
-        return goto(hash);
-      } else {
-        return goto('index');
+        return $.get("./docs/" + hash + ".coffee").then(function(res) {
+          var obj;
+
+          editor.setValue(res);
+          obj = localStorage.getItem("" + hash + ".cursor");
+          if (obj) {
+            obj = JSON.parse(obj);
+            editor.moveCursorTo(obj.row, 0);
+            editor.moveCursorToPosition(obj.pos);
+          } else {
+            editor.moveCursorTo(0, 0);
+            editor.moveCursorToPosition(0);
+          }
+          editor.clearSelection();
+          return current = hash;
+        });
       }
-    });
-    return gotoHash();
+    };
+    $(window).on('hashchange', hashchange);
+    window.goto = function(page) {
+      return location.href = "./" + location.search + "#" + page;
+    };
+    window.reload = function() {
+      return location.reload();
+    };
+    if (location.hash) {
+      return hashchange();
+    } else {
+      return location.href = "./" + location.search + "#index";
+    }
   });
 
 }).call(this);

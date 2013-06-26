@@ -72,28 +72,29 @@ $ ->
 
   current = null
 
+  hashchange = ->
+    hash = location.hash.substr 1
+    if hash isnt ''
+      $.get("./docs/#{hash}.coffee").then (res)->
+        editor.setValue res
+        obj = localStorage.getItem "#{hash}.cursor"
+        if obj
+          obj = JSON.parse obj
+          editor.moveCursorTo obj.row, 0
+          editor.moveCursorToPosition obj.pos
+        else
+          editor.moveCursorTo 0, 0
+          editor.moveCursorToPosition 0
+        editor.clearSelection()
+        current = hash
+
+  $(window).on 'hashchange', hashchange
+
   window.goto = (page)->
-    prev = current
-    $.get("./docs/#{page}.coffee").then (res)->
-      url = "#{location.origin}#{location.pathname}\##{page}"
-      window.history.pushState null, null, url
-      editor.setValue res
-
-      obj = localStorage.getItem "#{page}.cursor"
-      if obj
-        obj = JSON.parse obj
-        editor.moveCursorTo obj.row, 0
-        editor.moveCursorToPosition obj.pos
-      editor.clearSelection()      
-      current = page
-
+    location.href = "./#{location.search}##{page}";
   window.reload = -> location.reload()
 
-  $(window).on 'hashchange', gotoHash = ->
-    hash = location.hash.substr 1
-    if hash != ''
-      goto hash
-    else
-      goto 'index'
-
-  do gotoHash
+  if location.hash
+    do hashchange
+  else
+    location.href = "./#{location.search}#index";

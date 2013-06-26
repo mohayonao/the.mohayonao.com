@@ -15,13 +15,14 @@ a :hover{text-decoration:underline}
 #sidebar ul li{padding:5px}
 #content{font-family:'Courier New',monospace;font-size:16px;height:100%;margin-left:200px;padding:10px;}
 #content h1{margin-left:10px}
-#content #unit{padding:10px}
+#content #unit{padding:10px;}
+#content #unit a{color:#00f;text-decoration:underline}
 @media screen and (max-width: 650px){#sidebar{display:none}
 #content{margin-left:0}
 }#content{background:#000;}
 #content h1{color:#eaf4fc}
 #content audio{width:100%}
-#content a{color:#eaf4fc;text-decoration:underline}
+#content #unit a{color:#eaf4fc;text-decoration:underline}
 #content #info{font-size:14px;}
 #content #info ul{display:inline}
 #content #info li{display:inline;margin-right:10px}

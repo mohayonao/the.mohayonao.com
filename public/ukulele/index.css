@@ -15,7 +15,8 @@ a :hover{text-decoration:underline}
 #sidebar ul li{padding:5px}
 #content{font-family:'Courier New',monospace;font-size:16px;height:100%;margin-left:200px;padding:10px;}
 #content h1{margin-left:10px}
-#content #unit{padding:10px}
+#content #unit{padding:10px;}
+#content #unit a{color:#00f;text-decoration:underline}
 @media screen and (max-width: 650px){#sidebar{display:none}
 #content{margin-left:0}
 }#content #demo{width:150px}
