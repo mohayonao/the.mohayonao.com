@@ -83,8 +83,7 @@ $ ->
         list[@text()] = [ @float32() for j in [0...num] by 1 ]
       list
 
-  UnaryOpUGenMap = '
-  neg not isnil notnil bitnot abs asfloat asint ceil floor frac sign squared cubed sqrt exp recip midicps cpsmidi midiratio ratiomidi dbamp ampdb octcps cpsoct log log2 log10 sin cos tan arcsin arccos arctan sinh cosh tanh rand rand2 linrand bilinrand sum3rand distort softclip coin digitvalue silence thru rectwindow hanwindow welchwindow triwindow ramp scurve numunaryselectors'.split ' '
+  UnaryOpUGenMap = 'neg not isnil notnil bitnot abs asfloat asint ceil floor frac sign squared cubed sqrt exp recip midicps cpsmidi midiratio ratiomidi dbamp ampdb octcps cpsoct log log2 log10 sin cos tan arcsin arccos arctan sinh cosh tanh rand rand2 linrand bilinrand sum3rand distort softclip coin digitvalue silence thru rectwindow hanwindow welchwindow triwindow ramp scurve numunaryselectors'.split ' '
   BinaryOpUGenMap = '+ - * / / % == != < > <= >= min max & | ^ lcm gcd round roundUp trunc atan2 hypot hypotx pow << >> >>> fill ring1 ring2 ring3 ring4 difsqr sumsqr sqrsum sqrdif absdif thresh amclip scaleneg clip2 excess fold2 wrap2 firstarg randrange exprandrange numbinaryselectors'.split ' '
 
   class Inlet
