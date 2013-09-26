@@ -1,0 +1,12 @@
+extend ../lib/layout
+
+block config
+  - $.title = "6chars"
+  - $.path  = "/6chars/"
+  - $.jslist  = ["/lib/pico.js", "/lib/wav-decoder.js", "HexRhythmMachine.js", "index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #unit
+    
