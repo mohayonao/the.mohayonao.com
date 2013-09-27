@@ -8,9 +8,10 @@
     HexRhythmMachine.prototype.initialize = function(samplerate, waves) {
       this.samplerate = samplerate;
       this.waves = waves;
-      this.bpm = 160.0;
+      this.bpm = 120.0;
       this.pattern = [ [ ], [ ], [ ] ];
       this.phases  = [ Infinity, Infinity, Infinity ];
+      this.phaseStep = waves.samplerate / samplerate;
       this.vols    = [ 0, 0, 0 ];
       this.index    = 0;
       this.count    = 0;
@@ -56,7 +57,7 @@
             this.pattern[2].push(!!(bd & (1 << j)));
           }
         }
-        this.countMax = (60/this.bpm) * this.samplerate * (4/8);
+        this.countMax = (60/this.bpm) * this.samplerate * (4/16);
         return true;
       }
       return false;
@@ -86,9 +87,12 @@
       }
       for (var i = 0; i < inNumSamples; i++) {
         var x = 0;
-        x += (this.waves[0][this.phases[0]++] || 0.0) * this.vols[0];
-        x += (this.waves[1][this.phases[1]++] || 0.0) * this.vols[1];
-        x += (this.waves[2][this.phases[2]++] || 0.0) * this.vols[2];
+        x += (this.waves[0][this.phases[0]|0] || 0.0) * this.vols[0];
+        x += (this.waves[1][this.phases[1]|0] || 0.0) * this.vols[1];
+        x += (this.waves[2][this.phases[2]|0] || 0.0) * this.vols[2];
+        this.phases[0] += this.phaseStep;
+        this.phases[1] += this.phaseStep;
+        this.phases[2] += this.phaseStep;
         L[i] = R[i] = x;
       }
     };
