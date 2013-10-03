@@ -77,7 +77,7 @@
         }
         if (this.pattern[2][this.index]) { // hh
           this.phases[2] = 0;
-          this.vols[2] = [0.8, 0.4][this.index % 2];
+          this.vols[2] = [0.2, 0.05][this.index % 2];
         }
         this.index += 1;
         if (this.index >= this.pattern[0].length) {
