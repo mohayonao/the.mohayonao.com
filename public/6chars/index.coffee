@@ -1,7 +1,7 @@
 $ ->
   'use strict'
 
-  WavDecoder.load("./drumkit.wav").then (wav)->
+  WavDecoder.load('./drumkit.wav').then (wav)->
     waves = []
     len = wav.buffer[0].length >> 2
     waves[0] = wav.buffer[0].subarray len * 0, len * 1
@@ -43,35 +43,48 @@ $ ->
     HH = "#{HH}|#{HH}|#{HH}|[0-9a-f]{2}"
     SD = "#{SD}|#{SD}|#{SD}|#{SD}|#{SD}|[0-9a-f]{2}"
     BD = "#{BD}|#{BD}|#{BD}|#{BD}|#{BD}|[0-9a-f]{2}"
-    $("#random").on 'click', ->
-      val = String_random("(1[046]0; )?((#{HH})(#{SD})(#{BD}) ){2,8}").trim()
+
+    generate = (cnt='+')->
+      String_random("(1[046]0; )?((#{HH})(#{SD})(#{BD}) )#{cnt}").trim()
+    
+    $('#random').on 'click', ->
+      val = do random
       location.href = "http://#{location.host}/6chars/##{encodeURI(val)}"
 
-    $("#tweet").on 'click', ->
+    $('#tweet').on 'click', ->
       val = $p.val().trim()
       if hrm.validate val
         text = '6chars drums'
         url  = "http://#{location.host}/6chars/##{encodeURI(val)}"
         apps.tweet text:text, url:url
 
-    defaults = []
-    $("li", "#list").each (i, li)->
-      $li = $(li)
-      val = $li.text().trim()
-      url = "http://#{location.host}/6chars/##{encodeURI(val)}"
-      $(li).empty().append $("<a>").attr(href:url).text(val)
-      defaults.push val
+    $list = $('#list')
+    random = ->
+      $list.empty()
+      list = for i in [0...10]
+        cnt = ((i >> 1) + 1) << 1
+        cnt = if cnt is 10 then '+' else "{#{cnt}}"
+        val = generate cnt
+        url = "http://#{location.host}/6chars/##{encodeURI(val)}"
+        $li = $('<li>').append $('<a>').attr(href:url).text(val)
+        $list.append $li
+        val
+      list[(Math.random() * list.length)|0]
 
-    $p.val defaults[(Math.random() * defaults.length)|0]
-
+    isFirst = false
     window.onhashchange = ->
       hash = decodeURI location.hash.substr(1).trim()
       if hrm.validate hash
         $p.val(hash)
         do setPattern
-        if not isPlaying and apps.isDesktop
-          do $('#play').click
+        if isFirst
+          isFirst = false
+        else if not isPlaying and apps.isDesktop
+          $('#play').click()
 
     if location.hash
       do window.onhashchange
+    else
+      isFirst = true
+      $('#random').click()
   0
