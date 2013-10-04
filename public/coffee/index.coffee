@@ -16,9 +16,9 @@ $ ->
       list = tokens.map (items)->
         tag   = (items[0] + '                    ').substr 0, 20
         "#{tag}#{items[1]}"
+      $tokens.val list.join '\n'
       nodes = CoffeeScript.nodes tokens
       dst = nodes.compile bare:true
-      $tokens.val list.join '\n'
       $dst.val dst
       $src.css 'color', 'black'
     catch e
