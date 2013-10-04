@@ -20,10 +20,10 @@ $ ->
       if isPlaying
         hrm.setPattern $p.val()
         pico.play hrm
-        $(this).css 'color', 'red'
+        $(this).css 'background', '#e74c3c'
       else
         pico.pause()
-        $(this).css 'color', 'black'
+        $(this).css 'background', '#27ae60'
     
     setPattern = ->
       val = $p.val().trim()
@@ -61,9 +61,11 @@ $ ->
     $list = $('#list')
     random = ->
       $list.empty()
-      list = for i in [0...10]
-        cnt = ((i >> 1) + 1) << 1
-        cnt = if cnt is 10 then '+' else "{#{cnt}}"
+      len  = [2,2,4,4,8,8,0,0,0,0]
+      step = if apps.isPhone then 2 else 1
+      list = for i in [0...len.length] by step
+        cnt = len[i]
+        cnt = if cnt is 0 then '+' else "{#{cnt}}"
         val = generate cnt
         url = "http://#{location.host}/6chars/##{encodeURI(val)}"
         $li = $('<li>').append $('<a>').attr(href:url).text(val)
@@ -71,20 +73,17 @@ $ ->
         val
       list[(Math.random() * list.length)|0]
 
-    isFirst = false
     window.onhashchange = ->
       hash = decodeURI location.hash.substr(1).trim()
       if hrm.validate hash
         $p.val(hash)
         do setPattern
-        if isFirst
-          isFirst = false
-        else if not isPlaying and apps.isDesktop
-          $('#play').click()
 
     if location.hash
+      do random
       do window.onhashchange
+      $('#play').click()
     else
-      isFirst = true
-      $('#random').click()
+      val = do random
+      $p.val(val)
   0

@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';    WavDecoder.load('./drumkit.wav').then(function(wav) {
-      var $list, $p, BD, HH, SD, generate, hrm, isFirst, isPlaying, len, prev, random, setPattern, waves;
+      var $list, $p, BD, HH, SD, generate, hrm, isPlaying, len, prev, random, setPattern, val, waves;
 
       waves = [];
       len = wav.buffer[0].length >> 2;
@@ -18,10 +18,10 @@
         if (isPlaying) {
           hrm.setPattern($p.val());
           pico.play(hrm);
-          return $(this).css('color', 'red');
+          return $(this).css('background', '#e74c3c');
         } else {
           pico.pause();
-          return $(this).css('color', 'black');
+          return $(this).css('background', '#27ae60');
         }
       });
       setPattern = function() {
@@ -72,16 +72,18 @@
       });
       $list = $('#list');
       random = function() {
-        var $li, cnt, i, list, url, val;
+        var $li, cnt, i, list, step, url, val;
 
         $list.empty();
+        len = [2, 2, 4, 4, 8, 8, 0, 0, 0, 0];
+        step = apps.isPhone ? 2 : 1;
         list = (function() {
-          var _i, _results;
+          var _i, _ref, _results;
 
           _results = [];
-          for (i = _i = 0; _i < 10; i = ++_i) {
-            cnt = ((i >> 1) + 1) << 1;
-            cnt = cnt === 10 ? '+' : "{" + cnt + "}";
+          for (i = _i = 0, _ref = len.length; step > 0 ? _i < _ref : _i > _ref; i = _i += step) {
+            cnt = len[i];
+            cnt = cnt === 0 ? '+' : "{" + cnt + "}";
             val = generate(cnt);
             url = "http://" + location.host + "/6chars/#" + (encodeURI(val));
             $li = $('<li>').append($('<a>').attr({
@@ -94,26 +96,22 @@
         })();
         return list[(Math.random() * list.length) | 0];
       };
-      isFirst = false;
       window.onhashchange = function() {
         var hash;
 
         hash = decodeURI(location.hash.substr(1).trim());
         if (hrm.validate(hash)) {
           $p.val(hash);
-          setPattern();
-          if (isFirst) {
-            return isFirst = false;
-          } else if (!isPlaying && apps.isDesktop) {
-            return $('#play').click();
-          }
+          return setPattern();
         }
       };
       if (location.hash) {
-        return window.onhashchange();
+        random();
+        window.onhashchange();
+        return $('#play').click();
       } else {
-        isFirst = true;
-        return $('#random').click();
+        val = random();
+        return $p.val(val);
       }
     });
     return 0;

@@ -50,7 +50,7 @@ $ ->
   editor = CodeMirror.fromTextArea document.getElementById('data'),
     mode:'ukulele', theme:'ukulele', workTime:200
 
-  value = if (q = location.search.substr(1, location.search.length - 1))
+  value = if (q = location.hash.substr(1, location.hash.length - 1))
     decodeURIComponent q
   else ''
   editor.setValue value
@@ -70,8 +70,7 @@ $ ->
   $('#tweet').on 'click', ->
     if app.data
       data = encodeURIComponent app.data      
-      url = "http://#{location.host}/ukulele/"
-      url += "?#{data}"
+      url = "http://#{location.host}/ukulele/##{data}"
       apps.tweet url:url
 
   do ->

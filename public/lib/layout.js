@@ -14,6 +14,7 @@
     apps.isPhone = /(iPhone|iPod|Android)/i.test(navigator.userAgent);
     apps.isTablet = /(iPad|Android)/i.test(navigator.userAgent);
     apps.isDesktop = !(apps.isPhone || apps.isTablet);
+    apps.isMobile = !apps.isDesktop;
     apps.isMouseDevice = apps.isDesktop;
     apps.isTouchDevice = !apps.isDesktop;
     apps.tweet = function(opts) {

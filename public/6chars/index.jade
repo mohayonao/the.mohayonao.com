@@ -11,9 +11,10 @@ block content
   h1 #{$.title}
   #unit
     input(id="p",class="monospace")
-    button(id="play",class="lsf-icon",title="play") Play
-    button(id="random",class="lsf-icon",title="random") Random
-    button(id="tweet",class="lsf-icon",title="twitter") Tweet
+    div(id="ctrl")
+      button(id="play",class="lsf-icon",title="play") Play
+      button(id="random",class="lsf-icon",title="random") Random
+      button(id="tweet",class="lsf-icon",title="twitter") Tweet
     ul(id="list")
     div.ads
       include ../lib/ads.html

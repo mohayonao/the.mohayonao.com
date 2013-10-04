@@ -833,25 +833,25 @@ if (typeof(window) !== "undefined") {
         callback({buffer:buffer, samplerate:22050, channels:1});
       });
     }
-    
-    var autoplay = false;
+
+    var isPlaying = false;
     load("/d/doriland.wav.txt", function(result) {
       var soundsystem = new DorilaSound(pico, result);
       if (result != null) {
         $("#play").on("click", function() {
+          isPlaying = !isPlaying;
           var text;
-          if (pico.isPlaying) {
-            pico.pause();
-            $(this).css("color", "black");
-          } else {
+          if (isPlaying) {
             text = $("#text").val().trim();
             soundsystem.init({text:text});
             soundsystem.play();
             pico.play(soundsystem);
-            $(this).css("color", "red");
+            $(this).css("background", "#e74c3c");
+          } else {
+            pico.pause();
+            $(this).css("background", "#27ae60");
           }
         }).text("Play");
-        if (autoplay) $("#play").click();
       }
       w.postMessage(result);
     });
@@ -867,13 +867,40 @@ if (typeof(window) !== "undefined") {
       });
     });
     
-    var text = decodeURI(location.search.substr(1)).trim();
-    if (text !== "") {
-      text = text.replace(/{{AT}}/g, "@");
-      $("#text").val(text);
-      autoplay = true;
-    }
-    
+
+    $("#random").on("click", function() {
+      var val = random();
+    });
+
+    var $list = $("#list");
+    var random = function() {
+      $list.empty();
+      var l = [];
+      for (var i = 0; i < 10; i++) {
+        var val = generate();
+        var url = "http://"+location.host+"/d/#"+encodeURI(val);
+        var $li = $("<li>").append($("<a>").attr({href:url}).text(val));
+        $list.append($li);
+        l.push(val);
+      }
+      return l[(Math.random() * l.length)|0];
+    };
+
+    var DORI = (function() {
+      var str = "";
+      str += "(ドッ|ドッ|ドッ|ド|ド|ドド)* ";
+      str += "((ド|リ|ドリ){0,4}(ド|リ|ラン|ッ|ドリ){0,4} ){1,6} "
+      str += "(ランド|ドリランド)?";
+      return str;
+    })();
+
+    var generate = function() {
+      var val;
+      do { val = String_random(DORI).trim();
+      } while (val.length < 10);
+      return val;
+    };
+
     $("#tweet").on("click", function() {
       var url  = "http://" + location.host + "/d/";
       var text = $("#text").val();
@@ -881,8 +908,24 @@ if (typeof(window) !== "undefined") {
       if (text[text.length-1] !== ";") {
         text += ";";
       }
-      apps.tweet({ text:text, url:url+"?"+encodeURI(text) });
+      apps.tweet({ text:text, url:url+"#"+encodeURI(text) });
     });
+    
+    window.onhashchange = function() {
+      var text = decodeURI(location.hash.substr(1).trim());
+      if (text !== "") {
+        text = text.replace(/{{AT}}/g, "@");
+        $("#text").val(text);
+        if (isPlaying) {
+          $("#play").click().click();
+        }        
+      }
+    };
+
+    random();
+    if (location.hash) {
+      window.onhashchange();
+    }
     
     var w = null;
     if (typeof(Worker) !== "undefined") {

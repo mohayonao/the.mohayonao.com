@@ -15,6 +15,7 @@ $ ->
   apps.isPhone  = /(iPhone|iPod|Android)/i.test navigator.userAgent
   apps.isTablet = /(iPad|Android)/i.test navigator.userAgent
   apps.isDesktop = not (apps.isPhone or apps.isTablet)
+  apps.isMobile  = not apps.isDesktop
   apps.isMouseDevice = apps.isDesktop
   apps.isTouchDevice = not apps.isDesktop
   apps.tweet = (opts)->

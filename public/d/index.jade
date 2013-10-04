@@ -4,36 +4,22 @@ block config
   - $.lang  = "ja";
   - $.title = "ドッ ドッ ドリドリ ドドドド ドリランド"
   - $.path  = "/d/"
-  - $.jslist  = ["/lib/pico.js", "index.js"]
+  - $.jslist  = ["/lib/pico.js", "/lib/String_random.js", "index.js"]
   - $.csslist = ["index.css"]
   - $.ligature = true
 
 block content
   h1 #{$.title}
   #unit
-    section.pull-left
-      h4 editor
-      div
-        textarea(cols=60,rows=8,id="text") ドッ ドッ ドリドリ ドドドド ドリランド
-      div
-        button(id="play",class="lsf-icon",title="play") Loading...
-        button(id="tweet",class="lsf-icon",title="twitter") Tweet this doriland
-      div
-        ul
-          li: a(href="https://gumroad.com/l/sEkz",target="gumroad") 課金して新しい機能を手にいれる($1)
-          li: a(href="https://gumroad.com/l/zOW" ,target="gumroad") 課金して新しい機能を手にいれる($2)
-          li: a(href="https://gumroad.com/l/pSMY",target="gumroad") 課金して新しい機能を手にいれる($5)
-    section.pull-left
-      h4 examples
-      ul(id="song-list")
-        li: a(href="javascript:void(0)") ドッ ドッ ドリドリ ドドドド ドリランド
-        li: a(href="javascript:void(0)") ++|ドッ ドッ ドッドッ
-        li: a(href="javascript:void(0)") |ドッ ドッ ドリドリ -ド+ド-ド+ド ドリランド-
-        li: a(href="javascript:void(0)") |ラッラッラッドリ
-        li: a(href="javascript:void(0)") |++ドド--リラ
-        li: a(href="javascript:void(0)") |ドリラ +++ド--リ-ラ
-      ul
-        li: a(href="http://goo.gl/ABcGc") 曲1
-        li: a(href="http://goo.gl/5z8tw") 曲2
-        li: a(href="http://goo.gl/d0ikV") 曲3
-        li: a(href="http://goo.gl/qhvLj") 曲4
+    textarea(rows=8,id="text") ドッ ドッ ドリドリ ドドドド ドリランド
+    div(id="ctrl")
+      button(id="play",class="lsf-icon",title="play") Loading...
+      button(id="random",class="lsf-icon",title="random") Random
+      button(id="tweet",class="lsf-icon",title="twitter") Tweet
+    ul(id="list")
+    div.ads
+      include ../lib/ads.html
+    ul
+      li: a(href="https://gumroad.com/l/sEkz",target="gumroad") 課金して新しい機能を手にいれる($1)
+      li: a(href="https://gumroad.com/l/zOW" ,target="gumroad") 課金して新しい機能を手にいれる($2)
+      li: a(href="https://gumroad.com/l/pSMY",target="gumroad") 課金して新しい機能を手にいれる($5)

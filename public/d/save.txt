@@ -1,0 +1,11 @@
+li: a(href="javascript:void(0)") ドッ ドッ ドリドリ ドドドド ドリランド
+li: a(href="javascript:void(0)") ++|ドッ ドッ ドッドッ
+li: a(href="javascript:void(0)") |ドッ ドッ ドリドリ -ド+ド-ド+ド ドリランド-
+li: a(href="javascript:void(0)") |ラッラッラッドリ
+li: a(href="javascript:void(0)") |++ドド--リラ
+li: a(href="javascript:void(0)") |ドリラ +++ド--リ-ラ
+
+li: a(href="http://goo.gl/ABcGc") 曲1
+li: a(href="http://goo.gl/5z8tw") 曲2
+li: a(href="http://goo.gl/d0ikV") 曲3
+li: a(href="http://goo.gl/qhvLj") 曲4

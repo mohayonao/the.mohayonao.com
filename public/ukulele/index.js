@@ -73,7 +73,7 @@
       theme: 'ukulele',
       workTime: 200
     });
-    value = (q = location.search.substr(1, location.search.length - 1)) ? decodeURIComponent(q) : '';
+    value = (q = location.hash.substr(1, location.hash.length - 1)) ? decodeURIComponent(q) : '';
     editor.setValue(value);
     editor.update = function() {
       return app.update(editor.getValue().trim()).then(function(data) {
@@ -97,8 +97,7 @@
 
       if (app.data) {
         data = encodeURIComponent(app.data);
-        url = "http://" + location.host + "/ukulele/";
-        url += "?" + data;
+        url = "http://" + location.host + "/ukulele/#" + data;
         return apps.tweet({
           url: url
         });
