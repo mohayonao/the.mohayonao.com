@@ -20,4 +20,4 @@ a :hover{text-decoration:underline}
 #content #unit a{color:#00f;text-decoration:underline}
 @media screen and (max-width: 650px){#sidebar{display:none}
 #content{margin-left:0}
-}
+}#content #p{display:block;width:100%;font-size:2em;font-weight:bold}
