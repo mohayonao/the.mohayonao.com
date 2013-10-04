@@ -1,0 +1,18 @@
+extend ../lib/layout
+
+block config
+  - $.title = "coffee"
+  - $.path  = "/coffee/"
+  - $.jslist  = ["/lib/coffee-script.js","index.js"]
+  - $.csslist = ["index.css"]
+
+block content
+  h1 #{$.title}
+  #unit
+    table
+      tr
+        td: textarea.monospace(id="src")
+        td: textarea.monospace(id="tokens")
+      tr
+        td: textarea.monospace(id="dst")
+        td: textarea.monospace(id="nodes")
