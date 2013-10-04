@@ -3,13 +3,21 @@ extend ../lib/layout
 block config
   - $.title = "6chars drums"
   - $.path  = "/6chars/"
-  - $.jslist  = ["/lib/pico.js", "/lib/wav-decoder.js", "HexRhythmMachine.js", "index.js"]
+  - $.jslist  = ["http://platform.twitter.com/widgets.js", "/lib/pico.js", "/lib/wav-decoder.js", "/lib/String_random.js", "HexRhythmMachine.js", "index.js"]
   - $.csslist = ["index.css"]
   - $.ligature = true
 
 block content
   h1 #{$.title}
   #unit
-    input(id="p",value="aa0882",class="monospace")
+    input(id="p",class="monospace")
     button(id="play",class="lsf-icon",title="play") Play
+    button(id="random",class="lsf-icon",title="random") Random
     button(id="tweet",class="lsf-icon",title="twitter") Tweet
+    ul(id="list")
+      li bb0888
+      li aa0980 aa08a2
+      li 5509a2 5549a2
+      li ff0881 ff08a0
+      li 140; ab8800 aa8822 ab8800 aa8852
+      li 110.5; b61086 db4118 6d0861

@@ -45,8 +45,10 @@
       if (matches) {
         bpm     = matches[1] || 0.0;
         pattern = matches[2];
-        if (30 <= bpm && bpm <= 600) {
+        if (20 <= bpm && bpm <= 300) {
           this.bpm = Number(bpm);
+        } else {
+          this.bpm = 120;
         }
         this.pattern = [ [ ], [ ], [ ] ];
         this.phases  = [ Infinity, Infinity, Infinity ];
