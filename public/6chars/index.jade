@@ -5,9 +5,11 @@ block config
   - $.path  = "/6chars/"
   - $.jslist  = ["/lib/pico.js", "/lib/wav-decoder.js", "HexRhythmMachine.js", "index.js"]
   - $.csslist = ["index.css"]
+  - $.ligature = true
 
 block content
   h1 #{$.title}
   #unit
-    input(id="p",value="aa0980 aa08a2")
+    input(id="p",value="aa0980 aa08a2",class="monospace")
     button(id="play",class="lsf-icon",title="play") Play
+    button(id="tweet",class="lsf-icon",title="twitter") Tweet

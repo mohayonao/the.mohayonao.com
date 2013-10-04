@@ -11,23 +11,44 @@ $ ->
 
     hrm = new HexRhythmMachine(pico.samplerate, waves)
 
+    $p = $("#p")
+
     isPlaying = false
     $('#play').on 'click', ->
       isPlaying = not isPlaying
       if isPlaying
-        hrm.setPattern $("#p").val()
-        pico.play(hrm)
+        hrm.setPattern $p.val()
+        pico.play hrm
         $(this).css 'color', 'red'
       else
         pico.pause()
         $(this).css 'color', 'black'
 
-    prev = $("#p").val()
-    $("#p").on 'keyup', ->
-      val = $("#p").val()
+    prev = $p.val()
+    
+    setPattern = ->
+      val = $p.val().trim()
       if val isnt prev
-        hrm.setPattern val
+        if hrm.validate val
+          hrm.setPattern val
+          $p.css 'color', 'black'
+        else
+          $p.css 'color', 'red'
       prev = val
+    $p.on 'keyup', setPattern
 
+    $("#tweet").on 'click', ->
+      val = $p.val().trim()
+      if hrm.validate val
+        text = '6chars drums'
+        url  = "http://#{location.host}/6chars/##{encodeURI(val)}"
+        apps.tweet text:text, url:url
+
+    if location.hash
+      hash = decodeURI location.hash.substr(1).trim()
+      if hrm.validate hash
+        $p.val(hash)
+        do setPattern
+        if apps.isDesktop
+          do $('#play').click
   0
-

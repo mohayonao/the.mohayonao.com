@@ -35,6 +35,9 @@
       return this.isPlaying;
     };
     var re = /^(?:(\d+(?:\.\d+)?);)?(\s*(?:[0-9a-fA-F]{6})+)$/;
+    HexRhythmMachine.prototype.validate = function(pattern) {
+      return re.test(pattern.replace(/\s+/g, ""));
+    };
     HexRhythmMachine.prototype.setPattern = function(pattern) {
       var matches, bpm, bd, sd, hh;
       var i, imax, j;
