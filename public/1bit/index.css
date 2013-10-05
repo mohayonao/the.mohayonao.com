@@ -1,7 +1,8 @@
+@import url("http://fonts.googleapis.com/css?family=Lato:300,400,700,900");
 *{box-sizing:border-box;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;-o-box-sizing:border-box;-ms-box-sizing:border-box}
 html{height:100%}
-body{margin:0;height:100%;font:12px Helvetica,Arial,sans-serif}
-a{color:#193056;text-decoration:none;}
+body{margin:0;height:100%;font:14px/1.231 "Lato",sans-serif;font-weight:300;color:#193056}
+a{color:#2980b9;text-decoration:none;}
 a :hover{text-decoration:underline}
 .pull-left{float:left}
 .pull-right,#content #unit #mml-list{float:right}
@@ -11,15 +12,15 @@ a :hover{text-decoration:underline}
 .ads{margin:5px 0}
 #sidebar{position:fixed;top:0;left:0;bottom:0;width:200px;overflow-y:auto;overflow-x:hidden;padding:10px;background:#e3e3e3;}
 #sidebar *{padding:0;margin:0}
-#sidebar h1{margin:10px 0;font-size:14px}
-#sidebar h2{margin-top:10px;font-size:12px;color:#193056}
+#sidebar a{color:#193056}
+#sidebar h1{margin:10px 0;font-size:14px;font-weight:400}
+#sidebar h2{margin-top:10px;font-size:12px;font-weight:400}
 #sidebar img{width:180px;height:180px}
 #sidebar ul{list-style:none;margin-left:20px;}
 #sidebar ul li{padding:5px}
-#content{font-family:'Courier New',monospace;font-size:16px;height:100%;margin-left:200px;padding:10px;}
+#content{position:fixed;top:0;left:0;bottom:0;font-family:'Courier New',monospace;font-size:16px;height:100%;margin-left:200px;padding:10px;}
 #content h1{margin-left:10px}
-#content #unit{padding:10px;}
-#content #unit a{color:#00f;text-decoration:underline}
+#content #unit{padding:10px}
 @media screen and (max-width: 650px){#sidebar{display:none}
 #content{margin-left:0}
 .ads{position:absolute;left:0}
