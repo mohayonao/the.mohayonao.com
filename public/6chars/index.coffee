@@ -82,7 +82,6 @@ $ ->
     if location.hash
       do random
       do window.onhashchange
-      $('#play').click()
     else
       val = do random
       $p.val(val)

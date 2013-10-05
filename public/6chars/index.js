@@ -107,8 +107,7 @@
       };
       if (location.hash) {
         random();
-        window.onhashchange();
-        return $('#play').click();
+        return window.onhashchange();
       } else {
         val = random();
         return $p.val(val);
