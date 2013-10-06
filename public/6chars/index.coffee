@@ -20,19 +20,19 @@ $ ->
       if isPlaying
         hrm.setPattern $p.val()
         pico.play hrm
-        $(this).css 'background', '#e74c3c'
+        $(this).addClass 'btn-active'
       else
         pico.pause()
-        $(this).css 'background', '#27ae60'
+        $(this).removeClass 'btn-active'
     
     setPattern = ->
       val = $p.val().trim()
       if val isnt prev
         if hrm.validate val
           hrm.setPattern val
-          $p.css 'color', 'black'
+          $p.css 'color', '#34495E'
         else
-          $p.css 'color', 'red'
+          $p.css 'color', '#C0392B'
       prev = val
     $p.on 'keyup', setPattern
 
@@ -54,7 +54,10 @@ $ ->
     $('#tweet').on 'click', ->
       val = $p.val().trim()
       if hrm.validate val
-        text = '6chars drums'
+        if apps.lang is 'ja'
+          text = 'リズムを共有しました'
+        else
+          text = 'I shared the rhythm'
         url  = "http://#{location.host}/6chars/##{encodeURI(val)}"
         apps.tweet text:text, url:url
 

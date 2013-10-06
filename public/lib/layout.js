@@ -17,6 +17,7 @@
     apps.isMobile = !apps.isDesktop;
     apps.isMouseDevice = apps.isDesktop;
     apps.isTouchDevice = !apps.isDesktop;
+    apps.lang = /ja/.test(navigator.language) ? 'ja' : 'en';
     apps.tweet = function(opts) {
       var features, h, l, t, url, w;
 

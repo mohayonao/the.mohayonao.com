@@ -62,9 +62,9 @@
     app.onStateChange = function(type) {
       switch (type) {
         case 'play':
-          return $('#play').css('color', 'red');
+          return $('#play').addClass('btn-active');
         case 'pause':
-          return $('#play').css('color', 'black');
+          return $('#play').removeClass('btn-active');
       }
     };
     $result = $('#result');

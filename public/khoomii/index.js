@@ -57,11 +57,11 @@
       if (isPlaying) {
         synth.play();
         timer.start();
-        return $(this).css('color', 'red');
+        return $(this).addClass('btn-active');
       } else {
         synth.pause();
         timer.pause();
-        return $(this).css('color', 'black');
+        return $(this).removeClass('btn-active');
       }
     });
     return 0;

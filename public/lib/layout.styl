@@ -1,110 +1,212 @@
 @import url("http://fonts.googleapis.com/css?family=Lato:300,400,700,900");
+@import url("http://fonts.googleapis.com/css?family=Inconsolata");
 
-FORECOLOR = #193056
-SIDEBAR   = #e3e3e3
-LINKCOLOR = #2980B9
+TURQUOISE     = #1ABC9C
+GREEN_SEA     = #16A085
+EMERALD       = #2ECC71
+NEPHRITIS     = #27AE60
+PETER_RIVER   = #3498DB
+BELIZE_HOLE   = #2980B9
+AMETHYST      = #9B59B6
+WISTERIA      = #8E44AD
+WET_ASPHALT   = #34495E
+MIDNIGHT_BLUE = #2C3E50
+SUN_FLOWER    = #F1C40F
+ORANGE        = #F39C12
+CARROT        = #E67E22
+PUMPKIN       = #D35400
+ALIZARIN      = #E74C3C
+POMEGRANATE   = #C0392B
+CLOUDS        = #ECF0F1
+SILVER        = #BDC3C7
+CONCRETE      = #95A5A6
+ASBESTOS      = #7F8C8D
+
+FORECOLOR = WET_ASPHALT
+SIDEBAR   = SILVER
+LINKCOLOR = BELIZE_HOLE
+
+THIN   = 300
+NORMAL = 400
+BOLD   = 700
+FAT    = 900
 
 SIDEBAR_WIDTH = 200px
 
+transition()
+  -webkit-transition: arguments
+  -moz-transition   : arguments
+  -o-transition     : arguments
+  transition        : arguments
+
+border-radius()
+  -webkit-border-radius: arguments
+  -moz-border-radius   : arguments
+  border-radius        : arguments
+
+box-sizing()
+  -moz-box-sizing   : arguments
+  -webkit-box-sizing: arguments
+  -o-box-sizing     : arguments
+  -ms-box-sizing    : arguments
+  box-sizing        : arguments
+
+box-shadow()
+  -webkit-box-shadow: arguments
+  -moz-box-shadow   : arguments
+  box-shadow        : arguments
+
 *
-  box-sizing         border-box
-  -moz-box-sizing    border-box
-  -webkit-box-sizing border-box
-  -o-box-sizing      border-box
-  -ms-box-sizing     border-box
+  box-sizing: border-box
+  outline:none
 
 html
-  height 100%
+  height: 100%
   
 body
-  margin 0
-  height 100%
-  font   14px/1.231 "Lato", sans-serif
-  font-weight 300
-  color FORECOLOR
+  margin: 0
+  height: 100%
+  font  : 14px/1.231 "Lato", sans-serif
+  font-weight: THIN
+  color: FORECOLOR
 
 a
- color LINKCOLOR
- text-decoration none
- :hover
-   text-decoration underline
+ color: LINKCOLOR
+ text-decoration: none
+ &:hover
+   text-decoration: underline
 
 .pull-left
-  float left
+  float: left
 
 .pull-right
-  float right
+  float: right
 
 .hidden
-  display none
+  display: none
 
 .jp
-  font-family serif
-  font-size   90%
+  font-family: "Lato", sans-serif
+  font-size  : 90%
 
 .monospace
-  font-family 'Courier New', monospace
+  font-family: "Inconsolata", monospace
 
 .ads
-  margin 5px 0
+  margin: 10px 20px
+  background: CLOUDS
 
-#sidebar
-  position fixed
-  top    0
-  left   0
-  bottom 0
-  width      SIDEBAR_WIDTH
-  overflow-y auto
-  overflow-x hidden
-  padding    10px
-  background SIDEBAR
+.btn
+  border: none
+  background: WET_ASPHALT
+  color: white
+  font-size: 16.5px
+  text-decoration: none
+  text-shadow: none
+  box-shadow: none
+  transition: 0.25s
+  border-radius: 6px
+  cursor: pointer
+  -webkit-backface-visibility: hidden
+  background-color: TURQUOISE
+  &:hover
+  &:focus
+    background-color: #2fe2bf
+  &:active
+    background-color: #16a085
+.btn-active
+  background-color: ALIZARIN
+  &:hover
+  &:focus
+    background-color: #ec7063
+  &:active
+    background-color: #dc2d1b
 
-  *
-    padding 0
-    margin  0
-  a
-    color FORECOLOR
-  h1
-    margin  10px 0
-    font-size 14px
-    font-weight 400
-  h2
-    margin-top 10px
-    font-size  12px
-    font-weight 400
-  img
-    width  180px
-    height @width  
-  ul
-    list-style  none
-    margin-left 20px
-    
-    li
-      padding 5px
-      
+
+
 
 #content
-  position fixed
-  top    0
-  left   0
-  bottom 0
-  font-family 'Courier New', monospace
-  font-size   16px
-  height      100%  
-  margin-left SIDEBAR_WIDTH
-  padding     10px
+  position: fixed
+  top   : 0
+  left  : 0
+  bottom: 0
+  height: 100%
+  margin-left: SIDEBAR_WIDTH
+  overflow-y : auto
 
   h1
-    margin-left 10px
+    font-size  : 61px
+    font-weight: FAT
+    margin     : 20px
+  h2
+    font-size  : 26px
+    font-weight: BOLD
 
   #unit
-    padding 10px
+    margin: 0 20px
+
+  textarea
+  input
+    border: 2px solid #DCE4EC
+    color     : FORECOLOR
+    background: CLOUDS
+    font-family: "Inconsolata", monospace
+    border-radius: 6px
+    box-shadow   : none
+    text-indent: 1px
+    -webkit-appearance: none
+
+#sidebar
+  position: fixed
+  top   : 0
+  left  : 0
+  bottom: 0
+  width : SIDEBAR_WIDTH
+  overflow-y: auto
+  overflow-x: hidden
+  padding   : 10px
+  background: SIDEBAR
+
+  *
+    padding: 0
+    margin : 0
+  a
+    color: FORECOLOR
+  h1
+    margin:  10px 0
+    font-size: 14px
+    font-weight: NORMAL
+  h2
+    margin-top: 10px
+    font-size: 12px
+    font-weight: NORMAL
+  img
+    width : 180px
+    height: @width  
+  ul
+    list-style : none
+    margin-left: 20px
+    li
+      padding: 5px
 
 @media screen and (max-width: 650px)
   #sidebar
-    display     none
+    display: none
+    #appimage
+      text-align: center
+    h1
+      font-size: 32px
+      margin-left: 8px
+    h2
+      font-size: 22px
+      margin-left: 8px
+    li
+      font-size: 18px
   #content
-    margin-left 0
+    margin-left: 0
+    h1
+      font-size: 32px
   .ads
-    position absolute
-    left     0
+    margin: 10px 0 0
+  .hidden-phone
+    display: none

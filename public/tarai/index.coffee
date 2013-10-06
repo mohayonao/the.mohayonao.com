@@ -58,8 +58,8 @@ $ ->
       tarai.reset()
       master.play()
       timer.start()
-      $(this).css 'color', 'red'
+      $(this).addClass 'btn-active'
     else
       master.pause()
       timer.stop()
-      $(this).css 'color', 'black'
+      $(this).removeClass 'btn-active'

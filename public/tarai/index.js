@@ -77,11 +77,11 @@
         tarai.reset();
         master.play();
         timer.start();
-        return $(this).css('color', 'red');
+        return $(this).addClass('btn-active');
       } else {
         master.pause();
         timer.stop();
-        return $(this).css('color', 'black');
+        return $(this).removeClass('btn-active');
       }
     });
   });

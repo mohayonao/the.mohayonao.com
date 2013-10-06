@@ -36,34 +36,34 @@
         }, $this = extend(MotionMan, THREE.Object3D);
         
         MotionMan.DATATABLE = {
-          "Hips"  : {size: 8, color:0x00ffff},
-          "Chest" : {size: 4, color:0xffffff},
-          "Chest2": {size: 4, color:0xffffff},
-          "Chest3": {size: 4, color:0xffffff},
-          "Chest4": {size: 8, color:0x00ff00},
-          "Neck"  : {size: 4, color:0xffffff},
-          "Head"  : {size: 4, color:0xffffff},
-          "*Head" : {size: 8, color:0xffff00},
-          "RightCollar"  : {size: 4, color:0xffffff},
-          "RightShoulder": {size: 4, color:0xffffff},
-          "RightElbow"   : {size: 4, color:0xffffff},
-          "RightWrist"   : {size: 6, color:0xffffff},
-          "*RightWrist"  : {size: 8, color:0xffff00},
-          "LeftCollar"   : {size: 4, color:0xffffff},
-          "LeftShoulder" : {size: 4, color:0xffffff},
-          "LeftElbow"    : {size: 4, color:0xffffff},
-          "LeftWrist"    : {size: 6, color:0xffffff},
-          "*LeftWrist"   : {size: 8, color:0xffff00},
-          "RightHip"     : {size: 4, color:0xffffff},
-          "RightKnee"    : {size: 4, color:0xffffff},
-          "RightAnkle"   : {size: 4, color:0xffffff},
-          "RightToe"     : {size: 6, color:0xffffff},
-          "*RightToe"    : {size: 8, color:0xffff00},
-          "LeftHip"      : {size: 4, color:0xffffff},
-          "LeftKnee"     : {size: 4, color:0xffffff},
-          "LeftAnkle"    : {size: 4, color:0xffffff},
-          "LeftToe"      : {size: 6, color:0xffffff},
-          "*LeftToe"     : {size: 8, color:0xffff00}
+          "Hips"  : {size: 8, color:0x95A5A6},
+          "Chest" : {size: 4, color:0xBDC3C7},
+          "Chest2": {size: 4, color:0xBDC3C7},
+          "Chest3": {size: 4, color:0xBDC3C7},
+          "Chest4": {size: 8, color:0x95A5A6},
+          "Neck"  : {size: 4, color:0xBDC3C7},
+          "Head"  : {size: 4, color:0xBDC3C7},
+          "*Head" : {size: 8, color:0xECF0F1},
+          "RightCollar"  : {size: 4, color:0xBDC3C7},
+          "RightShoulder": {size: 4, color:0xBDC3C7},
+          "RightElbow"   : {size: 4, color:0xBDC3C7},
+          "RightWrist"   : {size: 6, color:0xBDC3C7},
+          "*RightWrist"  : {size: 8, color:0xECF0F1},
+          "LeftCollar"   : {size: 4, color:0xBDC3C7},
+          "LeftShoulder" : {size: 4, color:0xBDC3C7},
+          "LeftElbow"    : {size: 4, color:0xBDC3C7},
+          "LeftWrist"    : {size: 6, color:0xBDC3C7},
+          "*LeftWrist"   : {size: 8, color:0xECF0F1},
+          "RightHip"     : {size: 4, color:0xBDC3C7},
+          "RightKnee"    : {size: 4, color:0xBDC3C7},
+          "RightAnkle"   : {size: 4, color:0xBDC3C7},
+          "RightToe"     : {size: 6, color:0xBDC3C7},
+          "*RightToe"    : {size: 8, color:0xECF0F1},
+          "LeftHip"      : {size: 4, color:0xBDC3C7},
+          "LeftKnee"     : {size: 4, color:0xBDC3C7},
+          "LeftAnkle"    : {size: 4, color:0xBDC3C7},
+          "LeftToe"      : {size: 6, color:0xBDC3C7},
+          "*LeftToe"     : {size: 8, color:0xECF0F1}
         };
         
         var initialize = function(options) {
@@ -211,7 +211,7 @@
               color = DATATABLE[options.name].color;
             }
             if (typeof(size ) === "undefined") size  = 1;
-            if (typeof(color) === "undefined") color = 0xffffff;
+            if (typeof(color) === "undefined") color = 0xBDC3C7;
             o = new THREE.Particle(new THREE.ParticleCanvasMaterial({
 			  color:color, program:ovalProgram
 		    }));

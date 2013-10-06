@@ -31,10 +31,10 @@ $ ->
     if isPlaying
       synth.play()
       timer.start()
-      $(this).css 'color', 'red'
+      $(this).addClass 'btn-active'
     else
       synth.pause()
       timer.pause()
-      $(this).css 'color', 'black'
+      $(this).removeClass 'btn-active'
   
   0

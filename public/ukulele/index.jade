@@ -5,20 +5,19 @@ block config
   - $.path  = "/ukulele/"
   - $.jslist  = ["/lib/codemirror.js","/lib/timbre.js","ukulele.js","demo.js","index.js"]
   - $.csslist = ["/lib/codemirror.css","ukulele.css","index.css"]
-  - $.ligature = true
 
 block content
   h1 #{$.title}
   #unit
-    div
+    div(id="ctrl")
       select(id="demo")    
-      button(id="play",class="lsf-icon",title="play") Play
-      button(id="tweet",class="lsf-icon",title="twitter") Tweet this song
-      button(class="lsf-icon",title="help")
-        a(href="./usage.html",target="usage") How to write hyper ukulele notation
+      button(id="play",class="btn",title="play") Play
+      button(id="tweet",class="btn",title="twitter") Tweet
+      button(class="btn",title="help")
+        a(href="./usage.html",target="usage") Usage
     div
       textarea(id="data",rows=12)
     div
       img(id="result")
-    div.ads
-      include ../lib/ads.html
+  div.ads
+    include ../lib/ads.html

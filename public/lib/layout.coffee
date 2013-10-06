@@ -18,6 +18,7 @@ $ ->
   apps.isMobile  = not apps.isDesktop
   apps.isMouseDevice = apps.isDesktop
   apps.isTouchDevice = not apps.isDesktop
+  apps.lang = if /ja/.test navigator.language then 'ja' else 'en'
   apps.tweet = (opts)->
     w = 550
     h = 250

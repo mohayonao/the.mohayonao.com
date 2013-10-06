@@ -10,14 +10,17 @@ block content
   h1 #{$.title}
   #unit
     canvas(id="canvas",width="150",height="200")
-    h2 1.choose
-    form
-      input(type="radio",id="normal",name="mode",value="normal",checked)
-      label(for="normal") Inventionen 13 a-moll
-      br
-      input(type="radio",id="markov",name="mode",value="markov")
-      label(for="markov") Markov Inventionen
-    h2 2.click J.S.Bach to play/pause music
-    h2 3.mouseover Y : control EFX Depth
-    div.ads
-      include ../lib/ads.html
+    h2 1. choose
+    div
+      svg(width=200,height=50)
+        g(onclick="javascript:choose(0)")
+          circle(cx=20,cy=10,r=8,stroke-width=2,stroke="#34495E",fill="white",cursor="pointer")
+          text(x=35,y=16,font-size="18px",fill="#34495E",cursor="default") Inventionen 13 a-moll
+        g(onclick="javascript:choose(1)")  
+          circle(cx=20,cy=40,r=8,stroke-width=2,stroke="#34495E",fill="white",cursor="pointer")
+          text(x=35,y=46,font-size="18px",fill="#34495E",cursor="default") Markov Inventionen
+        circle(cx=20,cy=10,r=4,fill="#34495E","pointer-events"="none",id="check")
+    h2 2. click J.S.Bach to play/pause music
+    h2.hidden-phone 3. mouseover Y : control EFX Depth
+  div.ads
+    include ../lib/ads.html

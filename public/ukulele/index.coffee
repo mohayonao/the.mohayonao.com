@@ -42,8 +42,8 @@ $ ->
   app = new Application
   app.onStateChange = (type)->
     switch type
-      when 'play'  then $('#play').css 'color', 'red'
-      when 'pause' then $('#play').css 'color', 'black'
+      when 'play'  then $('#play').addClass 'btn-active'
+      when 'pause' then $('#play').removeClass 'btn-active'
 
   $result = $('#result')
   

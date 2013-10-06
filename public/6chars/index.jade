@@ -5,16 +5,15 @@ block config
   - $.path  = "/6chars/"
   - $.jslist  = ["http://platform.twitter.com/widgets.js", "/lib/pico.js", "/lib/wav-decoder.js", "/lib/String_random.js", "HexRhythmMachine.js", "index.js"]
   - $.csslist = ["index.css"]
-  - $.ligature = true
 
 block content
   h1 #{$.title}
   #unit
-    input(id="p",class="monospace")
+    input(id="p")
     div(id="ctrl")
-      button(id="play",class="lsf-icon",title="play") Play
-      button(id="random",class="lsf-icon",title="random") Random
-      button(id="tweet",class="lsf-icon",title="twitter") Tweet
+      button(id="play",class="btn",title="play") Play
+      button(id="random",class="btn",title="random") Random
+      button(id="tweet",class="btn",title="twitter") Tweet
     ul(id="list")
-    div.ads
-      include ../lib/ads.html
+  div.ads
+    include ../lib/ads.html

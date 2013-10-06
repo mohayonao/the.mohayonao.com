@@ -18,10 +18,10 @@
         if (isPlaying) {
           hrm.setPattern($p.val());
           pico.play(hrm);
-          return $(this).css('background', '#e74c3c');
+          return $(this).addClass('btn-active');
         } else {
           pico.pause();
-          return $(this).css('background', '#27ae60');
+          return $(this).removeClass('btn-active');
         }
       });
       setPattern = function() {
@@ -31,9 +31,9 @@
         if (val !== prev) {
           if (hrm.validate(val)) {
             hrm.setPattern(val);
-            $p.css('color', 'black');
+            $p.css('color', '#34495E');
           } else {
-            $p.css('color', 'red');
+            $p.css('color', '#C0392B');
           }
         }
         return prev = val;
@@ -62,7 +62,11 @@
 
         val = $p.val().trim();
         if (hrm.validate(val)) {
-          text = '6chars drums';
+          if (apps.lang === 'ja') {
+            text = 'リズムを共有しました';
+          } else {
+            text = 'I shared the rhythm';
+          }
           url = "http://" + location.host + "/6chars/#" + (encodeURI(val));
           return apps.tweet({
             text: text,

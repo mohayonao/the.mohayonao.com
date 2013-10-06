@@ -64,7 +64,7 @@ window.onload = function() {
         color = DATATABLE[options.name].color;
       }
       if (typeof(size ) === "undefined") size  = 1;
-      if (typeof(color) === "undefined") color = 0xffffff;
+      if (typeof(color) === "undefined") color = 0xECF0F1;
       o = new THREE.Particle(new THREE.ParticleCanvasMaterial({
 		color:color, program:ovalProgram
 	  }));
@@ -78,6 +78,10 @@ window.onload = function() {
   var COLORS = [
     0x660000, 0xff0000, 0xff9933, 0xffff33, 0x99ff33,
     0x66ff99, 0x33ffff, 0x0066ff, 0x0000ff, 0x000066
+  ];
+  COLORS = [
+    0xE74C3C, 0xE67E22, 0xF39C12, 0xF1C40F, 0x2ECC71,
+    0x27AE60, 0x16A085, 0x16A085, 0x3498DB, 0x2980B9, 
   ];
 
   var bvh_url;

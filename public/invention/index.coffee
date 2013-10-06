@@ -397,17 +397,15 @@ $ ->
     sys = new SoundSystem
     sys.setMML INVENTION_13
     
+    mode = 'normal'
     $canvas.on 'click', (e)->
-      mode = $("input[name=mode]:checked").val()
       sys.setMode mode
       if sys.toggle()
-        $("input[name=mode]").attr("disabled", true)
         if mode == "markov"
           isAnimate = true
           if apps.isDesktop
             requestAnimationFrame animate
       else
-        $("input[name=mode]").attr("disabled", false)
         isAnimate = false
 
     $canvas.on 'mousemove', (e)->
@@ -431,5 +429,10 @@ $ ->
     
     animate()
 
+    window.choose = (which)->
+      mode = if which then 'markov' else 'normal'
+      check = document.getElementById('check')
+      check.setAttribute 'cy', 30 * which + 10
+ 
   $('<img>').attr('src', '/invention/bach.png').load (e)->
     main e.target
