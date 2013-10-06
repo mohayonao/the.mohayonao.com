@@ -30,7 +30,7 @@ a:hover{text-decoration:underline}
 #sidebar img{width:180px;height:180px}
 #sidebar ul{list-style:none;margin-left:20px;}
 #sidebar ul li{padding:5px}
-@media screen and (max-width: 650px){#sidebar{display:none;}
+@media screen and (max-width: 650px){#sidebar{position:static;background:#fff;display:none;}
 #sidebar #appimage{text-align:center}
 #sidebar h1{font-size:32px;margin-left:8px}
 #sidebar h2{font-size:22px;margin-left:8px}
