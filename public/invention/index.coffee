@@ -397,8 +397,9 @@ $ ->
     sys = new SoundSystem
     sys.setMML INVENTION_13
     
-    mode = 'normal'
     $canvas.on 'click', (e)->
+      mode = $('#mode').attr('value')
+      console.log mode
       sys.setMode mode
       if sys.toggle()
         if mode == "markov"
@@ -428,11 +429,6 @@ $ ->
                 when 40 then $("#markov").click()
     
     animate()
-
-    window.choose = (which)->
-      mode = if which then 'markov' else 'normal'
-      check = document.getElementById('check')
-      check.setAttribute 'cy', 30 * which + 10
  
   $('<img>').attr('src', '/invention/bach.png').load (e)->
     main e.target

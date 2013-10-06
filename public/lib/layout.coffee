@@ -53,7 +53,7 @@ $ ->
       if result != false
         requestAnimationFrame _animate
     requestAnimationFrame _animate
-    
+
   $sidebar = $('#sidebar')
 
   switch

@@ -5,6 +5,7 @@
 - $.jslist  = []
 - $.csslist = []
 - $.ligature = false
+- $.svgUI = false
 
 block config
 
@@ -30,6 +31,8 @@ html(lang="#{$.lang}")
       link(rel="stylesheet",href="/lib/layout.css")
     script(src="/lib/jquery-2.0.3.min.js")
     script(src="/lib/layout.js")
+    if $.svgUI
+      script(src="/lib/svg-ui.js")
     each src in $.jslist
       script(src=src)
   body

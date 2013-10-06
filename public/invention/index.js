@@ -625,7 +625,7 @@
 
     })();
     main = function(img) {
-      var $canvas, animate, canvas, height, isAnimate, mode, portrait, sys, width;
+      var $canvas, animate, canvas, height, isAnimate, portrait, sys, width;
 
       $canvas = $(canvas = document.getElementById("canvas"));
       width = canvas.width = $canvas.width();
@@ -644,8 +644,11 @@
       };
       sys = new SoundSystem;
       sys.setMML(INVENTION_13);
-      mode = 'normal';
       $canvas.on('click', function(e) {
+        var mode;
+
+        mode = $('#mode').attr('value');
+        console.log(mode);
         sys.setMode(mode);
         if (sys.toggle()) {
           if (mode === "markov") {
@@ -682,14 +685,7 @@
           }
         }
       });
-      animate();
-      return window.choose = function(which) {
-        var check;
-
-        mode = which ? 'markov' : 'normal';
-        check = document.getElementById('check');
-        return check.setAttribute('cy', 30 * which + 10);
-      };
+      return animate();
     };
     return $('<img>').attr('src', '/invention/bach.png').load(function(e) {
       return main(e.target);
