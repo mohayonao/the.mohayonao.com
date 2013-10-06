@@ -6,16 +6,15 @@ block config
   - $.path  = "/d/"
   - $.jslist  = ["/lib/pico.js", "/lib/String_random.js", "index.js"]
   - $.csslist = ["index.css"]
-  - $.ligature = true
 
 block content
   h1 #{$.title}
   #unit
     textarea(rows=8,id="text") ドッ ドッ ドリドリ ドドドド ドリランド
     div(id="ctrl")
-      button(id="play",class="lsf-icon",title="play") Loading...
-      button(id="random",class="lsf-icon",title="random") Random
-      button(id="tweet",class="lsf-icon",title="twitter") Tweet
+      button(id="play",class="btn",title="play") Loading...
+      button(id="random",class="btn",title="random") Random
+      button(id="tweet",class="btn",title="twitter") Tweet
     ul(id="list")
     ul
       li: a(href="https://gumroad.com/l/sEkz",target="gumroad") 課金して新しい機能を手にいれる($1)

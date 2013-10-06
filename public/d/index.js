@@ -846,10 +846,10 @@ if (typeof(window) !== "undefined") {
             soundsystem.init({text:text});
             soundsystem.play();
             pico.play(soundsystem);
-            $(this).css("background", "#e74c3c");
+            $(this).addClass("btn-active");
           } else {
             pico.pause();
-            $(this).css("background", "#27ae60");
+            $(this).removeClass("btn-active");
           }
         }).text("Play");
       }

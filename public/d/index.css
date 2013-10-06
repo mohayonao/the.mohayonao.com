@@ -40,5 +40,6 @@ a:hover{text-decoration:underline}
 .ads{margin:10px 0 0}
 .hidden-phone{display:none}
 }#content textarea{width:100%}
-#content #ctrl button{font-family:sans-serif;border-width:0;color:#fff;background:#27ae60;width:90px;height:30px;margin:5px 5px 5px 0;-webkit-border-radius:4px;-moz-border-radius:4px;border-radius:4px}
+#content h1{font-size:32px}
+#content #ctrl button{width:90px;margin:5px 5px 5px 0}
 #content #ctrl :last-child{margin-right:0}
