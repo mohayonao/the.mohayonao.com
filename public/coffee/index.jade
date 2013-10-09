@@ -1,7 +1,7 @@
 extend ../lib/layout
 
 block config
-  - $.title = "coffee"
+  - $.title = "coffee-script viewer"
   - $.path  = "/coffee/"
   - $.jslist  = ["/lib/coffee-script.js","index.js"]
   - $.csslist = ["index.css"]
@@ -11,8 +11,9 @@ block content
   #unit
     table
       tr
-        td: textarea.monospace(id="src")
-        td: textarea.monospace(id="tokens")
+        td: textarea.monospace(id="src", placeholder="1. CoffeeScript")
+        td: textarea.monospace(id="tokens", placeholder="2. tokens")
       tr
-        td: textarea.monospace(id="dst")
-        td: textarea.monospace(id="nodes")
+        td: textarea.monospace(id="dst", placeholder="4. JavaScript")
+        td: textarea.monospace(id="nodes", placeholder="3. AST (not implemented)")
+    button.btn(id="link") Link

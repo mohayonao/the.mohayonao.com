@@ -40,7 +40,7 @@ module.exports = (grunt)->
     connect:
       server:
         options:
-          port: 3000
+          port: process.env.PORT or 3000
           base: 'public'
           hostname: '0.0.0.0'
     watch:

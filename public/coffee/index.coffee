@@ -11,6 +11,10 @@ $ ->
     src = $src.val().trim()
     if src is prev
       return
+    if view src
+      prev = src
+
+  view = (src)->
     try
       tokens = CoffeeScript.tokens src
       list = tokens.map (items)->
@@ -21,6 +25,16 @@ $ ->
       dst = nodes.compile bare:true
       $dst.val dst
       $src.css 'color', 'black'
+      true
     catch e
       $src.css 'color', 'red'
-    prev = src
+      false
+
+  $('#link').on 'click', ->
+    code = $src.val().trim()
+    window.location = "##{encodeURIComponent(code)}"
+
+  hash = decodeURIComponent location.hash.substr(1)
+  if hash
+    $src.val hash
+    view hash

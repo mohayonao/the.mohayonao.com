@@ -39,6 +39,8 @@ a:hover{text-decoration:underline}
 #content h1{font-size:32px}
 .ads{margin:10px 0 0}
 .hidden-phone{display:none}
-}#content table{width:100%;height:600px}
+}#content{width:800px;}
+#content table{width:100%;height:600px}
 #content td{text-align:center}
-#content textarea{width:98%;height:100%;font-weight:bold}
+#content textarea{width:100%;height:100%;font-weight:bold}
+#content button{width:80px;height:30px}
