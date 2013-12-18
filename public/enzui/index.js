@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var enz, height, id, opt, patcher, source, width;
-
     id = 'enzui';
     width = 550;
     height = 400;
@@ -19,7 +18,6 @@
     source += '\n' + $('#desc').text();
     return $('#load').on('click', function() {
       var dfd, src;
-
       src = $('#src').val().trim();
       if (src) {
         dfd = $.get("src/" + src + ".enz");
@@ -29,7 +27,6 @@
       }
       return dfd.then(function(result) {
         var doc, index;
-
         index = result.indexOf('__END__');
         if (index !== -1) {
           src = result.substr(0, index).trim();

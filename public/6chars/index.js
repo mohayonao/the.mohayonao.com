@@ -1,8 +1,8 @@
 (function() {
   $(function() {
-    'use strict';    WavDecoder.load('./drumkit.wav').then(function(wav) {
+    'use strict';
+    WavDecoder.load('./drumkit.wav').then(function(wav) {
       var $list, $p, BD, HH, SD, generate, hrm, isPlaying, len, prev, random, setPattern, val, waves;
-
       waves = [];
       len = wav.buffer[0].length >> 2;
       waves[0] = wav.buffer[0].subarray(len * 0, len * 1);
@@ -26,7 +26,6 @@
       });
       setPattern = function() {
         var val;
-
         val = $p.val().trim();
         if (val !== prev) {
           if (hrm.validate(val)) {
@@ -53,13 +52,11 @@
       };
       $('#random').on('click', function() {
         var val;
-
         val = random();
         return location.href = "http://" + location.host + "/6chars/#" + (encodeURI(val));
       });
       $('#tweet').on('click', function() {
         var text, url, val;
-
         val = $p.val().trim();
         if (hrm.validate(val)) {
           if (apps.lang === 'ja') {
@@ -77,13 +74,11 @@
       $list = $('#list');
       random = function() {
         var $li, cnt, i, list, step, url, val;
-
         $list.empty();
         len = [2, 2, 4, 4, 8, 8, 0, 0, 0, 0];
         step = apps.isPhone ? 2 : 1;
         list = (function() {
           var _i, _ref, _results;
-
           _results = [];
           for (i = _i = 0, _ref = len.length; step > 0 ? _i < _ref : _i > _ref; i = _i += step) {
             cnt = len[i];
@@ -102,7 +97,6 @@
       };
       window.onhashchange = function() {
         var hash;
-
         hash = decodeURI(location.hash.substr(1).trim());
         if (hrm.validate(hash)) {
           $p.val(hash);

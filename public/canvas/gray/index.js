@@ -2,10 +2,8 @@
   $(function() {
     'use strict';
     var ImageProcessor, canvas, func, image, onerror, onsuccess, processor, video;
-
     func = function(imageData) {
       var data, gray, i, _i, _ref;
-
       data = imageData.data;
       for (i = _i = 0, _ref = data.length; _i < _ref; i = _i += 4) {
         gray = 0.114 * data[i] + 0.587 * data[i + 1] + 0.299 * data[i + 2];
@@ -31,7 +29,6 @@
 
       ImageProcessor.prototype.process = function(src, dst) {
         var context, imageData;
-
         context = dst.getContext('2d');
         this.context.drawImage(src, 0, 0, src.width, src.height);
         imageData = this.context.getImageData(0, 0, this.width, this.height);

@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var ImageProcessor, canvas, image, onerror, onsuccess, processor, video;
-
     ImageProcessor = (function() {
       function ImageProcessor() {
         this.canvas = document.createElement('canvas');
@@ -19,7 +18,6 @@
 
       ImageProcessor.prototype.process = function(src, dst) {
         var context, imageData;
-
         context = dst.getContext('2d');
         if (!this.mirror) {
           this.context.translate(src.width, 0);

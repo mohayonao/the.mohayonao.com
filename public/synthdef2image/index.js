@@ -5,7 +5,6 @@
   $(function() {
     'use strict';
     var BinaryOpUGenMap, Box, Inlet, Outlet, SynthDefParser, SynthDefRenderer, UnaryOpUGenMap, main, render, xhr, _ref;
-
     $(window).on('dragover', function() {
       return false;
     });
@@ -43,11 +42,9 @@
 
       SynthDefParser.prototype.text = function() {
         var i, len;
-
         len = this.file[this.index++];
         return String.fromCharCode.apply(null, (function() {
           var _i, _results;
-
           _results = [];
           for (i = _i = 0; _i < len; i = _i += 1) {
             _results.push(this.file[this.index++]);
@@ -58,12 +55,10 @@
 
       SynthDefParser.prototype.toJSON = function(file) {
         var header, i, version;
-
         this.file = file;
         this.index = 0;
         header = ((function() {
           var _i, _results;
-
           _results = [];
           for (i = _i = 0; _i <= 3; i = ++_i) {
             _results.push(String.fromCharCode(this.byte()));
@@ -85,7 +80,6 @@
 
       readDefListJSON = function() {
         var i, _i, _ref, _results;
-
         _results = [];
         for (i = _i = 0, _ref = this.int16(); _i < _ref; i = _i += 1) {
           _results.push(readDefJSON.call(this));
@@ -95,12 +89,10 @@
 
       readDefJSON = function() {
         var i, obj, p, u;
-
         obj = {
           name: this.text(),
           consts: (function() {
             var _i, _ref, _results;
-
             _results = [];
             for (i = _i = 0, _ref = this.int32(); _i < _ref; i = _i += 1) {
               _results.push(this.float32());
@@ -118,10 +110,8 @@
 
       readParamsJSON = function(num) {
         var i, indices, names, values, _i, _ref;
-
         values = (function() {
           var _i, _results;
-
           _results = [];
           for (i = _i = 0; _i < num; i = _i += 1) {
             _results.push(this.float32());
@@ -143,7 +133,6 @@
 
       readSpecListJSON = function(num) {
         var i, _i, _results;
-
         _results = [];
         for (i = _i = 0; _i < num; i = _i += 1) {
           _results.push(readSpecJSON.call(this));
@@ -153,7 +142,6 @@
 
       readSpecJSON = function() {
         var i, input_len, inputs, name, output_len, outputs, rate, specialIndex, _i, _j;
-
         name = this.text();
         rate = this.int8();
         input_len = this.int32();
@@ -172,13 +160,11 @@
 
       readVariants = function(num) {
         var i, j, list, _i, _ref;
-
         list = {};
         for (i = _i = 0, _ref = this.int16(); _i < _ref; i = _i += 1) {
           list[this.text()] = [
             (function() {
               var _j, _results;
-
               _results = [];
               for (j = _j = 0; _j < num; j = _j += 1) {
                 _results.push(this.float32());
@@ -205,7 +191,6 @@
 
       Inlet.prototype.getX = function() {
         var offset;
-
         offset = (this.index * (this.parent.width / (this.parent.inlets.length - 1))) | 0;
         return Math.ceil(this.parent.getX() + offset);
       };
@@ -216,7 +201,6 @@
 
       Inlet.prototype.render = function(context) {
         var x, y;
-
         x = this.getX();
         y = this.getY();
         context.beginPath();
@@ -238,7 +222,6 @@
 
       Outlet.prototype.getX = function() {
         var offset;
-
         offset = (this.index * (this.parent.width / (this.parent.outlets.length - 1))) | 0;
         return Math.ceil(this.parent.getX() + offset);
       };
@@ -249,7 +232,6 @@
 
       Outlet.prototype.render = function(context) {
         var inlet, x1, x2, y1, y2, _i, _len, _ref1, _ref2, _ref3, _results;
-
         Outlet.__super__.render.call(this, context);
         if (this.to) {
           _ref1 = [this.getX(), this.getY()], x1 = _ref1[0], y1 = _ref1[1];
@@ -266,7 +248,6 @@
 
       Outlet.prototype.bezierline = function(context, x1, y1, x2, y2) {
         var cp1x, cp1y, cp2x, cp2y;
-
         cp1x = x1;
         cp1y = y2 - 15;
         cp2x = x2;
@@ -285,7 +266,6 @@
       function Box(context, index, spec, x, y) {
         var i, _ref1,
           _this = this;
-
         this.context = context;
         this.index = index;
         this.spec = spec;
@@ -300,7 +280,6 @@
         }
         this.width = (function() {
           var m, w;
-
           m = _this.context.measureText(_this.name);
           w = Math.ceil(m.width * 0.1) * 10 + 10;
           if (_this.rate !== 0) {
@@ -311,7 +290,6 @@
         this.height = 20;
         this.inlets = (function() {
           var _i, _ref2, _results;
-
           _results = [];
           for (i = _i = 0, _ref2 = this.inputs.length >> 1; _i < _ref2; i = _i += 1) {
             _results.push(new Inlet(this, i));
@@ -320,7 +298,6 @@
         }).call(this);
         this.outlets = (function() {
           var _i, _ref2, _results;
-
           _results = [];
           for (i = _i = 0, _ref2 = this.outputs.length; _i < _ref2; i = _i += 1) {
             _results.push(new Outlet(this, i));
@@ -343,7 +320,6 @@
 
       Box.prototype.render = function(context) {
         var x, y;
-
         context.save();
         x = this.getX();
         y = this.getY();
@@ -382,7 +358,6 @@
 
       SynthDefRenderer.prototype.toDataURL = function(json) {
         var box, boxList, name, x, y, _i, _j, _k, _len, _len1, _len2, _ref1, _ref2, _ref3;
-
         this.build(json);
         this.canvas.width = this.width;
         this.canvas.height = this.height;
@@ -410,14 +385,12 @@
 
       SynthDefRenderer.prototype.build = function(json) {
         var boxList, def, maxX, maxY, specList, x, y;
-
         this.canvas = document.createElement('canvas');
         this.context = this.canvas.getContext('2d');
         this.context.font = '12pt normal';
         maxX = maxY = 0;
         this.builded = (function() {
           var _i, _len, _ref1, _results;
-
           _ref1 = json.defs;
           _results = [];
           for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
@@ -446,14 +419,11 @@
 
       remakeSpecList = function(def) {
         var argName, i, inputs, name, numId, numSpec, origin, outputs, rate, spId, spec, specList, _, _i, _j, _k, _len, _ref1, _ref2;
-
         specList = [];
         argName = (function() {
           var a, i, index, nameIndices;
-
           nameIndices = (function() {
             var _i, _ref1, _results;
-
             _results = [];
             for (i = _i = 0, _ref1 = def.params.names.length; _i < _ref1; i = _i += 1) {
               _results.push({
@@ -469,7 +439,6 @@
           index = -1;
           a = (function() {
             var _i, _ref1, _results;
-
             _results = [];
             for (i = _i = 0, _ref1 = def.params.values.length; _i < _ref1; i = _i += 1) {
               if (nameIndices[index + 1].index === i) {
@@ -490,7 +459,6 @@
             inputs: [],
             outputs: (function() {
               var _i, _len, _ref1, _results;
-
               _ref1 = def.params.values;
               _results = [];
               for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
@@ -506,7 +474,6 @@
         });
         origin = (function() {
           var _i, _len, _ref1, _ref2, _results;
-
           _ref1 = def.specs;
           _results = [];
           for (i = _i = 0, _len = _ref1.length; _i < _len; i = ++_i) {
@@ -555,11 +522,9 @@
 
       makeBoxList = function(context, specList) {
         var box, boxList, fromIndex, fromName, fromOutlet, i, index, map, spec, _i, _j, _len, _ref1;
-
         map = {};
         boxList = (function() {
           var _i, _len, _results;
-
           _results = [];
           for (index = _i = 0, _len = specList.length; _i < _len; index = ++_i) {
             spec = specList[index];
@@ -582,7 +547,6 @@
 
       layout = function(boxList, offsetX, offsetY) {
         var box, _i, _len;
-
         layoutY(boxList);
         layoutX(boxList);
         layoutI(boxList);
@@ -596,7 +560,6 @@
 
       layoutY = function(boxList) {
         var calcY, changed, i, minY, remain, walk, _i;
-
         calcY = function(box, selector, defaultValue) {
           return box.outlets.reduce(function(y, outlet) {
             return selector(y, outlet.to.reduce(function(y, inlet) {
@@ -607,7 +570,6 @@
         remain = boxList.slice().reverse();
         walk = function(box) {
           var index;
-
           index = remain.indexOf(box);
           if (index !== -1) {
             remain.splice(index, 1);
@@ -626,7 +588,6 @@
           changed = false;
           boxList.forEach(function(box) {
             var y;
-
             y = calcY(box, Math.min, Infinity);
             if (y < box.y) {
               box.y = y;
@@ -647,7 +608,6 @@
 
       layoutX = function(boxList) {
         var box, i, key, list, map, prev, _i, _j, _k, _len, _len1, _len2, _ref1, _results;
-
         map = {};
         for (_i = 0, _len = boxList.length; _i < _len; _i++) {
           box = boxList[_i];
@@ -674,7 +634,6 @@
           });
           _results.push((function() {
             var _l, _ref2, _results1;
-
             _results1 = [];
             for (i = _l = 1, _ref2 = list.length; _l < _ref2; i = _l += 1) {
               prev = list[i - 1];
@@ -689,14 +648,11 @@
 
       layoutI = function(boxList) {
         var findBox;
-
         findBox = function(x1, y1, x2, y2) {
           var map;
-
           map = {};
           boxList.forEach(function(box) {
             var y;
-
             y = box.getY();
             if ((y1 < y && y < y2) && box.getX() === x1) {
               if (!map[y] || y < map[y].getY()) {
@@ -711,18 +667,15 @@
         return boxList.forEach(function(box) {
           return box.outlets.forEach(function(outlet) {
             var x1, y1;
-
             x1 = outlet.getX();
             y1 = outlet.getY();
             return outlet.to.forEach(function(inlet) {
               var x2, y2;
-
               x2 = inlet.getX();
               y2 = inlet.getY();
               if (x1 === x2) {
                 return findBox(x1, y1, x2, y2).forEach(function(box) {
                   var prev, _ref1, _ref2, _results;
-
                   box.x = x2 + 15;
                   _ref1 = [box, box.next], prev = _ref1[0], box = _ref1[1];
                   _results = [];
@@ -743,7 +696,6 @@
     })();
     render = function(data) {
       var json, renderer;
-
       json = new SynthDefParser().toJSON(data);
       if (json) {
         renderer = new SynthDefRenderer;
@@ -754,7 +706,6 @@
     };
     main = function(file) {
       var reader;
-
       reader = new FileReader;
       reader.onload = function(e) {
         return render(new Uint8Array(e.target.result));

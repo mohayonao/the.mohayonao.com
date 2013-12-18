@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var Tarai, baseRoot, car, isPlaying, master, pattern, scale, synth, tarai, timer;
-
     sc.use('prototype');
     Array.prototype.sorted = function() {
       this.sort();
@@ -58,7 +57,6 @@
       interval: 'bpm120 l16'
     }, function(count) {
       var i, noteNum, _ref;
-
       count &= 15;
       if (count === 0) {
         car = (_ref = tarai.fetch()) != null ? _ref.sorted() : void 0;

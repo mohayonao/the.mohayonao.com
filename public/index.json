@@ -7,11 +7,9 @@
       "invention",
       "console-sushi",
       "falling-sushi",
-      "glitchedmovie",
       "scalable-mario",
       "1bit",
       "mimi",
-      "perfume",
       "others",
       {
         "title": "sine",
@@ -23,6 +21,10 @@
   {
     "name": "libraries",
     "list": [
+      {
+        "title": "CoffeeCollider",
+        "path" : "http://mohayonao.github.io/CoffeeCollider"
+      },
       {
         "title": "timbre.js",
         "path" : "http://mohayonao.github.io/timbre.js"

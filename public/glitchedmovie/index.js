@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var App, AudioProcessor, GlitchProcessor, PREVIEW_HEIGHT, PREVIEW_WIDTH, VideoProcessor, app, createObjectURL, resizeContainer, _ref;
-
     PREVIEW_WIDTH = 480;
     PREVIEW_HEIGHT = 360;
     createObjectURL = (_ref = window.URL || window.webkitURL) != null ? _ref.createObjectURL : void 0;
@@ -19,7 +18,6 @@
     });
     resizeContainer = (function() {
       var $container;
-
       $container = $('#unit');
       return function() {
         return $container.height(($container.width() * 0.75) | 0);
@@ -75,7 +73,6 @@
       App.prototype.next = function(index) {
         var file, type, video,
           _this = this;
-
         if (typeof index === 'number' && index >= 0) {
           this.filesIndex = index;
         }
@@ -127,7 +124,6 @@
 
       App.prototype.setCurrentTime = function(rate) {
         var _ref1;
-
         return (_ref1 = this.video) != null ? _ref1.currentTime = this.video.duration * rate : void 0;
       };
 
@@ -147,14 +143,12 @@
 
       App.prototype.play = function() {
         var _ref1;
-
         this.isPlaying = true;
         return (_ref1 = this.video) != null ? _ref1.play() : void 0;
       };
 
       App.prototype.pause = function() {
         var _ref1;
-
         this.isPlaying = false;
         return (_ref1 = this.video) != null ? _ref1.pause() : void 0;
       };
@@ -178,7 +172,6 @@
       VideoProcessor.prototype.init = function(video) {
         var $video, ch, cw, h, vh, vw, w, _ref1, _ref2, _ref3, _ref4, _ref5,
           _this = this;
-
         $video = $(video);
         $video.on('play', function() {
           return _this.play();
@@ -205,7 +198,6 @@
 
       VideoProcessor.prototype.play = function() {
         var _this = this;
-
         this.isPaused = false;
         return requestAnimationFrame(function() {
           return _this.process();
@@ -219,7 +211,6 @@
       VideoProcessor.prototype.process = function() {
         var binary, img, now, src,
           _this = this;
-
         now = Date.now();
         if (now - this.prevProcess > 60) {
           this.prevProcess = now;
@@ -265,7 +256,6 @@
       AudioProcessor.prototype.init = function(video) {
         var $video, gain, media, node, _ref1,
           _this = this;
-
         if (this.isPlaying) {
           this.pause();
         }
@@ -300,7 +290,6 @@
 
       AudioProcessor.prototype.process = function(e) {
         var L, R, i, stream, _i, _j, _ref1, _ref2, _results;
-
         if (!e) {
           return;
         }
@@ -333,14 +322,12 @@
 
       GlitchProcessor.prototype.videoProcess = (function() {
         var i, randint, randtable;
-
         i = 0;
         randint = function(a, b) {
           return ((Math.random() * (b - a + 1)) + 1) | 0;
         };
         randtable = new Uint8Array((function() {
           var _i, _results;
-
           _results = [];
           for (i = _i = 0; _i < 4096; i = ++_i) {
             _results.push(randint(0, 9));
@@ -368,7 +355,6 @@
 
       GlitchProcessor.prototype.audioProcess = function(stream) {
         var glitchbuffer, i, _i, _ref1;
-
         if (this.mode === 0 && Math.random() < this.level) {
           this.mode = 1;
         }

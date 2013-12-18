@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var $dst, $nodes, $src, $tokens, hash, prev, view;
-
     $src = $('#src');
     $tokens = $('#tokens');
     $nodes = $('#nodes');
@@ -10,7 +9,6 @@
     prev = null;
     $src.on('keyup', function() {
       var src;
-
       src = $src.val().trim();
       if (src === prev) {
         return;
@@ -21,12 +19,10 @@
     });
     view = function(src) {
       var dst, e, list, nodes, tokens;
-
       try {
         tokens = CoffeeScript.tokens(src);
         list = tokens.map(function(items) {
           var tag;
-
           tag = (items[0] + '                    ').substr(0, 20);
           return "" + tag + items[1];
         });
@@ -46,7 +42,6 @@
     };
     $('#link').on('click', function() {
       var code;
-
       code = $src.val().trim();
       return window.location = "#" + (encodeURIComponent(code));
     });

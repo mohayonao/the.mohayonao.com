@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var AudioContext, bufSrc, context, decode, jsNode, play;
-
     AudioContext = window.AudioContext || window.webkitAudioContext;
     context = new AudioContext;
     bufSrc = context.createBufferSource();
@@ -12,7 +11,6 @@
     };
     decode = function(path, callback) {
       var xhr;
-
       xhr = new XMLHttpRequest;
       xhr.open('get', path);
       xhr.responseType = 'arraybuffer';

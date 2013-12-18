@@ -2,10 +2,8 @@
   $(function() {
     'use strict';
     var svg;
-
     svg = function(tag, attrs) {
       var elem;
-
       elem = document.createElementNS('http://www.w3.org/2000/svg', tag);
       if (attrs) {
         svg.attrs(elem, attrs);
@@ -20,11 +18,9 @@
     };
     return $('ul.svg-radio').each(function(i, ul) {
       var check, checkedId, container, list;
-
       list = [];
       $('li', $(ul)).each(function(i, li) {
         var $li;
-
         $li = $(li);
         return list.push([$li.attr('value'), $li.attr('checked'), $li.text()]);
       });
@@ -35,7 +31,6 @@
       checkedId = 0;
       list.forEach(function(li, i) {
         var cy, g, input, text;
-
         g = svg('g');
         cy = i * 30 + 10;
         input = svg('circle', {

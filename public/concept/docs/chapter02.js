@@ -11,7 +11,6 @@
   synth = T("SynthDef", {
     def: function(opts) {
       var syn, _ref, _ref1;
-
       syn = T("fami", {
         freq: (_ref = opts.freq) != null ? _ref : 440,
         mul: 0.25
@@ -57,7 +56,6 @@
   synth = T("SynthDef", {
     def: function(opts) {
       var syn;
-
       syn = T("fami", {
         freq: opts.freq,
         mul: 0.25
@@ -80,7 +78,6 @@
     poly: 1,
     def: function(opts) {
       var syn;
-
       syn = T("sin", {
         freq: opts.freq,
         phase: T("sin", {
@@ -110,7 +107,6 @@
     poly: 1,
     def: function(opts) {
       var a, _ref;
-
       a = T("pulse", {
         freq: T("param", {
           value: 60
@@ -133,7 +129,6 @@
     poly: 1,
     def: function(opts) {
       var a, _ref, _ref1;
-
       a = T("pink", {
         mul: 0.5
       });
@@ -157,7 +152,6 @@
     poly: 1,
     def: function(opts) {
       var a, _ref, _ref1;
-
       a = T("pink");
       a = a.to("hpf", {
         cutoff: 8800,

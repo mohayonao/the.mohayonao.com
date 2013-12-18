@@ -249,7 +249,6 @@
 
   drawChordForm = function(ctx, form) {
     var flet_height, flet_num, flet_width, h, i, max_flet, paddingTop, w, x, y, _i, _j, _k, _l, _len, _len1, _ref, _ref1, _ref2, _results;
-
     paddingTop = 16;
     _ref = [5, 12, 8], flet_num = _ref[0], flet_width = _ref[1], flet_height = _ref[2];
     max_flet = 0;
@@ -300,7 +299,6 @@
 
   drawRepeat = function(ctx, form) {
     var p, x, y, _ref;
-
     _ref = [form.x, form.y], x = _ref[0], y = _ref[1];
     p = form.name === '|:' ? [0, 3, 6, 6] : [7, 5, 0, 0];
     ctx.fillRect(x + p[0], y + 4, 2, 38);
@@ -320,7 +318,6 @@
 
   drawParen = function(ctx, form) {
     var p, x, y, _i, _len, _ref, _ref1, _results, _x, _y;
-
     _ref = [form.x, form.y + 1.5], x = _ref[0], y = _ref[1];
     p = form.name === '(' ? [[4, 2], [3, 4], [2, 6], [1, 18], [2, 6], [3, 4], [4, 2]] : [[1, 2], [2, 4], [3, 6], [4, 18], [3, 6], [2, 4], [1, 2]];
     _results = [];
@@ -334,7 +331,6 @@
 
   drawStroke = function(ctx, form) {
     var i, prev, stroke, x, y, _, _i, _len, _ref, _ref1, _results, _x, _y;
-
     if (!form.stroke) {
       return;
     }
@@ -348,7 +344,6 @@
       if (stroke === '=') {
         stroke = ((function() {
           var _j, _ref2, _results1;
-
           _results1 = [];
           for (i = _j = 0, _ref2 = prev.length; _j < _ref2; i = _j += 1) {
             _results1.push(' ');
@@ -359,7 +354,6 @@
       prev = stroke;
       _results.push((function() {
         var _j, _k, _l, _len1, _len2, _len3, _ref2, _ref3, _ref4, _ref5, _results1;
-
         _results1 = [];
         for (_j = 0, _len1 = stroke.length; _j < _len1; _j++) {
           _ = stroke[_j];
@@ -402,7 +396,6 @@
 
   drawSegno = function(ctx, form) {
     var x, y, _ref;
-
     _ref = [form.x, form.y], x = _ref[0], y = _ref[1];
     ctx.fillRect(x + 1, y, 3, 1);
     ctx.fillRect(x + 1, y + 1, 1, 1);
@@ -415,7 +408,6 @@
 
   drawCoda = function(ctx, form) {
     var x, y, _ref;
-
     _ref = [form.x, form.y], x = _ref[0], y = _ref[1];
     ctx.fillRect(x, y + 1, 1, 3);
     ctx.fillRect(x + 1, y, 3, 1);
@@ -427,7 +419,6 @@
 
   drawRepeatStr = function(ctx, form) {
     var name;
-
     name = (function() {
       switch (form.name) {
         case '^':
@@ -517,11 +508,9 @@
 
   getForm = (function() {
     var prev;
-
     prev = null;
     return function(m) {
       var form, index, name, stroke;
-
       name = m[0];
       if (name.charAt(0) === '!') {
         if (m[3]) {
@@ -566,12 +555,10 @@
 
   parse = (function() {
     var comment, re;
-
     re = /(?:!(\d*)(:3)?([-PpDdUuXx,_=]*))|(?:[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?)|\|:|:\||[-=_()1-4;$<^*]/g;
     comment = /\'[\w\W]*$/;
     return function(src) {
       var m, _results;
-
       src = src.split('\n').map(function(x) {
         return x.replace(comment, '');
       }).join('');
@@ -585,13 +572,11 @@
 
   calculate = function(src) {
     var h, hasSegno, list, m, strokeOnly, w, x, y, _, _ref;
-
     _ref = [8, 8, 8, 8], x = _ref[0], y = _ref[1], w = _ref[2], h = _ref[3];
     hasSegno = false;
     strokeOnly = false;
     list = (function() {
       var _i, _len, _ref1, _ref2, _ref3, _results;
-
       _ref1 = parse(src);
       _results = [];
       for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
@@ -639,7 +624,6 @@
 
   getImageData = function(src, opts) {
     var calced, canvas, ctx, _, _i, _len, _ref;
-
     if (opts == null) {
       opts = {};
     }
@@ -666,7 +650,6 @@
 
   getImageSrc = function(src, opts) {
     var canvas, imgData;
-
     if (opts == null) {
       opts = {};
     }
@@ -705,7 +688,6 @@
 
       Timeline.prototype.reset = function() {
         var _;
-
         _ = this._;
         _.shuffle = false;
         _.stroke = ['D-u-'];
@@ -732,7 +714,6 @@
 
       Timeline.prototype.setList = function(list) {
         var cmd, i, prev, stroke, _, _i, _j, _ref, _ref1;
-
         _ = this._;
         _.list = list;
         for (i = _i = 0, _ref = _.list.length; _i < _ref; i = _i += 1) {
@@ -755,7 +736,6 @@
 
       Timeline.prototype.setBpm = function(bpm) {
         var l, _;
-
         _ = this._;
         l = _.shuffle ? 'l12' : 'l8';
         _.samplesIncr = timbre.timevalue("bpm" + bpm + " " + l);
@@ -766,7 +746,6 @@
 
       Timeline.prototype.process = function(tickID) {
         var form, stroke, _;
-
         _ = this._;
         if (_.samples <= 0) {
           if (!_.shuffle || _.beat % 3 !== 1) {
@@ -797,7 +776,6 @@
 
       Timeline.prototype.test = function() {
         var cmd, _results;
-
         _results = [];
         while ((cmd = fetch.call(this))) {
           _results.push(console.log(cmd));
@@ -807,7 +785,6 @@
 
       fetch = function() {
         var cmd, i, maxCount, peek, t, _, _i, _ref, _ref1;
-
         _ = this._;
         cmd = _.list[_.i1++];
         if (!cmd) {
@@ -964,7 +941,6 @@
       sched = function(that, freq, mul, mute) {
         return function() {
           var send;
-
           if (mute) {
             send = T('perc', {
               r: 15
@@ -992,7 +968,6 @@
 
       emit = function(type, opts) {
         var form, func, i, p, stroke, _i;
-
         switch (type) {
           case 'data':
             form = opts.form, stroke = opts.stroke;
@@ -1037,7 +1012,6 @@
   if (typeof CodeMirror !== 'undefined') {
     CodeMirror.defineMode('ukulele', function() {
       var chord, repeat, stroke;
-
       stroke = /^!\d*(?::3)?[-PpDdUuXx,_=]*/;
       chord = /^[CDEFGAB][\#b]?(?:m7\(b5\)|M7\(9\)|7\(9\)|sus4|add9|aug|dim|mM7|m7|M7|m|7|6)?(?:@[0-5]{4})?/;
       repeat = /^([-1234$<^*]|\|:|:\|)/;

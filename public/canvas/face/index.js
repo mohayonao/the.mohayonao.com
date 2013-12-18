@@ -1,10 +1,9 @@
 (function() {
-  'use strict';  $(function() {
+  'use strict';
+  $(function() {
     var DetectProcessor, ImageProcessor, canvas, mirror, onerror, onsuccess, processor, video;
-
     mirror = function(imageData) {
       var data, height, i, j, width, x, y, _i, _j, _ref, _ref1, _ref2, _ref3;
-
       data = imageData.data;
       width = imageData.width;
       height = imageData.height;
@@ -31,7 +30,6 @@
 
       DetectProcessor.prototype.process = function(src) {
         var detector;
-
         this.context.drawImage(src, 0, 0, src.width, src.height, 0, 0, this.width, this.height);
         detector = ccv.detect_objects({
           canvas: this.canvas,
@@ -44,7 +42,6 @@
 
       _onmessage = function(e) {
         var dfd;
-
         switch (e.data.type) {
           case 'console':
             return console.log.apply(console, e.data.data);
@@ -59,7 +56,6 @@
 
       _send = function(type) {
         var data, dfd, index;
-
         index = this.index++;
         data = slice.call(arguments, 1);
         if (data.length <= 1) {
@@ -89,7 +85,6 @@
 
       ImageProcessor.prototype.process = function(src, dst) {
         var context, detect, h, imageData, scale, w, x, y;
-
         this.detector.process(src);
         this.context.drawImage(src, 0, 0, src.width, src.height, 0, 0, this.width, this.height);
         imageData = this.context.getImageData(0, 0, this.width, this.height);

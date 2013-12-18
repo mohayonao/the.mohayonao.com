@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var IMAGE_NUM, ImageLoader, OBJECT_NUM, SUSHI_SIZE, Sushi, canvas, context, i, objects, rand;
-
     OBJECT_NUM = 200;
     IMAGE_NUM = 75;
     SUSHI_SIZE = 20;
@@ -23,7 +22,6 @@
       ImageLoader.prototype.load = function() {
         var img,
           _this = this;
-
         img = new Image;
         img.src = this.src;
         img.onload = function() {
@@ -42,7 +40,6 @@
       function Sushi(num, x, y, z) {
         var src,
           _this = this;
-
         this.num = num;
         this.x = x;
         this.y = y;
@@ -55,7 +52,6 @@
 
       Sushi.prototype.draw = function(context) {
         var size, x, y;
-
         if (!this.img) {
           return;
         }
@@ -70,7 +66,6 @@
     })();
     rand = function(min, max) {
       var _ref;
-
       if (max == null) {
         _ref = [0, min], min = _ref[0], max = _ref[1];
       }
@@ -82,7 +77,6 @@
     context = canvas.getContext('2d');
     objects = (function() {
       var _i, _results;
-
       _results = [];
       for (i = _i = 0; _i < OBJECT_NUM; i = _i += 1) {
         _results.push(new Sushi(rand(IMAGE_NUM) | 0, rand(canvas.width), rand(-canvas.height, canvas.height), rand(0.25, 3.00)));
@@ -96,7 +90,6 @@
       fps: 40
     }, function(now, dt) {
       var o, _i, _results;
-
       context.clearRect(0, 0, canvas.width, canvas.height);
       _results = [];
       for (i = _i = 0; _i < OBJECT_NUM; i = _i += 1) {

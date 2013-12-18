@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var $btn, $msg, Application, BLACK, Editor, GRAY, NAVY, SIZE, app, drag_mode, dst, image, save_mode, src, thre_mode, trim_mode;
-
     SIZE = 400;
     BLACK = '#302833';
     NAVY = '#223a70';
@@ -54,7 +53,6 @@
 
       Editor.prototype.setZoom = function(value) {
         var zoom;
-
         zoom = Math.max(0, Math.min(value, 4));
         if (this.width <= this.image.width * zoom && this.height <= this.image.height * zoom) {
           this.zoom = zoom;
@@ -77,7 +75,6 @@
 
       Editor.prototype.move = function(dx, dy) {
         var hh, hw, x, y, z;
-
         if (this.image) {
           z = 1 / this.zoom;
           x = this.position.x + dx * z;
@@ -104,7 +101,6 @@
 
       Editor.prototype.getImageData = function() {
         var imageData, sh, sw, sx, sy, x1, x2, y1, y2, z, _ref;
-
         if (this.image) {
           z = 1 / this.zoom;
           x1 = (this.image.halfWidth - this.halfWidth * z) + this.position.x;
@@ -123,7 +119,6 @@
 
       Editor.prototype.draw = function() {
         var imageData;
-
         if (this.image) {
           imageData = this.getImageData();
           this.context.putImageData(imageData, 0, 0);
@@ -133,7 +128,6 @@
 
       binalize = function(imageData, threshold) {
         var data, gray, i, _i, _ref;
-
         data = imageData.data;
         for (i = _i = 0, _ref = data.length; _i < _ref; i = _i += 4) {
           gray = 0.114 * data[i] + 0.587 * data[i + 1] + 0.299 * data[i + 2];
@@ -145,11 +139,9 @@
       setEventListener = function(elem) {
         var $elem,
           _this = this;
-
         $elem = $(elem);
         $elem.on('mousedown', function(e) {
           var offset, x, y, _ref, _ref1;
-
           offset = $elem.offset();
           x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
           y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
@@ -167,7 +159,6 @@
         });
         $elem.on('mousemove', function(e) {
           var dx, dy, offset, x, y, _ref, _ref1;
-
           offset = $elem.offset();
           x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
           y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
@@ -222,7 +213,6 @@
       Application.prototype.setImage = function(file) {
         var reader,
           _this = this;
-
         if (this.editor.getMode() !== 'drag') {
           return false;
         }
@@ -230,7 +220,6 @@
           reader = new FileReader;
           reader.onload = function() {
             var image;
-
             image = new Image;
             image.onload = function() {
               return _this.editor.setImage(image);
@@ -299,7 +288,6 @@
 
       barilleChars = (function() {
         var dot, i, _i, _results;
-
         dot = function(bits) {
           return bits & 7 | (bits & 112) >> 1 | (bits & 8) << 3 | bits & 128;
         };
@@ -312,7 +300,6 @@
 
       Application.prototype.generate = function(callback) {
         var canvas, context, data, i, index, l, list, num, widthStep, x, y, _i, _j, _k;
-
         canvas = document.createElement('canvas');
         canvas.width = 112;
         canvas.height = 112;
@@ -362,7 +349,6 @@
     });
     $btn.on('mousedown', function(e) {
       var _this = this;
-
       if (this.keep) {
         app.setTimer(function() {
           return typeof _this.cmd === "function" ? _this.cmd() : void 0;

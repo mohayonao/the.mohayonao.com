@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var $btn, $msg, Application, BLACK, Editor, GRAY, MosaicProcessor, NAVY, SIZE, app, conf_mode, drag_mode, dst, exec_mode, image, mask_mode, save_mode, src, trim_mode;
-
     SIZE = 400;
     BLACK = '#302833';
     NAVY = '#223a70';
@@ -12,7 +11,6 @@
     };
     Array.prototype.shuffle = function() {
       var a;
-
       a = this.slice(0);
       a.sort(function(x) {
         return Math.random() - 0.5;
@@ -21,10 +19,8 @@
     };
     String.prototype.times = function(n) {
       var i;
-
       return ((function() {
         var _i, _results;
-
         _results = [];
         for (i = _i = 0; _i < n; i = _i += 1) {
           _results.push(this);
@@ -88,7 +84,6 @@
 
       Editor.prototype.setZoom = function(value) {
         var zoom;
-
         zoom = Math.max(0, Math.min(value, 4));
         if (this.width <= this.image.width * zoom && this.height <= this.image.height * zoom) {
           this.zoom = zoom;
@@ -110,7 +105,6 @@
 
       Editor.prototype.move = function(dx, dy) {
         var hh, hw, x, y, z;
-
         if (this.image) {
           z = 1 / this.zoom;
           x = this.position.x + dx * z;
@@ -137,7 +131,6 @@
 
       Editor.prototype.paint = function(_x, _y) {
         var index, x, y;
-
         x = (_x / this.mask.size) | 0;
         y = (_y / this.mask.size) | 0;
         index = y * this.mask.xmax + x;
@@ -149,7 +142,6 @@
 
       Editor.prototype.getImageData = function() {
         var sh, sw, sx, sy, x1, x2, y1, y2, z, _ref;
-
         if (this.image) {
           z = 1 / this.zoom;
           x1 = (this.image.halfWidth - this.halfWidth * z) + this.position.x;
@@ -164,7 +156,6 @@
 
       Editor.prototype.draw = function() {
         var i, imageData, sh, sw, sx, sy, _i, _ref;
-
         if (this.image) {
           imageData = this.getImageData();
           this.context.putImageData(imageData, 0, 0);
@@ -184,13 +175,11 @@
 
       drawmask = function(imageData, sx, sy, sw, sh) {
         var data, i, _i, _results, _x, _y;
-
         data = imageData.data;
         _results = [];
         for (_y = _i = 0; _i < sh; _y = _i += 1) {
           _results.push((function() {
             var _j, _results1;
-
             _results1 = [];
             for (_x = _j = 0; _j < sw; _x = _j += 1) {
               i = ((sy + _y) * imageData.width + (sx + _x)) * 4;
@@ -211,11 +200,9 @@
       setEventListener = function(elem) {
         var $elem,
           _this = this;
-
         $elem = $(elem);
         $elem.on('mousedown', function(e) {
           var offset, x, y, _ref, _ref1;
-
           offset = $elem.offset();
           x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
           y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
@@ -233,7 +220,6 @@
         });
         $elem.on('mousemove', function(e) {
           var dx, dy, offset, x, y, _ref, _ref1;
-
           offset = $elem.offset();
           x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
           y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
@@ -292,7 +278,6 @@
       Application.prototype.setImage = function(file) {
         var reader,
           _this = this;
-
         if (this.editor.getMode() !== 'drag') {
           return false;
         }
@@ -300,7 +285,6 @@
           reader = new FileReader;
           reader.onload = function() {
             var image;
-
             image = new Image;
             image.onload = function() {
               return _this.editor.setImage(image);
@@ -359,7 +343,6 @@
 
       Application.prototype.setConfig = function(key, ch) {
         var index;
-
         switch (key) {
           case 'frames':
             index = (FRAMES.indexOf(this.frames)) + ch;
@@ -387,7 +370,6 @@
       Application.prototype.generate = function() {
         var canvas, context, dfd, encoder, i, mask, processed, processor, progress, saved, _i, _ref,
           _this = this;
-
         dfd = $.Deferred();
         saved = this.editor.getImageData();
         mask = app.editor.mask;
@@ -406,7 +388,6 @@
         processor = new MosaicProcessor(saved, mask);
         progress = function(context, count) {
           var height, imageData, width, _ref;
-
           _ref = context.canvas, width = _ref.width, height = _ref.height;
           imageData = context.getImageData(0, 0, width, height);
           return function() {
@@ -441,7 +422,6 @@
 
       build = function(imageData, mask) {
         var i, list, sh, sw, sx, sy, _i, _ref;
-
         list = [];
         for (i = _i = 0, _ref = mask.data.length; _i < _ref; i = _i += 1) {
           if (mask.data[i]) {
@@ -457,7 +437,6 @@
 
       fetchcolor = function(imageData, sx, sy, sw, sh) {
         var b, colors, data, g, i, r, _i, _j, _x, _y;
-
         colors = {};
         data = imageData.data;
         for (_y = _i = 0; _i < sh; _y = _i += 1) {
@@ -476,7 +455,6 @@
 
       MosaicProcessor.prototype.process = function(context) {
         var i, imageData, mask, sh, sw, sx, sy, _i, _ref;
-
         mask = this.mask;
         for (i = _i = 0, _ref = mask.data.length; _i < _ref; i = _i += 1) {
           if (mask.data[i]) {
@@ -494,7 +472,6 @@
 
       MosaicProcessor.prototype.mosaic = function(index) {
         var color;
-
         color = this.colormap[index].shift();
         this.colormap[index].push(color);
         return color;
@@ -536,7 +513,6 @@
     });
     $('#dialog .lsf-icon').on('click', function() {
       var $elem, key, val;
-
       $elem = $(this);
       key = $elem.attr('data-key');
       val = $elem.attr('title') === 'plus' ? +1 : -1;
@@ -664,7 +640,6 @@
     };
     exec_mode = function() {
       var P0, P1, countmax;
-
       P0 = '-';
       P1 = '>';
       countmax = app.frames;
@@ -696,7 +671,6 @@
           return app.setMode('save', src);
         }).progress(function(count) {
           var msg;
-
           msg = '4. Processing: ';
           msg += P1.times(count + 1);
           msg += P0.times(countmax - count - 1);

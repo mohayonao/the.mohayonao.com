@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var DeferredKlass, a;
-
     DeferredKlass = Deferred;
     console.log("use: my deferred");
     a = new DeferredKlass;
@@ -36,7 +35,6 @@
     a = new DeferredKlass;
     a.then(function(value) {
       var dfd;
-
       console.log("(1): value " + value + " [10]");
       dfd = new $.Deferred();
       setTimeout((function() {
@@ -45,7 +43,6 @@
       return dfd.promise();
     }).then(function(value) {
       var dfd;
-
       console.log("(2): value " + value + " [20]");
       dfd = new $.Deferred();
       setTimeout((function() {
@@ -54,7 +51,6 @@
       return dfd.promise();
     }).then(function(value) {
       var dfd;
-
       console.log("(3): value " + value + " [30]");
       dfd = new $.Deferred();
       setTimeout((function() {

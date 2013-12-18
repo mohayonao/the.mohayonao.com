@@ -9,14 +9,12 @@
 
   (function(evalFunction) {
     var func, tcnt, update;
-
     func = function(t) {
       return 0;
     };
     tcnt = 0;
     update = function(t) {
       var e, i, stream, _i, _ref;
-
       stream = new Array(4096);
       try {
         for (i = _i = 0, _ref = stream.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
@@ -30,7 +28,6 @@
     };
     _this.onmessage = function(e) {
       var err, res;
-
       if (typeof e.data === 'string') {
         try {
           func = evalFunction(e.data);

@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var $scale, $tuning, baseRoot, baseScale, bass, calcFrequency, changeRootFreq, changeScale, changeTuning, env, master, melo0, melo1, params, q, s, scales, sheet, synth, t, tunings;
-
     melo0 = 't104 l16 q4 $\no6 eere rcer gr8. > gr8.<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 r8gg-fd#re r>g#a<c r>a<cd r8gg-fd#re < rcrc cr8.> r8gg-fd#re r>g#a<c r>a<cd r8e-r8dr8cr8.r4\no6 r8gg-fd#re r>g#a<c r>a<cd r8gg-fd#re < rcrc cr8.> r8gg-fd#re r>g#a<c r>a<cd r8e-r8dr8cr8.r4\no6 ccrc rcdr ecr>a gr8.< ccrc rcde r2 ccrc rcdr ecr>a gr8.<\no6 eere rcer gr8. > gr8.<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 ecr>g r8g#r a<frf> ar8. l12b<aa agf l16ecr>a gr8.< ecr>g r8g#r a<frf> ar8. l12b<ff fed l16c>grg cr8.<\no6 ecr>g r8g#r a<frf> ar8. l12b<aa agf l16ecr>a gr8.< ecr>g r8g#r a<frf> ar8. l12b<ff fed l16c>grg cr8.<\no6 ccrc rcdr ecr>a gr8.< ccrc rcde r2 ccrc rcdr ecr>a gr8.';
     sheet = [0, 1, 1, 2, 2, 3, 0, 1, 1, 4, 4, 3];
     melo1 = 't104 l16 q4 $\no5 f#f#rf# rf#f#r gr8. >gr8.\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no6 r8ee-d>b<rc r>efa rfab< r8ee-d>b<rc rgrg gr8. r8ee-d>b<rc r>efa rfab< r8cr8>fr8er8.r4\no6 r8ee-d>b<rc r>efa rfab< r8ee-d>b<rc rgrg gr8. r8ee-d>b<rc r>efa rfab< r8cr8>fr8er8.r4\no5 a-a-ra- ra-b-r <c>grf er8. a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.\no5 f#f#rf# rf#f#r gr8. >gr8.\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no6 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.< c>gre r8er  f<drd> fr8. l12g<dd dc>b l16er8.r4\no6 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.< c>gre r8er  f<drd> fr8. l12g<dd dc>b l16er8.r4\no5 a-a-ra- ra-b-r <c>grf er8. a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.';
@@ -17,7 +16,6 @@
     changeRootFreq = baseRoot.midicps() * 0.5;
     calcFrequency = function(tnum) {
       var degree, key;
-
       key = tnum - baseRoot;
       degree = baseScale.performKeyToDegree(key);
       return changeScale.degreeToFreq2(degree, changeRootFreq, 0);
@@ -87,7 +85,6 @@
     });
     $('#tweet').on('click', function() {
       var text, url;
-
       url = "http://" + location.host + "/scalable-mario/";
       url += "?" + apps.param({
         s: $scale.val(),
@@ -103,7 +100,6 @@
       scales = {};
       sc.ScaleInfo.names().forEach(function(key) {
         var scale;
-
         scale = sc.ScaleInfo.at(key);
         if (scale.pitchesPerOctave() !== 12) {
           return;
@@ -116,7 +112,6 @@
       tunings = {};
       sc.TuningInfo.names().forEach(function(key) {
         var tuning;
-
         tuning = sc.TuningInfo.at(key);
         if (tuning.size() !== 12) {
           return;

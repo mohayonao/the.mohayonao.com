@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var Envelope, MMLSequencer, MMLTrack, Pulse, WaveViewer, viewer;
-
     if (pico.env === 'nop') {
       return;
     }
@@ -24,7 +23,6 @@
 
       Pulse.prototype.process = function() {
         var cell, i, phase, phaseStep, width, _i, _ref;
-
         cell = this.cell;
         phaseStep = this.phaseStep;
         width = this.width;
@@ -56,7 +54,6 @@
 
       Envelope.prototype.process = function(cell) {
         var i, samples, _i, _j, _ref, _ref1;
-
         samples = this.samples;
         if (this.amp) {
           for (i = _i = 0, _ref = cell.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
@@ -93,7 +90,6 @@
 
       MMLTrack.prototype.compile = function(mml) {
         var checked, cmd, commands, def, i, m, re, _i, _j, _len, _ref;
-
         commands = [];
         checked = new Array(mml.length);
         for (_i = 0, _len = MMLCommands.length; _i < _len; _i++) {
@@ -119,7 +115,6 @@
 
       MMLTrack.prototype.doCommand = function(cmd) {
         var freq, len, peek, sec;
-
         if (cmd === void 0) {
           if (this.segnoIndex !== null) {
             return this.index = this.segnoIndex;
@@ -181,7 +176,6 @@
 
       MMLTrack.prototype.process = function() {
         var cell;
-
         while (this.samples <= 0) {
           this.doCommand(this.commands[++this.index]);
         }
@@ -301,7 +295,6 @@
       function MMLSequencer(mml) {
         this.tracks = (function() {
           var _i, _len, _ref, _results;
-
           _ref = mml.split(';').filter(function(x) {
             return x;
           });
@@ -318,7 +311,6 @@
 
       MMLSequencer.prototype.process = function(L, R) {
         var cell, i, index, j, step, tmp, track, _i, _j, _k, _len, _ref, _ref1, _ref2, _ref3;
-
         cell = this.cell;
         step = this.tracks.length;
         index = this.index;
@@ -367,7 +359,6 @@
 
       animate = function() {
         var context, dx, i, target, x, y, _i, _ref;
-
         if (!this.target) {
           return;
         }
@@ -399,7 +390,6 @@
     viewer = new WaveViewer();
     $('#play').on('click', function() {
       var gen, samplerate;
-
       if (pico.isPlaying) {
         pico.pause();
         viewer.pause();

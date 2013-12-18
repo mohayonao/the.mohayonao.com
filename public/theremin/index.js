@@ -9,7 +9,6 @@
   if (typeof window !== 'undefined') {
     $(function() {
       var DetectProcessor, ImageProcessor, SoundProcessor, canvas, onerror, onsuccess, processor, sound, video;
-
       sc.use('prototype');
       timbre.setup({
         samplerate: timbre.samplerate * 0.5
@@ -19,7 +18,6 @@
 
         function DetectProcessor() {
           var privates;
-
           this.worker = new Worker(filename);
           privates = {
             worker: this.worker,
@@ -37,7 +35,6 @@
         DetectProcessor.prototype.process = function(src) {
           var imageData,
             _this = this;
-
           this.context.drawImage(src, 0, 0, src.width, src.height, 0, 0, this.width, this.height);
           imageData = this.context.getImageData(0, 0, this.width, this.height);
           return this.send('process', imageData).then(function(data) {
@@ -47,7 +44,6 @@
 
         _onmessage = function(e) {
           var dfd;
-
           switch (e.data.type) {
             case 'console':
               return console.log.apply(console, e.data.data);
@@ -62,7 +58,6 @@
 
         _send = function(type) {
           var data, dfd, index;
-
           index = this.index++;
           data = slice.call(arguments, 1);
           if (data.length <= 1) {
@@ -97,7 +92,6 @@
 
         ImageProcessor.prototype.process = function(src, dst) {
           var context, imageData, left, right, scale, x, y;
-
           this.detector.process(src);
           if (!this.mirror) {
             this.context.translate(src.width, 0);
@@ -187,7 +181,6 @@
       sound = new SoundProcessor;
       processor.callback = function(opts) {
         var amp, degree, freq;
-
         freq = opts.right;
         if (freq !== -1) {
           degree = ((1 - freq) * 20) | 0;
@@ -238,7 +231,6 @@
   } else {
     (function(worker) {
       var console, process, rgb2hsv, send;
-
       console = {
         log: function() {
           return worker.postMessage({
@@ -256,7 +248,6 @@
       };
       rgb2hsv = function(r, g, b) {
         var c, cmax, cmin, h, s, v;
-
         h = s = v = 0;
         cmax = Math.max(r, g, b);
         cmin = Math.min(r, g, b);
@@ -289,7 +280,6 @@
       };
       process = function(imageData) {
         var center, data, h, height, i, left, obj, right, s, thres, v, width, x, y, _i, _ref, _ref1, _ref2;
-
         width = imageData.width, height = imageData.height, data = imageData.data;
         left = {
           x: 0,
@@ -361,7 +351,6 @@
       };
       return worker.addEventListener('message', function(e) {
         var data, index, type, _ref;
-
         _ref = e.data, type = _ref.type, data = _ref.data, index = _ref.index;
         switch (type) {
           case 'process':

@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var ImageLoader, SushiLane, SushiText, lane, width;
-
     ImageLoader = (function() {
       var map;
 
@@ -20,7 +19,6 @@
       ImageLoader.prototype.load = function() {
         var img,
           _this = this;
-
         img = new Image;
         img.src = this.src;
         img.onload = function() {
@@ -45,12 +43,10 @@
       SushiText.prototype.load = function() {
         var dfd, src,
           _this = this;
-
         dfd = $.Deferred();
         src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
         new ImageLoader(src).load().then(function(img) {
           var canvas, colors, context, data, i;
-
           canvas = document.createElement('canvas');
           canvas.width = _this.width;
           canvas.height = _this.height;
@@ -61,7 +57,6 @@
           data = context.getImageData(0, 0, canvas.width, canvas.height).data;
           colors = (function() {
             var _i, _ref, _results;
-
             _results = [];
             for (i = _i = 0, _ref = data.length - 4; _i < _ref; i = _i += 4) {
               _results.push((data[i] << 16) + (data[i + 1] << 8) + data[i + 2]);
@@ -70,7 +65,6 @@
           })();
           data = (function() {
             var _i, _ref, _results;
-
             _results = [];
             for (i = _i = 0, _ref = this.height; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
               _results.push(colors.splice(0, this.width));
@@ -88,12 +82,10 @@
     SushiLane = (function() {
       function SushiLane(width, height) {
         var i;
-
         this.width = width != null ? width : 128;
         this.height = height != null ? height : 20;
         this.data = (function() {
           var _i, _ref, _results;
-
           _results = [];
           for (i = _i = 0, _ref = this.height; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
             _results.push([]);
@@ -104,7 +96,6 @@
 
       SushiLane.prototype.put = function(data) {
         var i, _i, _ref;
-
         for (i = _i = 0, _ref = this.height; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
           this.data[i] = this.data[i].concat(data[i]);
         }
@@ -113,10 +104,8 @@
 
       SushiLane.prototype.draw = function() {
         var css, data, i, items, j, list, val, _i, _len;
-
         list = (function() {
           var _i, _j, _len, _ref, _ref1, _results;
-
           _ref = this.data;
           _results = [];
           for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
@@ -161,7 +150,6 @@
     }, 750);
     return $('button', '#unit').on('click', function() {
       var num;
-
       num = ($(this).attr('data-num')) | 0;
       return new SushiText(num).load().then(function(data) {
         return lane.put(data);

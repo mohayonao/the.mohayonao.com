@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var App, THUMB_SIZE, app, createObjectURL, resizeContainer, shuffle, _ref;
-
     THUMB_SIZE = 80;
     createObjectURL = (_ref = window.URL || window.webkitURL) != null ? _ref.createObjectURL : void 0;
     $(window).on('dragover', function() {
@@ -10,7 +9,6 @@
     });
     $(window).on('drop', function(e) {
       var _this = this;
-
       if (app && createObjectURL) {
         app.preview(e.originalEvent.dataTransfer.files[0], function() {
           return app.getImage();
@@ -20,7 +18,6 @@
     });
     resizeContainer = (function() {
       var $container;
-
       $container = $('#unit');
       return function() {
         $container.height(($container.width() * 0.75) | 0);
@@ -37,7 +34,6 @@
     });
     shuffle = function(array) {
       var i, j, _ref1;
-
       i = array.length;
       while (i) {
         j = Math.floor(Math.random() * i--);
@@ -65,7 +61,6 @@
       App.prototype.preview = function(file, callback) {
         var type, video,
           _this = this;
-
         video = document.createElement('video');
         type = file.type.substr(0, 5);
         this.video = null;
@@ -90,7 +85,6 @@
       App.prototype.getImage = function() {
         var image,
           _this = this;
-
         image = new Image;
         image.onload = function() {
           return $(_this.target).empty().append(image);
@@ -100,7 +94,6 @@
 
       App.prototype.initCanvas = function() {
         var ch, cw, h, i, vh, vw, w, _ref1, _ref2, _ref3, _ref4, _ref5;
-
         $(this.target).empty().append(this.canvas);
         _ref1 = [this.video.videoWidth, this.video.videoHeight], vw = _ref1[0], vh = _ref1[1];
         _ref2 = [THUMB_SIZE, THUMB_SIZE], cw = _ref2[0], ch = _ref2[1];
@@ -119,7 +112,6 @@
         _ref5 = [vw, vh], this.sw = _ref5[0], this.sh = _ref5[1];
         this.list = (function() {
           var _i, _ref6, _results;
-
           _results = [];
           for (i = _i = 0, _ref6 = this.lenX * this.lenY; 0 <= _ref6 ? _i < _ref6 : _i > _ref6; i = 0 <= _ref6 ? ++_i : --_i) {
             _results.push(this.video.duration * (i / (this.lenX * this.lenY)));
@@ -133,7 +125,6 @@
 
       App.prototype.seek = function(callback) {
         var time;
-
         time = this.list.shift();
         if (!this.video || time === void 0) {
           return typeof callback === "function" ? callback() : void 0;
@@ -143,7 +134,6 @@
 
       App.prototype.draw = function(callback) {
         var x, y;
-
         x = this.count % this.lenX;
         y = (this.count / this.lenX) | 0;
         this.context.drawImage(this.video, 0, 0, this.sw, this.sh, this.dw * x, this.dh * y, this.dw, this.dh);

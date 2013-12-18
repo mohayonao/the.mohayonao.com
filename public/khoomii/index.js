@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var f1, f2, f3, formants, freq, isPlaying, synth, timer;
-
     formants = {
       a: [700, 1200, 2900],
       i: [300, 2700, 2700],
@@ -45,7 +44,6 @@
       interval: 250
     }, function() {
       var f;
-
       f = formants["aiueo"[(Math.random() * 5) | 0]];
       f1.freq.linTo(f[0], 150);
       f2.freq.linTo(f[1], 150);

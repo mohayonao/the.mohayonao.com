@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var blink, cache, changeFavicon, current, editor, getCssRule, hashchange;
-
     sc.use('global');
     editor = ace.edit('editor');
     editor.setTheme('ace/theme/monokai');
@@ -14,7 +13,6 @@
     cache = {};
     getCssRule = function(selector) {
       var rule, rules, sheet, sheets, _i, _j, _len, _len1, _ref;
-
       if (cache[selector]) {
         return cache[selector];
       }
@@ -34,7 +32,6 @@
     };
     blink = function(selector) {
       var rule, savedBackground;
-
       rule = getCssRule(selector);
       if (!rule) {
         return;
@@ -53,7 +50,6 @@
       bindKey: 'Ctrl-Enter',
       exec: function(editor) {
         var code, err, sess;
-
         sess = editor.session;
         code = sess.getTextRange(editor.getSelectionRange());
         if (code === '') {
@@ -101,12 +97,10 @@
     current = null;
     hashchange = function() {
       var hash;
-
       hash = location.hash.substr(1);
       if (hash !== '') {
         return $.get("./docs/" + hash + ".coffee").then(function(res) {
           var obj;
-
           editor.setValue(res);
           obj = localStorage.getItem("" + hash + ".cursor");
           if (obj) {

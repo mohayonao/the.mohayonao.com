@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var App, BitmapView, FileStepLoader, SoundTrack, app;
-
     $(window).on('dragover', function() {
       return false;
     });
@@ -35,7 +34,6 @@
 
       FileStepLoader.prototype.set = function(file, cb) {
         var _this = this;
-
         this._file = file;
         this._file.slice = file.slice || file.webkitSlice || file.mozSlice;
         this._mutex = 0;
@@ -50,7 +48,6 @@
       FileStepLoader.prototype.fileread = function(cb) {
         var begin, blob, end, reader, size,
           _this = this;
-
         if (this._mutex !== 0) {
           return;
         }
@@ -63,7 +60,6 @@
         reader = new FileReader;
         reader.onload = function(e) {
           var buffer, i, result, _i, _ref;
-
           result = e.target.result;
           buffer = new Uint8Array(size);
           for (i = _i = 0, _ref = result.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
@@ -79,7 +75,6 @@
 
       FileStepLoader.prototype.fetch = function() {
         var begin, buffer, end;
-
         begin = this._bufferReadIndex;
         end = begin + this._fetchBytes;
         this._bufferReadIndex = end;
@@ -99,7 +94,6 @@
     BitmapView = (function() {
       function BitmapView(canvas, opts) {
         var i, _i, _ref;
-
         this._canvas = canvas;
         this.width = canvas.width = opts.width;
         this.height = canvas.height = opts.height;
@@ -112,7 +106,6 @@
 
       BitmapView.prototype.set = function(bytes) {
         var data, i, j, widthStep, x, _i, _j, _ref, _ref1;
-
         data = this._imagedata.data;
         widthStep = this.width * 4;
         for (i = _i = 0, _ref = data.length - widthStep; _i < _ref; i = _i += 1) {
@@ -166,7 +159,6 @@
 
       SoundTrack.prototype.process = function(L, R) {
         var f, i, t, _i, _ref, _ref1;
-
         _ref = [this._func, this._t], f = _ref[0], t = _ref[1];
         for (i = _i = 0, _ref1 = L.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
           L[i] = R[i] = ((f(t) & 0xff) * 0.0078125 - 0.5) * 0.5;
@@ -197,7 +189,6 @@
 
       App.prototype.play = function(file) {
         var _this = this;
-
         this._stepLoader.set(file, function() {
           _this._amp = 1;
           _this._sampleCount = 0;
@@ -218,7 +209,6 @@
 
       App.prototype.process = function(L, R) {
         var bytes;
-
         if (this._sampleCount <= 0) {
           bytes = this._stepLoader.fetch();
           this._sound.set(bytes);

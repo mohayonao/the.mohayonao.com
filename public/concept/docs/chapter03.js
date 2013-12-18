@@ -43,7 +43,6 @@
 
   list = (function() {
     var _i, _results;
-
     _results = [];
     for (i = _i = 0; _i < 16; i = ++_i) {
       t = a.duration / 16;

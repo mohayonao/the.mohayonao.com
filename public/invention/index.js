@@ -5,7 +5,6 @@
   $(function() {
     'use strict';
     var BPM, DancingPortrait, FPS, INVENTION_13, MMLTrack, MarkovMMLTrack, SoundSystem, ToneGenerator, famitable, i, main, sinetable;
-
     BPM = 90;
     FPS = 60;
     INVENTION_13 = 'o3l16\nrea<c>beb<dc8e8>g+8<e8 >aea<c>beb<dc8>a8r4\n<rece>a<c>egf8a8<d8f8 fd>b<d>gbdfe8g8<c8e8\nec>a<c>f8<d8d>bgbe8<c8 c>afad8b8<c8r8r4\n\n>rg<ced>g<dfe8g8>b8<g8 c>g<ced>g<dfe8c8g8e8\n<c>aeace>a<c d8f+8a8<c8 >bgdg>b<d>gb<c8e8g8b8\naf+d+f+>b<d+>f+ag8<g8gece >a+8<f+8f+d>b<d>g8<e8ec>a<c\n>f+<gf+ed+f+>b<d+e8r8r4\nrgb-gegc+egec+e>arr8 <rfafdf>b<dfd>b<d>grr8\n<regece>a<cd+c>a<c>f+rr8 <rdfd>b<d>g+b<d>bg+berr8\n\nrea<c>beb<dc8>a8g+8e8 a<cec>a<c>f+a<c>af+ad+<c>ba\ng+b<d>bg+bdfg+fdf>b<fed ceaece>a<cd+c>a<c>f+<c>ba\ng+8<b8g+8e8rea<c>beb<d c>a<ced>b<dfecegfedc\n>b<cdefdg+dbdcafd>b<d >g+b<c>aeabg+aece>a4<\n;\no2l16\na8<a4g+8aea<c>beb<d c8>a8g+8e8aea<c>beb<d\nc8>a8<c8>a8<d>afadf>a<c >b8<d8g8b8bgegce>gb\na8<c8df>b<d>g8b8<ce>a<c >f8d8g<gfgcg<ced>g<df\n\ne8c8>b8g8 <c>g<ced>g<df e8c8r4rgegce>gb\na8<c8e8g8f+adf+>a<d>f+a g8b8<d8f+8egce>g<c>eg\nf+8a8b8<d+8rece>a<ceg f+d>b<d>gb<df+ec>a<c>f+a<c8\nc>b<c>ab8>b8<e<e>bge>bgb\ne8<e8g8b-8c+8r8r<gfe d8>d8f8a-8>b8r8r<<fed\nc8>c8e8f+8>a8r8r<<ed+c+ >b8>b8<d8f8>g+8r8r<<dc>b\n\n<c8>a8g+8e8aea<c>beb<d ceaece>a<c>f+a<c>af+ad+f+\ne8g+8b8g+8e8>b8g+8e8 a8<c8e8c8>a8<c8>d+8r8\nr>bg+edbgdc8e8>g+8<e8 >a8<f+8>b8<g+8c8a8d8b-8\ng+8f8d8>b8g+8a8d8e8 f8d+8e8<e8>a2';
@@ -14,7 +13,6 @@
     };
     sinetable = new Float32Array((function() {
       var _i, _results;
-
       _results = [];
       for (i = _i = 0; _i < 32; i = ++_i) {
         _results.push(Math.sin(Math.PI * 2 * (i / 32)));
@@ -36,7 +34,6 @@
 
         Cell.prototype.draw = function(ctx, dx, dy) {
           var rate, x, y;
-
           rate = this.z * 0.2;
           x = (this.x + dx * rate + 0.5) | 0;
           y = (this.y + dy * rate + 0.5) | 0;
@@ -52,7 +49,6 @@
 
       function DancingPortrait(opts) {
         var c, cells, d, dx, dy, m, x, y, _i, _j, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
-
         this.ctx = opts.canvas.getContext('2d');
         this.imgData = getImgData(opts.img);
         this.cellsize = (_ref = opts.cellsize) != null ? _ref : 3;
@@ -79,7 +75,6 @@
 
       DancingPortrait.prototype.animate = function() {
         var c, ctx, dx, dy, elapsed, now, _i, _len, _ref;
-
         ctx = this.ctx;
         now = Date.now();
         elapsed = now - this.anime_prev;
@@ -100,7 +95,6 @@
 
       getImgData = function(img) {
         var canvas, ctx;
-
         canvas = document.createElement('canvas');
         canvas.width = img.width;
         canvas.height = img.height;
@@ -111,10 +105,8 @@
 
       getMosaic = function(imgData, w, h) {
         var average, cx, cy, x, y;
-
         average = function(x, y) {
           var B, G, R, _i, _j, _ref, _ref1, _ref2, _x, _y;
-
           _ref = [0, 0, 0], R = _ref[0], G = _ref[1], B = _ref[2];
           for (_y = _i = y, _ref1 = y + h; y <= _ref1 ? _i < _ref1 : _i > _ref1; _y = y <= _ref1 ? ++_i : --_i) {
             for (_x = _j = x, _ref2 = x + w; x <= _ref2 ? _j < _ref2 : _j > _ref2; _x = x <= _ref2 ? ++_j : --_j) {
@@ -137,12 +129,10 @@
           height: cy,
           data: (function() {
             var _i, _results;
-
             _results = [];
             for (y = _i = 0; 0 <= cy ? _i < cy : _i > cy; y = 0 <= cy ? ++_i : --_i) {
               _results.push((function() {
                 var _j, _results1;
-
                 _results1 = [];
                 for (x = _j = 0; 0 <= cx ? _j < cx : _j > cx; x = 0 <= cx ? ++_j : --_j) {
                   _results1.push(average(x * w, y * h));
@@ -161,7 +151,6 @@
     ToneGenerator = (function() {
       function ToneGenerator(opts) {
         var freq, _ref, _ref1, _ref2, _ref3;
-
         freq = 440 * Math.pow(2, (opts.noteIndex - 69) * 1 / 12);
         this.wavelet = (_ref = opts.wavelet) != null ? _ref : sinetable;
         this.volume = (_ref1 = opts.volume) != null ? _ref1 : 0.75;
@@ -173,7 +162,6 @@
 
       ToneGenerator.prototype.next = function(size) {
         var stream, _i;
-
         this.volume -= this.volumeIncr * size;
         if (this.volume <= 0) {
           this.volume = 0;
@@ -194,7 +182,6 @@
 
       function MMLTrack(opts) {
         var _ref, _ref1;
-
         this.originData = opts.mml;
         this.samplerate = pico.samplerate;
         this.vol = (_ref = opts.vol) != null ? _ref : 0.5;
@@ -210,7 +197,6 @@
 
       MMLTrack.prototype.nextTones = function() {
         var res;
-
         res = this.data[this.index++];
         if (res != null) {
           return [res];
@@ -221,7 +207,6 @@
 
       MMLTrack.prototype.next = function(size) {
         var cell, d, g, gen, gens, j, lis, noteCounter, noteCounterMax, opts, samples, streamcell, vol, _i, _j, _k, _len, _len1, _ref, _ref1;
-
         _ref = [this.noteCounter, this.noteCounterMax], noteCounter = _ref[0], noteCounterMax = _ref[1];
         _ref1 = [this.gens, this.vol], gens = _ref1[0], vol = _ref1[1];
         cell = new Float32Array(size);
@@ -265,7 +250,6 @@
 
       compile = function(data) {
         var L, O, S, TONES, V, cmd, length, noteIndex, r, sign, t, val, x, _ref, _ref1, _ref2, _results;
-
         _ref = [3, 8, 12], O = _ref[0], L = _ref[1], V = _ref[2];
         TONES = {
           c: 0,
@@ -344,7 +328,6 @@
 
       function MarkovMMLTrack(player, options) {
         var _ref;
-
         if (options == null) {
           options = {};
         }
@@ -362,7 +345,6 @@
 
       MarkovMMLTrack.prototype.nextTones = function() {
         var histNoteIndex, key, lv, noteIndex, noteIndexCands, noteLengthCands, subNoteIndex, _i, _ref, _ref1, _ref2, _ref3;
-
         _ref = [null, null], noteIndexCands = _ref[0], noteLengthCands = _ref[1];
         _ref1 = [this.lv, this.histNoteIndex], lv = _ref1[0], histNoteIndex = _ref1[1];
         for (i = _i = 0; 0 <= lv ? _i < lv : _i > lv; i = 0 <= lv ? ++_i : --_i) {
@@ -411,7 +393,6 @@
       MarkovMMLTrack.prototype.makeMarkovData = function(lv) {
         var data, make, markov, _i,
           _this = this;
-
         if (lv == null) {
           lv = 2;
         }
@@ -422,7 +403,6 @@
         });
         data = (function() {
           var d, lis, noteIndex, prev, _i, _j, _len, _ref, _ref1, _ref2;
-
           _ref = [[], null], lis = _ref[0], prev = _ref[1];
           _ref1 = _this.data;
           for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
@@ -445,8 +425,7 @@
           return lis;
         })();
         make = function(dst, lv) {
-          var d, key, lis, _i, _len, _ref, _results;
-
+          var d, key, lis, _i, _len, _results;
           lis = [];
           _results = [];
           for (_i = 0, _len = data.length; _i < _len; _i++) {
@@ -455,7 +434,7 @@
               key = lis.map(function(x) {
                 return x.noteIndex;
               }).join(",");
-              ((_ref = dst[key]) != null ? _ref : dst[key] = []).push(d.noteIndex);
+              (dst[key] != null ? dst[key] : dst[key] = []).push(d.noteIndex);
             }
             lis.push(d);
             if (lis.length > lv) {
@@ -474,14 +453,11 @@
       };
 
       MarkovMMLTrack.prototype.makeChord = function(others) {
-        var a, b, chord, pair, zip, _i, _len, _ref, _ref1;
-
+        var a, b, chord, pair, zip, _i, _len, _ref;
         zip = function() {
           var argumentLength, arr, length, lengthArray, results, semiResult, _i, _j, _len;
-
           lengthArray = (function() {
             var _i, _len, _results;
-
             _results = [];
             for (_i = 0, _len = arguments.length; _i < _len; _i++) {
               arr = arguments[_i];
@@ -514,7 +490,7 @@
           if (a !== -1 && b !== -1) {
             b = a - ((a - b) % 12);
           }
-          ((_ref1 = chord[a]) != null ? _ref1 : chord[a] = []).push(b);
+          (chord[a] != null ? chord[a] : chord[a] = []).push(b);
         }
         return this.chord = chord;
       };
@@ -529,7 +505,6 @@
 
       SoundSystem.prototype.setMML = function(mml) {
         var t0, t1, t2, t3, v;
-
         v = mml.split(';');
         t0 = new MMLTrack({
           mml: v[0],
@@ -596,7 +571,6 @@
 
       SoundSystem.prototype.process = function(L, R) {
         var cell, mml, mmlTracks, _i, _j, _k, _len, _ref, _ref1;
-
         mmlTracks = this.mmlTracks;
         for (i = _i = 0, _ref = L.length; _i < _ref; i = _i += 1) {
           L[i] = R[i] = 0;
@@ -626,7 +600,6 @@
     })();
     main = function(img) {
       var $canvas, animate, canvas, height, isAnimate, portrait, sys, width;
-
       $canvas = $(canvas = document.getElementById("canvas"));
       width = canvas.width = $canvas.width();
       height = canvas.height = $canvas.height();
@@ -646,7 +619,6 @@
       sys.setMML(INVENTION_13);
       $canvas.on('click', function(e) {
         var mode;
-
         mode = $('#mode').attr('value');
         console.log(mode);
         sys.setMode(mode);
@@ -663,7 +635,6 @@
       });
       $canvas.on('mousemove', function(e) {
         var offset, x, x_rate, y, y_rate;
-
         offset = $canvas.offset();
         x = e.pageX - offset.left;
         y = e.pageY - offset.top;

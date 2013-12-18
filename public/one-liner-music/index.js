@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var $func, BUFFER_MASK, BUFFER_SIZE, OneLinerProcessor, SAMPLERATE, commit, elem_map, history, init_history, processor, q;
-
     SAMPLERATE = 8000;
     BUFFER_SIZE = 1 << 16;
     BUFFER_MASK = BUFFER_SIZE - 1;
@@ -18,7 +17,6 @@
 
       onmessage = function(e) {
         var i, stream, _i, _ref, _results;
-
         if (e.data instanceof Array) {
           stream = e.data;
           _results = [];
@@ -41,7 +39,6 @@
 
       OneLinerProcessor.prototype.play = function() {
         var _this = this;
-
         if (this.timerId !== 0) {
           clearInterval(this.timerId = 0);
         }
@@ -78,7 +75,6 @@
 
       OneLinerProcessor.prototype.ready = function() {
         var _this = this;
-
         this.accept = false;
         this.worker.postMessage(this.func);
         if (this.acceptTimerId) {
@@ -93,7 +89,6 @@
 
       OneLinerProcessor.prototype.process = function(L, R) {
         var i, _i, _ref, _results;
-
         _results = [];
         for (i = _i = 0, _ref = L.length; _i < _ref; i = _i += 1) {
           _results.push(L[i] = R[i] = this.next());
@@ -128,7 +123,6 @@
     history = JSON.parse(localStorage.getItem('history')) || init_history;
     (function() {
       var h, list, _i, _len, _results;
-
       list = history.slice(0);
       list.reverse();
       _results = [];
@@ -141,7 +135,6 @@
     })();
     commit = function() {
       var func;
-
       func = $func.css({
         color: 'black'
       }).val();
@@ -159,7 +152,6 @@
     };
     processor.onaccept = function() {
       var func, h, i, isExists, _i, _len;
-
       func = processor.func;
       isExists = false;
       for (i = _i = 0, _len = history.length; _i < _len; i = ++_i) {
@@ -182,7 +174,6 @@
     };
     $('#tweet').on('click', function() {
       var func, text, url;
-
       url = "http://" + location.host + "/one-liner-music/";
       text = "いい曲できた";
       func = encodeURIComponent(processor.func);

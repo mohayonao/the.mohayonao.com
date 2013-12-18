@@ -127,7 +127,6 @@
 
   (function() {
     var car, mod;
-
     mod = T("sin", {
       freq: 440 * 7,
       fb: 0.2
@@ -146,7 +145,6 @@
 
   (function() {
     var car, mod;
-
     mod = T("sin", {
       freq: 220,
       mul: 4

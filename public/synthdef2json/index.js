@@ -2,7 +2,6 @@
   $(function() {
     'use strict';
     var SynthDefParser, editor, main, pp, spec, tab, val;
-
     $(window).on('dragover', function() {
       return false;
     });
@@ -45,11 +44,9 @@
 
       SynthDefParser.prototype.text = function() {
         var i, len;
-
         len = this.file[this.index++];
         return String.fromCharCode.apply(null, (function() {
           var _i, _results;
-
           _results = [];
           for (i = _i = 0; _i < len; i = _i += 1) {
             _results.push(this.file[this.index++]);
@@ -60,12 +57,10 @@
 
       SynthDefParser.prototype.toJSON = function(file) {
         var header, i, version;
-
         this.file = file;
         this.index = 0;
         header = ((function() {
           var _i, _results;
-
           _results = [];
           for (i = _i = 0; _i <= 3; i = ++_i) {
             _results.push(String.fromCharCode(this.byte()));
@@ -87,7 +82,6 @@
 
       readDefListJSON = function() {
         var i, _i, _ref, _results;
-
         _results = [];
         for (i = _i = 0, _ref = this.int16(); _i < _ref; i = _i += 1) {
           _results.push(readDefJSON.call(this));
@@ -97,12 +91,10 @@
 
       readDefJSON = function() {
         var i, obj, p, u;
-
         obj = {
           name: this.text(),
           consts: (function() {
             var _i, _ref, _results;
-
             _results = [];
             for (i = _i = 0, _ref = this.int32(); _i < _ref; i = _i += 1) {
               _results.push(this.float32());
@@ -120,10 +112,8 @@
 
       readParamsJSON = function(num) {
         var i, indices, names, values, _i, _ref;
-
         values = (function() {
           var _i, _results;
-
           _results = [];
           for (i = _i = 0; _i < num; i = _i += 1) {
             _results.push(this.float32());
@@ -145,7 +135,6 @@
 
       readSpecListJSON = function(num) {
         var i, _i, _results;
-
         _results = [];
         for (i = _i = 0; _i < num; i = _i += 1) {
           _results.push(readSpecJSON.call(this));
@@ -155,7 +144,6 @@
 
       readSpecJSON = function() {
         var i, input_len, inputs, name, output_len, outputs, rate, specialIndex, _i, _j;
-
         name = this.text();
         rate = this.int8();
         input_len = this.int32();
@@ -174,13 +162,11 @@
 
       readVariants = function(num) {
         var i, j, list, _i, _ref;
-
         list = {};
         for (i = _i = 0, _ref = this.int16(); _i < _ref; i = _i += 1) {
           list[this.text()] = [
             (function() {
               var _j, _results;
-
               _results = [];
               for (j = _j = 0; _j < num; j = _j += 1) {
                 _results.push(this.float32());
@@ -197,10 +183,8 @@
     })();
     tab = function(n) {
       var i;
-
       return ((function() {
         var _i, _results;
-
         _results = [];
         for (i = _i = 0; 0 <= n ? _i < n : _i > n; i = 0 <= n ? ++_i : --_i) {
           _results.push(" ");
@@ -217,7 +201,6 @@
     };
     spec = function(spec) {
       var items;
-
       items = [];
       items.push(val(spec[0]), spec[1], spec[2]);
       items.push("[ " + (spec[3].join(', ')) + " ]");
@@ -226,7 +209,6 @@
     };
     pp = function(json) {
       var comma, def, i, j, keys, str, _i, _j, _k, _ref, _ref1, _ref2;
-
       str = [];
       str.push("{");
       str.push(tab(2) + ("'version': " + json.version + ","));
@@ -263,11 +245,9 @@
     };
     return main = function(file) {
       var reader;
-
       reader = new FileReader;
       reader.onload = function(e) {
         var json;
-
         json = new SynthDefParser().toJSON(new Uint8Array(e.target.result));
         if (json) {
           editor.setValue(pp(json));

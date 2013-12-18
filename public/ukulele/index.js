@@ -2,11 +2,9 @@
   $(function() {
     'use strict';
     var $result, Application, app, editor, q, value;
-
     Application = (function() {
       function Application() {
         var _this = this;
-
         this.data = null;
         this.imageData = null;
         this.sequencer = new ukulele.Sequencer();
@@ -21,7 +19,6 @@
       Application.prototype.update = function(data) {
         var dfd,
           _this = this;
-
         dfd = $.Deferred();
         data = data.trim();
         if (this.prev) {
@@ -94,7 +91,6 @@
     });
     $('#tweet').on('click', function() {
       var data, url;
-
       if (app.data) {
         data = encodeURIComponent(app.data);
         url = "http://" + location.host + "/ukulele/#" + data;
@@ -105,11 +101,9 @@
     });
     (function() {
       var $demo;
-
       $demo = $('#demo');
       demo.forEach(function(value, i) {
         var $option;
-
         return $option = $('<option>').text("demo 0" + (i + 1)).appendTo($demo);
       });
       $demo.on('change', function() {

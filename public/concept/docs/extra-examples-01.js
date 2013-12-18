@@ -4,7 +4,6 @@
   crotale = T("SynthDef", {
     def: function(_arg) {
       var attack, bus, decay, dur, factor, freq, index, params, ratioa, ratiob;
-
       params = _arg.params;
       freq = params[0], index = params[1], dur = params[2], bus = params[3], ratioa = params[4], ratiob = params[5], attack = params[6], decay = params[7];
       factor = gcd(ratioa, ratiob);
@@ -30,7 +29,6 @@
     "do": Infinity,
     init: function() {
       var range;
-
       range = 60;
       return {
         count: 0,
@@ -49,7 +47,6 @@
     }
   }, function(i, args) {
     var env;
-
     if (args.countDown <= 0) {
       env = args.envs.choose();
       args.next.put(args.count % 10, [3, 0.5, 0.25, 0.125, 0.125].choose());
