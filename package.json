@@ -8,9 +8,7 @@
     "type": "git",
     "url": "git://github.com/mohayonao/apps.git"
   },
-  "dependencies": {
-    "express": "~3.4.7"
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-coffee": "^0.10.1",
