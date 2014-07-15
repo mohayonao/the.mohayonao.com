@@ -4,8 +4,7 @@ block config
   - $.title = "scalable mario"
   - $.path  = "/scalable-mario/"
   - $.jslist  = ["/lib/timbre.js", "/lib/subcollider.js", "/lib/scales.js", "/lib/tunings.js", "index.js"]
-  - $.csslist = ["index.css"]
-  - $.ligature = true
+  - $.csslist = ["index.css","/lib/LigatureSymbols-2.11.css"]
 
 block content
   h1 #{$.title}
@@ -21,7 +20,7 @@ block content
       label(for="tuning") Tuning
       select(name="tuning",id="tuning")
       button(id="random-tuning",class="lsf-icon",title="random") random
-    p use: 
+    p use:
       ul
         li: a(href="http://mohayonao.github.com/timbre.js") timbre.js
         li: a(href="http://mohayonao.github.com/sub.js") subcollider.js

@@ -4,8 +4,7 @@ block config
   - $.title = "1bit music"
   - $.path  = "/1bit/"
   - $.jslist  = ["/lib/pico.js", "index.js"]
-  - $.csslist = ["index.css"]
-  - $.ligature = true
+  - $.csslist = ["index.css","/lib/LigatureSymbols-2.11.css"]
 
 block content
   h1 #{$.title}
@@ -27,15 +26,15 @@ block content
             option(value="11025") 11025
             option(value="8000") 8000
       div.pull-right
-        div(id="mml-list") MML: 
-          a(href="javascript:void(0)") 01 
-          a(href="javascript:void(0)") 02 
-          a(href="javascript:void(0)") 03 
+        div(id="mml-list") MML:
+          a(href="javascript:void(0)") 01
+          a(href="javascript:void(0)") 02
+          a(href="javascript:void(0)") 03
     div
       textarea(id="mml")
   div.ads
     include ../lib/ads.html
-  
+
   div.hidden
     textarea(id="data-0").
       t135 l8 @w50 o5
@@ -48,7 +47,7 @@ block content
       <c2&c>ab-<c d2&d>def b-2a2 f2.
       :/
       ;
-      
+
       t135 l8 @w30 o5
       fr16.f32fccc >a<cfgfcfg ab-<d>b-agf cr16.c32cfr16.f32f f>a<fc1 r2
       /:
@@ -58,7 +57,7 @@ block content
       <c+2&c+c+c+c+ d2>a4a4 <d2&d>bbb b-2b-4b-4
       <f+2&f+f+ga b-2&b->b-<cd d2e2 >a2.<
       :/
-      
+
     textarea(id="data-1").
       t102 @w45 $
       o6l16 eere rcer gr8. > gr8.
@@ -76,7 +75,7 @@ block content
       :/
       o6l16 ccrc rcdr ecr>a gr8.< ccrc rcde r2 ccrc rcdr ecr>a gr8.
       ;
-                             
+
       t102 @w60 $
       o5l16 f+f+rf+ rf+f+r gr8. >gr8.
       /:2
@@ -88,12 +87,12 @@ block content
       o5l16 a-a-ra- ra-b-r <c>grf er8.  a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.
       o5l16 f+f+rf+ rf+f+r gr8. >gr8.
       /:2
-        o6l16 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.< 
+        o6l16 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.<
                  c>gre r8er  f<drd> fr8. g<drd l12dc>b l16er8.r4
       :/
       o5l16 a-a-ra- ra-b-r <c>grf er8.  a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.
       ;
-      
+
       t102 @w50 $
       o4l16 ddrd rddr <br8.>gr8.
       /:2
@@ -122,9 +121,9 @@ block content
       /
       a2dfg a&a4g4fg4 <d&d4>a4gf4 e&e4f4.g4. a2dfg a&a4g4fg4 <d&d2e4d4 d2c+2
       > /:2 /:4dfa:/ e-gb-g /:4dfa:/cceg :/ > :/
-      
+
       arrar4aa;
-      
+
       t200l8 @w40 o5
       r4. /:2
       e1 g1 /:2d+16e16d+16e16:/</:2d+16e16d+16e16:/ > efg+fefg+a /:4r4.e&e2 / r1:/ c+c+c+c+ddee
@@ -135,9 +134,9 @@ block content
       /
       >a1&a1 b-1 a1 < /:2v6ffv2fv6fv2fv6fff:/ b-b-v5b-v10b-v5b-v10b-b-b- aav5av10av5av10aec+
       > /:2 /:4fa<d>:/gb-<d+>b- /:4fa<d>:/gg<ce> :/ < :/
-      
+
       drrdr4dd;
-      
+
       t200l8 @w40 o4
       r4. /:2
       a1 < c+1 > /:2g+16a16g+16a16:/ <  /:2g+16a16g+16a16:/ >ab-<c+>b-ab-<c+d >/:4r4.a&a2 / r1:/ aaaabb<c+c+
@@ -148,9 +147,9 @@ block content
       /
       f1&f1 f1 e1 < /:2v6ddv2dv6dv2dv6ddd:/ ggv5gv10gv5gv10ggg eev5ev10ev5ev10ec+>a
       /:8r1:/ :/
-      
+
       >arrar4aa;
-      
+
       t200l8 o3
       r4. /:2
       aaaaaa<e>a aa<e>a<g>a<f>a aa<g>a<f>a<e>a <c+>ab-<c+>b-agb- /:4a4r2<a4 / ae>a4a4<c+e >:/ >a4<a4>b4<c+4
