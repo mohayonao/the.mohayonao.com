@@ -6,18 +6,17 @@ module.exports = (grunt)->
   toTaskArgs = (args)->
     switch
       when _.isUndefined args then ''
-      when _.isArguments args then _.map(args, toTaskArgs).join ''
+      when _.isArguments args then _.map(args, toTaskArgs).join ':'
       else args
 
   grunt.loadNpmTasksIfNeeded = (name)->
-    if not grunt.loadNpmTasksIfNeeded[name]
+    if not grunt.loadNpmTasksIfNeeded.hasOwnProperty name
       grunt.loadNpmTasksIfNeeded[name] = true
       grunt.loadNpmTasks name
 
   grunt.filterFiles = (list, filter)->
     if filter
-      _.map filter.split('+'), (filter)->
-        _.filter list, (file)-> file.indexOf(filter) isnt -1
+      _.filter list, (file)-> file.indexOf(filter) isnt -1
     else list
 
   grunt.initConfig
