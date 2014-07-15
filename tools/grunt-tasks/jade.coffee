@@ -38,6 +38,8 @@ module.exports = (grunt)->
         expand: yes
         src   : src
         ext   : '.html'
-        options: data: data
+        options:
+          pretty: yes
+          data  : data
 
     grunt.task.run 'jade'
