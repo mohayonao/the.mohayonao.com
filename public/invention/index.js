@@ -391,8 +391,7 @@
       };
 
       MarkovMMLTrack.prototype.makeMarkovData = function(lv) {
-        var data, make, markov, _i,
-          _this = this;
+        var data, make, markov, _i;
         if (lv == null) {
           lv = 2;
         }
@@ -401,50 +400,54 @@
         }).reduce(function(a, b) {
           return Math.max(a, b);
         });
-        data = (function() {
-          var d, lis, noteIndex, prev, _i, _j, _len, _ref, _ref1, _ref2;
-          _ref = [[], null], lis = _ref[0], prev = _ref[1];
-          _ref1 = _this.data;
-          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-            d = _ref1[_i];
-            if (d.noteIndex === -1) {
-              if (prev == null) {
-                continue;
+        data = (function(_this) {
+          return function() {
+            var d, lis, noteIndex, prev, _i, _j, _len, _ref, _ref1, _ref2;
+            _ref = [[], null], lis = _ref[0], prev = _ref[1];
+            _ref1 = _this.data;
+            for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+              d = _ref1[_i];
+              if (d.noteIndex === -1) {
+                if (prev == null) {
+                  continue;
+                }
+                noteIndex = prev;
+              } else {
+                noteIndex = d.noteIndex;
               }
-              noteIndex = prev;
-            } else {
-              noteIndex = d.noteIndex;
+              for (i = _j = 0, _ref2 = _this.minLength / d.length; 0 <= _ref2 ? _j < _ref2 : _j > _ref2; i = 0 <= _ref2 ? ++_j : --_j) {
+                lis.push({
+                  noteIndex: noteIndex,
+                  length: _this.minLength
+                });
+              }
             }
-            for (i = _j = 0, _ref2 = _this.minLength / d.length; 0 <= _ref2 ? _j < _ref2 : _j > _ref2; i = 0 <= _ref2 ? ++_j : --_j) {
-              lis.push({
-                noteIndex: noteIndex,
-                length: _this.minLength
-              });
+            return lis;
+          };
+        })(this)();
+        make = (function(_this) {
+          return function(dst, lv) {
+            var d, key, lis, _i, _len, _results;
+            lis = [];
+            _results = [];
+            for (_i = 0, _len = data.length; _i < _len; _i++) {
+              d = data[_i];
+              if (lis.length === lv) {
+                key = lis.map(function(x) {
+                  return x.noteIndex;
+                }).join(",");
+                (dst[key] != null ? dst[key] : dst[key] = []).push(d.noteIndex);
+              }
+              lis.push(d);
+              if (lis.length > lv) {
+                _results.push(lis.shift());
+              } else {
+                _results.push(void 0);
+              }
             }
-          }
-          return lis;
-        })();
-        make = function(dst, lv) {
-          var d, key, lis, _i, _len, _results;
-          lis = [];
-          _results = [];
-          for (_i = 0, _len = data.length; _i < _len; _i++) {
-            d = data[_i];
-            if (lis.length === lv) {
-              key = lis.map(function(x) {
-                return x.noteIndex;
-              }).join(",");
-              (dst[key] != null ? dst[key] : dst[key] = []).push(d.noteIndex);
-            }
-            lis.push(d);
-            if (lis.length > lv) {
-              _results.push(lis.shift());
-            } else {
-              _results.push(void 0);
-            }
-          }
-          return _results;
-        };
+            return _results;
+          };
+        })(this);
         markov = {};
         for (i = _i = 1; 1 <= lv ? _i <= lv : _i >= lv; i = 1 <= lv ? ++_i : --_i) {
           make(markov, i);

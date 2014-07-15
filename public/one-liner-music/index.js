@@ -38,15 +38,16 @@
       };
 
       OneLinerProcessor.prototype.play = function() {
-        var _this = this;
         if (this.timerId !== 0) {
           clearInterval(this.timerId = 0);
         }
-        return this.timerId = setInterval(function() {
-          if (_this.windex - 4096 < _this.rindex) {
-            return _this.worker.postMessage(0);
-          }
-        }, 100);
+        return this.timerId = setInterval((function(_this) {
+          return function() {
+            if (_this.windex - 4096 < _this.rindex) {
+              return _this.worker.postMessage(0);
+            }
+          };
+        })(this), 100);
       };
 
       OneLinerProcessor.prototype.pause = function() {
@@ -74,17 +75,18 @@
       };
 
       OneLinerProcessor.prototype.ready = function() {
-        var _this = this;
         this.accept = false;
         this.worker.postMessage(this.func);
         if (this.acceptTimerId) {
           clearTimeout(this.acceptTimerId);
         }
-        return this.acceptTimerId = setTimeout(function() {
-          if (!_this.accept) {
-            return typeof _this.onerror === "function" ? _this.onerror() : void 0;
-          }
-        }, 500);
+        return this.acceptTimerId = setTimeout((function(_this) {
+          return function() {
+            if (!_this.accept) {
+              return typeof _this.onerror === "function" ? _this.onerror() : void 0;
+            }
+          };
+        })(this), 500);
       };
 
       OneLinerProcessor.prototype.process = function(L, R) {

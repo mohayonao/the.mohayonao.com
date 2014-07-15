@@ -1,9 +1,9 @@
+
 /*
 
  timbre.js - the concept book
  Chapter 03 - Audio Buffer
-*/
-
+ */
 
 (function() {
   var a, bd, i, list, p, pattern, sd, seq, t, tape, tape1, tapes;

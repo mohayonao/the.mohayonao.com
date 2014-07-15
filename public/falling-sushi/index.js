@@ -20,16 +20,19 @@
       }
 
       ImageLoader.prototype.load = function() {
-        var img,
-          _this = this;
+        var img;
         img = new Image;
         img.src = this.src;
-        img.onload = function() {
-          return _this.dfd.resolve(img);
-        };
-        this.load = function() {
-          return _this.dfd.promise();
-        };
+        img.onload = (function(_this) {
+          return function() {
+            return _this.dfd.resolve(img);
+          };
+        })(this);
+        this.load = (function(_this) {
+          return function() {
+            return _this.dfd.promise();
+          };
+        })(this);
         return this.load();
       };
 
@@ -38,16 +41,17 @@
     })();
     Sushi = (function() {
       function Sushi(num, x, y, z) {
-        var src,
-          _this = this;
+        var src;
         this.num = num;
         this.x = x;
         this.y = y;
         this.z = z;
         src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
-        new ImageLoader(src).load().then(function(img) {
-          return _this.img = img;
-        });
+        new ImageLoader(src).load().then((function(_this) {
+          return function(img) {
+            return _this.img = img;
+          };
+        })(this));
       }
 
       Sushi.prototype.draw = function(context) {

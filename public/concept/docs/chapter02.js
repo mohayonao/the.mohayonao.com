@@ -1,9 +1,9 @@
+
 /*
 
  timbre.js - the concept book
  Chapter 02 - Definition of Synth
-*/
-
+ */
 
 (function() {
   var bd, beat, hh, p, pattern, sd, synth;

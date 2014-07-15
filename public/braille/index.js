@@ -137,53 +137,60 @@
       };
 
       setEventListener = function(elem) {
-        var $elem,
-          _this = this;
+        var $elem;
         $elem = $(elem);
-        $elem.on('mousedown', function(e) {
-          var offset, x, y, _ref, _ref1;
-          offset = $elem.offset();
-          x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
-          y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
-          switch (_this.mode) {
-            case 'mask':
-              _this.paint(x, y);
-          }
-          _this.mousedown = {
-            x: x,
-            y: y
-          };
-          e.preventDefault();
-          e.stopPropagation();
-          return e.returnValue = false;
-        });
-        $elem.on('mousemove', function(e) {
-          var dx, dy, offset, x, y, _ref, _ref1;
-          offset = $elem.offset();
-          x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
-          y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
-          if (_this.mousedown) {
+        $elem.on('mousedown', (function(_this) {
+          return function(e) {
+            var offset, x, y, _ref, _ref1;
+            offset = $elem.offset();
+            x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
+            y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
             switch (_this.mode) {
-              case 'trim':
-                dx = _this.mousedown.x - x;
-                dy = _this.mousedown.y - y;
-                _this.move(dx, dy);
-                break;
               case 'mask':
                 _this.paint(x, y);
             }
-            return _this.mousedown = {
+            _this.mousedown = {
               x: x,
               y: y
             };
-          }
-        });
-        $elem.on('mouseup', function() {
-          return _this.mousedown = null;
-        });
-        return $elem.on('mouseout', function() {
-          return _this.mousedown = null;
-        });
+            e.preventDefault();
+            e.stopPropagation();
+            return e.returnValue = false;
+          };
+        })(this));
+        $elem.on('mousemove', (function(_this) {
+          return function(e) {
+            var dx, dy, offset, x, y, _ref, _ref1;
+            offset = $elem.offset();
+            x = (_ref = e.offsetX) != null ? _ref : e.pageX - offset.left;
+            y = (_ref1 = e.offsetY) != null ? _ref1 : e.pageY - offset.top;
+            if (_this.mousedown) {
+              switch (_this.mode) {
+                case 'trim':
+                  dx = _this.mousedown.x - x;
+                  dy = _this.mousedown.y - y;
+                  _this.move(dx, dy);
+                  break;
+                case 'mask':
+                  _this.paint(x, y);
+              }
+              return _this.mousedown = {
+                x: x,
+                y: y
+              };
+            }
+          };
+        })(this));
+        $elem.on('mouseup', (function(_this) {
+          return function() {
+            return _this.mousedown = null;
+          };
+        })(this));
+        return $elem.on('mouseout', (function(_this) {
+          return function() {
+            return _this.mousedown = null;
+          };
+        })(this));
       };
 
       return Editor;
@@ -211,21 +218,22 @@
       }
 
       Application.prototype.setImage = function(file) {
-        var reader,
-          _this = this;
+        var reader;
         if (this.editor.getMode() !== 'drag') {
           return false;
         }
         if (file && typeof file.type === 'string' && file.type.substr(0, 5) === 'image') {
           reader = new FileReader;
-          reader.onload = function() {
-            var image;
-            image = new Image;
-            image.onload = function() {
-              return _this.editor.setImage(image);
+          reader.onload = (function(_this) {
+            return function() {
+              var image;
+              image = new Image;
+              image.onload = function() {
+                return _this.editor.setImage(image);
+              };
+              return image.src = reader.result;
             };
-            return image.src = reader.result;
-          };
+          })(this);
           reader.readAsDataURL(file);
         }
         if (file instanceof Image) {
@@ -348,11 +356,12 @@
       return typeof this.cmd === "function" ? this.cmd() : void 0;
     });
     $btn.on('mousedown', function(e) {
-      var _this = this;
       if (this.keep) {
-        app.setTimer(function() {
-          return typeof _this.cmd === "function" ? _this.cmd() : void 0;
-        });
+        app.setTimer((function(_this) {
+          return function() {
+            return typeof _this.cmd === "function" ? _this.cmd() : void 0;
+          };
+        })(this));
       }
       return e.returnValue = false;
     });

@@ -1,9 +1,9 @@
+
 /*
 
  timbre.js - the concept book
  Chapter 01 - Oscillator and Envelope
-*/
-
+ */
 
 (function() {
   var a;

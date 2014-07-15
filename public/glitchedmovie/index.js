@@ -71,8 +71,7 @@
       };
 
       App.prototype.next = function(index) {
-        var file, type, video,
-          _this = this;
+        var file, type, video;
         if (typeof index === 'number' && index >= 0) {
           this.filesIndex = index;
         }
@@ -86,24 +85,30 @@
         type = file.type.substr(0, 5);
         video = document.createElement('video');
         if (type === 'video' && video.canPlayType(file.type)) {
-          $(video).on('loadeddata', function() {
-            video.currentTime = 0;
-            video.muted = true;
-            _this.processors.forEach(function(x) {
-              return x.init(video);
-            });
-            return _this.play();
-          });
-          $(video).on('seeked', function() {
-            if (video.paused) {
-              return _this.processors.forEach(function(x) {
-                return x.process();
+          $(video).on('loadeddata', (function(_this) {
+            return function() {
+              video.currentTime = 0;
+              video.muted = true;
+              _this.processors.forEach(function(x) {
+                return x.init(video);
               });
-            }
-          });
-          $(video).on('ended', function() {
-            return _this.next();
-          });
+              return _this.play();
+            };
+          })(this));
+          $(video).on('seeked', (function(_this) {
+            return function() {
+              if (video.paused) {
+                return _this.processors.forEach(function(x) {
+                  return x.process();
+                });
+              }
+            };
+          })(this));
+          $(video).on('ended', (function(_this) {
+            return function() {
+              return _this.next();
+            };
+          })(this));
           video.type = file.type;
           video.src = createObjectURL(file);
           return this.video = video;
@@ -170,18 +175,23 @@
       }
 
       VideoProcessor.prototype.init = function(video) {
-        var $video, ch, cw, h, vh, vw, w, _ref1, _ref2, _ref3, _ref4, _ref5,
-          _this = this;
+        var $video, ch, cw, h, vh, vw, w, _ref1, _ref2, _ref3, _ref4, _ref5;
         $video = $(video);
-        $video.on('play', function() {
-          return _this.play();
-        });
-        $video.on('pause', function() {
-          return _this.pause();
-        });
-        $video.on('timeupdate', function() {
-          return $('#currentTime').val((video.currentTime / video.duration) * 10000);
-        });
+        $video.on('play', (function(_this) {
+          return function() {
+            return _this.play();
+          };
+        })(this));
+        $video.on('pause', (function(_this) {
+          return function() {
+            return _this.pause();
+          };
+        })(this));
+        $video.on('timeupdate', (function(_this) {
+          return function() {
+            return $('#currentTime').val((video.currentTime / video.duration) * 10000);
+          };
+        })(this));
         _ref1 = [video.videoWidth, video.videoHeight], vw = _ref1[0], vh = _ref1[1];
         _ref2 = [this.canvas.width, this.canvas.height], cw = _ref2[0], ch = _ref2[1];
         if (vw > vh) {
@@ -197,11 +207,12 @@
       };
 
       VideoProcessor.prototype.play = function() {
-        var _this = this;
         this.isPaused = false;
-        return requestAnimationFrame(function() {
-          return _this.process();
-        });
+        return requestAnimationFrame((function(_this) {
+          return function() {
+            return _this.process();
+          };
+        })(this));
       };
 
       VideoProcessor.prototype.pause = function() {
@@ -209,8 +220,7 @@
       };
 
       VideoProcessor.prototype.process = function() {
-        var binary, img, now, src,
-          _this = this;
+        var binary, img, now, src;
         now = Date.now();
         if (now - this.prevProcess > 60) {
           this.prevProcess = now;
@@ -225,15 +235,19 @@
             ].join('');
           }
           img = new Image;
-          img.onload = function() {
-            return _this.context.drawImage(img, 0, 0);
-          };
+          img.onload = (function(_this) {
+            return function() {
+              return _this.context.drawImage(img, 0, 0);
+            };
+          })(this);
           img.src = src;
         }
         if (!this.isPaused) {
-          return requestAnimationFrame(function() {
-            return _this.process();
-          });
+          return requestAnimationFrame((function(_this) {
+            return function() {
+              return _this.process();
+            };
+          })(this));
         }
       };
 
@@ -254,18 +268,21 @@
       }
 
       AudioProcessor.prototype.init = function(video) {
-        var $video, gain, media, node, _ref1,
-          _this = this;
+        var $video, gain, media, node, _ref1;
         if (this.isPlaying) {
           this.pause();
         }
         $video = $(video);
-        $video.on('play', function() {
-          return _this.play();
-        });
-        $video.on('pause', function() {
-          return _this.pause();
-        });
+        $video.on('play', (function(_this) {
+          return function() {
+            return _this.play();
+          };
+        })(this));
+        $video.on('pause', (function(_this) {
+          return function() {
+            return _this.pause();
+          };
+        })(this));
         media = this.target.createMediaElementSource(video);
         gain = this.target.createGainNode();
         gain.gain.value = 0.4;

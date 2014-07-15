@@ -4,7 +4,7 @@
 
   $(function() {
     'use strict';
-    var BinaryOpUGenMap, Box, Inlet, Outlet, SynthDefParser, SynthDefRenderer, UnaryOpUGenMap, main, render, xhr, _ref;
+    var BinaryOpUGenMap, Box, Inlet, Outlet, SynthDefParser, SynthDefRenderer, UnaryOpUGenMap, main, render, xhr;
     $(window).on('dragover', function() {
       return false;
     });
@@ -216,8 +216,7 @@
       __extends(Outlet, _super);
 
       function Outlet() {
-        _ref = Outlet.__super__.constructor.apply(this, arguments);
-        return _ref;
+        return Outlet.__super__.constructor.apply(this, arguments);
       }
 
       Outlet.prototype.getX = function() {
@@ -231,15 +230,15 @@
       };
 
       Outlet.prototype.render = function(context) {
-        var inlet, x1, x2, y1, y2, _i, _len, _ref1, _ref2, _ref3, _results;
+        var inlet, x1, x2, y1, y2, _i, _len, _ref, _ref1, _ref2, _results;
         Outlet.__super__.render.call(this, context);
         if (this.to) {
-          _ref1 = [this.getX(), this.getY()], x1 = _ref1[0], y1 = _ref1[1];
-          _ref2 = this.to;
+          _ref = [this.getX(), this.getY()], x1 = _ref[0], y1 = _ref[1];
+          _ref1 = this.to;
           _results = [];
-          for (_i = 0, _len = _ref2.length; _i < _len; _i++) {
-            inlet = _ref2[_i];
-            _ref3 = [inlet.getX(), inlet.getY()], x2 = _ref3[0], y2 = _ref3[1];
+          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+            inlet = _ref1[_i];
+            _ref2 = [inlet.getX(), inlet.getY()], x2 = _ref2[0], y2 = _ref2[1];
             _results.push(this.bezierline(context, x1, y1, x2, y2));
           }
           return _results;
@@ -264,42 +263,43 @@
     })(Inlet);
     Box = (function() {
       function Box(context, index, spec, x, y) {
-        var i, _ref1,
-          _this = this;
+        var i, _ref;
         this.context = context;
         this.index = index;
         this.spec = spec;
         this.x = x != null ? x : 0;
         this.y = y != null ? y : 0;
-        _ref1 = this.spec, this.name = _ref1.name, this.rate = _ref1.rate, this.spId = _ref1.spId, this.inputs = _ref1.inputs, this.outputs = _ref1.outputs;
+        _ref = this.spec, this.name = _ref.name, this.rate = _ref.rate, this.spId = _ref.spId, this.inputs = _ref.inputs, this.outputs = _ref.outputs;
         this.name = this.name.replace(/^\d+_(.+)$/, '$1');
         if (this.name === 'UnaryOpUGen') {
           this.name = UnaryOpUGenMap[this.spId];
         } else if (this.name === 'BinaryOpUGen') {
           this.name = BinaryOpUGenMap[this.spId];
         }
-        this.width = (function() {
-          var m, w;
-          m = _this.context.measureText(_this.name);
-          w = Math.ceil(m.width * 0.1) * 10 + 10;
-          if (_this.rate !== 0) {
-            w = Math.max(w, Math.max(_this.inputs.length, _this.outputs.length) * 15);
-          }
-          return Math.max(30, w);
-        })();
+        this.width = (function(_this) {
+          return function() {
+            var m, w;
+            m = _this.context.measureText(_this.name);
+            w = Math.ceil(m.width * 0.1) * 10 + 10;
+            if (_this.rate !== 0) {
+              w = Math.max(w, Math.max(_this.inputs.length, _this.outputs.length) * 15);
+            }
+            return Math.max(30, w);
+          };
+        })(this)();
         this.height = 20;
         this.inlets = (function() {
-          var _i, _ref2, _results;
+          var _i, _ref1, _results;
           _results = [];
-          for (i = _i = 0, _ref2 = this.inputs.length >> 1; _i < _ref2; i = _i += 1) {
+          for (i = _i = 0, _ref1 = this.inputs.length >> 1; _i < _ref1; i = _i += 1) {
             _results.push(new Inlet(this, i));
           }
           return _results;
         }).call(this);
         this.outlets = (function() {
-          var _i, _ref2, _results;
+          var _i, _ref1, _results;
           _results = [];
-          for (i = _i = 0, _ref2 = this.outputs.length; _i < _ref2; i = _i += 1) {
+          for (i = _i = 0, _ref1 = this.outputs.length; _i < _ref1; i = _i += 1) {
             _results.push(new Outlet(this, i));
           }
           return _results;
@@ -357,7 +357,7 @@
       function SynthDefRenderer() {}
 
       SynthDefRenderer.prototype.toDataURL = function(json) {
-        var box, boxList, name, x, y, _i, _j, _k, _len, _len1, _len2, _ref1, _ref2, _ref3;
+        var box, boxList, name, x, y, _i, _j, _k, _len, _len1, _len2, _ref, _ref1, _ref2;
         this.build(json);
         this.canvas.width = this.width;
         this.canvas.height = this.height;
@@ -367,12 +367,12 @@
         this.context.fillStyle = '#fff';
         this.context.fillRect(0, 0, this.width, this.height);
         this.context.fillStyle = '#333';
-        _ref1 = this.builded;
-        for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-          x = _ref1[_i];
-          _ref2 = this.builded;
-          for (_j = 0, _len1 = _ref2.length; _j < _len1; _j++) {
-            _ref3 = _ref2[_j], name = _ref3.name, boxList = _ref3.boxList, x = _ref3.x, y = _ref3.y;
+        _ref = this.builded;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          x = _ref[_i];
+          _ref1 = this.builded;
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            _ref2 = _ref1[_j], name = _ref2.name, boxList = _ref2.boxList, x = _ref2.x, y = _ref2.y;
             this.context.fillText(name, x, y + 15);
             for (_k = 0, _len2 = boxList.length; _k < _len2; _k++) {
               box = boxList[_k];
@@ -390,11 +390,11 @@
         this.context.font = '12pt normal';
         maxX = maxY = 0;
         this.builded = (function() {
-          var _i, _len, _ref1, _results;
-          _ref1 = json.defs;
+          var _i, _len, _ref, _results;
+          _ref = json.defs;
           _results = [];
-          for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-            def = _ref1[_i];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            def = _ref[_i];
             x = maxX + 20;
             y = 10;
             specList = remakeSpecList(def);
@@ -418,14 +418,14 @@
       };
 
       remakeSpecList = function(def) {
-        var argName, i, inputs, name, numId, numSpec, origin, outputs, rate, spId, spec, specList, _, _i, _j, _k, _len, _ref1, _ref2;
+        var argName, i, inputs, name, numId, numSpec, origin, outputs, rate, spId, spec, specList, _, _i, _j, _k, _len, _ref, _ref1;
         specList = [];
         argName = (function() {
           var a, i, index, nameIndices;
           nameIndices = (function() {
-            var _i, _ref1, _results;
+            var _i, _ref, _results;
             _results = [];
-            for (i = _i = 0, _ref1 = def.params.names.length; _i < _ref1; i = _i += 1) {
+            for (i = _i = 0, _ref = def.params.names.length; _i < _ref; i = _i += 1) {
               _results.push({
                 name: def.params.names[i],
                 index: def.params.indices[i]
@@ -438,9 +438,9 @@
           });
           index = -1;
           a = (function() {
-            var _i, _ref1, _results;
+            var _i, _ref, _results;
             _results = [];
-            for (i = _i = 0, _ref1 = def.params.values.length; _i < _ref1; i = _i += 1) {
+            for (i = _i = 0, _ref = def.params.values.length; _i < _ref; i = _i += 1) {
               if (nameIndices[index + 1].index === i) {
                 index += 1;
               }
@@ -458,11 +458,11 @@
             spId: 0,
             inputs: [],
             outputs: (function() {
-              var _i, _len, _ref1, _results;
-              _ref1 = def.params.values;
+              var _i, _len, _ref, _results;
+              _ref = def.params.values;
               _results = [];
-              for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
-                _ = _ref1[_i];
+              for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+                _ = _ref[_i];
                 _results.push(1);
               }
               return _results;
@@ -473,11 +473,11 @@
           return +x.toFixed(5);
         });
         origin = (function() {
-          var _i, _len, _ref1, _ref2, _results;
-          _ref1 = def.specs;
+          var _i, _len, _ref, _ref1, _results;
+          _ref = def.specs;
           _results = [];
-          for (i = _i = 0, _len = _ref1.length; _i < _len; i = ++_i) {
-            _ref2 = _ref1[i], name = _ref2[0], rate = _ref2[1], spId = _ref2[2], inputs = _ref2[3], outputs = _ref2[4];
+          for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+            _ref1 = _ref[i], name = _ref1[0], rate = _ref1[1], spId = _ref1[2], inputs = _ref1[3], outputs = _ref1[4];
             _results.push({
               name: "" + i + "_" + name,
               rate: rate,
@@ -492,11 +492,11 @@
         for (_i = 0, _len = origin.length; _i < _len; _i++) {
           spec = origin[_i];
           if (/Control$/.test(spec.name)) {
-            for (i = _j = 0, _ref1 = spec.outputs.length; _j < _ref1; i = _j += 1) {
+            for (i = _j = 0, _ref = spec.outputs.length; _j < _ref; i = _j += 1) {
               spec.inputs.push(argName, spec.spId + i);
             }
           }
-          for (i = _k = 0, _ref2 = spec.inputs.length; _k < _ref2; i = _k += 2) {
+          for (i = _k = 0, _ref1 = spec.inputs.length; _k < _ref1; i = _k += 2) {
             if (spec.inputs[i] === argName) {
               continue;
             }
@@ -521,7 +521,7 @@
       };
 
       makeBoxList = function(context, specList) {
-        var box, boxList, fromIndex, fromName, fromOutlet, i, index, map, spec, _i, _j, _len, _ref1;
+        var box, boxList, fromIndex, fromName, fromOutlet, i, index, map, spec, _i, _j, _len, _ref;
         map = {};
         boxList = (function() {
           var _i, _len, _results;
@@ -534,7 +534,7 @@
         })();
         for (_i = 0, _len = boxList.length; _i < _len; _i++) {
           box = boxList[_i];
-          for (i = _j = 0, _ref1 = box.inputs.length >> 1; _j < _ref1; i = _j += 1) {
+          for (i = _j = 0, _ref = box.inputs.length >> 1; _j < _ref; i = _j += 1) {
             fromName = box.inputs[i * 2];
             fromIndex = box.inputs[i * 2 + 1];
             fromOutlet = map[fromName].outlets[fromIndex];
@@ -607,7 +607,7 @@
       };
 
       layoutX = function(boxList) {
-        var box, i, key, list, map, prev, _i, _j, _k, _len, _len1, _len2, _ref1, _results;
+        var box, i, key, list, map, prev, _i, _j, _k, _len, _len1, _len2, _ref, _results;
         map = {};
         for (_i = 0, _len = boxList.length; _i < _len; _i++) {
           box = boxList[_i];
@@ -616,10 +616,10 @@
           }
           map[box.y].push(box);
         }
-        _ref1 = Object.keys(map).reverse();
+        _ref = Object.keys(map).reverse();
         _results = [];
-        for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
-          key = _ref1[_j];
+        for (_j = 0, _len1 = _ref.length; _j < _len1; _j++) {
+          key = _ref[_j];
           list = map[key];
           for (_k = 0, _len2 = list.length; _k < _len2; _k++) {
             box = list[_k];
@@ -633,9 +633,9 @@
             return a.maxOutX - b.maxOutX;
           });
           _results.push((function() {
-            var _l, _ref2, _results1;
+            var _l, _ref1, _results1;
             _results1 = [];
-            for (i = _l = 1, _ref2 = list.length; _l < _ref2; i = _l += 1) {
+            for (i = _l = 1, _ref1 = list.length; _l < _ref1; i = _l += 1) {
               prev = list[i - 1];
               list[i].x = prev.getX() + prev.width + 10;
               _results1.push(prev.next = list[i]);
@@ -675,13 +675,13 @@
               y2 = inlet.getY();
               if (x1 === x2) {
                 return findBox(x1, y1, x2, y2).forEach(function(box) {
-                  var prev, _ref1, _ref2, _results;
+                  var prev, _ref, _ref1, _results;
                   box.x = x2 + 15;
-                  _ref1 = [box, box.next], prev = _ref1[0], box = _ref1[1];
+                  _ref = [box, box.next], prev = _ref[0], box = _ref[1];
                   _results = [];
                   while (box) {
                     box.x = prev.getX() + prev.width + 10;
-                    _results.push((_ref2 = [box, box.next], prev = _ref2[0], box = _ref2[1], _ref2));
+                    _results.push((_ref1 = [box, box.next], prev = _ref1[0], box = _ref1[1], _ref1));
                   }
                   return _results;
                 });

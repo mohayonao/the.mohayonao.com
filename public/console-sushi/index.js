@@ -17,16 +17,19 @@
       }
 
       ImageLoader.prototype.load = function() {
-        var img,
-          _this = this;
+        var img;
         img = new Image;
         img.src = this.src;
-        img.onload = function() {
-          return _this.dfd.resolve(img);
-        };
-        this.load = function() {
-          return _this.dfd.promise();
-        };
+        img.onload = (function(_this) {
+          return function() {
+            return _this.dfd.resolve(img);
+          };
+        })(this);
+        this.load = (function(_this) {
+          return function() {
+            return _this.dfd.promise();
+          };
+        })(this);
         return this.load();
       };
 
@@ -41,38 +44,39 @@
       }
 
       SushiText.prototype.load = function() {
-        var dfd, src,
-          _this = this;
+        var dfd, src;
         dfd = $.Deferred();
         src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
-        new ImageLoader(src).load().then(function(img) {
-          var canvas, colors, context, data, i;
-          canvas = document.createElement('canvas');
-          canvas.width = _this.width;
-          canvas.height = _this.height;
-          context = canvas.getContext('2d');
-          context.fillStyle = 'white';
-          context.fillRect(0, 0, canvas.width, canvas.height);
-          context.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
-          data = context.getImageData(0, 0, canvas.width, canvas.height).data;
-          colors = (function() {
-            var _i, _ref, _results;
-            _results = [];
-            for (i = _i = 0, _ref = data.length - 4; _i < _ref; i = _i += 4) {
-              _results.push((data[i] << 16) + (data[i + 1] << 8) + data[i + 2]);
-            }
-            return _results;
-          })();
-          data = (function() {
-            var _i, _ref, _results;
-            _results = [];
-            for (i = _i = 0, _ref = this.height; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-              _results.push(colors.splice(0, this.width));
-            }
-            return _results;
-          }).call(_this);
-          return dfd.resolve(data);
-        });
+        new ImageLoader(src).load().then((function(_this) {
+          return function(img) {
+            var canvas, colors, context, data, i;
+            canvas = document.createElement('canvas');
+            canvas.width = _this.width;
+            canvas.height = _this.height;
+            context = canvas.getContext('2d');
+            context.fillStyle = 'white';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
+            data = context.getImageData(0, 0, canvas.width, canvas.height).data;
+            colors = (function() {
+              var _i, _ref, _results;
+              _results = [];
+              for (i = _i = 0, _ref = data.length - 4; _i < _ref; i = _i += 4) {
+                _results.push((data[i] << 16) + (data[i + 1] << 8) + data[i + 2]);
+              }
+              return _results;
+            })();
+            data = (function() {
+              var _i, _ref, _results;
+              _results = [];
+              for (i = _i = 0, _ref = this.height; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+                _results.push(colors.splice(0, this.width));
+              }
+              return _results;
+            }).call(_this);
+            return dfd.resolve(data);
+          };
+        })(this));
         return dfd.promise();
       };
 

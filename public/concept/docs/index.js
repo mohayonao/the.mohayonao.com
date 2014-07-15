@@ -1,8 +1,8 @@
+
 /*
 
  timbre.js - the concept book
-*/
-
+ */
 
 (function() {
   T("sin.ar", {

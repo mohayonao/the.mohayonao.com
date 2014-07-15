@@ -8,11 +8,12 @@
       return false;
     });
     $(window).on('drop', function(e) {
-      var _this = this;
       if (app && createObjectURL) {
-        app.preview(e.originalEvent.dataTransfer.files[0], function() {
-          return app.getImage();
-        });
+        app.preview(e.originalEvent.dataTransfer.files[0], (function(_this) {
+          return function() {
+            return app.getImage();
+          };
+        })(this));
       }
       return false;
     });
@@ -59,22 +60,25 @@
       };
 
       App.prototype.preview = function(file, callback) {
-        var type, video,
-          _this = this;
+        var type, video;
         video = document.createElement('video');
         type = file.type.substr(0, 5);
         this.video = null;
         this.list = [];
         if (type === 'video' && video.canPlayType(file.type)) {
-          $(video).on('loadeddata', function() {
-            _this.initCanvas();
-            return _this.seek(callback);
-          });
-          $(video).on('seeked', function() {
-            return _this.draw(function() {
+          $(video).on('loadeddata', (function(_this) {
+            return function() {
+              _this.initCanvas();
               return _this.seek(callback);
-            });
-          });
+            };
+          })(this));
+          $(video).on('seeked', (function(_this) {
+            return function() {
+              return _this.draw(function() {
+                return _this.seek(callback);
+              });
+            };
+          })(this));
           video.type = file.type;
           video.src = createObjectURL(file);
           this.video = video;
@@ -83,12 +87,13 @@
       };
 
       App.prototype.getImage = function() {
-        var image,
-          _this = this;
+        var image;
         image = new Image;
-        image.onload = function() {
-          return $(_this.target).empty().append(image);
-        };
+        image.onload = (function(_this) {
+          return function() {
+            return $(_this.target).empty().append(image);
+          };
+        })(this);
         return image.src = this.canvas.toDataURL('image/jpeg');
       };
 

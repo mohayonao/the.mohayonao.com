@@ -33,21 +33,21 @@
       }
 
       FileStepLoader.prototype.set = function(file, cb) {
-        var _this = this;
         this._file = file;
         this._file.slice = file.slice || file.webkitSlice || file.mozSlice;
         this._mutex = 0;
         this._buffers.splice(0);
         this._reset = true;
-        return this.fileread(function() {
-          _this._bufferReadIndex = 0;
-          return typeof cb === "function" ? cb() : void 0;
-        });
+        return this.fileread((function(_this) {
+          return function() {
+            _this._bufferReadIndex = 0;
+            return typeof cb === "function" ? cb() : void 0;
+          };
+        })(this));
       };
 
       FileStepLoader.prototype.fileread = function(cb) {
-        var begin, blob, end, reader, size,
-          _this = this;
+        var begin, blob, end, reader, size;
         if (this._mutex !== 0) {
           return;
         }
@@ -58,17 +58,19 @@
         blob = this._file.slice(begin, end);
         this._fileReadIndex = end;
         reader = new FileReader;
-        reader.onload = function(e) {
-          var buffer, i, result, _i, _ref;
-          result = e.target.result;
-          buffer = new Uint8Array(size);
-          for (i = _i = 0, _ref = result.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-            buffer[i] = result.charCodeAt(i);
-          }
-          _this._buffers.push(buffer);
-          _this._mutex = 0;
-          return typeof cb === "function" ? cb() : void 0;
-        };
+        reader.onload = (function(_this) {
+          return function(e) {
+            var buffer, i, result, _i, _ref;
+            result = e.target.result;
+            buffer = new Uint8Array(size);
+            for (i = _i = 0, _ref = result.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+              buffer[i] = result.charCodeAt(i);
+            }
+            _this._buffers.push(buffer);
+            _this._mutex = 0;
+            return typeof cb === "function" ? cb() : void 0;
+          };
+        })(this);
         reader.readAsBinaryString(blob);
         return this._reset = false;
       };
@@ -188,12 +190,13 @@
       }
 
       App.prototype.play = function(file) {
-        var _this = this;
-        this._stepLoader.set(file, function() {
-          _this._amp = 1;
-          _this._sampleCount = 0;
-          return pico.play(_this);
-        });
+        this._stepLoader.set(file, (function(_this) {
+          return function() {
+            _this._amp = 1;
+            _this._sampleCount = 0;
+            return pico.play(_this);
+          };
+        })(this));
         return $('#tips').text('press [SPACE] to pause');
       };
 

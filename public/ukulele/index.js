@@ -4,21 +4,21 @@
     var $result, Application, app, editor, q, value;
     Application = (function() {
       function Application() {
-        var _this = this;
         this.data = null;
         this.imageData = null;
         this.sequencer = new ukulele.Sequencer();
-        this.sequencer.emit = function() {
-          return _this.pause();
-        };
+        this.sequencer.emit = (function(_this) {
+          return function() {
+            return _this.pause();
+          };
+        })(this);
         this.isPlaying = false;
         this.timerId = 0;
         this.prev = null;
       }
 
       Application.prototype.update = function(data) {
-        var dfd,
-          _this = this;
+        var dfd;
         dfd = $.Deferred();
         data = data.trim();
         if (this.prev) {
@@ -28,11 +28,13 @@
           if (this.timerId) {
             clearTimeout(this.timerId);
           }
-          this.timerId = setTimeout(function() {
-            _this.data = data;
-            _this.imageData = ukulele.getImageData(data);
-            return dfd.resolve(_this.imageData);
-          }, 200);
+          this.timerId = setTimeout((function(_this) {
+            return function() {
+              _this.data = data;
+              _this.imageData = ukulele.getImageData(data);
+              return dfd.resolve(_this.imageData);
+            };
+          })(this), 200);
         } else {
           dfd.reject();
         }

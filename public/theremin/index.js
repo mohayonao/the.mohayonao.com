@@ -33,13 +33,14 @@
         }
 
         DetectProcessor.prototype.process = function(src) {
-          var imageData,
-            _this = this;
+          var imageData;
           this.context.drawImage(src, 0, 0, src.width, src.height, 0, 0, this.width, this.height);
           imageData = this.context.getImageData(0, 0, this.width, this.height);
-          return this.send('process', imageData).then(function(data) {
-            return _this.detect = data;
-          });
+          return this.send('process', imageData).then((function(_this) {
+            return function(data) {
+              return _this.detect = data;
+            };
+          })(this));
         };
 
         _onmessage = function(e) {
