@@ -3,8 +3,10 @@ extend ../lib/layout
 block config
   - $.title = "the concept book"
   - $.path  = "/concept/"
-  - $.jslist  = ["/lib/ace.js","/lib/underscore.js","/lib/coffee-script.js","/lib/subcollider.js","/lib/timbre.js", "index.js"]
-  - $.csslist = ["index.css"]
+  - $.add("//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js")
+  - $.add("//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js")
+  - $.add("libs/subcollider.js")
+  - $.add("libs/timbre.js")
 
 block content
   #editor

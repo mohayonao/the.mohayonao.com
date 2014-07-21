@@ -6,12 +6,17 @@ $ ->
                                ?  window.oRequestAnimationFrame      \
                                ?  window.msRequestAnimationFrame     \
                                ?  (f)->setTimeout(f, 1000/60)
-  
+
+  window.AudioContext ?= window.AudioContext \
+                      ?  window.webkitAudioContext
+
+  window.createObjectURL = (window.URL or window.webkitURL)?.createObjectURL
+
   ua = navigator.userAgent
-  
+
   apps = window.apps = {}
-  
-  apps.name = (/^(\/[-\w]+\/)/.exec location.pathname)?[1]  
+
+  apps.name = (/^(\/[-\w]+\/)/.exec location.pathname)?[1]
   apps.isPhone  = /(iPhone|iPod|Android)/i.test navigator.userAgent
   apps.isTablet = /(iPad|Android)/i.test navigator.userAgent
   apps.isDesktop = not (apps.isPhone or apps.isTablet)
@@ -30,7 +35,7 @@ $ ->
 
   apps.param = $.param
   apps.deparam = (str)->
-    obj = {}    
+    obj = {}
     for x in str.split '&'
       items = x.split '='
       key = decodeURIComponent items[0]
@@ -63,7 +68,7 @@ $ ->
         media = $li.attr 'data-media'
         if media is 'tablet' or media is 'phone'
           return $li.remove()
-      
+
     when apps.isTablet
       $('li', $sidebar).each (i, elem)->
         $li = $(elem)
@@ -75,6 +80,6 @@ $ ->
       $('li', $sidebar).each (i, elem)->
         $li = $(elem)
         media = $li.attr 'data-media'
-        
+
         if media is 'desktop' or media is 'tablet'
           return $li.remove()

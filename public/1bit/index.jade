@@ -3,8 +3,8 @@ extend ../lib/layout
 block config
   - $.title = "1bit music"
   - $.path  = "/1bit/"
-  - $.jslist  = ["/lib/pico.js", "index.js"]
-  - $.csslist = ["index.css","/lib/LigatureSymbols-2.11.css"]
+  - $.add("libs/pico.js")
+  - $.add("/lib/LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}

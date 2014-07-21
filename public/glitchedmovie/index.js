@@ -1,10 +1,9 @@
 (function() {
   $(function() {
     'use strict';
-    var App, AudioProcessor, GlitchProcessor, PREVIEW_HEIGHT, PREVIEW_WIDTH, VideoProcessor, app, createObjectURL, resizeContainer, _ref;
+    var App, AudioProcessor, GlitchProcessor, PREVIEW_HEIGHT, PREVIEW_WIDTH, VideoProcessor, app, resizeContainer;
     PREVIEW_WIDTH = 480;
     PREVIEW_HEIGHT = 360;
-    createObjectURL = (_ref = window.URL || window.webkitURL) != null ? _ref.createObjectURL : void 0;
     app = null;
     $(window).on('dragover', function() {
       return false;
@@ -25,7 +24,7 @@
     })();
     $(window).on('resize', resizeContainer);
     resizeContainer();
-    if (!webkitAudioContext) {
+    if (!AudioContext) {
       return;
     }
     if (!createObjectURL) {
@@ -128,8 +127,8 @@
       };
 
       App.prototype.setCurrentTime = function(rate) {
-        var _ref1;
-        return (_ref1 = this.video) != null ? _ref1.currentTime = this.video.duration * rate : void 0;
+        var _ref;
+        return (_ref = this.video) != null ? _ref.currentTime = this.video.duration * rate : void 0;
       };
 
       App.prototype.setProcessing = function(val) {
@@ -147,15 +146,15 @@
       };
 
       App.prototype.play = function() {
-        var _ref1;
+        var _ref;
         this.isPlaying = true;
-        return (_ref1 = this.video) != null ? _ref1.play() : void 0;
+        return (_ref = this.video) != null ? _ref.play() : void 0;
       };
 
       App.prototype.pause = function() {
-        var _ref1;
+        var _ref;
         this.isPlaying = false;
-        return (_ref1 = this.video) != null ? _ref1.pause() : void 0;
+        return (_ref = this.video) != null ? _ref.pause() : void 0;
       };
 
       return App;
@@ -175,7 +174,7 @@
       }
 
       VideoProcessor.prototype.init = function(video) {
-        var $video, ch, cw, h, vh, vw, w, _ref1, _ref2, _ref3, _ref4, _ref5;
+        var $video, ch, cw, h, vh, vw, w, _ref, _ref1, _ref2, _ref3, _ref4;
         $video = $(video);
         $video.on('play', (function(_this) {
           return function() {
@@ -192,16 +191,16 @@
             return $('#currentTime').val((video.currentTime / video.duration) * 10000);
           };
         })(this));
-        _ref1 = [video.videoWidth, video.videoHeight], vw = _ref1[0], vh = _ref1[1];
-        _ref2 = [this.canvas.width, this.canvas.height], cw = _ref2[0], ch = _ref2[1];
+        _ref = [video.videoWidth, video.videoHeight], vw = _ref[0], vh = _ref[1];
+        _ref1 = [this.canvas.width, this.canvas.height], cw = _ref1[0], ch = _ref1[1];
         if (vw > vh) {
           h = cw * (vh / vw);
-          _ref3 = [0, (ch - h) * 0.5, cw, h], this.dx = _ref3[0], this.dy = _ref3[1], this.dw = _ref3[2], this.dh = _ref3[3];
+          _ref2 = [0, (ch - h) * 0.5, cw, h], this.dx = _ref2[0], this.dy = _ref2[1], this.dw = _ref2[2], this.dh = _ref2[3];
         } else {
           w = ch * (vw / vh);
-          _ref4 = [(cw - w) * 0.5, 0, w, ch], this.dx = _ref4[0], this.dy = _ref4[1], this.dw = _ref4[2], this.dh = _ref4[3];
+          _ref3 = [(cw - w) * 0.5, 0, w, ch], this.dx = _ref3[0], this.dy = _ref3[1], this.dw = _ref3[2], this.dh = _ref3[3];
         }
-        _ref5 = [0, 0, vw, vh], this.sx = _ref5[0], this.sy = _ref5[1], this.sw = _ref5[2], this.sh = _ref5[3];
+        _ref4 = [0, 0, vw, vh], this.sx = _ref4[0], this.sy = _ref4[1], this.sw = _ref4[2], this.sh = _ref4[3];
         this.canvas.context.clearRect(0, 0, cw, ch);
         return this.video = video;
       };
@@ -268,7 +267,7 @@
       }
 
       AudioProcessor.prototype.init = function(video) {
-        var $video, gain, media, node, _ref1;
+        var $video, gain, media, node, _ref;
         if (this.isPlaying) {
           this.pause();
         }
@@ -284,13 +283,13 @@
           };
         })(this));
         media = this.target.createMediaElementSource(video);
-        gain = this.target.createGainNode();
+        gain = this.target.createGain();
         gain.gain.value = 0.4;
-        node = this.target.createJavaScriptNode(1024, 2, 2);
+        node = this.target.createScriptProcessor(1024, 2, 2);
         node.onaudioprocess = this.process.bind(this);
         media.connect(gain);
         media.connect(node);
-        return _ref1 = [node, gain, video], this.node = _ref1[0], this.gain = _ref1[1], this.video = _ref1[2], _ref1;
+        return _ref = [node, gain, video], this.node = _ref[0], this.gain = _ref[1], this.video = _ref[2], _ref;
       };
 
       AudioProcessor.prototype.play = function() {
@@ -306,14 +305,14 @@
       };
 
       AudioProcessor.prototype.process = function(e) {
-        var L, R, i, stream, _i, _j, _ref1, _ref2, _results;
+        var L, R, i, stream, _i, _j, _ref, _ref1, _results;
         if (!e) {
           return;
         }
         stream = this.stream;
         L = e.inputBuffer.getChannelData(0);
         R = e.inputBuffer.getChannelData(1);
-        for (i = _i = 0, _ref1 = L.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
+        for (i = _i = 0, _ref = L.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
           stream[i] = (L[i] + R[i]) * 0.5;
         }
         if (this.processing && this.subProcessor) {
@@ -322,7 +321,7 @@
         L = e.outputBuffer.getChannelData(0);
         R = e.outputBuffer.getChannelData(1);
         _results = [];
-        for (i = _j = 0, _ref2 = L.length; 0 <= _ref2 ? _j < _ref2 : _j > _ref2; i = 0 <= _ref2 ? ++_j : --_j) {
+        for (i = _j = 0, _ref1 = L.length; 0 <= _ref1 ? _j < _ref1 : _j > _ref1; i = 0 <= _ref1 ? ++_j : --_j) {
           _results.push(L[i] = R[i] = stream[i]);
         }
         return _results;
@@ -371,7 +370,7 @@
       })();
 
       GlitchProcessor.prototype.audioProcess = function(stream) {
-        var glitchbuffer, i, _i, _ref1;
+        var glitchbuffer, i, _i, _ref;
         if (this.mode === 0 && Math.random() < this.level) {
           this.mode = 1;
         }
@@ -390,7 +389,7 @@
         }
         if (this.mode === 3) {
           glitchbuffer = this.glitchbuffer[this.glitchindex % this.glitchbufferLength];
-          for (i = _i = 0, _ref1 = stream.length; 0 <= _ref1 ? _i < _ref1 : _i > _ref1; i = 0 <= _ref1 ? ++_i : --_i) {
+          for (i = _i = 0, _ref = stream.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
             stream[i] = glitchbuffer[i];
           }
           this.glitchindex += 1;
@@ -412,7 +411,7 @@
     })();
     app = new App;
     app.addProcessor(new VideoProcessor(document.getElementById('preview')));
-    app.addProcessor(new AudioProcessor(new webkitAudioContext));
+    app.addProcessor(new AudioProcessor(new AudioContext));
     return app.addSubProcessor(new GlitchProcessor());
   });
 

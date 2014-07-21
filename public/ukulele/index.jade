@@ -3,14 +3,18 @@ extend ../lib/layout
 block config
   - $.title = "hyper ukulele notation"
   - $.path  = "/ukulele/"
-  - $.jslist  = ["/lib/codemirror.js","/lib/timbre.js","ukulele.js","demo.js","index.js"]
-  - $.csslist = ["/lib/codemirror.css","ukulele.css","index.css"]
+  - $.add("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.3.0/codemirror.min.js")
+  - $.add("libs/timbre.js")
+  - $.add("ukulele.js")
+  - $.add("demo.js")
+  - $.add("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.3.0/codemirror.min.css")
+  - $.add("ukulele.css")
 
 block content
   h1 #{$.title}
   #unit
     div(id="ctrl")
-      select(id="demo")    
+      select(id="demo")
       button(id="play",class="btn",title="play") Play
       button(id="tweet",class="btn",title="twitter") Tweet
       button(class="btn",title="help")

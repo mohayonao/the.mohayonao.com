@@ -1,4 +1,5 @@
-- var $ = {}
+- var $ = []
+- $.add = function(mod) { this.push(mod); }
 - $.lang  = "en"
 - $.title = "the.mohayonao.com"
 - $.path  = ""
@@ -7,44 +8,25 @@
 
 block config
 
-- var rootpath = $.path.length === 0 ? "" : /^(\/[-\w]+)/.exec($.path)[0];
-- var make_iconpath = function(app) { return /^https?:/.test(app.path) ? "/lib/img/icon/"+app.title.replace(/\s/g,"")+".png" : app.path+"appimage.png" };
-
 doctype html
-html(lang="#{$.lang}")
+html(lang="#{$.lang}",style="height:100%")
   head
     meta(charset="utf-8")
     title #{$.title}
     meta(name="viewport",content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no")
     meta(property="og:title",content="#{$.title}")
     meta(property="og:url",content="http://the.mohayonao.com#{$.path}")
-    meta(property="og:image",content="http://the.mohayonao.com#{rootpath}/appimage.png")
     link(rel="shortcut icon", href="/favicon.ico", id="favicon")
-    if $.csslist.length
-      each href in $.csslist
-        link(rel="stylesheet",href=href)
-    else
-      link(rel="stylesheet",href="/lib/layout.css")
-    script(src="/lib/jquery-2.0.3.min.js")
+    script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js")
+    each mod in $
+      if /\.css$/.test(mod)
+        link(rel="stylesheet",href=mod)
+      else
+        script(src=mod)
     script(src="/lib/layout.js")
-    each src in $.jslist
-      script(src=src)
+    script(src="index.js")
+    link(rel="stylesheet",href="index.css")
   body
     #content
       block content
-    #sidebar
-      div(id="appimage")
-       img(src="#{rootpath}/appimage.png")
-      h1
-        a(href="/") the.mohayonao.com
-      each items in index
-        if items.name
-          h2 #{items.name.toUpperCase()}
-        ul(id="app-list")
-          each app in items.list
-            - style = app.path === $.path ? 'list-style-image:url(/lib/list-style.gif)' : null
-            li(data-media=app.media,style=style)
-              a(href=app.path,title=app.title)
-                span #{app.title}
-      h2
-        a(href="https://github.com/mohayonao/apps/tree/master/public#{$.path}",target="github") VIEW SOURCE ON GITHUB

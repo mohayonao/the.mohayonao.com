@@ -4,8 +4,6 @@ $ ->
   PREVIEW_WIDTH  = 480
   PREVIEW_HEIGHT = 360
 
-  createObjectURL       = (window.URL or window.webkitURL)?.createObjectURL
-  
   app = null
 
   $(window).on 'dragover', ->
@@ -24,7 +22,7 @@ $ ->
   $(window).on 'resize', resizeContainer
   resizeContainer()
 
-  unless webkitAudioContext    then return
+  unless AudioContext          then return
   unless createObjectURL       then return
   unless requestAnimationFrame then return
 
@@ -181,10 +179,10 @@ $ ->
       $video.on 'pause', => @pause()
 
       media = @target.createMediaElementSource video
-      gain  = @target.createGainNode()
+      gain  = @target.createGain()
       gain.gain.value = 0.4
 
-      node = @target.createJavaScriptNode 1024, 2, 2
+      node = @target.createScriptProcessor 1024, 2, 2
       node.onaudioprocess = @process.bind @
 
       media.connect gain
@@ -268,5 +266,5 @@ $ ->
 
   app = new App
   app.addProcessor new VideoProcessor(document.getElementById 'preview')
-  app.addProcessor new AudioProcessor(new webkitAudioContext)
+  app.addProcessor new AudioProcessor(new AudioContext)
   app.addSubProcessor new GlitchProcessor()

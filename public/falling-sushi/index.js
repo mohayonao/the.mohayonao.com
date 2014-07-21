@@ -76,8 +76,8 @@
       return Math.random() * (max - min) + min;
     };
     canvas = document.getElementById('canvas');
-    canvas.width = $(canvas).width();
-    canvas.height = $(canvas).height();
+    canvas.width = $(window).width();
+    canvas.height = $(window).height();
     context = canvas.getContext('2d');
     objects = (function() {
       var _i, _results;

@@ -31,8 +31,6 @@ NORMAL = 400
 BOLD   = 700
 FAT    = 900
 
-SIDEBAR_WIDTH = 200px
-
 transition()
   -webkit-transition: arguments
   -moz-transition   : arguments
@@ -62,7 +60,7 @@ box-shadow()
 
 html
   height: 100%
-  
+
 body
   margin: 0
   height: 100%
@@ -123,13 +121,8 @@ a
     background-color: #dc2d1b
 
 #content
-  position: fixed
-  top   : 0
-  left  : 0
-  bottom: 0
-  height: 100%
-  margin-left: SIDEBAR_WIDTH
-  overflow-y : auto
+  margin: 0
+  padding: 0
 
   h1
     font-size  : 61px
@@ -144,7 +137,7 @@ a
 
   textarea
   input
-    border: 2px solid #DCE4EC
+    border: 1px solid #DCE4EC
     color     : FORECOLOR
     background: CLOUDS
     font-family: "Inconsolata", monospace
@@ -153,58 +146,7 @@ a
     text-indent: 1px
     -webkit-appearance: none
 
-#sidebar
-  position: fixed
-  top   : 0
-  left  : 0
-  bottom: 0
-  width : SIDEBAR_WIDTH
-  overflow-y: auto
-  overflow-x: hidden
-  padding   : 10px
-  background: SIDEBAR
-
-  *
-    padding: 0
-    margin : 0
-  a
-    color: FORECOLOR
-  h1
-    margin:  10px 0
-    font-size: 14px
-    font-weight: NORMAL
-  h2
-    margin-top: 10px
-    font-size: 12px
-    font-weight: NORMAL
-  img
-    width : 180px
-    height: @width  
-  ul
-    list-style : none
-    margin-left: 20px
-    li
-      padding: 5px
-
 @media screen and (max-width: 650px)
-  #sidebar
-    position: static
-    background: white
-    display: none
-    #appimage
-      text-align: center
-    h1
-      font-size: 32px
-      margin-left: 8px
-    h2
-      font-size: 22px
-      margin-left: 8px
-    li
-      font-size: 18px
-  #content
-    margin-left: 0
-    h1
-      font-size: 32px
   .ads
     margin: 10px 0 0
   .hidden-phone

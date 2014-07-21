@@ -3,15 +3,14 @@ extend ../lib/layout
 block config
   - $.title = "synthdef2json"
   - $.path  = "/synthdef2json/"
-  - $.jslist  = ["/lib/ace.js","index.js"]
-  - $.csslist = ["index.css"]
+  - $.add("//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js")
 
 block content
   h1 #{$.title}
   #unit
     ol
       li drag a *.scsyndef file
-      li see also: 
+      li see also:
         a(href="../synthdef2image/") synthdef2image
     #editor.
       {

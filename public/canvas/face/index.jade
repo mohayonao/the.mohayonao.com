@@ -3,8 +3,8 @@ extend ../../lib/layout
 block config
   - $.title = "face-detect"
   - $.path  = "/canvas/face/"
-  - $.jslist  = ["/lib/ccv.js", "/lib/face.js", "index.js"]
-  - $.csslist = ["index.css"]
+  - $.add("libs/ccv.js")
+  - $.add("libs/face.js")
 
 block content
   h1 #{$.title}

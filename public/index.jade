@@ -1,6 +1,10 @@
 extend ./lib/layout
 
 block config
-  - $.jslist = ["index.js"]
+  - $.title = "the.mohayonao.com"
+  - $.path  = "/"
 
 block content
+  h1 #{$.title}
+  div.ads
+    include ./lib/ads.html

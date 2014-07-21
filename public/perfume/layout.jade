@@ -1,8 +1,10 @@
 extend ../lib/layout
 
 block config
-  - $.jslist  = ["/lib/Three-r48.js", "../Three.flashlike.js", "../bvh.js", "../motionman.js", "index.js"]
-  - $.csslist = ["../index.css"]
+  - $.add("../Three.js")
+  - $.add("../Three.flashlike.js")
+  - $.add("../bvh.js")
+  - $.add("../motionman.js")
 
 block content
   audio(id="audio",controls)

@@ -3,9 +3,9 @@ extend ../lib/layout
 block config
   - $.title = "mimi-grep"
   - $.path  = "/mimi/"
-  - $.jslist  = ["/lib/pico.js", "/lib/biquad.js", "index.js"]
-  - $.csslist = ["index.css"]
   - $.media = "desktop"
+  - $.add("libs/pico.js")
+  - $.add("libs/biquad.js")
 
 block content
   canvas(id="preview")

@@ -1,15 +1,19 @@
 (function() {
   $(function() {
     'use strict';
-    var $sidebar, apps, ua, _ref, _ref1, _ref2, _ref3, _ref4;
+    var $sidebar, apps, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
     if (window.requestAnimationFrame == null) {
       window.requestAnimationFrame = (_ref = (_ref1 = (_ref2 = (_ref3 = window.webkitRequestAnimationFrame) != null ? _ref3 : window.mozRequestAnimationFrame) != null ? _ref2 : window.oRequestAnimationFrame) != null ? _ref1 : window.msRequestAnimationFrame) != null ? _ref : function(f) {
         return setTimeout(f, 1000 / 60);
       };
     }
+    if (window.AudioContext == null) {
+      window.AudioContext = (_ref4 = window.AudioContext) != null ? _ref4 : window.webkitAudioContext;
+    }
+    window.createObjectURL = (_ref5 = window.URL || window.webkitURL) != null ? _ref5.createObjectURL : void 0;
     ua = navigator.userAgent;
     apps = window.apps = {};
-    apps.name = (_ref4 = /^(\/[-\w]+\/)/.exec(location.pathname)) != null ? _ref4[1] : void 0;
+    apps.name = (_ref6 = /^(\/[-\w]+\/)/.exec(location.pathname)) != null ? _ref6[1] : void 0;
     apps.isPhone = /(iPhone|iPod|Android)/i.test(navigator.userAgent);
     apps.isTablet = /(iPad|Android)/i.test(navigator.userAgent);
     apps.isDesktop = !(apps.isPhone || apps.isTablet);
@@ -29,11 +33,11 @@
     };
     apps.param = $.param;
     apps.deparam = function(str) {
-      var items, key, obj, x, _i, _len, _ref5;
+      var items, key, obj, x, _i, _len, _ref7;
       obj = {};
-      _ref5 = str.split('&');
-      for (_i = 0, _len = _ref5.length; _i < _len; _i++) {
-        x = _ref5[_i];
+      _ref7 = str.split('&');
+      for (_i = 0, _len = _ref7.length; _i < _len; _i++) {
+        x = _ref7[_i];
         items = x.split('=');
         key = decodeURIComponent(items[0]);
         if (items.length === 1) {
@@ -45,9 +49,9 @@
       return obj;
     };
     apps.animate = function(opts) {
-      var func, ifps, prev, _animate, _ref5;
+      var func, ifps, prev, _animate, _ref7;
       func = arguments[arguments.length - 1];
-      ifps = 1000 / ((_ref5 = opts.fps) != null ? _ref5 : 60);
+      ifps = 1000 / ((_ref7 = opts.fps) != null ? _ref7 : 60);
       prev = 0;
       _animate = function(now) {
         var dt, result;

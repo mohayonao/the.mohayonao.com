@@ -3,8 +3,8 @@ extend ../lib/layout
 block config
   - $.title = "formant khoomii"
   - $.path  = "/khoomii/"
-  - $.jslist  = ["/lib/timbre.js", "index.js"]
-  - $.csslist = ["index.css","/lib/LigatureSymbols-2.11.css"]
+  - $.add("libs/timbre.js")
+  - $.add("/lib/LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}

@@ -3,8 +3,9 @@ extend ../lib/layout
 block config
   - $.title = "one-liner-music"
   - $.path  = "/one-liner-music/"
-  - $.jslist  = ["/lib/pico.js", "/lib/MutekiTimer.js", "index.js"]
-  - $.csslist = ["index.css","/lib/LigatureSymbols-2.11.css"]
+  - $.add("libs/pico.js")
+  - $.add("libs/MutekiTimer.js")
+  - $.add("/lib/LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}

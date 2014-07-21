@@ -3,8 +3,9 @@ extend ../lib/layout
 block config
   - $.title = "tarai-music"
   - $.path  = "/tarai/"
-  - $.jslist  = ["/lib/timbre.js", "/lib/subcollider.js", "index.js"]
-  - $.csslist = ["index.css","/lib/LigatureSymbols-2.11.css"]
+  - $.add("libs/timbre.js")
+  - $.add("libs/subcollider.js")
+  - $.add("/lib/LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}

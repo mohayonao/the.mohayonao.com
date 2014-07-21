@@ -3,8 +3,6 @@ extend ../lib/layout
 block config
   - $.title = "synthdef2image"
   - $.path  = "/synthdef2image/"
-  - $.jslist  = ["index.js"]
-  - $.csslist = ["index.css"]
 
 block content
   h1 #{$.title}
@@ -12,7 +10,7 @@ block content
     ol
       li drag a *.scsyndef file
       li right-click and use "Save As"
-      li see also: 
+      li see also:
         a(href="../synthdef2json/") synthdef2json
     img#result
   div.ads

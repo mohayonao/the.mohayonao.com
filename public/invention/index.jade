@@ -3,8 +3,9 @@ extend ../lib/layout
 block config
   - $.title = "endless invention"
   - $.path  = "/invention/"
-  - $.jslist  = ["/lib/pico.js", "/lib/reverb.js", "index.js", "/lib/svg-ui.js"]
-  - $.csslist = ["index.css"]
+  - $.add("libs/pico.js")
+  - $.add("libs/reverb.js")
+  - $.add("libs/svg-ui.js")
 
 block content
   h1 #{$.title}
