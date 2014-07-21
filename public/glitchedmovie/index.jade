@@ -9,7 +9,7 @@ block config
 block content
   h1 #{$.title}
   #unit
-    div(style="border:solid 1px gray;height:100%")
+    div(style="border:solid 1px gray")
       div(id="tips")
         div drag a movie files(*.mp4) to play
         small System Requirements: Google Chrome
@@ -18,9 +18,3 @@ block content
     div(style="font-size:smaller;font-weight:bold")
       button(id="play",class="lsf-icon",title="play") Play
       button(id="pause",class="lsf-icon",title="pause") Pause
-      span.pull-right
-        input(type="checkbox",name="processing",id="processing",checked)
-        label(for="processing") Processing
-        input(type="checkbox", name="loop", id="loop")
-        label(for="loop") Loop
-        button(id="full-screen",class="lsf-icon",title="full") Full Screen

@@ -87,7 +87,8 @@
           $(video).on('loadeddata', (function(_this) {
             return function() {
               video.currentTime = 0;
-              video.muted = true;
+              video.muted = false;
+              video.volume = 0.1;
               _this.processors.forEach(function(x) {
                 return x.init(video);
               });
@@ -284,7 +285,7 @@
         })(this));
         media = this.target.createMediaElementSource(video);
         gain = this.target.createGain();
-        gain.gain.value = 0.4;
+        gain.gain.value = 1.5;
         node = this.target.createScriptProcessor(1024, 2, 2);
         node.onaudioprocess = this.process.bind(this);
         media.connect(gain);
@@ -313,7 +314,7 @@
         L = e.inputBuffer.getChannelData(0);
         R = e.inputBuffer.getChannelData(1);
         for (i = _i = 0, _ref = L.length; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
-          stream[i] = (L[i] + R[i]) * 0.5;
+          stream[i] = (L[i] + R[i]) * 4;
         }
         if (this.processing && this.subProcessor) {
           stream = this.subProcessor.audioProcess(stream);

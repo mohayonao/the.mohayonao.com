@@ -67,7 +67,8 @@ $ ->
       if type is 'video' and video.canPlayType file.type
         $(video).on 'loadeddata', =>
           video.currentTime = 0
-          video.muted = true
+          video.muted  = false
+          video.volume = 0.1
           @processors.forEach (x)-> x.init video
           @play()
         $(video).on 'seeked', =>
@@ -180,7 +181,7 @@ $ ->
 
       media = @target.createMediaElementSource video
       gain  = @target.createGain()
-      gain.gain.value = 0.4
+      gain.gain.value = 1.5
 
       node = @target.createScriptProcessor 1024, 2, 2
       node.onaudioprocess = @process.bind @
@@ -207,7 +208,7 @@ $ ->
       L = e.inputBuffer.getChannelData 0
       R = e.inputBuffer.getChannelData 1
       for i in [0...L.length]
-        stream[i] = (L[i] + R[i]) * 0.5
+        stream[i] = (L[i] + R[i]) * 4
 
       if @processing and @subProcessor
           stream = @subProcessor.audioProcess stream
