@@ -11,7 +11,7 @@ handlers:
 
 - url: /(.*)
   static_files: public/\1
-  upload: public/(.*)  
+  upload: public/(.*)
 
 libraries:
 - name: webapp2
