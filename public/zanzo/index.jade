@@ -1,0 +1,13 @@
+extend ../lib/layout
+
+block config
+  - $.title = "zanzo"
+  - $.path  = "/zanzo/"
+
+block content
+  h1 #{$.title}
+  #unit
+    ul
+      li drag & drop a Animated GIF
+      li generate an image lag (残像) that overlaid animation frames
+    #result
