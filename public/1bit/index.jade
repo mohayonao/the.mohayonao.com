@@ -5,7 +5,6 @@ block config
   - $.path  = "/1bit/"
   - $.ads   = true
   - $.add("libs/pico.js")
-  - $.add("/lib/LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}
@@ -13,7 +12,7 @@ block content
     canvas(id="canvas")
     div(id="controller")
       div.pull-left
-        button(id="play",class="lsf-icon",title="play") Play
+        button(id="play") Play
         div(id="samplerate-container")
           select(id="samplerate",class="select")
             option(value="0") samplerate

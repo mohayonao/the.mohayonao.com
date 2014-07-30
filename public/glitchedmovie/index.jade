@@ -4,7 +4,6 @@ block config
   - $.title = "glitched movie player"
   - $.path  = "/glitchedmovie/"
   - $.media = "desktop"
-  - $.add("/lib/LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}
@@ -16,5 +15,5 @@ block content
       canvas(id="preview")
     input(type="range",max="10000",value="0",id="currentTime")
     div(style="font-size:smaller;font-weight:bold")
-      button(id="play",class="lsf-icon",title="play") Play
-      button(id="pause",class="lsf-icon",title="pause") Pause
+      button(id="play") Play
+      button(id="pause") Pause

@@ -7,22 +7,21 @@ block config
   - $.add("libs/subcollider.js")
   - $.add("libs/scales.js")
   - $.add("libs/tunings.js")
-  - $.add("/lib/LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}
   #unit
     div(style="margin-bottom:25px")
-      button(id="play",class="lsf-icon",title="play") Play
-      button(id="tweet",class="lsf-icon",title="twitter") Tweet this mario
+      button(id="play") Play
+      button(id="tweet") Tweet this mario
     div
       label(for="scale") Scale
       select(name="scale",id="scale")
-      button(id="random-scale",class="lsf-icon",title="random") random
+      button(id="random-scale") random
     div
       label(for="tuning") Tuning
       select(name="tuning",id="tuning")
-      button(id="random-tuning",class="lsf-icon",title="random") random
+      button(id="random-tuning") random
     p use:
       ul
         li: a(href="http://mohayonao.github.com/timbre.js") timbre.js

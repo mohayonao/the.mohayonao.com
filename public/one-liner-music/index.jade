@@ -6,14 +6,13 @@ block config
   - $.ads   = true
   - $.add("libs/pico.js")
   - $.add("libs/MutekiTimer.js")
-  - $.add("/lib/LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}
   #unit
     div(style="margin-bottom:25px")
-      button(id="play",class="lsf-icon",title="play") Play
-      button(id="tweet",class="lsf-icon",title="twitter") Tweet this function
+      button(id="play") Play
+      button(id="tweet") Tweet this function
     div(id="f1")
       span function (t) {
       div(id="f2")
