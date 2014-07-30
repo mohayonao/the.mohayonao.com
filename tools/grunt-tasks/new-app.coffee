@@ -23,7 +23,7 @@ module.exports = (grunt)->
     console.log "create: #{path}/index.jade"
     grunt.file.write "#{path}/index.jade",
       """
-      extend #{rel}/layout
+      extend #{rel}layout
 
       block config
         - $.title = \"#{name}\"
@@ -47,7 +47,7 @@ module.exports = (grunt)->
     console.log "create: #{path}/index.styl"
     grunt.file.write "#{path}/index.styl",
       """
-      @import \"#{rel}/layout\"
+      @import \"#{rel}layout\"
 
       #content
         0
