@@ -23,13 +23,12 @@ module.exports = (grunt)->
     console.log "create: #{path}/index.jade"
     grunt.file.write "#{path}/index.jade",
       """
-      extend #{rel}lib/layout
+      extend #{rel}/layout
 
       block config
         - $.title = \"#{name}\"
         - $.path  = \"/#{name}/\"
-        - $.jslist  = [\"index.js\"]
-        - $.csslist = [\"index.css\"]
+        - $.ads   = true
 
       block content
         h1 \#{$.title}
@@ -48,13 +47,10 @@ module.exports = (grunt)->
     console.log "create: #{path}/index.styl"
     grunt.file.write "#{path}/index.styl",
       """
-      @import \"#{rel}lib/layout\"
+      @import \"#{rel}/layout\"
 
       #content
         0
       """
-
-    if depth is 1
-      grunt.file.copy 'public/lib/appimage.png', "#{path}/appimage.png"
 
     grunt.task.run "build:#{name}"
