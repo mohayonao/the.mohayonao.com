@@ -2,7 +2,7 @@ module.exports = (grunt)->
   'use strict'
 
   grunt.registerTask '-coffee', (filter)->
-    src = grunt.file.expand [ 'public/**/*.coffee' ]
+    src = grunt.file.expand [ 'public/**/*.coffee', '!**/layout.coffee' ]
     src = grunt.filterFiles src, filter
 
     return if src.length is 0
