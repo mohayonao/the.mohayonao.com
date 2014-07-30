@@ -3,8 +3,7 @@ extend ./layout
 block config
   - $.title = "the.mohayonao.com"
   - $.path  = "/"
+  - $.ads   = true
 
 block content
   h1 #{$.title}
-  div.ads
-    include ./lib/ads.html

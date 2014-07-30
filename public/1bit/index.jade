@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "1bit music"
   - $.path  = "/1bit/"
+  - $.ads   = true
   - $.add("libs/pico.js")
   - $.add("/lib/LigatureSymbols-2.11.css")
 
@@ -32,8 +33,6 @@ block content
           a(href="javascript:void(0)") 03
     div
       textarea(id="mml")
-  div.ads
-    include ../lib/ads.html
 
   div.hidden
     textarea(id="data-0").

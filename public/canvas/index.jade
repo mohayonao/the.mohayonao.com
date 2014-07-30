@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "canvas"
   - $.path  = "/canvas/"
+  - $.ads   = true
 
 block content
   h1 #{$.title}
@@ -12,5 +13,3 @@ block content
       li: a(href="./gray/") grayscale
       li: a(href="./mirror/") mirror
       li: a(href="./face/") face-detect
-  div.ads
-    include ../lib/ads.html

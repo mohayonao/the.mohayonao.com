@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "endless invention"
   - $.path  = "/invention/"
+  - $.ads   = true
   - $.add("libs/pico.js")
   - $.add("libs/reverb.js")
   - $.add("libs/svg-ui.js")
@@ -17,6 +18,3 @@ block content
       li(value="markov") Markov Inventionen
     h2 2. click J.S.Bach to play/pause music
     h2.hidden-phone 3. mouseover Y : control EFX Depth
-  div.ads
-    include ../lib/ads.html
-x

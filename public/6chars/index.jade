@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "6chars drums"
   - $.path  = "/6chars/"
+  - $.ads   = true
   - $.add("http://platform.twitter.com/widgets.js")
   - $.add("libs/pico.js")
   - $.add("libs/wav-decoder.js")
@@ -18,5 +19,3 @@ block content
       button(id="random",class="btn",title="random") Random
       button(id="tweet",class="btn",title="twitter") Tweet
     ul(id="list")
-  div.ads
-    include ../lib/ads.html

@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "console-sushi"
   - $.path  = "/console-sushi/"
+  - $.ads   = true
   - $.media = "desktop"
 
 block content
@@ -18,5 +19,3 @@ block content
       button(class="btn",data-num=70) サーモン
       button(class="btn",data-num=18) うなぎ
       button(class="btn",data-num=27) たまご
-  div.ads
-    include ../lib/ads.html

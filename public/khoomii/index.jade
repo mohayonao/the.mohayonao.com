@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "formant khoomii"
   - $.path  = "/khoomii/"
+  - $.ads   = true
   - $.add("libs/timbre.js")
   - $.add("/lib/LigatureSymbols-2.11.css")
 
@@ -11,5 +12,3 @@ block content
   #unit
     div(style="margin-bottom:25px")
       button(id="play",class="btn",title="play") Play
-  div.ads
-    include ../lib/ads.html

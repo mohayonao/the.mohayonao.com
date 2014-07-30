@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "one-liner-music"
   - $.path  = "/one-liner-music/"
+  - $.ads   = true
   - $.add("libs/pico.js")
   - $.add("libs/MutekiTimer.js")
   - $.add("/lib/LigatureSymbols-2.11.css")
@@ -20,5 +21,3 @@ block content
       span }
     ul(id="history-container")
       li(id="history") History
-  div.ads
-    include ../lib/ads.html

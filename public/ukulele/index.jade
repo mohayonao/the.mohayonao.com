@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "hyper ukulele notation"
   - $.path  = "/ukulele/"
+  - $.ads   = true
   - $.add("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.3.0/codemirror.min.js")
   - $.add("libs/timbre.js")
   - $.add("ukulele.js")
@@ -23,5 +24,3 @@ block content
       textarea(id="data",rows=12)
     div
       img(id="result")
-  div.ads
-    include ../lib/ads.html

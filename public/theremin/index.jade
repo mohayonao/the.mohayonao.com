@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "webcam-theremin"
   - $.path  = "/theremin/"
+  - $.ads   = true
   - $.media = "desktop"
   - $.add("libs/timbre.js")
   - $.add("libs/subcollider.js")
@@ -15,5 +16,3 @@ block content
     h2 1. Accept to use your webcam (use WebRTC)
     h2 2. Right hand: control pitch
     h2 3. Left hand: switch on/off
-  div.ads
-    include ../lib/ads.html

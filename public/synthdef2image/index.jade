@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "synthdef2image"
   - $.path  = "/synthdef2image/"
+  - $.ads   = true
 
 block content
   h1 #{$.title}
@@ -13,5 +14,3 @@ block content
       li see also:
         a(href="../synthdef2json/") synthdef2json
     img#result
-  div.ads
-    include ../lib/ads.html

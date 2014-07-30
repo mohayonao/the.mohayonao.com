@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "zanzo"
   - $.path  = "/zanzo/"
+  - $.ads   = true
 
 block content
   h1 #{$.title}
@@ -11,5 +12,3 @@ block content
       li drag & drop an Animated GIF
       li generate an image lag (残像) that overlaid animation frames
     #result
-  div.ads
-    include ../lib/ads.html
