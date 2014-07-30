@@ -2,7 +2,8 @@ module.exports = (grunt)->
   'use strict'
 
   grunt.registerTask '-stylus', (filter)->
-    src = grunt.filterFiles grunt.file.expand('public/**/*.styl'), filter
+    src = grunt.file.expand [ 'public/**/*.styl', '!**/layout.styl' ]
+    src = grunt.filterFiles src, filter
 
     return if src.length is 0
 
