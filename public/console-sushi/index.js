@@ -46,7 +46,7 @@
       SushiText.prototype.load = function() {
         var dfd, src;
         dfd = $.Deferred();
-        src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
+        src = "./img/" + (('000' + this.num).substr(-3)) + ".png";
         new ImageLoader(src).load().then((function(_this) {
           return function(img) {
             var canvas, colors, context, data, i;

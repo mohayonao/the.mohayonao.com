@@ -8,7 +8,7 @@ $ ->
         @dfd = new $.Deferred
         map[@src] = @
       return map[@src]
-    
+
     load: ->
       img = new Image
       img.src = @src
@@ -17,13 +17,13 @@ $ ->
       @load = =>
         do @dfd.promise
       do @load
-  
+
   class SushiText
     constructor: (@num, @width=35, @height=20)->
-            
+
     load: ->
       dfd = $.Deferred()
-      src = "/lib/img/sushi/#{('000'+@num).substr(-3)}.png"
+      src = "./img/#{('000'+@num).substr(-3)}.png"
       new ImageLoader(src).load().then (img)=>
         canvas = document.createElement 'canvas'
         canvas.width  = @width
@@ -33,20 +33,20 @@ $ ->
         context.fillRect 0, 0, canvas.width, canvas.height
         context.drawImage img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height
         data = context.getImageData(0, 0, canvas.width, canvas.height).data
-        
+
         colors = for i in [0...data.length-4] by 4
           (data[i] << 16) + (data[i+1] << 8) + data[i+2]
-        
+
         data = for i in [0...@height]
           colors.splice 0, @width
         dfd.resolve data
-        
+
       dfd.promise()
 
   class SushiLane
     constructor: (@width=128, @height=20)->
       @data = ([] for i in [0...@height])
-    
+
     put: (data)->
       for i in [0...@height]
         @data[i] = @data[i].concat data[i]
@@ -75,7 +75,7 @@ $ ->
 
   width = ((window.innerWidth - 90) / 8)|0
   lane = new SushiLane width
-  
+
   setInterval ->
     lane.draw()
   , 750

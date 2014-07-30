@@ -46,7 +46,7 @@
         this.x = x;
         this.y = y;
         this.z = z;
-        src = "/lib/img/sushi/" + (('000' + this.num).substr(-3)) + ".png";
+        src = "./img/" + (('000' + this.num).substr(-3)) + ".png";
         new ImageLoader(src).load().then((function(_this) {
           return function(img) {
             return _this.img = img;

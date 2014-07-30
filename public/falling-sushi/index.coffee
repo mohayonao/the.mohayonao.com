@@ -24,7 +24,7 @@ $ ->
 
   class Sushi
     constructor: (@num, @x, @y, @z)->
-      src = "/lib/img/sushi/#{('000'+@num).substr(-3)}.png"
+      src = "./img/#{('000'+@num).substr(-3)}.png"
       new ImageLoader(src).load().then (img)=>
         @img = img
 
