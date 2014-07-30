@@ -1,0 +1,15 @@
+extend ../../layout
+
+block config
+  - $.title = "fractal/circle"
+  - $.path  = "/fractal/circle/"
+  - $.ads   = true
+
+block content
+  h1 #{$.title}
+  #unit
+    canvas#canvas
+    input(type="range",id="sr",min=1,max=100,value=57)
+    input(type="range",id="br",min=1,max=100,value= 2)
+    input(type="range",id="n" ,min=1,max= 12,value= 6)
+    input(type="range",id="h" ,min=1,max=100,value= 1)
