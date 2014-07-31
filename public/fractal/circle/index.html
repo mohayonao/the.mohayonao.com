@@ -9,6 +9,8 @@
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="../color.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
     <script src="/common.js"></script>
     <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
@@ -17,11 +19,14 @@
     <div id="content">
       <h1>fractal/circle</h1>
       <div id="unit">
-        <canvas id="canvas"></canvas>
-        <input type="range" id="sr" min="1" max="100" value="57">
-        <input type="range" id="br" min="1" max="100" value="2">
-        <input type="range" id="n" min="1" max="12" value="6">
-        <input type="range" id="h" min="1" max="100" value="1">
+        <div id="app">
+          <canvas id="canvas" v-attr="width: width, height: height"></canvas>
+          <div id="params-form">
+            <div v-repeat="params">
+              <input type="range" v-model="value" min="1" max="100" v-on="input: update()">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="ads">

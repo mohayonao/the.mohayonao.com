@@ -4,12 +4,14 @@ block config
   - $.title = "fractal/circle"
   - $.path  = "/fractal/circle/"
   - $.ads   = true
+  - $.add("../color.js")
+  - $.add("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
 
 block content
   h1 #{$.title}
   #unit
-    canvas#canvas
-    input(type="range",id="sr",min=1,max=100,value=57)
-    input(type="range",id="br",min=1,max=100,value= 2)
-    input(type="range",id="n" ,min=1,max= 12,value= 6)
-    input(type="range",id="h" ,min=1,max=100,value= 1)
+    #app
+      canvas#canvas(v-attr="width: width, height: height")
+      #params-form
+        div(v-repeat="params")
+          input(type="range", v-model="value", min="1", max="100", v-on="input: update()")
