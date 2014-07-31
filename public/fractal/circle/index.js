@@ -16,7 +16,7 @@
       return Math.pow(outMax / outMin, (num - inMin) / (inMax - inMin)) * outMin;
     };
     Renderer = (function() {
-      var circle, next;
+      var circle, draw;
 
       function Renderer(context, width, height) {
         this.context = context;
@@ -43,7 +43,7 @@
         sr = linexp(sr, 100, 1, 1, 8.0);
         br = linlin(br, 1, 100, 1, 100) | 0;
         n = linlin(n, 1, 100, 2, 12) | 0;
-        this.stack = [[next, x, y, r, sr, br, n]];
+        this.stack = [[x, y, r, sr, br, n]];
         return this.reqId = requestAnimationFrame((function(_this) {
           return function() {
             return _this.animate();
@@ -52,14 +52,12 @@
       };
 
       Renderer.prototype.animate = function() {
-        var func, i, items, _i;
+        var i, _i;
         for (i = _i = 0; _i <= 256; i = ++_i) {
           if (this.stack.length === 0) {
             break;
           }
-          items = this.stack.pop();
-          func = _.first(items);
-          func.apply(this, _.rest(items));
+          draw.call(this, this.stack.pop());
         }
         if (this.stack.length !== 0) {
           return this.reqId = requestAnimationFrame((function(_this) {
@@ -77,24 +75,19 @@
         return context.stroke();
       };
 
-      next = function(x, y, r, sr, br, n) {
-        var func, nr;
+      draw = function(_arg) {
+        var br, k, n, nr, nx, ny, r, sr, th, x, y, _i;
+        x = _arg[0], y = _arg[1], r = _arg[2], sr = _arg[3], br = _arg[4], n = _arg[5];
         circle(this.context, this.width * 0.5 + x, this.height * 0.5 - y, r);
         nr = r / sr;
-        if (n > 1 && nr > 1) {
-          func = (function(_this) {
-            return function(x, y, nr, sr, br, n) {
-              var k, nx, ny, th, _i;
-              th = Math.PI * 2.0 / br;
-              for (k = _i = 0; _i < br; k = _i += 1) {
-                nx = nr * (sr - 1.0) * Math.cos(th * k) + x;
-                ny = nr * (sr - 1.0) * Math.sin(th * k) + y;
-                _this.stack.push([next, nx, ny, nr, sr, br, n - 1]);
-              }
-              return null;
-            };
-          })(this);
-          return this.stack.push([func, x, y, nr, sr, br, n]);
+        if (n > 1 && nr > 0.5) {
+          th = Math.PI * 2.0 / br;
+          for (k = _i = 0; _i < br; k = _i += 1) {
+            nx = nr * (sr - 1.0) * Math.cos(th * k) + x;
+            ny = nr * (sr - 1.0) * Math.sin(th * k) + y;
+            this.stack.push([nx, ny, nr, sr, br, n - 1]);
+          }
+          return null;
         }
       };
 
@@ -110,16 +103,16 @@
         params: [
           {
             label: 'sr',
-            value: 64
+            value: 67
           }, {
             label: 'br',
-            value: 36
+            value: 80
           }, {
             label: 'n',
-            value: 5
+            value: 10
           }, {
             label: 'h',
-            value: 1
+            value: 50
           }
         ]
       },

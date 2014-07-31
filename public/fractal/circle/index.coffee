@@ -37,16 +37,14 @@ $ ->
       br = linlin(br, 1, 100, 1, 100)|0
       n  = linlin(n , 1, 100, 2,  12)|0
 
-      @stack = [ [ next, x, y, r, sr, br, n ] ]
+      @stack = [ [ x, y, r, sr, br, n ] ]
       @reqId = requestAnimationFrame => do @animate
 
     animate: ->
       for i in [0..256]
         break if @stack.length is 0
 
-        items = @stack.pop()
-        func  = _.first items
-        func.apply @, _.rest items
+        draw.call @, @stack.pop()
 
       if @stack.length isnt 0
         @reqId = requestAnimationFrame => do @animate
@@ -57,19 +55,17 @@ $ ->
       context.closePath()
       context.stroke()
 
-    next = (x, y, r, sr, br, n)->
+    draw = ([ x, y, r, sr, br, n ])->
       circle @context, @width * 0.5 + x, @height * 0.5 - y, r
 
       nr = r / sr
-      if n > 1 and nr > 1
-        func = (x, y, nr, sr, br, n)=>
-          th = Math.PI * 2.0 / br
-          for k in [0...br] by 1
-            nx = nr * (sr - 1.0) * Math.cos(th * k) + x
-            ny = nr * (sr - 1.0) * Math.sin(th * k) + y
-            @stack.push [ next, nx, ny, nr, sr, br, n - 1 ]
-          null
-        @stack.push [ func, x, y, nr, sr, br, n ]
+      if n > 1 and nr > 0.5
+        th = Math.PI * 2.0 / br
+        for k in [0...br] by 1
+          nx = nr * (sr - 1.0) * Math.cos(th * k) + x
+          ny = nr * (sr - 1.0) * Math.sin(th * k) + y
+          @stack.push [ nx, ny, nr, sr, br, n - 1 ]
+        null
 
   renderer = new Renderer(context, canvas.width, canvas.height)
 
@@ -80,10 +76,10 @@ $ ->
       width : renderer.width
       height: renderer.height
       params: [
-        { label: 'sr', value: 64 }
-        { label: 'br', value: 36 }
-        { label: 'n' , value:  5 }
-        { label: 'h' , value:  1 }
+        { label: 'sr', value: 67 }
+        { label: 'br', value: 80 }
+        { label: 'n' , value: 10 }
+        { label: 'h' , value: 50 }
       ]
 
     methods:
