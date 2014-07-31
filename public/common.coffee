@@ -5,10 +5,15 @@ $ ->
                                ?  window.mozRequestAnimationFrame    \
                                ?  window.oRequestAnimationFrame      \
                                ?  window.msRequestAnimationFrame     \
-                               ?  (f)->setTimeout(f, 1000/60)
+                               ?  (f)-> setTimeout(f, 1000/60)
 
-  window.AudioContext ?= window.AudioContext \
-                      ?  window.webkitAudioContext
+  window.cancelAnimationFrame ?= window.webkitCancelAnimationFrame    \
+                              ?  window.mozCancelAnimationFrame       \
+                              ?  window.oCancelAnimationFrame         \
+                              ?  window.msCancelRequestAnimationFrame \
+                              ?  (id)-> clearTimeout(id)
+
+  window.AudioContext ?= window.webkitAudioContext
 
   window.createObjectURL = (window.URL or window.webkitURL)?.createObjectURL
 
@@ -35,7 +40,7 @@ $ ->
   apps.param = $.param
   apps.deparam = (str)->
     obj = {}
-    for x in str.split '&'
+    str.split('$').forEach (x)->
       items = x.split '='
       key = decodeURIComponent items[0]
       if items.length is 1
@@ -57,28 +62,3 @@ $ ->
       if result != false
         requestAnimationFrame _animate
     requestAnimationFrame _animate
-
-  $sidebar = $('#sidebar')
-
-  switch
-    when apps.isMouseDevice
-      $('li', $sidebar).each (i, elem)->
-        $li = $(elem)
-        media = $li.attr 'data-media'
-        if media is 'tablet' or media is 'phone'
-          return $li.remove()
-
-    when apps.isTablet
-      $('li', $sidebar).each (i, elem)->
-        $li = $(elem)
-        media = $li.attr 'data-media'
-        if media is 'desktop' or media is 'phone'
-          return $li.remove()
-
-    when apps.isPhone
-      $('li', $sidebar).each (i, elem)->
-        $li = $(elem)
-        media = $li.attr 'data-media'
-
-        if media is 'desktop' or media is 'tablet'
-          return $li.remove()

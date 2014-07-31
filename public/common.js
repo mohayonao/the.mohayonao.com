@@ -1,19 +1,24 @@
 (function() {
   $(function() {
     'use strict';
-    var $sidebar, apps, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6;
+    var apps, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
     if (window.requestAnimationFrame == null) {
       window.requestAnimationFrame = (_ref = (_ref1 = (_ref2 = (_ref3 = window.webkitRequestAnimationFrame) != null ? _ref3 : window.mozRequestAnimationFrame) != null ? _ref2 : window.oRequestAnimationFrame) != null ? _ref1 : window.msRequestAnimationFrame) != null ? _ref : function(f) {
         return setTimeout(f, 1000 / 60);
       };
     }
-    if (window.AudioContext == null) {
-      window.AudioContext = (_ref4 = window.AudioContext) != null ? _ref4 : window.webkitAudioContext;
+    if (window.cancelAnimationFrame == null) {
+      window.cancelAnimationFrame = (_ref4 = (_ref5 = (_ref6 = (_ref7 = window.webkitCancelAnimationFrame) != null ? _ref7 : window.mozCancelAnimationFrame) != null ? _ref6 : window.oCancelAnimationFrame) != null ? _ref5 : window.msCancelRequestAnimationFrame) != null ? _ref4 : function(id) {
+        return clearTimeout(id);
+      };
     }
-    window.createObjectURL = (_ref5 = window.URL || window.webkitURL) != null ? _ref5.createObjectURL : void 0;
+    if (window.AudioContext == null) {
+      window.AudioContext = window.webkitAudioContext;
+    }
+    window.createObjectURL = (_ref8 = window.URL || window.webkitURL) != null ? _ref8.createObjectURL : void 0;
     ua = navigator.userAgent;
     apps = window.apps = {};
-    apps.name = (_ref6 = /^(\/[-\w]+\/)/.exec(location.pathname)) != null ? _ref6[1] : void 0;
+    apps.name = (_ref9 = /^(\/[-\w]+\/)/.exec(location.pathname)) != null ? _ref9[1] : void 0;
     apps.isPhone = /(iPhone|iPod|Android)/i.test(navigator.userAgent);
     apps.isTablet = /(iPad|Android)/i.test(navigator.userAgent);
     apps.isDesktop = !(apps.isPhone || apps.isTablet);
@@ -32,25 +37,24 @@
     };
     apps.param = $.param;
     apps.deparam = function(str) {
-      var items, key, obj, x, _i, _len, _ref7;
+      var obj;
       obj = {};
-      _ref7 = str.split('&');
-      for (_i = 0, _len = _ref7.length; _i < _len; _i++) {
-        x = _ref7[_i];
+      str.split('$').forEach(function(x) {
+        var items, key;
         items = x.split('=');
         key = decodeURIComponent(items[0]);
         if (items.length === 1) {
-          obj[key] = true;
+          return obj[key] = true;
         } else {
-          obj[key] = decodeURIComponent(items[1]);
+          return obj[key] = decodeURIComponent(items[1]);
         }
-      }
+      });
       return obj;
     };
-    apps.animate = function(opts) {
-      var func, ifps, prev, _animate, _ref7;
+    return apps.animate = function(opts) {
+      var func, ifps, prev, _animate, _ref10;
       func = arguments[arguments.length - 1];
-      ifps = 1000 / ((_ref7 = opts.fps) != null ? _ref7 : 60);
+      ifps = 1000 / ((_ref10 = opts.fps) != null ? _ref10 : 60);
       prev = 0;
       _animate = function(now) {
         var dt, result;
@@ -65,36 +69,6 @@
       };
       return requestAnimationFrame(_animate);
     };
-    $sidebar = $('#sidebar');
-    switch (false) {
-      case !apps.isMouseDevice:
-        return $('li', $sidebar).each(function(i, elem) {
-          var $li, media;
-          $li = $(elem);
-          media = $li.attr('data-media');
-          if (media === 'tablet' || media === 'phone') {
-            return $li.remove();
-          }
-        });
-      case !apps.isTablet:
-        return $('li', $sidebar).each(function(i, elem) {
-          var $li, media;
-          $li = $(elem);
-          media = $li.attr('data-media');
-          if (media === 'desktop' || media === 'phone') {
-            return $li.remove();
-          }
-        });
-      case !apps.isPhone:
-        return $('li', $sidebar).each(function(i, elem) {
-          var $li, media;
-          $li = $(elem);
-          media = $li.attr('data-media');
-          if (media === 'desktop' || media === 'tablet') {
-            return $li.remove();
-          }
-        });
-    }
   });
 
 }).call(this);
