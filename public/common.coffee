@@ -26,12 +26,11 @@ $ ->
   apps.lang = if /ja/.test navigator.language then 'ja' else 'en'
   apps.tweet = (opts)->
     w = 550
-    h = 250
+    h = 420
     l = Math.round (screen.width  - w) * 0.5
     t = Math.round (screen.height - h) * 0.5
-    url = "https://twitter.com/share?#{$.param(opts)}"
-    features = "width=#{w},height=#{h},left=#{l},top=#{t}"
-    window.open url, 'intent', features
+    url = "https://twitter.com/intent/tweet?#{$.param(opts)}"
+    window.open url, 'intent', "width=#{w},height=#{h},left=#{l},top=#{t}"
 
   apps.param = $.param
   apps.deparam = (str)->
