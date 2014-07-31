@@ -28,6 +28,7 @@ addEventListener 'message', (e)->
   frames = _.range(reader.numFrames()).map (i)->
     frame = reader.frameInfo i
     frame.delay = Math.max 1, frame.delay
+    frame.index = i
     frame
 
   totalDelay = sum _.pluck(frames, 'delay')
@@ -42,14 +43,13 @@ addEventListener 'message', (e)->
   canvas = new Uint8Array(length)
   result = new Uint8Array(length)
 
-  _.each frames, (frame, i)->
-    postMessage { type: 'progress', args: [ i ] }
-
+  loopFunc = ->
+    frame   = frames.shift()
     opacity = frame.delay / totalDelay
     ymap    = if not frame.interlaced then _.identity else (y)-> interlace[y]
 
     tmp = new Uint8Array(length)
-    reader.decodeAndBlitFrameRGBA i, tmp
+    reader.decodeAndBlitFrameRGBA frame.index, tmp
 
     for y in [0...height] by 1
       srcIndex = y * width * 4
@@ -65,6 +65,11 @@ addEventListener 'message', (e)->
         srcIndex += 4
 
     tmp.set result
-    postMessage { type: 'thumb', args: [ tmp, i ] }, [ tmp.buffer ]
+    postMessage { type: 'progress', args: [ tmp, frame.index ] }, [ tmp.buffer ]
 
-  postMessage { type: 'result', args: [ result ] }, [ result.buffer ]
+    if frames.length is 0
+      postMessage { type: 'result', args: [ result ] }, [ result.buffer ]
+    else
+      setTimeout loopFunc, 0
+
+  do loopFunc

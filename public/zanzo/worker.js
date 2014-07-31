@@ -27,7 +27,7 @@
   };
 
   addEventListener('message', function(e) {
-    var canvas, frames, height, interlace, length, reader, result, totalDelay, width;
+    var canvas, frames, height, interlace, length, loopFunc, reader, result, totalDelay, width;
     reader = new GifReader(new Uint8Array(e.data));
     width = reader.width, height = reader.height;
     length = width * height * 4;
@@ -39,24 +39,22 @@
       var frame;
       frame = reader.frameInfo(i);
       frame.delay = Math.max(1, frame.delay);
+      frame.index = i;
       return frame;
     });
     totalDelay = sum(_.pluck(frames, 'delay'));
     interlace = new Uint16Array(_.flatten([_.range(0, height, 8), _.range(4, height, 8), _.range(2, height, 4), _.range(1, height, 2)]));
     canvas = new Uint8Array(length);
     result = new Uint8Array(length);
-    _.each(frames, function(frame, i) {
-      var dstIndex, opacity, srcIndex, tmp, x, y, ymap, _i, _j;
-      postMessage({
-        type: 'progress',
-        args: [i]
-      });
+    loopFunc = function() {
+      var dstIndex, frame, opacity, srcIndex, tmp, x, y, ymap, _i, _j;
+      frame = frames.shift();
       opacity = frame.delay / totalDelay;
       ymap = !frame.interlaced ? _.identity : function(y) {
         return interlace[y];
       };
       tmp = new Uint8Array(length);
-      reader.decodeAndBlitFrameRGBA(i, tmp);
+      reader.decodeAndBlitFrameRGBA(frame.index, tmp);
       for (y = _i = 0; _i < height; y = _i += 1) {
         srcIndex = y * width * 4;
         dstIndex = ymap(y) * width * 4;
@@ -70,15 +68,20 @@
         }
       }
       tmp.set(result);
-      return postMessage({
-        type: 'thumb',
-        args: [tmp, i]
+      postMessage({
+        type: 'progress',
+        args: [tmp, frame.index]
       }, [tmp.buffer]);
-    });
-    return postMessage({
-      type: 'result',
-      args: [result]
-    }, [result.buffer]);
+      if (frames.length === 0) {
+        return postMessage({
+          type: 'result',
+          args: [result]
+        }, [result.buffer]);
+      } else {
+        return setTimeout(loopFunc, 0);
+      }
+    };
+    return loopFunc();
   });
 
 }).call(this);

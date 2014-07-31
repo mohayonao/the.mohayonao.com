@@ -31,9 +31,7 @@
         return $('#result').empty().append(this.canvas);
       };
 
-      App.prototype.progress = function(i) {};
-
-      App.prototype.thumb = function(data) {
+      App.prototype.progress = function(data) {
         this.image.data.set(data);
         return this.context.putImageData(this.image, 0, 0);
       };

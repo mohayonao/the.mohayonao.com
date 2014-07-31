@@ -19,9 +19,7 @@ $ ->
 
       $('#result').empty().append @canvas
 
-    progress: (i)->
-
-    thumb: (data)->
+    progress: (data)->
       @image.data.set data
       @context.putImageData @image, 0, 0
 
