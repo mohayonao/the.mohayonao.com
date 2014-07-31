@@ -4,7 +4,7 @@ block config
   - $.title = "fractal/circle"
   - $.path  = "/fractal/circle/"
   - $.ads   = true
-  - $.add("../color.js")
+  - $.add("../libs/color-0.7.1.min.js")
   - $.add("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
 
 block content
@@ -12,6 +12,7 @@ block content
   #unit
     #app
       canvas#canvas(v-attr="width: width, height: height")
-      #params-form
+      #params
         div(v-repeat="params")
-          input(type="range", v-model="value", min="1", max="100", v-on="input: update()")
+          input(type="range", v-model="value", min="1", max="100", v-on="change: update()")
+      button#tweet(v-on="click: tweet()") Tweet

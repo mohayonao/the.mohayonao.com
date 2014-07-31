@@ -9,7 +9,7 @@
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="../color.js"></script>
+    <script src="../libs/color-0.7.1.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
     <script src="/common.js"></script>
     <script src="index.js"></script>
@@ -21,11 +21,12 @@
       <div id="unit">
         <div id="app">
           <canvas id="canvas" v-attr="width: width, height: height"></canvas>
-          <div id="params-form">
+          <div id="params">
             <div v-repeat="params">
-              <input type="range" v-model="value" min="1" max="100" v-on="input: update()">
+              <input type="range" v-model="value" min="1" max="100" v-on="change: update()">
             </div>
           </div>
+          <button id="tweet" v-on="click: tweet()">Tweet</button>
         </div>
       </div>
     </div>
