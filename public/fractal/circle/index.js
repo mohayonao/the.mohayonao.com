@@ -128,13 +128,13 @@
           var br, h, hsv, n, params, sr;
           params = _.pluck(this.params, 'value');
           window.location.replace("#" + params.join(','));
-          h = linlin(params[3], 1, 100, 0, 360);
+          sr = params[0], br = params[1], n = params[2], h = params[3];
+          h = linlin(h, 1, 100, 0, 360);
           hsv = Color({
             h: h,
             s: 80,
             v: 60
           });
-          sr = params[0], br = params[1], n = params[2];
           renderer.init(0.2, hsv.rgbString());
           return renderer.generate(0, 0, 300, sr, br, n);
         },

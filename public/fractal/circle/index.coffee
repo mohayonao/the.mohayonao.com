@@ -91,10 +91,10 @@ $ ->
         params = _.pluck @params, 'value'
         window.location.replace "#" + params.join ','
 
-        h = linlin params[3], 1, 100, 0, 360
-        hsv = Color( h:h, s:80, v:60 )
+        [ sr, br, n, h ] = params
 
-        [ sr, br, n ] = params
+        h   = linlin h, 1, 100, 0, 360
+        hsv = Color( h:h, s:80, v:60 )
 
         renderer.init 0.2, hsv.rgbString()
         renderer.generate 0, 0, 300, sr, br, n
