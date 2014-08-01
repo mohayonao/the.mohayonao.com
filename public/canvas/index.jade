@@ -6,10 +6,10 @@ block config
   - $.ads   = true
 
 block content
-  h1 #{$.title}
-  #unit
-    ul
-      li: a(href="./binalize/") binalize
-      li: a(href="./gray/") grayscale
-      li: a(href="./mirror/") mirror
-      li: a(href="./face/") face-detect
+  h1.title #{$.title}
+
+  ul
+    li: a(href="./binalize/") binalize
+    li: a(href="./gray/") grayscale
+    li: a(href="./mirror/") mirror
+    li: a(href="./face/") face-detect

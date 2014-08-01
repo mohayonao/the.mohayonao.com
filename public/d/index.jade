@@ -9,14 +9,15 @@ block config
   - $.add("String_random.js")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
+
   #app
-    textarea(rows=8,id="text") ドッ ドッ ドリドリ ドドドド ドリランド
-    div(id="ctrl")
-      button(id="play",class="btn",title="play") Loading...
-      button(id="random",class="btn",title="random") Random
-      button(id="tweet",class="btn",title="twitter") Tweet
-    ul(id="list")
+    textarea#text.form-control(rows=8) ドッ ドッ ドリドリ ドドドド ドリランド
+    div#ctrl
+      button.btn.btn-default#play   Loading...
+      button.btn.btn-default#random Random
+      button.btn.btn-default#tweet  Tweet
+    ul#list
     ul
       li: a(href="https://gumroad.com/l/sEkz",target="gumroad") 課金して新しい機能を手にいれる($1)
       li: a(href="https://gumroad.com/l/zOW" ,target="gumroad") 課金して新しい機能を手にいれる($2)

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="height:100%">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>scalable mario</title>
@@ -7,38 +7,44 @@
     <meta property="og:title" content="scalable mario">
     <meta property="og:url" content="http://the.mohayonao.com/scalable-mario/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <h1>scalable mario</h1>
-    <div id="app">
-      <div style="margin-bottom:25px">
-        <button id="play">Play</button>
-        <button id="tweet">Tweet this mario</button>
+    <div id="wrap">
+      <h1 class="title">scalable mario</h1>
+      <div id="app">
+        <div style="margin-bottom:25px">
+          <button id="play" class="btn btn-default">Play</button>
+          <button id="tweet" class="btn btn-default">Tweet</button>
+        </div>
+        <div>
+          <label for="scale">Scale</label>
+          <select name="scale" id="scale"></select>
+          <button id="random-scale" class="btn btn-default btn-sm">random</button>
+        </div>
+        <div>
+          <label for="tuning">Tuning</label>
+          <select name="tuning" id="tuning"></select>
+          <button id="random-tuning" class="btn btn-default btn-sm">random</button>
+        </div>
       </div>
-      <div>
-        <label for="scale">Scale</label>
-        <select name="scale" id="scale"></select>
-        <button id="random-scale">random</button>
-      </div>
-      <div>
-        <label for="tuning">Tuning</label>
-        <select name="tuning" id="tuning"></select>
-        <button id="random-tuning">random</button>
-      </div>
-      <p>use:
-        <ul>
-          <li><a href="http://mohayonao.github.com/timbre.js">timbre.js</a></li>
-          <li><a href="http://mohayonao.github.com/sub.js">subcollider.js</a></li>
+      <div id="push"></div>
+    </div>
+    <div id="footer">
+      <div class="container">
+        <ul class="list-inline">
+          <li><a href="/"><img src="/favicon.ico"><span> Top Page</span></a></li>
+          <li><a href="https://twitter.com/intent/tweet?text=@mohayonao&amp;url=http://the.mohayonao.com/scalable-mario/" target="twitter"><img src="/twitter.png"><span> Contact</span></a></li>
+          <li><a href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public/scalable-mario/" target="github"><img src="/github.png"><span> View Source on GitHub</span></a></li>
         </ul>
-      </p>
+      </div>
     </div>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      
       ga('create', 'UA-21613416-9', 'auto');
       ga('send', 'pageview');
     </script>

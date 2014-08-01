@@ -50,19 +50,18 @@
       return f3.freq.linTo(f[2], 150);
     });
     isPlaying = false;
-    $('#play').on('click', function() {
+    return $('#play').on('click', function() {
       isPlaying = !isPlaying;
       if (isPlaying) {
         synth.play();
         timer.start();
-        return $(this).addClass('btn-active');
+        return $(this).text('Stop');
       } else {
         synth.pause();
         timer.pause();
-        return $(this).removeClass('btn-active');
+        return $(this).text('Start');
       }
     });
-    return 0;
   });
 
 }).call(this);

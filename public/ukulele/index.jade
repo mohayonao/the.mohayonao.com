@@ -1,7 +1,7 @@
 extend ../layout
 
 block config
-  - $.title = "hyper ukulele notation"
+  - $.title = "ukulele"
   - $.path  = "/ukulele/"
   - $.ads   = true
   - $.add("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.3.0/codemirror.min.js")
@@ -12,16 +12,15 @@ block config
   - $.add("ukulele.css")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
 
   #app
-    div(id="ctrl")
-      select(id="demo")
-      button(id="play",class="btn",title="play") Play
-      button(id="tweet",class="btn",title="twitter") Tweet
-      button(class="btn",title="help")
-        a(href="./usage.html",target="usage") Usage
+    div#ctrl
+      select#demo
+      button.btn.btn-default#play  Play
+      button.btn.btn-default#tweet Tweet
+      a.btn.btn-link(href="./usage.html",target="usage") Usage
     div
-      textarea(id="data",rows=12)
+      textarea#data(rows=12)
     div
-      img(id="result")
+      img#result

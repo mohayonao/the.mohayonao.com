@@ -1,0 +1,93 @@
+extend ../layout
+
+block config
+  - $.title = "css"
+  - $.path  = "/css/"
+  - $.ads   = true
+
+block content
+  h1.title #{$.title}
+
+  #app
+    h1 header 1
+    h2 header 2
+    h3 header 3
+    h4 header 4
+    h5 header 5
+    h6 header 6
+
+    hr
+    hr.solid
+    hr.dashed
+    hr.dotted
+
+    h3 Text
+    div.text-box
+      p.
+       this is paragraph
+      p
+        span this is&nbsp
+        a(href="#") link
+
+    h3 List
+    div.text-box
+      ul
+        li list item1
+        li list item2
+        li list item3
+
+    h3 Contextual colors
+    div.well
+      p.text-muted   Fusce dapibus, tellus ac cursus commodo, tortor mauris nibh.
+      p.text-primary Nullam id dolor id nibh ultricies vehicula ut id elit.
+      p.text-success Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+      p.text-info    Maecenas sed diam eget risus varius blandit sit amet non magna.
+      p.text-warning Etiam porta sem malesuada magna mollis euismod.
+      p.text-danger  Donec ullamcorper nulla non metus auctor fringilla.
+
+    h3 Contextual backgrounds
+    div.well
+      p.bg-primary Nullam id dolor id nibh ultricies vehicula ut id elit.
+      p.bg-success Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+      p.bg-info    Maecenas sed diam eget risus varius blandit sit amet non magna.
+      p.bg-warning Etiam porta sem malesuada magna mollis euismod.
+      p.bg-danger  Donec ullamcorper nulla non metus auctor fringilla.
+
+    h3 Buttons
+    div.well
+      button.btn.btn-default(type="button") Default
+      button.btn.btn-primary(type="button") Primary
+      button.btn.btn-success(type="button") Success
+      button.btn.btn-info(type="button") Info
+      button.btn.btn-warning(type="button") Warning
+      button.btn.btn-danger(type="button") Danger
+      button.btn.btn-link(type="button") Link
+
+    h3 Forms
+    form.well
+      .form-group
+        label(for="exampleInputEmail1") Email address
+        input.form-control(type="email",id="exampleInputEmail1",placeholder="Enter email")
+      .form-group
+        label(for="exampleInputPassword1") Password
+        input.form-control(type="password",id="exampleInputPassword1",placeholder="Password")
+      .form-group
+        label(for="exampleInputFile") File input
+        input(type="file",id="exampleInputFile")
+        p.help-block Example block-level help text here.
+      .form-group
+        label(for="exampleInputRange") Range
+        input(type="range",id="exampleInputRange")
+      .checkbox
+        label
+          input(type="checkbox")
+          span Check me out
+      .radio
+        label
+          input(type="radio")
+          span Item1
+      .radio
+        label
+          input(type="radio")
+          span Item2
+      button.btn.btn-default(type="submit") Submit

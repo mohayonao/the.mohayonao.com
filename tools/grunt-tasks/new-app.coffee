@@ -31,9 +31,9 @@ module.exports = (grunt)->
         - $.ads   = true
 
       block content
-        h1 \#{$.title}
-        \#app
+        h1.title \#{$.title}
 
+        \#app
       """
 
     console.log "create: #{path}/index.coffee"
@@ -41,14 +41,12 @@ module.exports = (grunt)->
       """
       $ ->
         'use strict'
-
       """
 
     console.log "create: #{path}/index.styl"
     grunt.file.write "#{path}/index.styl",
       """
       @import \"#{rel}layout\"
-
       """
 
     grunt.task.run "build:#{name}"

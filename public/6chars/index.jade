@@ -8,13 +8,17 @@ block config
   - $.add("wav-decoder.js")
   - $.add("String_random.js")
   - $.add("HexRhythmMachine.js")
+  - $.add("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
+
   #app
-    input(id="p")
-    div(id="ctrl")
-      button(id="play",class="btn",title="play") Play
-      button(id="random",class="btn",title="random") Random
-      button(id="tweet",class="btn",title="twitter") Tweet
-    ul(id="list")
+    input.form-control(v-model="value",class="{{ hasError ? 'error' : '' }}",spellcheck="false")
+    .form-group
+      button.btn.btn-default(v-on="click: play()")   {{ isPlaying ? 'Stop' : 'Play' }}
+      button.btn.btn-default(v-on="click: random()") Random
+      button.btn.btn-default(v-on="click: tweet()")  Tweet
+    ul(v-repeat="list")
+      li
+        a(href="#{{encodeURI(value)}}",v-model="value") {{value}}

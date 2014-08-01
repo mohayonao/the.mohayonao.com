@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="height:100%">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>glitched movie player</title>
@@ -7,21 +7,34 @@
     <meta property="og:title" content="glitched movie player">
     <meta property="og:url" content="http://the.mohayonao.com/glitchedmovie/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <h1>glitched movie player</h1>
-    <div id="app">
-      <div style="border:solid 1px gray">
-        <div id="tips">
-          <div>drag a movie files(*.mp4) to play</div><small>System Requirements: Google Chrome</small>
+    <div id="wrap">
+      <h1 class="title">glitched movie player</h1>
+      <div id="app">
+        <div style="border:solid 1px gray">
+          <div id="tips">
+            <div>drag a movie files(*.mp4) to play</div><small>System Requirements: Google Chrome</small>
+          </div>
+          <canvas id="preview"></canvas>
         </div>
-        <canvas id="preview"></canvas>
+        <input type="range" max="10000" value="0" id="currentTime" class="form-control">
+        <div class="form-group">
+          <button id="play" class="btn btn-default">Play</button>
+          <button id="pause" class="btn btn-default">Pause</button>
+        </div>
       </div>
-      <input type="range" max="10000" value="0" id="currentTime">
-      <div style="font-size:smaller;font-weight:bold">
-        <button id="play">Play</button>
-        <button id="pause">Pause</button>
+      <div id="push"></div>
+    </div>
+    <div id="footer">
+      <div class="container">
+        <ul class="list-inline">
+          <li><a href="/"><img src="/favicon.ico"><span> Top Page</span></a></li>
+          <li><a href="https://twitter.com/intent/tweet?text=@mohayonao&amp;url=http://the.mohayonao.com/glitchedmovie/" target="twitter"><img src="/twitter.png"><span> Contact</span></a></li>
+          <li><a href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public/glitchedmovie/" target="github"><img src="/github.png"><span> View Source on GitHub</span></a></li>
+        </ul>
       </div>
     </div>
     <script>
@@ -29,7 +42,6 @@
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      
       ga('create', 'UA-21613416-9', 'auto');
       ga('send', 'pageview');
     </script>

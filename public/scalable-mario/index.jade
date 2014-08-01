@@ -9,21 +9,17 @@ block config
   - $.add("tunings.js")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
 
   #app
     div(style="margin-bottom:25px")
-      button(id="play") Play
-      button(id="tweet") Tweet this mario
+      button.btn.btn-default#play Play
+      button.btn.btn-default#tweet Tweet
     div
       label(for="scale") Scale
       select(name="scale",id="scale")
-      button(id="random-scale") random
+      button.btn.btn-default.btn-sm#random-scale random
     div
       label(for="tuning") Tuning
       select(name="tuning",id="tuning")
-      button(id="random-tuning") random
-    p use:
-      ul
-        li: a(href="http://mohayonao.github.com/timbre.js") timbre.js
-        li: a(href="http://mohayonao.github.com/sub.js") subcollider.js
+      button.btn.btn-default.btn-sm#random-tuning random

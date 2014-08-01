@@ -8,7 +8,8 @@ block config
   - $.add("face.js")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
+
   #app
     canvas(id="canvas",width=320,height=240)
     video(id="cam",width=640,height=480,autoplay).hidden

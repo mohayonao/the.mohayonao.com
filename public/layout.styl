@@ -21,144 +21,112 @@ CLOUDS        = #ECF0F1
 SILVER        = #BDC3C7
 CONCRETE      = #95A5A6
 ASBESTOS      = #7F8C8D
-
-FORECOLOR = WET_ASPHALT
-SIDEBAR   = SILVER
-LINKCOLOR = BELIZE_HOLE
+GRAY_DARKER   = #222
+GRAY_DARK     = #333
+GRAY          = #555
+GRAY_LIGHT    = #777
+GRAY_LIGHTER  = #EEE
+WHITE         = #FFF
 
 THIN   = 300
 NORMAL = 400
 BOLD   = 700
 FAT    = 900
 
-transition()
-  -webkit-transition: arguments
-  -moz-transition   : arguments
-  -o-transition     : arguments
-  transition        : arguments
-
-border-radius()
-  -webkit-border-radius: arguments
-  -moz-border-radius   : arguments
-  border-radius        : arguments
-
-box-sizing()
-  -moz-box-sizing   : arguments
-  -webkit-box-sizing: arguments
-  -o-box-sizing     : arguments
-  -ms-box-sizing    : arguments
-  box-sizing        : arguments
-
-box-shadow()
-  -webkit-box-shadow: arguments
-  -moz-box-shadow   : arguments
-  box-shadow        : arguments
-
-*
-  box-sizing: border-box
-  outline:none
+TEXT_COLOR  = WET_ASPHALT
+BG_COLOR    = WHITE
+LINK_COLOR  = PETER_RIVER
+LINK_HOVER_COLOR = ALIZARIN
 
 html
-  height: 100%
+  position relative
+  width  100%
+  height 100%
+  min-height 100%
 
 body
-  margin: 0
-  font  : 14px/1.231 "Lato", sans-serif
-  font-weight: THIN
-  color: FORECOLOR
+  width  100%
+  height 100%
+  font-family "Lato", sans-serif
+  font-size   20px
+  font-weight THIN
+  line-height 1.428571429
+  color TEXT_COLOR
+  background-color #fff
 
-a
- color: LINKCOLOR
- text-decoration: none
- &:hover
-   text-decoration: underline
+#wrap
+  min-height 100%
+  height auto !important
+  height 100%
+  margin 0 auto -40px
+  padding 20px
 
-.pull-left
-  float: left
+#push
+#footer
+  height 40px
 
-.pull-right
-  float: right
+#footer
+  background-color #f5f5f5
 
-.hidden
-  display: none
+#footer > .container
+  margin 0
+  padding 8px 12px 0
+  font-size 16px
 
-.jp
-  font-family: "Lato", sans-serif
-  font-size  : 90%
+  a
+    color GRAY_LIGHT
 
-.monospace
-  font-family: "Inconsolata", monospace
+  img
+    width  16px
+    height 16px
+    margin-top -4px
+    opacity 0.6
 
-.ads
-  margin: 10px 20px
-  width: 728px
-  height: 90px
-  background: CLOUDS
+.title
+  font-size 64px
+  font-weight FAT
+  margin-top 0
+  margin-bottom 20px
 
-.btn
-  border: none
-  background: WET_ASPHALT
-  color: white
-  font-size: 16.5px
-  text-decoration: none
-  text-shadow: none
-  box-shadow: none
-  transition: 0.25s
-  border-radius: 6px
-  cursor: pointer
-  -webkit-backface-visibility: hidden
-  background-color: TURQUOISE
-  &:hover
-  &:focus
-    background-color: #2fe2bf
-  &:active
-    background-color: #16a085
-.btn-active
-  background-color: ALIZARIN
-  &:hover
-  &:focus
-    background-color: #ec7063
-  &:active
-    background-color: #dc2d1b
+.well
+  border-width 0
+  box-shadow none
 
-body
-  padding: 20px
+.solid
+  border-style solid
 
-h1
-  font-size  : 61px
-  font-weight: FAT
-  margin     : 0 0 20px 0
-h2
-  font-size  : 26px
-  font-weight: BOLD
+.dashed
+  border-style dashed
 
-textarea
-input
-  border: 1px solid #DCE4EC
-  color     : FORECOLOR
-  background: CLOUDS
-  font-family: "Inconsolata", monospace
-  border-radius: 6px
-  box-shadow   : none
-  text-indent: 1px
-  -webkit-appearance: none
+.dotted
+  border-style dotted
 
-@media screen and (max-width: 650px)
-  .ads
-    margin: 10px 0 0
-    width: 320px
-    height: 50px
+.text-box
+  padding 20px
 
-  .hidden-phone
-    display: none
+.google-adsense
+  margin 20px 0
+  width 728px
+  height 90px
+  background-color CLOUDS
 
-  h1
-    font-size  : 32px
-    font-weight: FAT
-    margin     : 10px
-  h2
-    font-size  : 16px
-    font-weight: BOLD
+@media screen and (max-width: 640px)
+  .title
+    font-size 32px
+    font-weight FAT
+    margin-top 0
+    margin-bottom 10px
 
-  #unit
-    margin: 0 10px
+  #wrap
+    margin 0
+    padding 5px
+
+  #push
+  #footer
+    display none
+
+  .google-adsense
+    margin 20px 0 0 -5px
+    width 320px
+    height 50px
+    background-color CLOUDS

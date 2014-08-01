@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ja" style="height:100%">
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <title>ドッ ドッ ドリドリ ドドドド ドリランド</title>
@@ -7,48 +7,59 @@
     <meta property="og:title" content="ドッ ドッ ドリドリ ドドドド ドリランド">
     <meta property="og:url" content="http://the.mohayonao.com/d/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <h1>ドッ ドッ ドリドリ ドドドド ドリランド</h1>
-    <div id="app">
-      <textarea rows="8" id="text">ドッ ドッ ドリドリ ドドドド ドリランド</textarea>
-      <div id="ctrl">
-        <button id="play" title="play" class="btn">Loading...</button>
-        <button id="random" title="random" class="btn">Random</button>
-        <button id="tweet" title="twitter" class="btn">Tweet</button>
+    <div id="wrap">
+      <h1 class="title">ドッ ドッ ドリドリ ドドドド ドリランド</h1>
+      <div id="app">
+        <textarea id="text" rows="8" class="form-control">ドッ ドッ ドリドリ ドドドド ドリランド</textarea>
+        <div id="ctrl">
+          <button id="play" class="btn btn-default">  Loading...</button>
+          <button id="random" class="btn btn-default">Random</button>
+          <button id="tweet" class="btn btn-default"> Tweet</button>
+        </div>
+        <ul id="list"></ul>
+        <ul>
+          <li><a href="https://gumroad.com/l/sEkz" target="gumroad">課金して新しい機能を手にいれる($1)</a></li>
+          <li><a href="https://gumroad.com/l/zOW" target="gumroad">課金して新しい機能を手にいれる($2)</a></li>
+          <li><a href="https://gumroad.com/l/pSMY" target="gumroad">課金して新しい機能を手にいれる($5)</a></li>
+        </ul>
       </div>
-      <ul id="list"></ul>
-      <ul>
-        <li><a href="https://gumroad.com/l/sEkz" target="gumroad">課金して新しい機能を手にいれる($1)</a></li>
-        <li><a href="https://gumroad.com/l/zOW" target="gumroad">課金して新しい機能を手にいれる($2)</a></li>
-        <li><a href="https://gumroad.com/l/pSMY" target="gumroad">課金して新しい機能を手にいれる($5)</a></li>
-      </ul>
+      <div class="google-adsense">
+        <script>
+          google_ad_client = "ca-pub-2530516645891329";
+          if (window.screen.width > 700) {
+            /* the-mohayonao-com */
+            google_ad_slot = "4193847114";
+            google_ad_width = 728;
+            google_ad_height = 90;
+          } else {
+            /* the-mohayonao-com-mobile */
+            google_ad_slot = "1312602715";
+            google_ad_width = 320;
+            google_ad_height = 50;
+          }
+        </script>
+        <script src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+      </div>
+      <div id="push"></div>
     </div>
-    <div class="ads">
-      <script type="text/javascript"><!--
-        google_ad_client = "ca-pub-2530516645891329";
-        if (window.screen.width > 700) {
-          /* the-mohayonao-com */
-          google_ad_slot = "4193847114";
-          google_ad_width = 728;
-          google_ad_height = 90;
-        } else {
-          /* the-mohayonao-com-mobile */
-          google_ad_slot = "1312602715";
-          google_ad_width = 320;
-          google_ad_height = 50;
-        }
-      //-->
-      </script>
-      <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+    <div id="footer">
+      <div class="container">
+        <ul class="list-inline">
+          <li><a href="/"><img src="/favicon.ico"><span> Top Page</span></a></li>
+          <li><a href="https://twitter.com/intent/tweet?text=@mohayonao&amp;url=http://the.mohayonao.com/d/" target="twitter"><img src="/twitter.png"><span> Contact</span></a></li>
+          <li><a href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public/d/" target="github"><img src="/github.png"><span> View Source on GitHub</span></a></li>
+        </ul>
+      </div>
     </div>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      
       ga('create', 'UA-21613416-9', 'auto');
       ga('send', 'pageview');
     </script>

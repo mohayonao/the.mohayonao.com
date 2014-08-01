@@ -5,15 +5,15 @@ block config
   - $.path  = "/glitchedmovie/"
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
 
   #app
     div(style="border:solid 1px gray")
-      div(id="tips")
+      div#tips
         div drag a movie files(*.mp4) to play
         small System Requirements: Google Chrome
-      canvas(id="preview")
-    input(type="range",max="10000",value="0",id="currentTime")
-    div(style="font-size:smaller;font-weight:bold")
-      button(id="play") Play
-      button(id="pause") Pause
+      canvas#preview
+    input.form-control(type="range",max="10000",value="0",id="currentTime")
+    .form-group
+      button.btn.btn-default#play Play
+      button.btn.btn-default#pause Pause

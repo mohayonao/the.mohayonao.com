@@ -8,16 +8,16 @@ block config
   - $.add("MutekiTimer.js")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
 
   #app
     div(style="margin-bottom:25px")
-      button(id="play") Play
-      button(id="tweet") Tweet this function
-    div(id="f1")
+      button.btn.btn-default#play Play
+      button.btn.btn-default#tweet Tweet this function
+    div#f1
       span function (t) {
-      div(id="f2")
-        input(type="text",id="func",placeholder="return")
+      div#f2
+        input.form-control#func(type="text",placeholder="return")
       span }
-    ul(id="history-container")
-      li(id="history") History
+    ul#history-container
+      li#history History

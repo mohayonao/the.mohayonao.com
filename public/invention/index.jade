@@ -6,15 +6,21 @@ block config
   - $.ads   = true
   - $.add("pico.js")
   - $.add("reverb.js")
-  - $.add("svg-ui.js")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
+
   #app
-    canvas(id="canvas",width="150",height="200")
-    h2 1. choose
-    ul(id="mode").svg-radio
-      li(value="normal",checked) Inventionen 13 a-moll
-      li(value="markov") Markov Inventionen
-    h2 2. click J.S.Bach to play/pause music
-    h2.hidden-phone 3. mouseover Y : control EFX Depth
+    canvas#canvas(width="150",height="200")
+    ol
+      li choose
+      .radio
+        label
+          input(type="radio",name="mode",value="normal",checked)
+          span Inventionen 13 a-moll
+      .radio
+        label
+          input(type="radio",name="mode",value="markov")
+          span Markov Inventionen
+      li click J.S.Bach to play/pause music
+      li mouseover Y : control EFX Depth

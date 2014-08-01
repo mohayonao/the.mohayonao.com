@@ -1,6 +1,6 @@
 $ ->
   'use strict'
-  
+
   formants =
     a:[700, 1200, 2900]
     i:[300, 2700, 2700]
@@ -31,10 +31,8 @@ $ ->
     if isPlaying
       synth.play()
       timer.start()
-      $(this).addClass 'btn-active'
+      $(this).text 'Stop'
     else
       synth.pause()
       timer.pause()
-      $(this).removeClass 'btn-active'
-  
-  0
+      $(this).text 'Start'

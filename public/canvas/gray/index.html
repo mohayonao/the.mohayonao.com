@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="height:100%">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <title>canvas/gray</title>
@@ -7,38 +7,49 @@
     <meta property="og:title" content="canvas/gray">
     <meta property="og:url" content="http://the.mohayonao.com/canvas/gray">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <h1>canvas/gray</h1>
-    <div id="app">
-      <canvas id="canvas" width="512" height="512"></canvas>
-      <video id="cam" width="512" height="512" autoplay class="hidden"></video><img id="src" src="../sample01.jpg" class="hidden">
+    <div id="wrap">
+      <h1 class="title">canvas/gray</h1>
+      <div id="app">
+        <canvas id="canvas" width="512" height="512"></canvas>
+        <video id="cam" width="512" height="512" autoplay class="hidden"></video><img id="src" src="../sample01.jpg" class="hidden">
+      </div>
+      <div class="google-adsense">
+        <script>
+          google_ad_client = "ca-pub-2530516645891329";
+          if (window.screen.width > 700) {
+            /* the-mohayonao-com */
+            google_ad_slot = "4193847114";
+            google_ad_width = 728;
+            google_ad_height = 90;
+          } else {
+            /* the-mohayonao-com-mobile */
+            google_ad_slot = "1312602715";
+            google_ad_width = 320;
+            google_ad_height = 50;
+          }
+        </script>
+        <script src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+      </div>
+      <div id="push"></div>
     </div>
-    <div class="ads">
-      <script type="text/javascript"><!--
-        google_ad_client = "ca-pub-2530516645891329";
-        if (window.screen.width > 700) {
-          /* the-mohayonao-com */
-          google_ad_slot = "4193847114";
-          google_ad_width = 728;
-          google_ad_height = 90;
-        } else {
-          /* the-mohayonao-com-mobile */
-          google_ad_slot = "1312602715";
-          google_ad_width = 320;
-          google_ad_height = 50;
-        }
-      //-->
-      </script>
-      <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+    <div id="footer">
+      <div class="container">
+        <ul class="list-inline">
+          <li><a href="/"><img src="/favicon.ico"><span> Top Page</span></a></li>
+          <li><a href="https://twitter.com/intent/tweet?text=@mohayonao&amp;url=http://the.mohayonao.com/canvas/gray" target="twitter"><img src="/twitter.png"><span> Contact</span></a></li>
+          <li><a href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public/canvas/gray" target="github"><img src="/github.png"><span> View Source on GitHub</span></a></li>
+        </ul>
+      </div>
     </div>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      
       ga('create', 'UA-21613416-9', 'auto');
       ga('send', 'pageview');
     </script>

@@ -8,11 +8,11 @@ block config
   - $.add("../color-0.7.1.min.js")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
 
   #app
     canvas#canvas(v-attr="width: width, height: height")
     #params
-      div(v-repeat="params")
+      .form-group(v-repeat="params")
         input(type="range", v-model="value", min="1", max="100", v-on="change: update()")
-    button#tweet(v-on="click: tweet()") Tweet
+    button.btn.btn-default#tweet(v-on="click: tweet()") Tweet

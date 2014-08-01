@@ -7,7 +7,7 @@ block config
   - $.add("timbre.js")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
+
   #app
-    div(style="margin-bottom:25px")
-      button(id="play",class="btn") Play
+    button#play.btn.btn-default Play

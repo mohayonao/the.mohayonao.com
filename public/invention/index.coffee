@@ -381,6 +381,8 @@ $ ->
         else @readEnd = true
       @efx.process L, R
 
+  isMarkov = false
+
   main = (img)->
     $canvas = $(canvas = document.getElementById("canvas"))
     width  = canvas.width  = $canvas.width()
@@ -397,9 +399,12 @@ $ ->
     sys = new SoundSystem
     sys.setMML INVENTION_13
 
+    $('input').on 'click', (e)->
+      isMarkov = $(e.target).attr('value') is 'markov'
+
     $canvas.on 'click', (e)->
-      mode = $('#mode').attr('value')
-      console.log mode
+      mode = if isMarkov then 'markov' else 'normal'
+
       sys.setMode mode
       if sys.toggle()
         if mode == "markov"
@@ -420,13 +425,6 @@ $ ->
 
       portrait.y_rate  = (1.0 - y_rate) * 3.0 + 0.25
       portrait.x_index = (x_rate - 0.5) * 5
-
-    $(window).keydown (e)->
-        if not e.ctrkKey and not e.metaKey
-            switch e.keyCode
-                when 32 then $canvas.click()
-                when 38 then $("#normal").click()
-                when 40 then $("#markov").click()
 
     animate()
 

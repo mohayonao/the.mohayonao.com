@@ -6,13 +6,19 @@ block config
   - $.add("//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js")
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
+
   #app
-    table
-      tr
-        td: textarea.monospace(id="src", placeholder="1. CoffeeScript")
-        td: textarea.monospace(id="tokens", placeholder="2. tokens")
-      tr
-        td: textarea.monospace(id="dst", placeholder="4. JavaScript")
-        td: textarea.monospace(id="nodes", placeholder="3. AST (not implemented)")
-    button.btn(id="link") Link
+    .row
+      .col-md-6
+        textarea.form-control(id="src", rows=12, placeholder="1. CoffeeScript")
+      .col-md-6
+        textarea.form-control(id="tokens", rows=12, placeholder="2. tokens")
+    hr
+    .row
+      .col-md-6
+        textarea.form-control(id="dst", rows=12, placeholder="4. JavaScript")
+      .col-md-6
+        textarea.form-control(id="nodes", rows=12, placeholder="3. AST (not implemented)")
+    hr
+    button.btn.btn-default(id="link") Link

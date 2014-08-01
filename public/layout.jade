@@ -4,12 +4,12 @@
 - $.title  = "the.mohayonao.com"
 - $.path   = ""
 - $.ads    = false
-- $.footer = false
+- $.fullscreen = false
 
 block config
 
 doctype html
-html(lang="#{$.lang}",style="height:100%")
+html(lang="#{$.lang}")
   head
     meta(charset="utf-8")
     title #{$.title}
@@ -17,38 +17,56 @@ html(lang="#{$.lang}",style="height:100%")
     meta(property="og:title",content="#{$.title}")
     meta(property="og:url",content="http://the.mohayonao.com#{$.path}")
     link(rel="shortcut icon", href="/favicon.ico", id="favicon")
+    link(rel="stylesheet",href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css")
     each mod in $
       if /\.css$/.test(mod)
         link(rel="stylesheet",href=mod)
     link(rel="stylesheet",href="index.css")
   body
+    if $.fullscreen
+      block content
+    else
+      #wrap
+        block content
 
-    block content
+        if $.ads
+          .google-adsense
+            script.
+              google_ad_client = "ca-pub-2530516645891329";
+              if (window.screen.width > 700) {
+                /* the-mohayonao-com */
+                google_ad_slot = "4193847114";
+                google_ad_width = 728;
+                google_ad_height = 90;
+              } else {
+                /* the-mohayonao-com-mobile */
+                google_ad_slot = "1312602715";
+                google_ad_width = 320;
+                google_ad_height = 50;
+              }
+            script(src="//pagead2.googlesyndication.com/pagead/show_ads.js")
 
-    if $.ads
-      div.ads.
-        <script type="text/javascript"><!--
-          google_ad_client = "ca-pub-2530516645891329";
-          if (window.screen.width > 700) {
-            /* the-mohayonao-com */
-            google_ad_slot = "4193847114";
-            google_ad_width = 728;
-            google_ad_height = 90;
-          } else {
-            /* the-mohayonao-com-mobile */
-            google_ad_slot = "1312602715";
-            google_ad_width = 320;
-            google_ad_height = 50;
-          }
-        //-->
-        </script>
-        <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+        #push
+      #footer
+        .container
+          ul.list-inline
+            li
+              a(href="/")
+                img(src="/favicon.ico")
+                span  Top Page
+            li
+              a(href="https://twitter.com/intent/tweet?text=@mohayonao&url=http://the.mohayonao.com#{$.path}",target="twitter")
+                img(src="/twitter.png")
+                span  Contact
+            li
+              a(href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public#{$.path}",target="github")
+                img(src="/github.png")
+                span  View Source on GitHub
     script.
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
       ga('create', 'UA-21613416-9', 'auto');
       ga('send', 'pageview');
     script(src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js")
