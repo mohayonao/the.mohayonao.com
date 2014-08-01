@@ -17,10 +17,10 @@ html(lang="#{$.lang}",style="height:100%")
     meta(property="og:title",content="#{$.title}")
     meta(property="og:url",content="http://the.mohayonao.com#{$.path}")
     link(rel="shortcut icon", href="/favicon.ico", id="favicon")
-    link(rel="stylesheet",href="index.css")
     each mod in $
       if /\.css$/.test(mod)
         link(rel="stylesheet",href=mod)
+    link(rel="stylesheet",href="index.css")
   body
 
     block content
