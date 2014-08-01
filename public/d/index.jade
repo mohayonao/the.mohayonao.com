@@ -5,12 +5,12 @@ block config
   - $.title = "ドッ ドッ ドリドリ ドドドド ドリランド"
   - $.path  = "/d/"
   - $.ads   = true
-  - $.add("libs/pico.js")
-  - $.add("libs/String_random.js")
+  - $.add("pico.js")
+  - $.add("String_random.js")
 
 block content
   h1 #{$.title}
-  #unit
+  #app
     textarea(rows=8,id="text") ドッ ドッ ドリドリ ドドドド ドリランド
     div(id="ctrl")
       button(id="play",class="btn",title="play") Loading...

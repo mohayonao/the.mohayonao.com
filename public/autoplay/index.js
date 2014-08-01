@@ -1,11 +1,10 @@
 (function() {
   $(function() {
     'use strict';
-    var AudioContext, bufSrc, context, decode, jsNode, play;
-    AudioContext = window.AudioContext || window.webkitAudioContext;
+    var bufSrc, context, decode, jsNode, play;
     context = new AudioContext;
     bufSrc = context.createBufferSource();
-    jsNode = context.createScriptProcessor ? context.createScriptProcessor(1024, 1, 1) : context.createJavaScriptNode(1024, 1, 1);
+    jsNode = context.createScriptProcessor(1024, 1, 1);
     jsNode.onaudioprocess = function(e) {
       return e.outputBuffer.getChannelData(0).set(e.inputBuffer.getChannelData(0));
     };

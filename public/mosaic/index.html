@@ -7,31 +7,38 @@
     <meta property="og:title" content="gif.mosaic">
     <meta property="og:url" content="http://the.mohayonao.com/mosaic/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="libs/GIFEncoder.js"></script>
-    <link rel="stylesheet" href="libs/LigatureSymbols-2.11.css">
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="LigatureSymbols-2.11.css">
   </head>
   <body>
-    <div id="content">
-      <h1>gif.mosaic</h1>
-      <div id="unit">
-        <div id="msg"></div>
-        <div id="editor-container">
-          <canvas id="editor"></canvas>
-          <div id="dialog">
-            <div class="caption">frames</div>
-            <div><span title="minus" data-key="frames" class="lsf-icon"></span><span id="frames">6</span><span title="plus" data-key="frames" class="lsf-icon"></span></div>
-            <div class="caption">speed</div>
-            <div><span title="minus" data-key="speed" class="lsf-icon"></span><span id="speed">100</span><span title="plus" data-key="speed" class="lsf-icon"></span></div>
-          </div><img id="result">
-        </div>
-        <div id="controller"><span class="button lsf-icon"></span><span class="button lsf-icon"></span><span class="button lsf-icon"></span><span class="button lsf-icon"></span></div>
-        <div style="margin-top:25px"><a id="download" title="save" download="mosaic.gif" class="lsf-icon hidden">Download</a></div>
+    <h1>gif.mosaic</h1>
+    <div id="app">
+      <div id="msg"></div>
+      <div id="editor-container">
+        <canvas id="editor"></canvas>
+        <div id="dialog">
+          <div class="caption">frames</div>
+          <div><span title="minus" data-key="frames" class="lsf-icon"></span><span id="frames">6</span><span title="plus" data-key="frames" class="lsf-icon"></span></div>
+          <div class="caption">speed</div>
+          <div><span title="minus" data-key="speed" class="lsf-icon"></span><span id="speed">100</span><span title="plus" data-key="speed" class="lsf-icon"></span></div>
+        </div><img id="result">
       </div>
+      <div id="controller"><span class="button lsf-icon"></span><span class="button lsf-icon"></span><span class="button lsf-icon"></span><span class="button lsf-icon"></span></div>
+      <div style="margin-top:25px"><a id="download" title="save" download="mosaic.gif" class="lsf-icon hidden">Download</a></div>
     </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="GIFEncoder.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

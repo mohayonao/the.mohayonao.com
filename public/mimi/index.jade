@@ -3,11 +3,10 @@ extend ../layout
 block config
   - $.title = "mimi-grep"
   - $.path  = "/mimi/"
-  - $.media = "desktop"
-  - $.add("libs/pico.js")
-  - $.add("libs/biquad.js")
+  - $.add("pico.js")
+  - $.add("biquad.js")
 
 block content
   canvas(id="preview")
-  #unit
+  #app
     div(id="tips") drag a file to play

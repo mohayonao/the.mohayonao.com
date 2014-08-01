@@ -3,14 +3,15 @@ extend ../layout
 block config
   - $.title = "scalable mario"
   - $.path  = "/scalable-mario/"
-  - $.add("libs/timbre.js")
-  - $.add("libs/subcollider.js")
-  - $.add("libs/scales.js")
-  - $.add("libs/tunings.js")
+  - $.add("timbre.js")
+  - $.add("subcollider.js")
+  - $.add("scales.js")
+  - $.add("tunings.js")
 
 block content
   h1 #{$.title}
-  #unit
+
+  #app
     div(style="margin-bottom:25px")
       button(id="play") Play
       button(id="tweet") Tweet this mario

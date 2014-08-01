@@ -7,34 +7,26 @@
     <meta property="og:title" content="tarai-music">
     <meta property="og:url" content="http://the.mohayonao.com/tarai/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="libs/timbre.js"></script>
-    <script src="libs/subcollider.js"></script>
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div id="content">
-      <h1>tarai-music</h1>
-      <div id="unit">
-        <div style="margin-bottom:25px">
-          <button id="play" class="btn">Play</button>
-        </div>
-        <p>inspired by:
-          <ul>
-            <li><a href="http://d.hatena.ne.jp/aike/20120723" class="jp">SuperColliderで竹内関数音楽 - aikeの日記</a></li>
-            <li><a href="http://en.wikipedia.org/wiki/Tak_(function)">Tak function</a></li>
-          </ul>
-        </p>
-        <p>use:
-          <ul>
-            <li><a href="http://mohayonao.github.com/timbre.js">timbre.js</a></li>
-            <li><a href="http://mohayonao.github.com/sub.js">subcollider.js</a></li>
-          </ul>
-        </p>
+    <h1>tarai-music</h1>
+    <div id="app">
+      <div style="margin-bottom:25px">
+        <button id="play" class="btn">Play</button>
       </div>
+      <p>inspired by:
+        <ul>
+          <li><a href="http://d.hatena.ne.jp/aike/20120723" class="jp">SuperColliderで竹内関数音楽 - aikeの日記</a></li>
+          <li><a href="http://en.wikipedia.org/wiki/Tak_(function)">Tak function</a></li>
+        </ul>
+      </p>
+      <p>use:
+        <ul>
+          <li><a href="http://mohayonao.github.com/timbre.js">timbre.js</a></li>
+          <li><a href="http://mohayonao.github.com/sub.js">subcollider.js</a></li>
+        </ul>
+      </p>
     </div>
     <div class="ads">
       <script type="text/javascript"><!--
@@ -52,9 +44,22 @@
         }
       //-->
       </script>
-      <script type="text/javascript"
-        src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-      </script>
+      <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
     </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="timbre.js"></script>
+    <script src="subcollider.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

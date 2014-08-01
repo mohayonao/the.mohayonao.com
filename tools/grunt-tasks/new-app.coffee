@@ -32,7 +32,7 @@ module.exports = (grunt)->
 
       block content
         h1 \#{$.title}
-        \#unit
+        \#app
 
       """
 
@@ -49,8 +49,6 @@ module.exports = (grunt)->
       """
       @import \"#{rel}layout\"
 
-      #content
-        0
       """
 
     grunt.task.run "build:#{name}"

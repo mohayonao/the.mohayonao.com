@@ -41,8 +41,8 @@
       return processor.process(this, canvas);
     });
     onsuccess = function(stream) {
-      video.src = window.webkitURL.createObjectURL(stream);
-      return apps.animate(function() {
+      video.src = createObjectURL(stream);
+      return utils.animate(function() {
         return processor.process(video, canvas);
       });
     };

@@ -7,29 +7,18 @@
     <meta property="og:title" content="6chars drums">
     <meta property="og:url" content="http://the.mohayonao.com/6chars/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="http://platform.twitter.com/widgets.js"></script>
-    <script src="libs/pico.js"></script>
-    <script src="libs/wav-decoder.js"></script>
-    <script src="libs/String_random.js"></script>
-    <script src="HexRhythmMachine.js"></script>
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div id="content">
-      <h1>6chars drums</h1>
-      <div id="unit">
-        <input id="p">
-        <div id="ctrl">
-          <button id="play" title="play" class="btn">Play</button>
-          <button id="random" title="random" class="btn">Random</button>
-          <button id="tweet" title="twitter" class="btn">Tweet</button>
-        </div>
-        <ul id="list"></ul>
+    <h1>6chars drums</h1>
+    <div id="app">
+      <input id="p">
+      <div id="ctrl">
+        <button id="play" title="play" class="btn">Play</button>
+        <button id="random" title="random" class="btn">Random</button>
+        <button id="tweet" title="twitter" class="btn">Tweet</button>
       </div>
+      <ul id="list"></ul>
     </div>
     <div class="ads">
       <script type="text/javascript"><!--
@@ -47,9 +36,24 @@
         }
       //-->
       </script>
-      <script type="text/javascript"
-        src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-      </script>
+      <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
     </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="pico.js"></script>
+    <script src="wav-decoder.js"></script>
+    <script src="String_random.js"></script>
+    <script src="HexRhythmMachine.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

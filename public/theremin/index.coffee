@@ -12,7 +12,7 @@ if typeof window != 'undefined'
       constructor: ->
         @worker = new Worker(filename)
         privates = worker:@worker, index:0, pool:{}
-        
+
         @send = _send.bind privates
         @worker.addEventListener 'message', _onmessage.bind privates
 
@@ -20,10 +20,10 @@ if typeof window != 'undefined'
         @width  = @canvas.width  = 160
         @height = @canvas.height = 120
         @context = @canvas.getContext '2d'
-  
+
       process: (src)->
         @context.drawImage src, 0, 0, src.width, src.height, 0, 0, @width, @height
-        
+
         imageData = @context.getImageData 0, 0, @width, @height
 
         @send('process', imageData).then (data)=>
@@ -46,8 +46,8 @@ if typeof window != 'undefined'
         dfd = @pool[index] = new $.Deferred
         @worker.postMessage type:type, index:index, data:data
         dfd.promise()
-    
-    
+
+
     class ImageProcessor
       constructor: ->
         @detector = new DetectProcessor
@@ -60,7 +60,7 @@ if typeof window != 'undefined'
       setSize: (width, height)->
         @width  = @canvas.width  = width
         @height = @canvas.height = height
-    
+
       process: (src, dst)->
         @detector.process src
 
@@ -109,7 +109,7 @@ if typeof window != 'undefined'
             left : if left.y  is -1 then -1 else left.y  * scale / @height
             right: if right.y is -1 then -1 else right.y * scale / @height
           )
-    
+
     class SoundProcessor
       constructor: ->
         @freq = T("param", value:880)
@@ -118,18 +118,18 @@ if typeof window != 'undefined'
         @vca  = T("*", @amp, @vco)
         @master = T("delay", time:150, fb:0.5, @vca)
         @scale = sc.Scale.major()
-        
+
       play: ->
         @master.play()
-      
+
       pause: ->
         @master.pause()
-    
+
     video  = document.getElementById 'cam'
     canvas = document.getElementById 'canvas'
     processor = new ImageProcessor
     sound     = new SoundProcessor
-    
+
     processor.callback = (opts)->
       freq = opts.right
       if freq != -1
@@ -155,11 +155,11 @@ if typeof window != 'undefined'
         else
           sound.amp.linTo 0, 1000
       @amp = amp
-    
+
     onsuccess = (stream)->
-      video.src = window.webkitURL.createObjectURL stream
+      video.src = createObjectURL stream
       sound.play()
-      apps.animate fps:5, ->
+      utils.animate fps:5, ->
         processor.process video, canvas
         true
 
@@ -167,13 +167,13 @@ if typeof window != 'undefined'
       console.log error
 
     navigator.webkitGetUserMedia {audio:false, video:true}, onsuccess, onerror
-    
+
 else do (worker = @)->
-  
+
   console =
     log: ->
       worker.postMessage type:'console', data:slice.call arguments
-  
+
   send = (index, data)->
     worker.postMessage type:'return', index:index, data:data
 
@@ -219,7 +219,7 @@ else do (worker = @)->
         obj.x += x
         obj.y += y
         obj.c += 1
-    
+
     if left.c >= thres
       left.x /= left.c
       left.y /= left.c

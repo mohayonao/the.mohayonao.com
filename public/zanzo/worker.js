@@ -2,7 +2,7 @@
   'use strict';
   var draw, overlay, sum;
 
-  importScripts('./libs/omggif.js');
+  importScripts('omggif.js');
 
   importScripts('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js');
 

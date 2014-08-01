@@ -212,9 +212,9 @@
         return this.amp = amp;
       };
       onsuccess = function(stream) {
-        video.src = window.webkitURL.createObjectURL(stream);
+        video.src = createObjectURL(stream);
         sound.play();
-        return apps.animate({
+        return utils.animate({
           fps: 5
         }, function() {
           processor.process(video, canvas);

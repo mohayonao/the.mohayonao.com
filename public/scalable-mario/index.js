@@ -86,12 +86,12 @@
     $('#tweet').on('click', function() {
       var text, url;
       url = "http://" + location.host + "/scalable-mario/";
-      url += "?" + apps.param({
+      url += "?" + utils.param({
         s: $scale.val(),
         t: $tuning.val()
       });
       text = "" + changeScale.name + " なマリオの曲";
-      return apps.tweet({
+      return utils.tweet({
         text: text,
         url: url
       });
@@ -147,7 +147,7 @@
       return $tuning.val(Object.keys(tunings).choose()).change();
     });
     if ((q = location.search.substr(1))) {
-      params = apps.deparam(q);
+      params = utils.deparam(q);
       s = params.s;
       t = params.t;
     } else {

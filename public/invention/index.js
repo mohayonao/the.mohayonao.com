@@ -628,7 +628,7 @@
         if (sys.toggle()) {
           if (mode === "markov") {
             isAnimate = true;
-            if (apps.isDesktop) {
+            if (utils.isDesktop()) {
               return requestAnimationFrame(animate);
             }
           }

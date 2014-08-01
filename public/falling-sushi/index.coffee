@@ -55,7 +55,7 @@ $ ->
     )
   objects.sort (a, b)-> a.z - b.z
 
-  apps.animate fps:40, (now, dt)->
+  utils.animate fps:40, (now, dt)->
     context.clearRect 0, 0, canvas.width, canvas.height
     for i in [0...OBJECT_NUM] by 1
       o = objects[i]

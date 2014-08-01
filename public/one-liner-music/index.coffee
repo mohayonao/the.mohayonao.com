@@ -130,7 +130,7 @@ $ ->
     url  = "http://#{location.host}/one-liner-music/"
     text = "いい曲できた"
     func = encodeURIComponent processor.func
-    apps.tweet text:text, url:"#{url}?#{func}&"
+    utils.tweet text:text, url:"#{url}?#{func}&"
 
   if (q = location.search.substr(1, location.search.length - 2))
     $func.val decodeURIComponent q
@@ -139,5 +139,5 @@ $ ->
 
   commit()
 
-  if apps.isPhone
+  if utils.isPhone()
     $('#history-container').hide()

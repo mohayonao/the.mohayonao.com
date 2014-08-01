@@ -16,7 +16,7 @@ $ ->
     false
 
   resizeContainer = do ->
-    $container = $('#unit')
+    $container = $('#app')
     -> $container.height ($container.width() * 0.75)|0
 
   $(window).on 'resize', resizeContainer

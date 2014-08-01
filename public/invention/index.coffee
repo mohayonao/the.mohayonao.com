@@ -39,7 +39,7 @@ $ ->
   r>bg+edbgdc8e8>g+8<e8 >a8<f+8>b8<g+8c8a8d8b-8
   g+8f8d8>b8g+8a8d8e8 f8d+8e8<e8>a2
   '''
-  
+
 
   Array::randomchoice = -> @[(Math.random() * @.length)|0]
 
@@ -52,7 +52,7 @@ $ ->
     -0.125, -0.250, -0.375, -0.500, -0.625, -0.750, -0.875, -1.000
     -1.000, -0.875, -0.750, -0.625, -0.500, -0.375, -0.250, -0.125
   ])
-  
+
   class DancingPortrait
     class Cell
       constructor: (@rgb, @size, @x, @y, @z=0)->
@@ -82,7 +82,7 @@ $ ->
           c.z = -Math.sqrt(dx*dx + dy*dy)
           cells.push c
       cells.sort (a, b) -> a.z - b.z
-      
+
       @anime_prev = Date.now()
       [@x_index, @x_speed, @x_rate] = [0, 0, 1.0]
       [@y_index, @y_speed, @y_rate] = [0, 0, 1.0]
@@ -99,10 +99,10 @@ $ ->
       for c in @cells
           c.draw(ctx, dx, dy)
       i %= sinetable.length
-      
+
       @y_index += @y_speed * elapsed
       if @y_index >= sinetable.length then @y_index -= sinetable.length
-      
+
     getImgData = (img)->
         canvas = document.createElement('canvas')
         canvas.width  = img.width
@@ -130,14 +130,14 @@ $ ->
   class ToneGenerator
     constructor: (opts)->
       freq = 440 * Math.pow(2, (opts.noteIndex - 69) * 1/12)
-      
+
       @wavelet   = opts.wavelet ? sinetable
       @volume    = opts.volume  ? 0.75
       @phase     = opts.phase   ? 0
       @phaseStep = freq * @wavelet.length / pico.samplerate
       @duration  = opts.duration ? 1000
       @volumeIncr = @volume / (@duration * 0.001 * pico.samplerate)
-    
+
     next: (size)->
       @volume -= @volumeIncr * size
       if @volume <= 0 then @volume = 0
@@ -146,7 +146,7 @@ $ ->
         stream[i] = @wavelet[(@phase|0) % @wavelet.length] * @volume
         @phase += @phaseStep
       stream
-  
+
   class MMLTrack
     constructor: (opts)->
       @originData = opts.mml
@@ -162,17 +162,17 @@ $ ->
       @gens = []
 
       @data = compile @originData
-      
+
     nextTones: ->
       res = @data[@index++]
       if res? then [res] else null
-    
+
     next: (size)->
       [noteCounter, noteCounterMax] = [@noteCounter, @noteCounterMax]
       [gens, vol] = [@gens, @vol]
 
       cell = new Float32Array(size)
-      
+
       noteCounter -= size
       if noteCounter <= 0
         if (lis = @nextTones())?
@@ -201,7 +201,7 @@ $ ->
       @noteCounter = noteCounter
 
       cell
-      
+
     compile = (data)->
       [O, L, V] = [3, 8, 12]
       TONES = c:0, d:2, e:4, f:5, g:7, a:9, b:11
@@ -224,7 +224,7 @@ $ ->
           else noteIndex = O * 12 + t + 36 + (S[sign] ? 0)
         length = if val == "" then L else Number(val)
         noteIndex: noteIndex, length:length, velocity: V
-      
+
 
   class MarkovMMLTrack extends MMLTrack
       constructor: (player, options={})->
@@ -323,7 +323,7 @@ $ ->
               (chord[a] ?= []).push b
           @chord = chord
 
-            
+
 
   class SoundSystem
     constructor: ->
@@ -339,7 +339,7 @@ $ ->
       t2.makeChord t3
       @normalTracks = [ t0, t1 ]
       @markovTrack  = [ t2 ]
-  
+
     setMode: (mode)->
       switch mode
         when 'markov'
@@ -352,10 +352,10 @@ $ ->
     setEfxDepth: (depth)->
       depth = Math.max(0, Math.min(depth, 1))
       @efx.setRoomSize depth
-        
+
     play : -> pico.play(@) if not pico.isPlaying
     pause: -> pico.pause() if     pico.isPlaying
-    
+
     toggle: ->
       if pico.isPlaying
         pico.pause()
@@ -363,13 +363,13 @@ $ ->
       else
         pico.play(@)
         true
-    
+
     process: (L, R)->
       mmlTracks = @mmlTracks
-      
+
       for i in [0...L.length] by 1
         L[i] = R[i] = 0
-      
+
       for mml in mmlTracks
         cell = mml.next L.length
         for i in [0...L.length] by 1
@@ -380,12 +380,12 @@ $ ->
         if @readEnd then @pause()
         else @readEnd = true
       @efx.process L, R
-  
+
   main = (img)->
     $canvas = $(canvas = document.getElementById("canvas"))
     width  = canvas.width  = $canvas.width()
     height = canvas.height = $canvas.height()
-    
+
     portrait = new DancingPortrait(img:img, canvas:canvas)
     portrait.y_speed = (sinetable.length * BPM * 2) / (60 * 1000)
 
@@ -396,7 +396,7 @@ $ ->
 
     sys = new SoundSystem
     sys.setMML INVENTION_13
-    
+
     $canvas.on 'click', (e)->
       mode = $('#mode').attr('value')
       console.log mode
@@ -404,7 +404,7 @@ $ ->
       if sys.toggle()
         if mode == "markov"
           isAnimate = true
-          if apps.isDesktop
+          if utils.isDesktop()
             requestAnimationFrame animate
       else
         isAnimate = false
@@ -427,8 +427,8 @@ $ ->
                 when 32 then $canvas.click()
                 when 38 then $("#normal").click()
                 when 40 then $("#markov").click()
-    
+
     animate()
- 
+
   $('<img>').attr('src', '/invention/bach.png').load (e)->
     main e.target

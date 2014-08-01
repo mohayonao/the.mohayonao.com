@@ -17,7 +17,7 @@
     });
     resizeContainer = (function() {
       var $container;
-      $container = $('#unit');
+      $container = $('#app');
       return function() {
         return $container.height(($container.width() * 0.75) | 0);
       };

@@ -7,37 +7,44 @@
     <meta property="og:title" content="coffee-script viewer">
     <meta property="og:url" content="http://the.mohayonao.com/coffee/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script>
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div id="content">
-      <h1>coffee-script viewer</h1>
-      <div id="unit">
-        <table>
-          <tr>
-            <td>
-              <textarea id="src" placeholder="1. CoffeeScript" class="monospace"></textarea>
-            </td>
-            <td>
-              <textarea id="tokens" placeholder="2. tokens" class="monospace"></textarea>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <textarea id="dst" placeholder="4. JavaScript" class="monospace"></textarea>
-            </td>
-            <td>
-              <textarea id="nodes" placeholder="3. AST (not implemented)" class="monospace"></textarea>
-            </td>
-          </tr>
-        </table>
-        <button id="link" class="btn">Link</button>
-      </div>
+    <h1>coffee-script viewer</h1>
+    <div id="app">
+      <table>
+        <tr>
+          <td>
+            <textarea id="src" placeholder="1. CoffeeScript" class="monospace"></textarea>
+          </td>
+          <td>
+            <textarea id="tokens" placeholder="2. tokens" class="monospace"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <textarea id="dst" placeholder="4. JavaScript" class="monospace"></textarea>
+          </td>
+          <td>
+            <textarea id="nodes" placeholder="3. AST (not implemented)" class="monospace"></textarea>
+          </td>
+        </tr>
+      </table>
+      <button id="link" class="btn">Link</button>
     </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

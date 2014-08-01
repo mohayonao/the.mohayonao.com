@@ -4,15 +4,14 @@ block config
   - $.title = "6chars drums"
   - $.path  = "/6chars/"
   - $.ads   = true
-  - $.add("http://platform.twitter.com/widgets.js")
-  - $.add("libs/pico.js")
-  - $.add("libs/wav-decoder.js")
-  - $.add("libs/String_random.js")
+  - $.add("pico.js")
+  - $.add("wav-decoder.js")
+  - $.add("String_random.js")
   - $.add("HexRhythmMachine.js")
 
 block content
   h1 #{$.title}
-  #unit
+  #app
     input(id="p")
     div(id="ctrl")
       button(id="play",class="btn",title="play") Play

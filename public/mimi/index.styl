@@ -1,29 +1,26 @@
 @import "../layout"
 
 body
+  padding 0
+  overflow-y hidden
 
-#content
-  padding: 0
+#preview
+  width : 100%
   height: 100%
-  overflow-y: hidden
 
-  #preview
+  -webkit-full-screen
+    position: absolute
+    top:0; left:0
     width : 100%
     height: 100%
 
-    -webkit-full-screen
-      position: absolute
-      top:0; left:0
-      width : 100%
-      height: 100%
+#app
+  position: absolute
+  top: 10px
+  left: 10px
 
-  #unit
-    position: absolute
-    top: 10px
-    left: 10px
-
-    #tips
-      background: #fff
-      opacity: 0.9
-      padding: 10px
-      border-radius: 5px
+  #tips
+    background: #fff
+    opacity: 0.9
+    padding: 10px
+    border-radius: 5px

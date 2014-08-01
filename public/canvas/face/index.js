@@ -111,8 +111,8 @@
     canvas = document.getElementById('canvas');
     processor = new ImageProcessor(mirror);
     onsuccess = function(stream) {
-      video.src = window.webkitURL.createObjectURL(stream);
-      return apps.animate({
+      video.src = createObjectURL(stream);
+      return utils.animate({
         fps: 5
       }, function() {
         processor.process(video, canvas);

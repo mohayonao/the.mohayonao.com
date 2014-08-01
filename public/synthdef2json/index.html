@@ -7,48 +7,41 @@
     <meta property="og:title" content="synthdef2json">
     <meta property="og:url" content="http://the.mohayonao.com/synthdef2json/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div id="content">
-      <h1>synthdef2json</h1>
-      <div id="unit">
-        <ol>
-          <li>drag a *.scsyndef file</li>
-          <li>see also:<a href="../synthdef2image/">synthdef2image</a></li>
-        </ol>
-        <div id="editor">
-          {
-            "version": "only 2",
-            "defs": [
-              {
-                "name": "name of the definition",
-                "consts": [ "constant value", "..." ],
-                "params": {
-                  "names"  : [ "parameter name"   , "..." ],
-                  "indices": [ "index of values"  , "..." ],
-                  "values" : [ "initial parameter", "..." ]
-                },
-                "specs": [
-                  [ "name of the UGen",
-                    "rate (0=scalar, 1=control, 2=audio)",
-                    "special index",
-                    [ "index of UGen", "index of UGen output", "..." ],
-                    [ "rate", "..." ]
-                  ]
-                ],
-                "variants": {
-                  "name of the variant": [ "initial value", "..." ]
-                }
+    <h1>synthdef2json</h1>
+    <div id="app">
+      <ol>
+        <li>drag a *.scsyndef file</li>
+        <li>see also:<a href="../synthdef2image/">synthdef2image</a></li>
+      </ol>
+      <div id="editor">
+        {
+          "version": "only 2",
+          "defs": [
+            {
+              "name": "name of the definition",
+              "consts": [ "constant value", "..." ],
+              "params": {
+                "names"  : [ "parameter name"   , "..." ],
+                "indices": [ "index of values"  , "..." ],
+                "values" : [ "initial parameter", "..." ]
+              },
+              "specs": [
+                [ "name of the UGen",
+                  "rate (0=scalar, 1=control, 2=audio)",
+                  "special index",
+                  [ "index of UGen", "index of UGen output", "..." ],
+                  [ "rate", "..." ]
+                ]
+              ],
+              "variants": {
+                "name of the variant": [ "initial value", "..." ]
               }
-            ]
-          }
-        </div>
+            }
+          ]
+        }
       </div>
     </div>
     <div class="ads">
@@ -67,9 +60,21 @@
         }
       //-->
       </script>
-      <script type="text/javascript"
-        src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-      </script>
+      <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
     </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

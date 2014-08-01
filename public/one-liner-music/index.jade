@@ -4,12 +4,13 @@ block config
   - $.title = "one-liner-music"
   - $.path  = "/one-liner-music/"
   - $.ads   = true
-  - $.add("libs/pico.js")
-  - $.add("libs/MutekiTimer.js")
+  - $.add("pico.js")
+  - $.add("MutekiTimer.js")
 
 block content
   h1 #{$.title}
-  #unit
+
+  #app
     div(style="margin-bottom:25px")
       button(id="play") Play
       button(id="tweet") Tweet this function

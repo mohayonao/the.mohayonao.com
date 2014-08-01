@@ -7,22 +7,16 @@
     <meta property="og:title" content="synthdef2image">
     <meta property="og:url" content="http://the.mohayonao.com/synthdef2image/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div id="content">
-      <h1>synthdef2image</h1>
-      <div id="unit">
-        <ol>
-          <li>drag a *.scsyndef file</li>
-          <li>right-click and use "Save As"</li>
-          <li>see also:<a href="../synthdef2json/">synthdef2json</a></li>
-        </ol><img id="result">
-      </div>
+    <h1>synthdef2image</h1>
+    <div id="app">
+      <ol>
+        <li>drag a *.scsyndef file</li>
+        <li>right-click and use "Save As"</li>
+        <li>see also:<a href="../synthdef2json/">synthdef2json</a></li>
+      </ol><img id="result">
     </div>
     <div class="ads">
       <script type="text/javascript"><!--
@@ -40,9 +34,20 @@
         }
       //-->
       </script>
-      <script type="text/javascript"
-        src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-      </script>
+      <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
     </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

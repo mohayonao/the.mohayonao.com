@@ -3,12 +3,11 @@ extend ../layout
 block config
   - $.title = "image to braille"
   - $.path  = "/braille/"
-  - $.media = "desktop"
-  - $.add("libs/LigatureSymbols-2.11.css")
+  - $.add("LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}
-  #unit
+  #app
     div(id="msg")
     div(id="editor-container")
       canvas(id="editor")

@@ -97,7 +97,7 @@ $ ->
 
       tweet: ->
         text = document.title
-        apps.tweet text:text, url:window.location.href
+        utils.tweet text:text, url:window.location.href
 
   if window.location.hash
     hash = decodeURIComponent(window.location.hash.substr 1)

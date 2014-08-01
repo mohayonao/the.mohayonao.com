@@ -3,12 +3,12 @@ extend ../layout
 block config
   - $.title = "enzui"
   - $.path  = "/enzui/"
-  - $.add("libs/pico.js")
+  - $.add("pico.js")
   - $.add("enzui.js")
 
 block content
   h1 #{$.title}
-  #unit
+  #app
     div#ctrl
       label(for="src") SOURCE:
       select(id="src",name="src")

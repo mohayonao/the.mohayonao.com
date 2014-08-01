@@ -7,28 +7,19 @@
     <meta property="og:title" content="endless invention">
     <meta property="og:url" content="http://the.mohayonao.com/invention/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="libs/pico.js"></script>
-    <script src="libs/reverb.js"></script>
-    <script src="libs/svg-ui.js"></script>
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div id="content">
-      <h1>endless invention</h1>
-      <div id="unit">
-        <canvas id="canvas" width="150" height="200"></canvas>
-        <h2>1. choose</h2>
-        <ul id="mode" class="svg-radio">
-          <li value="normal" checked>Inventionen 13 a-moll</li>
-          <li value="markov">Markov Inventionen</li>
-        </ul>
-        <h2>2. click J.S.Bach to play/pause music</h2>
-        <h2 class="hidden-phone">3. mouseover Y : control EFX Depth</h2>
-      </div>
+    <h1>endless invention</h1>
+    <div id="app">
+      <canvas id="canvas" width="150" height="200"></canvas>
+      <h2>1. choose</h2>
+      <ul id="mode" class="svg-radio">
+        <li value="normal" checked>Inventionen 13 a-moll</li>
+        <li value="markov">Markov Inventionen</li>
+      </ul>
+      <h2>2. click J.S.Bach to play/pause music</h2>
+      <h2 class="hidden-phone">3. mouseover Y : control EFX Depth</h2>
     </div>
     <div class="ads">
       <script type="text/javascript"><!--
@@ -46,9 +37,23 @@
         }
       //-->
       </script>
-      <script type="text/javascript"
-        src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-      </script>
+      <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
     </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="pico.js"></script>
+    <script src="reverb.js"></script>
+    <script src="svg-ui.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

@@ -9,7 +9,7 @@ $ ->
       data[i+1] = gray
       data[i+2] = gray
     0
-  
+
   class ImageProcessor
     constructor: (@func)->
       @canvas = document.createElement 'canvas'
@@ -20,29 +20,29 @@ $ ->
     setSize: (width, height)->
       @width  = @canvas.width  = width
       @height = @canvas.height = height
-  
+
     process: (src, dst)->
       context = dst.getContext '2d'
       @context.drawImage src, 0, 0, src.width, src.height
-      
+
       imageData = @context.getImageData 0, 0, @width, @height
-      
+
       @func? imageData
-      
+
       context.putImageData imageData, 0, 0
-  
+
   video  = document.getElementById 'cam'
   canvas = document.getElementById 'canvas'
   processor = new ImageProcessor func
-  
+
   image = document.getElementById('src')
   $(image).on 'load', ->
     processor.setSize @width, @height
     processor.process @, canvas
-  
+
   onsuccess = (stream)->
-    video.src = window.webkitURL.createObjectURL stream
-    apps.animate ->
+    video.src = createObjectURL stream
+    utils.animate ->
       processor.process video, canvas
 
   onerror = (error)->

@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var apps, ua, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8, _ref9;
+    var utils, _ref, _ref1, _ref2, _ref3, _ref4, _ref5, _ref6, _ref7, _ref8;
     if (window.requestAnimationFrame == null) {
       window.requestAnimationFrame = (_ref = (_ref1 = (_ref2 = (_ref3 = window.webkitRequestAnimationFrame) != null ? _ref3 : window.mozRequestAnimationFrame) != null ? _ref2 : window.oRequestAnimationFrame) != null ? _ref1 : window.msRequestAnimationFrame) != null ? _ref : function(f) {
         return setTimeout(f, 1000 / 60);
@@ -16,17 +16,30 @@
       window.AudioContext = window.webkitAudioContext;
     }
     window.createObjectURL = (_ref8 = window.URL || window.webkitURL) != null ? _ref8.createObjectURL : void 0;
-    ua = navigator.userAgent;
-    apps = window.apps = {};
-    apps.name = (_ref9 = /^(\/[-\w]+\/)/.exec(location.pathname)) != null ? _ref9[1] : void 0;
-    apps.isPhone = /(iPhone|iPod|Android)/i.test(navigator.userAgent);
-    apps.isTablet = /(iPad|Android)/i.test(navigator.userAgent);
-    apps.isDesktop = !(apps.isPhone || apps.isTablet);
-    apps.isMobile = !apps.isDesktop;
-    apps.isMouseDevice = apps.isDesktop;
-    apps.isTouchDevice = !apps.isDesktop;
-    apps.lang = /ja/.test(navigator.language) ? 'ja' : 'en';
-    apps.tweet = function(opts) {
+    utils = window.utils = {};
+    utils.getName = function() {
+      var _ref9;
+      return (_ref9 = /^(\/[-\w]+\/)/.exec(location.pathname)) != null ? _ref9[1] : void 0;
+    };
+    utils.isPhone = function() {
+      return /(iPhone|iPod|Android)/i.test(navigator.userAgent);
+    };
+    utils.isTablet = function() {
+      return /(iPad|Android)/i.test(navigator.userAgent);
+    };
+    utils.isDesktop = function() {
+      return !(utils.isPhone() || utils.isTablet());
+    };
+    utils.isMobile = function() {
+      return !utils.isDesktop();
+    };
+    utils.isMouseDevice = function() {
+      return utils.isDesktop();
+    };
+    utils.isTouchDevice = function() {
+      return !utils.isDesktop();
+    };
+    utils.tweet = function(opts) {
       var h, l, t, url, w;
       w = 550;
       h = 420;
@@ -35,11 +48,11 @@
       url = "https://twitter.com/intent/tweet?" + ($.param(opts));
       return window.open(url, 'intent', "width=" + w + ",height=" + h + ",left=" + l + ",top=" + t);
     };
-    apps.param = $.param;
-    apps.deparam = function(str) {
+    utils.param = $.param;
+    utils.deparam = function(str) {
       var obj;
       obj = {};
-      str.split('$').forEach(function(x) {
+      str.split('&').forEach(function(x) {
         var items, key;
         items = x.split('=');
         key = decodeURIComponent(items[0]);
@@ -51,12 +64,12 @@
       });
       return obj;
     };
-    return apps.animate = function(opts) {
-      var func, ifps, prev, _animate, _ref10;
+    return utils.animate = function(opts) {
+      var animate, func, ifps, prev, _ref9;
       func = arguments[arguments.length - 1];
-      ifps = 1000 / ((_ref10 = opts.fps) != null ? _ref10 : 60);
+      ifps = 1000 / ((_ref9 = opts.fps) != null ? _ref9 : 60);
       prev = 0;
-      _animate = function(now) {
+      animate = function(now) {
         var dt, result;
         dt = now - prev;
         if (dt > ifps) {
@@ -64,10 +77,10 @@
           prev = now;
         }
         if (result !== false) {
-          return requestAnimationFrame(_animate);
+          return requestAnimationFrame(animate);
         }
       };
-      return requestAnimationFrame(_animate);
+      return requestAnimationFrame(animate);
     };
   });
 

@@ -3,11 +3,11 @@ extend ../layout
 block config
   - $.title = "glitched movie player"
   - $.path  = "/glitchedmovie/"
-  - $.media = "desktop"
 
 block content
   h1 #{$.title}
-  #unit
+
+  #app
     div(style="border:solid 1px gray")
       div(id="tips")
         div drag a movie files(*.mp4) to play

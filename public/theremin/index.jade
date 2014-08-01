@@ -4,13 +4,13 @@ block config
   - $.title = "webcam-theremin"
   - $.path  = "/theremin/"
   - $.ads   = true
-  - $.media = "desktop"
-  - $.add("libs/timbre.js")
-  - $.add("libs/subcollider.js")
+  - $.add("timbre.js")
+  - $.add("subcollider.js")
 
 block content
   h1 #{$.title}
-  #unit
+
+  #app
     canvas(id="canvas",width=320,height=240)
     video(id="cam",width=640,height=480,autoplay).hidden
     h2 1. Accept to use your webcam (use WebRTC)

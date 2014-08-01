@@ -32,7 +32,7 @@ $ ->
   o6 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.< c>gre r8er  f<drd> fr8. l12g<dd dc>b l16er8.r4
   o5 a-a-ra- ra-b-r <c>grf er8. a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.
   '''
-  
+
   bass = '''t104 l16 q4 $
   o4 ddrd rddr <br8.>gr8.
   o4 gr8er8cr rfrg rg-fr l12e<ce l16frde rcr>a bgr8
@@ -47,7 +47,7 @@ $ ->
   o4 crre gr<cr> fr<cr cc>fr drrf grbr gr<cr cc>gr crre gr<cr> fr<cr cc>fr grrg l12gab l16 <cr>gr cr8.
   o3 [a-r8<e-r8a-r gr8cr8>gr]3
   '''
-  
+
   master = T('delay', {time:"bpm104 l16"})
   baseScale = sc.Scale.major()
   baseRoot  = 60 # C3
@@ -63,7 +63,7 @@ $ ->
   env = T('adsr', {d:500, s:0.8, r:150})
   synth = T('OscGen', {wave:'pulse', env:env})
   master.append synth
-    
+
   melo0 = T('mml', {mml:melo0}).on 'data', (type, opts)->
     switch type
       when 'noteOn'
@@ -106,9 +106,9 @@ $ ->
 
   $('#tweet').on 'click', ->
     url  = "http://#{location.host}/scalable-mario/"
-    url += "?" + apps.param(s:$scale.val(),t:$tuning.val())
+    url += "?" + utils.param(s:$scale.val(),t:$tuning.val())
     text = "#{changeScale.name} なマリオの曲"
-    apps.tweet text:text, url:url
+    utils.tweet text:text, url:url
 
   scales = do ->
     scales = {}
@@ -145,14 +145,14 @@ $ ->
     $tuning.val( Object.keys(tunings).choose() ).change()
 
   if (q = location.search.substr(1))
-    params = apps.deparam q
+    params = utils.deparam q
     s = params.s
     t = params.t
   else
     s = 'major'
     t = 'et12'
-    
+
   $scale.val(s).change()
   $tuning.val(t).change()
-    
+
   0

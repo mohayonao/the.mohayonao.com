@@ -152,7 +152,7 @@
     setInterval(function() {
       return lane.draw();
     }, 750);
-    return $('button', '#unit').on('click', function() {
+    return $('button', '#app').on('click', function() {
       var num;
       num = ($(this).attr('data-num')) | 0;
       return new SushiText(num).load().then(function(data) {

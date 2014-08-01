@@ -134,7 +134,7 @@
         tweet: function() {
           var text;
           text = document.title;
-          return apps.tweet({
+          return utils.tweet({
             text: text,
             url: window.location.href
           });

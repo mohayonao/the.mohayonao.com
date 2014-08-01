@@ -90,7 +90,7 @@
     objects.sort(function(a, b) {
       return a.z - b.z;
     });
-    return apps.animate({
+    return utils.animate({
       fps: 40
     }, function(now, dt) {
       var o, _i, _results;

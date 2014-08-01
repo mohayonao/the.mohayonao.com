@@ -86,8 +86,8 @@ $ ->
   processor = new ImageProcessor mirror
 
   onsuccess = (stream)->
-    video.src = window.webkitURL.createObjectURL stream
-    apps.animate fps:5, ->
+    video.src = createObjectURL stream
+    utils.animate fps:5, ->
       processor.process video, canvas
       true
 

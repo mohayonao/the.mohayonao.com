@@ -30,7 +30,7 @@ $ ->
       dfd.promise()
 
     play: ->
-      @isPlaying = true      
+      @isPlaying = true
       @sequencer.play @data
       @onStateChange? 'play'
 
@@ -46,7 +46,7 @@ $ ->
       when 'pause' then $('#play').removeClass 'btn-active'
 
   $result = $('#result')
-  
+
   editor = CodeMirror.fromTextArea document.getElementById('data'),
     mode:'ukulele', theme:'ukulele', workTime:200
 
@@ -54,24 +54,24 @@ $ ->
     decodeURIComponent q
   else ''
   editor.setValue value
-      
+
   editor.update = ->
     app.update( editor.getValue().trim() ).then (data)->
       $result.css width:"#{data.width}px", height:"#{data.height}px"
       $result.attr 'src', ukulele.getImageSrc data
   editor.on 'update', editor.update
-  
+
   $('#play').on 'click', ->
     if app.isPlaying
       app.pause()
     else
       app.play()
-  
+
   $('#tweet').on 'click', ->
     if app.data
-      data = encodeURIComponent app.data      
+      data = encodeURIComponent app.data
       url = "http://#{location.host}/ukulele/##{data}"
-      apps.tweet url:url
+      utils.tweet url:url
 
   do ->
     $demo = $('#demo')

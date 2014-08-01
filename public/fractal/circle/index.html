@@ -7,28 +7,18 @@
     <meta property="og:title" content="fractal/circle">
     <meta property="og:url" content="http://the.mohayonao.com/fractal/circle/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="../libs/color-0.7.1.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div id="content">
-      <h1>fractal/circle</h1>
-      <div id="unit">
-        <div id="app">
-          <canvas id="canvas" v-attr="width: width, height: height"></canvas>
-          <div id="params">
-            <div v-repeat="params">
-              <input type="range" v-model="value" min="1" max="100" v-on="change: update()">
-            </div>
-          </div>
-          <button id="tweet" v-on="click: tweet()">Tweet</button>
+    <h1>fractal/circle</h1>
+    <div id="app">
+      <canvas id="canvas" v-attr="width: width, height: height"></canvas>
+      <div id="params">
+        <div v-repeat="params">
+          <input type="range" v-model="value" min="1" max="100" v-on="change: update()">
         </div>
       </div>
+      <button id="tweet" v-on="click: tweet()">Tweet</button>
     </div>
     <div class="ads">
       <script type="text/javascript"><!--
@@ -46,9 +36,22 @@
         }
       //-->
       </script>
-      <script type="text/javascript"
-        src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-      </script>
+      <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
     </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
+    <script src="../color-0.7.1.min.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

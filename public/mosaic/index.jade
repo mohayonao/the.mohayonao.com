@@ -3,13 +3,12 @@ extend ../layout
 block config
   - $.title = "gif.mosaic"
   - $.path  = "/mosaic/"
-  - $.media = "desktop"
-  - $.add("libs/GIFEncoder.js")
-  - $.add("libs/LigatureSymbols-2.11.css")
+  - $.add("GIFEncoder.js")
+  - $.add("LigatureSymbols-2.11.css")
 
 block content
   h1 #{$.title}
-  #unit
+  #app
     div(id="msg")
     div(id="editor-container")
       canvas(id="editor")

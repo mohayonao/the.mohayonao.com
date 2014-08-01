@@ -4,12 +4,13 @@ block config
   - $.title = "tarai-music"
   - $.path  = "/tarai/"
   - $.ads   = true
-  - $.add("libs/timbre.js")
-  - $.add("libs/subcollider.js")
+  - $.add("timbre.js")
+  - $.add("subcollider.js")
 
 block content
   h1 #{$.title}
-  #unit
+
+  #app
     div(style="margin-bottom:25px")
       button(id="play",class="btn") Play
     p inspired by:

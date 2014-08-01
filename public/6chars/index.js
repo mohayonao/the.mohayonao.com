@@ -59,13 +59,9 @@
         var text, url, val;
         val = $p.val().trim();
         if (hrm.validate(val)) {
-          if (apps.lang === 'ja') {
-            text = 'リズムを共有しました';
-          } else {
-            text = 'I shared the rhythm';
-          }
+          text = '6chars drums';
           url = "http://" + location.host + "/6chars/#" + (encodeURI(val));
-          return apps.tweet({
+          return utils.tweet({
             text: text,
             url: url
           });
@@ -76,7 +72,7 @@
         var $li, cnt, i, list, step, url, val;
         $list.empty();
         len = [2, 2, 4, 4, 8, 8, 0, 0, 0, 0];
-        step = apps.isPhone ? 2 : 1;
+        step = utils.isPhone() ? 2 : 1;
         list = (function() {
           var _i, _ref, _results;
           _results = [];

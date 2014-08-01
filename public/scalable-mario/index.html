@@ -7,41 +7,48 @@
     <meta property="og:title" content="scalable mario">
     <meta property="og:url" content="http://the.mohayonao.com/scalable-mario/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="libs/timbre.js"></script>
-    <script src="libs/subcollider.js"></script>
-    <script src="libs/scales.js"></script>
-    <script src="libs/tunings.js"></script>
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div id="content">
-      <h1>scalable mario</h1>
-      <div id="unit">
-        <div style="margin-bottom:25px">
-          <button id="play">Play</button>
-          <button id="tweet">Tweet this mario</button>
-        </div>
-        <div>
-          <label for="scale">Scale</label>
-          <select name="scale" id="scale"></select>
-          <button id="random-scale">random</button>
-        </div>
-        <div>
-          <label for="tuning">Tuning</label>
-          <select name="tuning" id="tuning"></select>
-          <button id="random-tuning">random</button>
-        </div>
-        <p>use:
-          <ul>
-            <li><a href="http://mohayonao.github.com/timbre.js">timbre.js</a></li>
-            <li><a href="http://mohayonao.github.com/sub.js">subcollider.js</a></li>
-          </ul>
-        </p>
+    <h1>scalable mario</h1>
+    <div id="app">
+      <div style="margin-bottom:25px">
+        <button id="play">Play</button>
+        <button id="tweet">Tweet this mario</button>
       </div>
+      <div>
+        <label for="scale">Scale</label>
+        <select name="scale" id="scale"></select>
+        <button id="random-scale">random</button>
+      </div>
+      <div>
+        <label for="tuning">Tuning</label>
+        <select name="tuning" id="tuning"></select>
+        <button id="random-tuning">random</button>
+      </div>
+      <p>use:
+        <ul>
+          <li><a href="http://mohayonao.github.com/timbre.js">timbre.js</a></li>
+          <li><a href="http://mohayonao.github.com/sub.js">subcollider.js</a></li>
+        </ul>
+      </p>
     </div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="timbre.js"></script>
+    <script src="subcollider.js"></script>
+    <script src="scales.js"></script>
+    <script src="tunings.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

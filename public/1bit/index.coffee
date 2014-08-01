@@ -1,8 +1,8 @@
 $ ->
   'use strict'
-  
+
   if pico.env is 'nop' then return
-  
+
   class Pulse
     constructor: ->
       @cell = new Float32Array(pico.cellsize)
@@ -252,6 +252,6 @@ $ ->
       $('#mml').val $("#data-#{i}").val().trim()
     if i is 0 then $(e).click()
 
-  if apps.isPhone
+  if utils.isPhone()
     $('#samplerate-container').css(float:'right')
     $('#mml').hide()

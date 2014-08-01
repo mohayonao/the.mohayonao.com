@@ -7,42 +7,49 @@
     <meta property="og:title" content="enzui">
     <meta property="og:url" content="http://the.mohayonao.com/enzui/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="libs/pico.js"></script>
-    <script src="enzui.js"></script>
-    <script src="/common.js"></script>
-    <script src="index.js"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
-    <div id="content">
-      <h1>enzui</h1>
-      <div id="unit">
-        <div id="ctrl">
-          <label for="src">SOURCE:</label>
-          <select id="src" name="src">
-            <option value="">Please select a program</option>
-            <option value="tarai">Tak Function</option>
-            <option value="markov">Markov Chain Composer</option>
-            <option value="fm">FM Synthesis</option>
-            <option value="dot">Dot Plot</option>
-            <option value="timer">Test Timer</option>
-            <option value="test01">test01</option>
-            <option value="test02">test02</option>
-            <option value="test03">test03</option>
-          </select>
-          <button id="load">load</button>
-          <div id="desc" class="jp">
-            かつて作っていた Max/MSP風のヴィジュアルプログラム言語です.<br>
-            [RUN]で実行できます.  <br>
-            三角マークの数字はドラッグで値を変更, [●]はボタン, [×]はトグルスイッチです.<br>
-            ダブルクリックとかで編集もできる (細かいことは忘れた)
-          </div>
+    <h1>enzui</h1>
+    <div id="app">
+      <div id="ctrl">
+        <label for="src">SOURCE:</label>
+        <select id="src" name="src">
+          <option value="">Please select a program</option>
+          <option value="tarai">Tak Function</option>
+          <option value="markov">Markov Chain Composer</option>
+          <option value="fm">FM Synthesis</option>
+          <option value="dot">Dot Plot</option>
+          <option value="timer">Test Timer</option>
+          <option value="test01">test01</option>
+          <option value="test02">test02</option>
+          <option value="test03">test03</option>
+        </select>
+        <button id="load">load</button>
+        <div id="desc" class="jp">
+          かつて作っていた Max/MSP風のヴィジュアルプログラム言語です.<br>
+          [RUN]で実行できます.  <br>
+          三角マークの数字はドラッグで値を変更, [●]はボタン, [×]はトグルスイッチです.<br>
+          ダブルクリックとかで編集もできる (細かいことは忘れた)
         </div>
-        <div id="enzui"></div>
       </div>
-      <div id="download">download:<a href="enzui.js">enzui.js</a></div>
+      <div id="enzui"></div>
     </div>
+    <div id="download">download:<a href="enzui.js">enzui.js</a></div>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      
+      ga('create', 'UA-21613416-9', 'auto');
+      ga('send', 'pageview');
+    </script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script src="/utils.js"></script>
+    <script src="pico.js"></script>
+    <script src="enzui.js"></script>
+    <script src="index.js"></script>
   </body>
 </html>

@@ -24,7 +24,7 @@ $ ->
       else
         pico.pause()
         $(this).removeClass 'btn-active'
-    
+
     setPattern = ->
       val = $p.val().trim()
       if val isnt prev
@@ -39,14 +39,14 @@ $ ->
     HH = "55|88|88|aa|aa|aa|aa|bb|ff|ff|ff|ae|ae"
     SD = "[002][8899b]"
     BD = "[8a][288aab]"
-    
+
     HH = "#{HH}|#{HH}|#{HH}|[0-9a-f]{2}"
     SD = "#{SD}|#{SD}|#{SD}|#{SD}|#{SD}|[0-9a-f]{2}"
     BD = "#{BD}|#{BD}|#{BD}|#{BD}|#{BD}|[0-9a-f]{2}"
 
     generate = (cnt='+')->
       String_random("(1[046]0; )?((#{HH})(#{SD})(#{BD}) )#{cnt}").trim()
-    
+
     $('#random').on 'click', ->
       val = do random
       location.href = "http://#{location.host}/6chars/##{encodeURI(val)}"
@@ -54,18 +54,15 @@ $ ->
     $('#tweet').on 'click', ->
       val = $p.val().trim()
       if hrm.validate val
-        if apps.lang is 'ja'
-          text = 'リズムを共有しました'
-        else
-          text = 'I shared the rhythm'
+        text = '6chars drums'
         url  = "http://#{location.host}/6chars/##{encodeURI(val)}"
-        apps.tweet text:text, url:url
+        utils.tweet text:text, url:url
 
     $list = $('#list')
     random = ->
       $list.empty()
       len  = [2,2,4,4,8,8,0,0,0,0]
-      step = if apps.isPhone then 2 else 1
+      step = if utils.isPhone() then 2 else 1
       list = for i in [0...len.length] by step
         cnt = len[i]
         cnt = if cnt is 0 then '+' else "{#{cnt}}"

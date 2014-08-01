@@ -4,12 +4,12 @@ block config
   - $.title = "face-detect"
   - $.path  = "/canvas/face/"
   - $.ads   = true
-  - $.add("libs/ccv.js")
-  - $.add("libs/face.js")
+  - $.add("ccv.js")
+  - $.add("face.js")
 
 block content
   h1 #{$.title}
-  #unit
+  #app
     canvas(id="canvas",width=320,height=240)
     video(id="cam",width=640,height=480,autoplay).hidden
     h2 1. Accept to use your webcam (use WebRTC)

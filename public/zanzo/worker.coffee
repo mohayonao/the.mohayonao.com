@@ -1,6 +1,6 @@
 'use strict'
 
-importScripts './libs/omggif.js'
+importScripts 'omggif.js'
 importScripts '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js'
 
 sum = (list)-> _.reduce list, ((a, b)-> a+ b), 0

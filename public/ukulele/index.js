@@ -96,7 +96,7 @@
       if (app.data) {
         data = encodeURIComponent(app.data);
         url = "http://" + location.host + "/ukulele/#" + data;
-        return apps.tweet({
+        return utils.tweet({
           url: url
         });
       }

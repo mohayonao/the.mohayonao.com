@@ -179,7 +179,7 @@
       url = "http://" + location.host + "/one-liner-music/";
       text = "いい曲できた";
       func = encodeURIComponent(processor.func);
-      return apps.tweet({
+      return utils.tweet({
         text: text,
         url: "" + url + "?" + func + "&"
       });
@@ -190,7 +190,7 @@
       $func.val(history[0]);
     }
     commit();
-    if (apps.isPhone) {
+    if (utils.isPhone()) {
       return $('#history-container').hide();
     }
   });

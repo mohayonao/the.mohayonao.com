@@ -2,9 +2,7 @@ $ ->
   'use strict'
 
   THUMB_SIZE = 80
-  
-  createObjectURL = (window.URL or window.webkitURL)?.createObjectURL
-  
+
   $(window).on 'dragover', ->
     false
 
@@ -15,7 +13,7 @@ $ ->
     false
 
   resizeContainer = do ->
-    $container = $('#unit')
+    $container = $('#app')
     ->
       $container.height ($container.width() * 0.75)|0
       app?.resize()

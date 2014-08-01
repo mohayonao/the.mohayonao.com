@@ -3,11 +3,11 @@ extend ../layout
 block config
   - $.title = "movie to thumbnails"
   - $.path  = "/movie2thumb/"
-  - $.media = "desktop"
 
 block content
   h1 #{$.title}
-  #unit
+
+  #app
     div(id="thumbs", style="border:solid 1px gray; width:100%; height:100%")
       div(style="padding:15px") drag a movie file(*.mp4) to get thumbnails
     span.pull-right

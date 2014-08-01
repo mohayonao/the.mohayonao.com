@@ -1,9 +1,8 @@
 (function() {
   $(function() {
     'use strict';
-    var App, THUMB_SIZE, app, createObjectURL, resizeContainer, shuffle, _ref;
+    var App, THUMB_SIZE, app, resizeContainer, shuffle;
     THUMB_SIZE = 80;
-    createObjectURL = (_ref = window.URL || window.webkitURL) != null ? _ref.createObjectURL : void 0;
     $(window).on('dragover', function() {
       return false;
     });
@@ -19,7 +18,7 @@
     });
     resizeContainer = (function() {
       var $container;
-      $container = $('#unit');
+      $container = $('#app');
       return function() {
         $container.height(($container.width() * 0.75) | 0);
         return typeof app !== "undefined" && app !== null ? app.resize() : void 0;
@@ -34,11 +33,11 @@
       return app.shuffle = !!$(this).attr('checked');
     });
     shuffle = function(array) {
-      var i, j, _ref1;
+      var i, j, _ref;
       i = array.length;
       while (i) {
         j = Math.floor(Math.random() * i--);
-        _ref1 = [array[j], array[i]], array[i] = _ref1[0], array[j] = _ref1[1];
+        _ref = [array[j], array[i]], array[i] = _ref[0], array[j] = _ref[1];
       }
       return array;
     };
@@ -98,27 +97,27 @@
       };
 
       App.prototype.initCanvas = function() {
-        var ch, cw, h, i, vh, vw, w, _ref1, _ref2, _ref3, _ref4, _ref5;
+        var ch, cw, h, i, vh, vw, w, _ref, _ref1, _ref2, _ref3, _ref4;
         $(this.target).empty().append(this.canvas);
-        _ref1 = [this.video.videoWidth, this.video.videoHeight], vw = _ref1[0], vh = _ref1[1];
-        _ref2 = [THUMB_SIZE, THUMB_SIZE], cw = _ref2[0], ch = _ref2[1];
+        _ref = [this.video.videoWidth, this.video.videoHeight], vw = _ref[0], vh = _ref[1];
+        _ref1 = [THUMB_SIZE, THUMB_SIZE], cw = _ref1[0], ch = _ref1[1];
         if (vw > vh) {
           h = cw * (vh / vw);
-          _ref3 = [cw, h], this.dw = _ref3[0], this.dh = _ref3[1];
+          _ref2 = [cw, h], this.dw = _ref2[0], this.dh = _ref2[1];
         } else {
           w = ch * (vw / vh);
-          _ref4 = [w, ch], this.dw = _ref4[0], this.dh = _ref4[1];
+          _ref3 = [w, ch], this.dw = _ref3[0], this.dh = _ref3[1];
         }
         this.dw |= 0;
         this.dh |= 0;
         this.lenX = Math.ceil(this.width / this.dw);
         this.lenY = Math.ceil(this.height / this.dh);
         this.context.clearRect(0, 0, cw, ch);
-        _ref5 = [vw, vh], this.sw = _ref5[0], this.sh = _ref5[1];
+        _ref4 = [vw, vh], this.sw = _ref4[0], this.sh = _ref4[1];
         this.list = (function() {
-          var _i, _ref6, _results;
+          var _i, _ref5, _results;
           _results = [];
-          for (i = _i = 0, _ref6 = this.lenX * this.lenY; 0 <= _ref6 ? _i < _ref6 : _i > _ref6; i = 0 <= _ref6 ? ++_i : --_i) {
+          for (i = _i = 0, _ref5 = this.lenX * this.lenY; 0 <= _ref5 ? _i < _ref5 : _i > _ref5; i = 0 <= _ref5 ? ++_i : --_i) {
             _results.push(this.video.duration * (i / (this.lenX * this.lenY)));
           }
           return _results;

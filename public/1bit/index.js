@@ -429,7 +429,7 @@
         return $(e).click();
       }
     });
-    if (apps.isPhone) {
+    if (utils.isPhone()) {
       $('#samplerate-container').css({
         float: 'right'
       });

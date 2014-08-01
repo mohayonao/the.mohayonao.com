@@ -80,6 +80,6 @@ $ ->
     lane.draw()
   , 750
 
-  $('button', '#unit').on 'click', ->
+  $('button', '#app').on 'click', ->
     num = ($(this).attr 'data-num')|0
     new SushiText(num).load().then (data)-> lane.put data

@@ -4,11 +4,11 @@ block config
   - $.title = "1bit music"
   - $.path  = "/1bit/"
   - $.ads   = true
-  - $.add("libs/pico.js")
+  - $.add("pico.js")
 
 block content
   h1 #{$.title}
-  #unit
+  #app
     canvas(id="canvas")
     div(id="controller")
       div.pull-left
