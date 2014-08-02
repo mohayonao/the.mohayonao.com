@@ -70,8 +70,6 @@ vue.$watch 'value', ->
   app.set @value if ok
   @hasError = not ok
 
-vue.random()
-
 window.onhashchange = ->
   vue.value = decodeURI location.hash.substr(1).trim()
 
@@ -84,5 +82,7 @@ WavDecoder.load('./drumkit.wav').then (wav)->
   waves.samplerate = wav.samplerate
 
   app.init new HexRhythmMachine(pico.samplerate, waves)
+
+  vue.random()
 
   window.onhashchange() if location.hash

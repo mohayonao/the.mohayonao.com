@@ -7,8 +7,6 @@
   ![gif](http://f.st-hatena.com/images/fotolife/m/mohayonao/20140729/20140729211804.gif)
   ![png](http://f.st-hatena.com/images/fotolife/m/mohayonao/20140729/20140729211841.png)
 
-  ---
-
   ![gif](http://f.st-hatena.com/images/fotolife/m/mohayonao/20140729/20140729211926.gif)
   ![png](http://f.st-hatena.com/images/fotolife/m/mohayonao/20140729/20140729211941.png)
 

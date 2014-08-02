@@ -105,8 +105,6 @@
     return this.hasError = !ok;
   });
 
-  vue.random();
-
   window.onhashchange = function() {
     return vue.value = decodeURI(location.hash.substr(1).trim());
   };
@@ -120,6 +118,7 @@
     waves[2] = wav.buffer[0].subarray(len * 2, len * 3);
     waves.samplerate = wav.samplerate;
     app.init(new HexRhythmMachine(pico.samplerate, waves));
+    vue.random();
     if (location.hash) {
       return window.onhashchange();
     }
