@@ -96,7 +96,9 @@ $ ->
         renderer.generate 0, 0, 300, sr, br, n
 
       tweet: ->
-        text = document.title
+        text = utils.lang
+          ja: '円'
+          '': document.title
         utils.tweet text:text, url:window.location.href
 
   if window.location.hash

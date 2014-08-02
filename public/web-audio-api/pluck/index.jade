@@ -1,0 +1,13 @@
+extend ../../layout
+
+block config
+  - $.title = "web-audio-api/pluck"
+  - $.path  = "/web-audio-api/pluck/"
+  - $.ads   = true
+  - $.add("Karplus-Strong.js")
+
+block content
+  h1.title #{$.title}
+
+  #app
+    button.btn.btn-default#test test

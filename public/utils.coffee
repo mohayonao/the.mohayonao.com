@@ -22,8 +22,16 @@ $ ->
   utils.getName = ->
     (/^(\/[-\w]+\/)/.exec location.pathname)?[1]
 
-  utils.isJp = ->
-    navigator.language is 'ja'
+  utils.lang = (data)->
+    if data.hasOwnProperty navigator.language
+      data = data[navigator.language]
+    else
+      data = data['']
+    if typeof data is 'function'
+      data = do data
+    if not (typeof data is 'string')
+      data = ''
+    data
 
   utils.isPhone  = ->
     /(iPhone|iPod|Android)/i.test navigator.userAgent

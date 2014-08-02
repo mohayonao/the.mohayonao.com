@@ -200,12 +200,10 @@
       },
       tweet: function() {
         var text;
-        if (utils.isJp()) {
-          text = _.sample(['', '', '聞いてください。', 'これが...', 'あなたに届けたい', 'みんな！聞いてくれ！！！', '最初で最後の']);
-          text += _.sample(['ホーミー', 'ホーミー', '俺のホーミー', '僕のホーミー', '最高のホーミー', '君のためのホーミー', 'いつかのホーミー', 'ホーミー...', 'ホーミー (for me)']);
-        } else {
-          text = document.title;
-        }
+        text = utils.lang({
+          ja: 'ホーミー',
+          '': document.title
+        });
         return utils.tweet({
           text: text,
           url: window.location.href

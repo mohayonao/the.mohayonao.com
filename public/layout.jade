@@ -55,7 +55,7 @@ html(lang="#{$.lang}")
                 img(src="/favicon.ico")
                 span  Top Page
             li
-              a(href="https://twitter.com/intent/tweet?text=@mohayonao&url=http://the.mohayonao.com#{$.path}",target="twitter")
+              a(href="javascript:void(utils.tweet({text:'@mohayonao',url:'http://the.mohayonao.com#{$.path}'}));",target="twitter")
                 img(src="/twitter.png")
                 span  Contact
             li

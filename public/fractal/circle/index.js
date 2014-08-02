@@ -133,7 +133,10 @@
         },
         tweet: function() {
           var text;
-          text = document.title;
+          text = utils.lang({
+            ja: '円',
+            '': document.title
+          });
           return utils.tweet({
             text: text,
             url: window.location.href
