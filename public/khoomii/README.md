@@ -2,5 +2,13 @@
 
 ## Using Libraries
 
-  - [mohayonao/timbre.js](https://github.com/mohayonao/timbre.js/)
-    - JavaScript library for objective sound programming
+  - [vue.js](http://vuejs.org)
+    - Intuitive, fast & composable MVVM for building interactive interfaces.
+
+## References
+
+  - [AlleluiaFormant](http://www.iamas.ac.jp/~mmiwa/AlleluiaFormant.html)
+
+## Articles
+
+  - [無限にホーミーっぽいのを聴けるやつをつくった - 音の鳴るブログ](http://mohayonao.hatenablog.com/entry/2012/09/16/210954)
