@@ -14,21 +14,26 @@
     <div id="wrap">
       <h1 class="title">tarai-music</h1>
       <div id="app">
-        <div style="margin-bottom:25px">
-          <button id="play" class="btn btn-default">Play</button>
+        <div class="form-group">
+          <label>x</label>
+          <div v-repeat="xs" class="btn-group"><span type="button" v-on="click: x = value" class="btn btn-default {{ x == value ? 'btn-info' : '' }}">{{ value }}</span></div>
         </div>
-        <p>inspired by:
-          <ul>
-            <li><a href="http://d.hatena.ne.jp/aike/20120723" class="jp">SuperColliderで竹内関数音楽 - aikeの日記</a></li>
-            <li><a href="http://en.wikipedia.org/wiki/Tak_(function)">Tak function</a></li>
-          </ul>
-        </p>
-        <p>use:
-          <ul>
-            <li><a href="http://mohayonao.github.com/timbre.js">timbre.js</a></li>
-            <li><a href="http://mohayonao.github.com/sub.js">subcollider.js</a></li>
-          </ul>
-        </p>
+        <div class="form-group">
+          <label>y</label>
+          <div v-repeat="ys" class="btn-group"><span type="button" v-on="click: y = value" class="btn btn-default {{ y == value ? 'btn-info' : '' }}">{{ value }}</span></div>
+        </div>
+        <div class="form-group">
+          <label>z</label>
+          <div v-repeat="zs" class="btn-group"><span type="button" v-on="click: z = value" class="btn btn-default {{ z == value ? 'btn-info' : '' }}">{{ value }}</span></div>
+        </div>
+        <button v-on="click: play()" class="btn btn-default">{{ isPlaying ? 'Stop' : 'Play' }}</button>
+        <button v-on="click: tweet()" class="btn btn-default">Tweet</button>
+      </div>
+      <div style="padding:20px">
+        <h4>acknowledgement</h4>
+        <ul>
+          <li><a href="http://d.hatena.ne.jp/aike/20111112" class="jp">竹内関数で音楽生成 - aikeの日記</a></li>
+        </ul>
       </div>
       <div class="google-adsense">
         <script>
@@ -69,6 +74,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="/utils.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
     <script src="timbre.js"></script>
     <script src="subcollider.js"></script>
     <script src="index.js"></script>
