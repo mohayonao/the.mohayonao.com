@@ -1,4 +1,4 @@
-# [fractal/circle](the.mohayonao.com/fractal/circle/)
+# [fractal/circle](http://the.mohayonao.com/fractal/circle/)
 
 > draw circles recursively
 
@@ -22,3 +22,7 @@
 ## References
 
   - [CによるフラクタルCG](http://www.amazon.co.jp/dp/4781906745)
+
+## Articles
+
+  - [円 - 音のなるブログ](http://mohayonao.hatenablog.com/entry/2014/08/03/085103)
