@@ -21,6 +21,9 @@
       var _ref9;
       return (_ref9 = /^(\/[-\w]+\/)/.exec(location.pathname)) != null ? _ref9[1] : void 0;
     };
+    utils.isJp = function() {
+      return navigator.language === 'ja';
+    };
     utils.isPhone = function() {
       return /(iPhone|iPod|Android)/i.test(navigator.userAgent);
     };

@@ -14,7 +14,14 @@
     <div id="wrap">
       <h1 class="title">formant khoomii</h1>
       <div id="app">
-        <button id="play" class="btn btn-default">Play</button>
+        <button v-on="click: play()" class="btn btn-default"> {{ isPlaying ? 'Stop' : 'Play' }}</button>
+        <button v-on="click: tweet()" class="btn btn-default">Tweet</button>
+        <div id="params">
+          <div v-repeat="params" class="form-group">
+            <label>{{ name }}</label>
+            <input type="range" v-model="value" min="1" max="100" v-on="input: update(name, value)" class="form-control">
+          </div>
+        </div>
       </div>
       <div class="google-adsense">
         <script>
@@ -55,7 +62,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="/utils.js"></script>
-    <script src="timbre.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
     <script src="index.js"></script>
   </body>
 </html>
