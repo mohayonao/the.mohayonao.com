@@ -12,10 +12,13 @@ draw = (src, dst, srcIndex, dstIndex)->
   dst[dstIndex++] = 255
 
 overlay = (src, dst, srcIndex, dstIndex, opacity)->
-  dst[dstIndex++] += Math.floor src[srcIndex++] * opacity
-  dst[dstIndex++] += Math.floor src[srcIndex++] * opacity
-  dst[dstIndex++] += Math.floor src[srcIndex++] * opacity
+  dst[dstIndex++] += Math.floor(src[srcIndex++] * opacity)
+  dst[dstIndex++] += Math.floor(src[srcIndex++] * opacity)
+  dst[dstIndex++] += Math.floor(src[srcIndex++] * opacity)
   dst[dstIndex++] = 255
+
+copy = (src, dst)-> dst.set src
+
 
 addEventListener 'message', (e)->
   reader = new GifReader(new Uint8Array(e.data))
@@ -25,13 +28,13 @@ addEventListener 'message', (e)->
 
   postMessage { type: 'info', args: [ reader.numFrames(), width, height ] }
 
-  frames = _.range(reader.numFrames()).map (i)->
-    frame = reader.frameInfo i
-    frame.delay = Math.max 1, frame.delay
-    frame.index = i
+  frames = _.range(reader.numFrames()).map (index)->
+    frame = reader.frameInfo index
+    frame.delay = Math.max(1, frame.delay)
+    frame.index = index
     frame
 
-  totalDelay = sum _.pluck(frames, 'delay')
+  totalDelay = sum _.pluck frames, 'delay'
 
   interlace = new Uint16Array(_.flatten [
     _.range(0, height, 8)
@@ -43,14 +46,7 @@ addEventListener 'message', (e)->
   canvas = new Uint8Array(length)
   result = new Uint8Array(length)
 
-  loopFunc = ->
-    frame   = frames.shift()
-    opacity = frame.delay / totalDelay
-    ymap    = if not frame.interlaced then _.identity else (y)-> interlace[y]
-
-    tmp = new Uint8Array(length)
-    reader.decodeAndBlitFrameRGBA frame.index, tmp
-
+  process = (tmp, opacity, ymap)->
     for y in [0...height] by 1
       srcIndex = y * width * 4
       dstIndex = ymap(y) * width * 4
@@ -61,15 +57,27 @@ addEventListener 'message', (e)->
 
         overlay(canvas, result, srcIndex, dstIndex, opacity)
 
-        dstIndex += 4
         srcIndex += 4
+        dstIndex += 4
 
-    tmp.set result
+    null
+
+  loopFunc = ->
+    frame   = frames.shift()
+    opacity = frame.delay / totalDelay
+    ymap    = if frame.interlaced then (y)-> interlace[y] else _.identity
+
+    tmp = new Uint8Array(length)
+    reader.decodeAndBlitFrameRGBA frame.index, tmp
+
+    process(tmp, opacity, ymap)
+
+    copy(result, tmp)
     postMessage { type: 'progress', args: [ tmp, frame.index ] }, [ tmp.buffer ]
 
-    if frames.length is 0
-      postMessage { type: 'result', args: [ result ] }, [ result.buffer ]
-    else
+    if frames.length isnt 0
       setTimeout loopFunc, 0
+    else
+      postMessage { type: 'result', args: [ result ] }, [ result.buffer ]
 
   do loopFunc
