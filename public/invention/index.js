@@ -4,7 +4,7 @@
 
   $(function() {
     'use strict';
-    var BPM, DancingPortrait, FPS, INVENTION_13, MMLTrack, MarkovMMLTrack, SoundSystem, ToneGenerator, famitable, i, isMarkov, main, sinetable;
+    var BPM, DancingPortrait, FPS, INVENTION_13, MMLTrack, MarkovMMLTrack, SoundSystem, ToneGenerator, famitable, i, main, sinetable, vue;
     BPM = 90;
     FPS = 60;
     INVENTION_13 = 'o3l16\nrea<c>beb<dc8e8>g+8<e8 >aea<c>beb<dc8>a8r4\n<rece>a<c>egf8a8<d8f8 fd>b<d>gbdfe8g8<c8e8\nec>a<c>f8<d8d>bgbe8<c8 c>afad8b8<c8r8r4\n\n>rg<ced>g<dfe8g8>b8<g8 c>g<ced>g<dfe8c8g8e8\n<c>aeace>a<c d8f+8a8<c8 >bgdg>b<d>gb<c8e8g8b8\naf+d+f+>b<d+>f+ag8<g8gece >a+8<f+8f+d>b<d>g8<e8ec>a<c\n>f+<gf+ed+f+>b<d+e8r8r4\nrgb-gegc+egec+e>arr8 <rfafdf>b<dfd>b<d>grr8\n<regece>a<cd+c>a<c>f+rr8 <rdfd>b<d>g+b<d>bg+berr8\n\nrea<c>beb<dc8>a8g+8e8 a<cec>a<c>f+a<c>af+ad+<c>ba\ng+b<d>bg+bdfg+fdf>b<fed ceaece>a<cd+c>a<c>f+<c>ba\ng+8<b8g+8e8rea<c>beb<d c>a<ced>b<dfecegfedc\n>b<cdefdg+dbdcafd>b<d >g+b<c>aeabg+aece>a4<\n;\no2l16\na8<a4g+8aea<c>beb<d c8>a8g+8e8aea<c>beb<d\nc8>a8<c8>a8<d>afadf>a<c >b8<d8g8b8bgegce>gb\na8<c8df>b<d>g8b8<ce>a<c >f8d8g<gfgcg<ced>g<df\n\ne8c8>b8g8 <c>g<ced>g<df e8c8r4rgegce>gb\na8<c8e8g8f+adf+>a<d>f+a g8b8<d8f+8egce>g<c>eg\nf+8a8b8<d+8rece>a<ceg f+d>b<d>gb<df+ec>a<c>f+a<c8\nc>b<c>ab8>b8<e<e>bge>bgb\ne8<e8g8b-8c+8r8r<gfe d8>d8f8a-8>b8r8r<<fed\nc8>c8e8f+8>a8r8r<<ed+c+ >b8>b8<d8f8>g+8r8r<<dc>b\n\n<c8>a8g+8e8aea<c>beb<d ceaece>a<c>f+a<c>af+ad+f+\ne8g+8b8g+8e8>b8g+8e8 a8<c8e8c8>a8<c8>d+8r8\nr>bg+edbgdc8e8>g+8<e8 >a8<f+8>b8<g+8c8a8d8b-8\ng+8f8d8>b8g+8a8d8e8 f8d+8e8<e8>a2';
@@ -332,7 +332,7 @@
           options = {};
         }
         MarkovMMLTrack.__super__.constructor.call(this, player, options);
-        this.lv = (_ref = options.lv) != null ? _ref : 4;
+        this.lv = (_ref = options.lv) != null ? _ref : 3;
         this.markov = {};
         this.chord = {};
         this.histNoteIndex = [];
@@ -601,10 +601,15 @@
       return SoundSystem;
 
     })();
-    isMarkov = false;
+    vue = new Vue({
+      el: '#app',
+      data: {
+        mode: 'normal'
+      }
+    });
     main = function(img) {
       var $canvas, animate, canvas, height, isAnimate, portrait, sys, width;
-      $canvas = $(canvas = document.getElementById("canvas"));
+      $canvas = $(canvas = document.getElementById('canvas'));
       width = canvas.width = $canvas.width();
       height = canvas.height = $canvas.height();
       portrait = new DancingPortrait({
@@ -621,15 +626,12 @@
       };
       sys = new SoundSystem;
       sys.setMML(INVENTION_13);
-      $('input').on('click', function(e) {
-        return isMarkov = $(e.target).attr('value') === 'markov';
-      });
       $canvas.on('click', function(e) {
         var mode;
-        mode = isMarkov ? 'markov' : 'normal';
+        mode = vue.mode;
         sys.setMode(mode);
         if (sys.toggle()) {
-          if (mode === "markov") {
+          if (mode === 'markov') {
             isAnimate = true;
             if (utils.isDesktop()) {
               return requestAnimationFrame(animate);

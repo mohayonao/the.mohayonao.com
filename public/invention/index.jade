@@ -3,6 +3,7 @@ extend ../layout
 block config
   - $.title = "endless invention"
   - $.path  = "/invention/"
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
   - $.use("pico.js")
   - $.use("reverb.js")
 
@@ -13,13 +14,9 @@ block content
     canvas#canvas(width="150",height="200")
     ol
       li choose
-      .radio
-        label
-          input(type="radio",name="mode",value="normal",checked)
-          span Inventionen 13 a-moll
-      .radio
-        label
-          input(type="radio",name="mode",value="markov")
-          span Markov Inventionen
+        .form-group
+          .btn-group
+            button.btn.btn-default(v-on="click: mode='normal'",class="{{ mode=='normal' ? 'btn-primary' : '' }}") Inventionen 13 a-moll
+            button.btn.btn-default(v-on="click: mode='markov'",class="{{ mode=='markov' ? 'btn-primary' : '' }}") Markov Inventionen
       li click J.S.Bach to play/pause music
       li mouseover Y : control EFX Depth

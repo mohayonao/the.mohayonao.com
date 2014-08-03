@@ -230,7 +230,7 @@ $ ->
       constructor: (player, options={})->
           super(player, options)
 
-          @lv    = options.lv ? 4
+          @lv    = options.lv ? 3
           @markov = {}
           @chord  = {}
           @histNoteIndex = []
@@ -381,10 +381,14 @@ $ ->
         else @readEnd = true
       @efx.process L, R
 
-  isMarkov = false
+  vue = new Vue
+    el: '#app'
+
+    data:
+      mode: 'normal'
 
   main = (img)->
-    $canvas = $(canvas = document.getElementById("canvas"))
+    $canvas = $(canvas = document.getElementById('canvas'))
     width  = canvas.width  = $canvas.width()
     height = canvas.height = $canvas.height()
 
@@ -393,21 +397,18 @@ $ ->
 
     isAnimate = false
     animate = ()->
-        portrait.animate()
-        if isAnimate then requestAnimationFrame animate
+      portrait.animate()
+      if isAnimate then requestAnimationFrame animate
 
     sys = new SoundSystem
     sys.setMML INVENTION_13
 
-    $('input').on 'click', (e)->
-      isMarkov = $(e.target).attr('value') is 'markov'
-
     $canvas.on 'click', (e)->
-      mode = if isMarkov then 'markov' else 'normal'
+      mode = vue.mode
 
       sys.setMode mode
       if sys.toggle()
-        if mode == "markov"
+        if mode == 'markov'
           isAnimate = true
           if utils.isDesktop()
             requestAnimationFrame animate
@@ -426,7 +427,7 @@ $ ->
       portrait.y_rate  = (1.0 - y_rate) * 3.0 + 0.25
       portrait.x_index = (x_rate - 0.5) * 5
 
-    animate()
+    do animate
 
   $('<img>').attr('src', '/invention/bach.png').load (e)->
     main e.target

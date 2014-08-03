@@ -16,17 +16,14 @@
       <div id="app">
         <canvas id="canvas" width="150" height="200"></canvas>
         <ol>
-          <li>choose</li>
-          <div class="radio">
-            <label>
-              <input type="radio" name="mode" value="normal" checked><span>Inventionen 13 a-moll</span>
-            </label>
-          </div>
-          <div class="radio">
-            <label>
-              <input type="radio" name="mode" value="markov"><span>Markov Inventionen</span>
-            </label>
-          </div>
+          <li>choose
+            <div class="form-group">
+              <div class="btn-group">
+                <button v-on="click: mode='normal'" class="btn btn-default {{ mode=='normal' ? 'btn-primary' : '' }}">Inventionen 13 a-moll</button>
+                <button v-on="click: mode='markov'" class="btn btn-default {{ mode=='markov' ? 'btn-primary' : '' }}">Markov Inventionen</button>
+              </div>
+            </div>
+          </li>
           <li>click J.S.Bach to play/pause music</li>
           <li>mouseover Y : control EFX Depth</li>
         </ol>
@@ -70,6 +67,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="/utils.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
     <script src="pico.js"></script>
     <script src="reverb.js"></script>
     <script src="index.js"></script>
