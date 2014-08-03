@@ -3,13 +3,12 @@ extend ../layout
 block config
   - $.title = "ukulele"
   - $.path  = "/ukulele/"
-  - $.ads   = true
-  - $.add("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.3.0/codemirror.min.js")
-  - $.add("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.3.0/codemirror.min.css")
-  - $.add("timbre.js")
-  - $.add("ukulele.js")
-  - $.add("demo.js")
-  - $.add("ukulele.css")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.3.0/codemirror.min.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.3.0/codemirror.min.css")
+  - $.use("timbre.js")
+  - $.use("ukulele.js")
+  - $.use("demo.js")
+  - $.use("ukulele.css")
 
 block content
   h1.title #{$.title}

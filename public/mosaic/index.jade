@@ -3,8 +3,8 @@ extend ../layout
 block config
   - $.title = "gif.mosaic"
   - $.path  = "/mosaic/"
-  - $.add("GIFEncoder.js")
-  - $.add("LigatureSymbols-2.11.css")
+  - $.use("GIFEncoder.js")
+  - $.use("LigatureSymbols-2.11.css")
 
 block content
   h1.title #{$.title}

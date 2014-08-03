@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var DURATION, audioContext, count, generators, midicps, pluck, timerId;
+  var DURATION, audioContext, generators, midicps, pluck, timerId;
 
   audioContext = new AudioContext;
 
@@ -18,13 +18,11 @@
     return buffer;
   };
 
-  generators = [0, 0, 7, 0, 8, 0, 7, 0, 5, 3, 2, 3, 5, 3, 2, -2].map(function(x) {
-    return pluck(midicps(x + 48), DURATION);
+  generators = [0, 2, 3, 7, 9].map(function(x) {
+    return pluck(midicps(x + 60), DURATION);
   });
 
   timerId = 0;
-
-  count = 0;
 
   $('#test').on('click', function() {
     if (timerId) {
@@ -34,7 +32,7 @@
       return timerId = setInterval(function() {
         var vca, vcf, vco;
         vco = audioContext.createBufferSource();
-        vco.buffer = generators[count++ % generators.length];
+        vco.buffer = _.sample(generators);
         vcf = audioContext.createBiquadFilter();
         vcf.type = "lowpass";
         vcf.frequency.value = 2400;

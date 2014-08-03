@@ -3,9 +3,9 @@ extend ../layout
 block config
   - $.title = "mimi-grep"
   - $.path  = "/mimi/"
-  - $.fullscreen = true
-  - $.add("pico.js")
-  - $.add("biquad.js")
+  - $.fullscreen()
+  - $.use("pico.js")
+  - $.use("biquad.js")
 
 block content
   canvas#preview

@@ -3,7 +3,7 @@ extend ../layout
 block config
   - $.title = "coffee-script viewer"
   - $.path  = "/coffee/"
-  - $.add("//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/coffee-script/1.7.1/coffee-script.min.js")
 
 block content
   h1.title #{$.title}

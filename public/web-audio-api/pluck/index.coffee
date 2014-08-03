@@ -13,11 +13,10 @@ pluck = (freq, duration)->
   buffer.getChannelData(0).set new KarplusStrong(sampleRate, freq, duration)
   buffer
 
-generators = [ 0, 0, 7, 0, 8, 0, 7, 0,  5, 3, 2, 3, 5, 3, 2, -2 ].map (x)->
-  pluck(midicps(x + 48), DURATION)
+generators = [ 0, 2, 3, 7, 9 ].map (x)->
+  pluck(midicps(x + 60), DURATION)
 
 timerId = 0
-count   = 0
 
 $('#test').on 'click', ->
 
@@ -27,7 +26,7 @@ $('#test').on 'click', ->
   else
     timerId = setInterval ->
       vco = audioContext.createBufferSource()
-      vco.buffer = generators[count++ % generators.length]
+      vco.buffer = _.sample generators
 
       vcf = audioContext.createBiquadFilter()
       vcf.type = "lowpass"

@@ -3,7 +3,6 @@ extend ../layout
 block config
   - $.title = "css"
   - $.path  = "/css/"
-  - $.ads   = true
 
 block content
   h1.title #{$.title}
@@ -22,7 +21,7 @@ block content
     hr.dotted
 
     h3 Text
-    div.text-box
+    div(style="margin:20px")
       p.
        this is paragraph
       p
@@ -30,7 +29,7 @@ block content
         a(href="#") link
 
     h3 List
-    div.text-box
+    div(style="margin:20px")
       ul
         li list item1
         li list item2

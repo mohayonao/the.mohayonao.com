@@ -3,10 +3,9 @@ extend ../layout
 block config
   - $.title = "tarai-music"
   - $.path  = "/tarai/"
-  - $.ads   = true
-  - $.add("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
-  - $.add("timbre.js")
-  - $.add("subcollider.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
+  - $.use("timbre.js")
+  - $.use("subcollider.js")
 
 block content
   h1.title #{$.title}

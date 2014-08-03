@@ -28,7 +28,6 @@ module.exports = (grunt)->
       block config
         - $.title = \"#{name}\"
         - $.path  = \"/#{name}/\"
-        - $.ads   = true
 
       block content
         h1.title \#{$.title}
@@ -39,8 +38,7 @@ module.exports = (grunt)->
     console.log "create: #{path}/index.coffee"
     grunt.file.write "#{path}/index.coffee",
       """
-      $ ->
-        'use strict'
+      'use strict'
       """
 
     console.log "create: #{path}/index.styl"

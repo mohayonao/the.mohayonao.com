@@ -3,8 +3,7 @@ extend ../layout
 block config
   - $.title = "1bit music"
   - $.path  = "/1bit/"
-  - $.ads   = true
-  - $.add("pico.js")
+  - $.use("pico.js")
 
 block content
   h1.title #{$.title}

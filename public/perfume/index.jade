@@ -3,9 +3,10 @@ extend ../layout
 block config
   - $.title = "perfume"
   - $.path  = "/perfume/"
+  - $.noAdSense()
 
 block content
-  h1 #{$.title}
+  h1.title #{$.title}
 
   #app
     ul(id="list")

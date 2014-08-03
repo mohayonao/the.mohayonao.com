@@ -1,10 +1,12 @@
 - var $ = []
-- $.add = function(mod) { this.push(mod); }
+- $.use        = function(mod) { $.push(mod); }
+- $.noAdSense  = function() { $._ads = false; }
+- $.fullscreen = function() { $._fsc = true; }
 - $.lang   = "en"
 - $.title  = "the.mohayonao.com"
 - $.path   = ""
-- $.ads    = false
-- $.fullscreen = false
+- $._ads   = true
+- $._fsc   = false
 
 block config
 
@@ -23,13 +25,13 @@ html(lang="#{$.lang}")
         link(rel="stylesheet",href=mod)
     link(rel="stylesheet",href="index.css")
   body
-    if $.fullscreen
+    if $._fsc
       block content
     else
       #wrap
         block content
 
-        if $.ads
+        if $._ads
           .google-adsense
             script.
               google_ad_client = "ca-pub-2530516645891329";
@@ -53,15 +55,15 @@ html(lang="#{$.lang}")
             li
               a(href="/")
                 img(src="/favicon.ico")
-                span  Top Page
+                span Top Page
             li
-              a(href="javascript:void(utils.tweet({text:'@mohayonao',url:'http://the.mohayonao.com#{$.path}'}));",target="twitter")
+              a(href="javascript:void(utils.tweet({text:'@mohayonao',url:'http://the.mohayonao.com#{$.path}'}));")
                 img(src="/twitter.png")
-                span  Contact
+                span Contact
             li
               a(href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public#{$.path}",target="github")
                 img(src="/github.png")
-                span  View Source on GitHub
+                span View Source on GitHub
     script.
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

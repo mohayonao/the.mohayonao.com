@@ -3,8 +3,8 @@ extend ../layout
 block config
   - $.title = "enzui"
   - $.path  = "/enzui/"
-  - $.add("pico.js")
-  - $.add("enzui.js")
+  - $.use("pico.js")
+  - $.use("enzui.js")
 
 block content
   h1.title #{$.title}
@@ -23,7 +23,7 @@ block content
           option(value="test02") test02
           option(value="test03") test03
         button.btn.btn-default#load load
-      .text-box#desc
+      #desc(style="margin:20px")
         | かつて作っていた Max/MSP風のヴィジュアルプログラム言語です.<br>
         | [RUN]で実行できます.  <br>
         | 三角マークの数字はドラッグで値を変更, [●]はボタン, [×]はトグルスイッチです.<br>

@@ -3,9 +3,8 @@ extend ../../layout
 block config
   - $.title = "face-detect"
   - $.path  = "/canvas/face/"
-  - $.ads   = true
-  - $.add("ccv.js")
-  - $.add("face.js")
+  - $.use("ccv.js")
+  - $.use("face.js")
 
 block content
   h1.title #{$.title}

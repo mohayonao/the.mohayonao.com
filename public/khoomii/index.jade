@@ -3,8 +3,7 @@ extend ../layout
 block config
   - $.title = "formant khoomii"
   - $.path  = "/khoomii/"
-  - $.ads   = true
-  - $.add("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
 
 block content
   h1.title #{$.title}
@@ -12,7 +11,6 @@ block content
   #app
     button.btn.btn-default(v-on="click: play()")  {{ isPlaying ? 'Stop' : 'Play' }}
     button.btn.btn-default(v-on="click: tweet()") Tweet
-    #params
-      .form-group(v-repeat="params")
-        label {{ name }}
-        input.form-control(type="range", v-model="value", min="1", max="100", v-on="input: update(name, value)")
+    .form-group(v-repeat="params")
+      label {{ name }}
+      input.form-control(type="range", v-model="value", min="1", max="100", v-on="input: update(name, value)")

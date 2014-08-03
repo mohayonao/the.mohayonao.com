@@ -1,10 +1,11 @@
 extend ../layout
 
 block config
-  - $.add("../Three.js")
-  - $.add("../Three.flashlike.js")
-  - $.add("../bvh.js")
-  - $.add("../motionman.js")
+  - $.fullscreen()
+  - $.use("../Three.js")
+  - $.use("../Three.flashlike.js")
+  - $.use("../bvh.js")
+  - $.use("../motionman.js")
 
 block content
   audio(id="audio",controls)

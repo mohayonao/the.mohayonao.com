@@ -3,9 +3,8 @@ extend ../layout
 block config
   - $.title = "endless invention"
   - $.path  = "/invention/"
-  - $.ads   = true
-  - $.add("pico.js")
-  - $.add("reverb.js")
+  - $.use("pico.js")
+  - $.use("reverb.js")
 
 block content
   h1.title #{$.title}

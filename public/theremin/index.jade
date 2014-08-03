@@ -3,9 +3,8 @@ extend ../layout
 block config
   - $.title = "webcam-theremin"
   - $.path  = "/theremin/"
-  - $.ads   = true
-  - $.add("timbre.js")
-  - $.add("subcollider.js")
+  - $.use("timbre.js")
+  - $.use("subcollider.js")
 
 block content
   h1.title #{$.title}

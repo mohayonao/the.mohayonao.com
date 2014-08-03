@@ -3,10 +3,10 @@ extend ../layout
 block config
   - $.title = "scalable mario"
   - $.path  = "/scalable-mario/"
-  - $.add("timbre.js")
-  - $.add("subcollider.js")
-  - $.add("scales.js")
-  - $.add("tunings.js")
+  - $.use("timbre.js")
+  - $.use("subcollider.js")
+  - $.use("scales.js")
+  - $.use("tunings.js")
 
 block content
   h1.title #{$.title}

@@ -3,9 +3,8 @@ extend ../layout
 block config
   - $.title = "one-liner-music"
   - $.path  = "/one-liner-music/"
-  - $.ads   = true
-  - $.add("pico.js")
-  - $.add("MutekiTimer.js")
+  - $.use("pico.js")
+  - $.use("MutekiTimer.js")
 
 block content
   h1.title #{$.title}
