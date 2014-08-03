@@ -3,8 +3,6 @@ extend ./layout
 block config
   - $.title  = "the.mohayonao.com"
   - $.path   = "/"
-  - $.ads    = true
-  - $.footer = true
 
 block content
   h1.title #{$.title}
@@ -14,10 +12,26 @@ block content
 
     h3 weird javascript demo
     ul
-      li
-        a(href="./6chars/") 6chars drums
-      li
-        a(href="./console-sushi/") console-sushi
+      li hearing
+      ul
+        li
+          a(href="./6chars/") 6chars drums
+        li
+          a(href="./1bit/") 1bit music
+        li
+          a(href="./khoomii/") formant khoomii
+        li
+          a(href="./tarai/") tarai-music
+      li sight
+      ul
+        li
+          a(href="./zanzo/") zanzo
+        li
+          a(href="./fractal/circle/") fractal/circle
+      li other sense
+      ul
+        li
+          a(href="./console-sushi/") console-sushi
       //- li
       //-  a(href="./invention/") endless invention
       //- li
@@ -29,19 +43,9 @@ block content
       //- li
       //-   a(href="./mosaic/") mosaic.gif
       //- li
-      //-   a(href="./1bit/") 1bit music
-      //- li
       //-   a(href="./one-liner-music/") one liner music
-      li
-        a(href="./khoomii/") formant khoomii
       //- li
       //-   a(href="./ukulele/") ukulele
-      li
-        a(href="./zanzo/") zanzo
-      li
-        a(href="./fractal/circle/") fractal/circle
-      li
-        a(href="./tarai/") tarai-music
     h3 Other Activities on the Web
     ul
       li
@@ -64,6 +68,9 @@ block content
       li
         a(href="http://mohayonao.github.io/SCScript") SCScript
         nbsp - JavaScript port of SuperCollider
+      li
+        a(href="https://github.com/mohayonao/MutekiTimer") MutekiTimer
+        nbsp - A stable timer that run in the background
       li
         a(href="https://github.com/mohayonao/sushi-repl") SUSHI-REPL
         nbsp - Yet Another JavaScript REPL
