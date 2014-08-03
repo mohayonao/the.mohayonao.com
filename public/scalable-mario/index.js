@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var $scale, $tuning, baseRoot, baseScale, bass, calcFrequency, changeRootFreq, changeScale, changeTuning, env, master, melo0, melo1, params, q, s, scales, sheet, synth, t, tunings;
+    var baseRoot, baseScale, bass, calcFrequency, changeRootFreq, changeScale, changeTuning, env, items, master, melo0, melo1, s, scales, sheet, synth, t, tunings, vue;
     melo0 = 't104 l16 q4 $\no6 eere rcer gr8. > gr8.<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 r8gg-fd#re r>g#a<c r>a<cd r8gg-fd#re < rcrc cr8.> r8gg-fd#re r>g#a<c r>a<cd r8e-r8dr8cr8.r4\no6 r8gg-fd#re r>g#a<c r>a<cd r8gg-fd#re < rcrc cr8.> r8gg-fd#re r>g#a<c r>a<cd r8e-r8dr8cr8.r4\no6 ccrc rcdr ecr>a gr8.< ccrc rcde r2 ccrc rcdr ecr>a gr8.<\no6 eere rcer gr8. > gr8.<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<\no6 ecr>g r8g#r a<frf> ar8. l12b<aa agf l16ecr>a gr8.< ecr>g r8g#r a<frf> ar8. l12b<ff fed l16c>grg cr8.<\no6 ecr>g r8g#r a<frf> ar8. l12b<aa agf l16ecr>a gr8.< ecr>g r8g#r a<frf> ar8. l12b<ff fed l16c>grg cr8.<\no6 ccrc rcdr ecr>a gr8.< ccrc rcde r2 ccrc rcdr ecr>a gr8.';
     sheet = [0, 1, 1, 2, 2, 3, 0, 1, 1, 4, 4, 3];
     melo1 = 't104 l16 q4 $\no5 f#f#rf# rf#f#r gr8. >gr8.\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no6 r8ee-d>b<rc r>efa rfab< r8ee-d>b<rc rgrg gr8. r8ee-d>b<rc r>efa rfab< r8cr8>fr8er8.r4\no6 r8ee-d>b<rc r>efa rfab< r8ee-d>b<rc rgrg gr8. r8ee-d>b<rc r>efa rfab< r8cr8>fr8er8.r4\no5 a-a-ra- ra-b-r <c>grf er8. a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.\no5 f#f#rf# rf#f#r gr8. >gr8.\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8\no6 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.< c>gre r8er  f<drd> fr8. l12g<dd dc>b l16er8.r4\no6 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.< c>gre r8er  f<drd> fr8. l12g<dd dc>b l16er8.r4\no5 a-a-ra- ra-b-r <c>grf er8. a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.';
@@ -63,39 +63,6 @@
           return synth.noteOffWithFreq(this.freq);
       }
     });
-    $('#play').on('click', function() {
-      master.isPlaying = !master.isPlaying;
-      if (master.isPlaying) {
-        master.play();
-        melo0.start();
-        melo1.start();
-        bass.start();
-        return $(this).css({
-          'color': 'red'
-        });
-      } else {
-        master.pause();
-        melo0.stop();
-        melo1.stop();
-        bass.stop();
-        return $(this).css({
-          'color': 'black'
-        });
-      }
-    });
-    $('#tweet').on('click', function() {
-      var text, url;
-      url = "http://" + location.host + "/scalable-mario/";
-      url += "?" + utils.param({
-        s: $scale.val(),
-        t: $tuning.val()
-      });
-      text = "" + changeScale.name + " なマリオの曲";
-      return utils.tweet({
-        text: text,
-        url: url
-      });
-    });
     scales = (function() {
       scales = {};
       sc.ScaleInfo.names().forEach(function(key) {
@@ -120,42 +87,86 @@
       });
       return tunings;
     })();
-    $scale = $('#scale');
-    $scale.on('change', function() {
-      changeScale = scales[$(this).val()];
-      return changeScale.tuning(changeTuning);
-    });
-    Object.keys(scales).forEach(function(key) {
-      return $scale.append($("<option>").attr({
-        value: key
-      }).text(scales[key].name));
-    });
-    $('#random-scale').on('click', function() {
-      return $scale.val(Object.keys(scales).choose()).change();
-    });
-    $tuning = $('#tuning');
-    $tuning.on('change', function() {
-      changeTuning = tunings[$(this).val()];
-      return changeScale.tuning(changeTuning);
-    });
-    Object.keys(tunings).forEach(function(key) {
-      return $tuning.append($("<option>").attr({
-        value: key
-      }).text(tunings[key].name));
-    });
-    $('#random-tuning').on('click', function() {
-      return $tuning.val(Object.keys(tunings).choose()).change();
-    });
-    if ((q = location.search.substr(1))) {
-      params = utils.deparam(q);
-      s = params.s;
-      t = params.t;
-    } else {
+    if (location.hash) {
+      items = location.hash.substr(1).split(',');
+      s = items[0] || '';
+      t = items[1] || '';
+    }
+    if (!scales.hasOwnProperty(s)) {
       s = 'major';
+    }
+    if (!tunings.hasOwnProperty(t)) {
       t = 'et12';
     }
-    $scale.val(s).change();
-    $tuning.val(t).change();
+    vue = new Vue({
+      el: '#app',
+      data: {
+        isPlaying: false,
+        scale: '',
+        tuning: '',
+        scales: Object.keys(scales).map(function(key) {
+          return {
+            key: key,
+            name: scales[key].name
+          };
+        }),
+        tunings: Object.keys(tunings).map(function(key) {
+          return {
+            key: key,
+            name: tunings[key].name
+          };
+        })
+      },
+      methods: {
+        random: function(type) {
+          if (type === 'tuning') {
+            return this.tuning = Object.keys(tunings).choose();
+          } else {
+            return this.scale = Object.keys(scales).choose();
+          }
+        },
+        play: function() {
+          this.isPlaying = !this.isPlaying;
+          if (this.isPlaying) {
+            master.play();
+            melo0.start();
+            melo1.start();
+            return bass.start();
+          } else {
+            master.pause();
+            melo0.stop();
+            melo1.stop();
+            return bass.stop();
+          }
+        },
+        tweet: function() {
+          var text, url;
+          url = location.href;
+          text = utils.lang({
+            ja: "" + changeScale.name + " なマリオの曲",
+            '': "Mario theme in " + changeScale.name + " mode"
+          });
+          return utils.tweet({
+            text: text,
+            url: url
+          });
+        }
+      }
+    });
+    vue.$watch('scale', function(val) {
+      window.location.replace("#" + this.scale + "," + this.tuning);
+      changeScale = scales[val];
+      return changeScale.tuning(changeTuning);
+    });
+    vue.$watch('tuning', function(val) {
+      window.location.replace("#" + this.scale + "," + this.tuning);
+      changeTuning = tunings[val];
+      return changeScale.tuning(changeTuning);
+    });
+    changeScale = scales[s];
+    changeTuning = tunings[t];
+    vue.scale = s;
+    vue.tuning = t;
     return 0;
   });
 

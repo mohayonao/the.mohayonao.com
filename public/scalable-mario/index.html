@@ -14,19 +14,23 @@
     <div id="wrap">
       <h1 class="title">scalable mario</h1>
       <div id="app">
-        <div style="margin-bottom:25px">
-          <button id="play" class="btn btn-default">Play</button>
-          <button id="tweet" class="btn btn-default">Tweet</button>
+        <div class="form-group">
+          <button v-on="click: play" class="btn btn-default">{{ isPlaying ? 'Stop' : 'Play' }}</button>
+          <button v-on="click: tweet" class="btn btn-default">Tweet</button>
         </div>
-        <div>
+        <div class="form-group">
           <label for="scale">Scale</label>
-          <select name="scale" id="scale"></select>
-          <button id="random-scale" class="btn btn-default btn-sm">random</button>
+          <ul class="list-inline">
+            <li v-repeat="scales"><span v-on="click: scale=key" class="{{ scale == key ? 'selected' : '' }}">{{ name }}</span></li>
+          </ul>
+          <button v-on="click: random('scale')" class="btn btn-default"><span class="glyphicon glyphicon-random"></span></button>
         </div>
-        <div>
+        <div class="form-group">
           <label for="tuning">Tuning</label>
-          <select name="tuning" id="tuning"></select>
-          <button id="random-tuning" class="btn btn-default btn-sm">random</button>
+          <ul class="list-inline">
+            <li v-repeat="tunings"><span v-on="click: tuning=key" class="{{ tuning == key ? 'selected' : '' }}">{{ name }}</span></li>
+          </ul>
+          <button v-on="click: random('tuning')" class="btn btn-default"><span class="glyphicon glyphicon-random"></span></button>
         </div>
       </div>
       <div class="google-adsense">
@@ -68,6 +72,8 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="/utils.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="timbre.js"></script>
     <script src="subcollider.js"></script>
     <script src="scales.js"></script>

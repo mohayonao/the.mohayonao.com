@@ -88,28 +88,6 @@ $ ->
       when 'noteOff'
         synth.noteOffWithFreq @freq
 
-  # UI
-  $('#play').on 'click', ->
-    master.isPlaying = not master.isPlaying
-    if master.isPlaying
-      master.play()
-      melo0.start()
-      melo1.start()
-      bass.start()
-      $(this).css 'color': 'red'
-    else
-      master.pause()
-      melo0.stop()
-      melo1.stop()
-      bass.stop()
-      $(this).css 'color': 'black'
-
-  $('#tweet').on 'click', ->
-    url  = "http://#{location.host}/scalable-mario/"
-    url += "?" + utils.param(s:$scale.val(),t:$tuning.val())
-    text = "#{changeScale.name} なマリオの曲"
-    utils.tweet text:text, url:url
-
   scales = do ->
     scales = {}
     sc.ScaleInfo.names().forEach (key)->
@@ -126,33 +104,68 @@ $ ->
       tunings[key] = tuning
     tunings
 
-  $scale = $('#scale')
-  $scale.on 'change', ->
-    changeScale = scales[$(this).val()]
-    changeScale.tuning changeTuning
-  Object.keys(scales).forEach (key)->
-    $scale.append $("<option>").attr({value:key}).text(scales[key].name)
-  $('#random-scale').on 'click', ->
-    $scale.val( Object.keys(scales).choose() ).change()
+  if location.hash
+    items = location.hash.substr(1).split ','
+    s = items[0] or ''
+    t = items[1] or ''
 
-  $tuning = $('#tuning')
-  $tuning.on 'change', ->
-    changeTuning = tunings[$(this).val()]
-    changeScale.tuning changeTuning
-  Object.keys(tunings).forEach (key)->
-    $tuning.append $("<option>").attr({value:key}).text(tunings[key].name)
-  $('#random-tuning').on 'click', ->
-    $tuning.val( Object.keys(tunings).choose() ).change()
-
-  if (q = location.search.substr(1))
-    params = utils.deparam q
-    s = params.s
-    t = params.t
-  else
+  if not scales.hasOwnProperty(s)
     s = 'major'
+
+  if not tunings.hasOwnProperty(t)
     t = 'et12'
 
-  $scale.val(s).change()
-  $tuning.val(t).change()
+  vue = new Vue
+    el: '#app'
+
+    data:
+      isPlaying: false
+      scale : ''
+      tuning: ''
+      scales : Object.keys(scales ).map (key)-> key:key, name:scales[ key].name
+      tunings: Object.keys(tunings).map (key)-> key:key, name:tunings[key].name
+
+    methods:
+      random: (type)->
+        if type is 'tuning'
+          @tuning = Object.keys(tunings).choose()
+        else
+          @scale = Object.keys(scales).choose()
+
+      play: ->
+        @isPlaying = not @isPlaying
+        if @isPlaying
+          master.play()
+          melo0.start()
+          melo1.start()
+          bass.start()
+        else
+          master.pause()
+          melo0.stop()
+          melo1.stop()
+          bass.stop()
+
+      tweet: ->
+        url  = location.href
+        text = utils.lang
+          ja: "#{changeScale.name} なマリオの曲"
+          '': "Mario theme in #{changeScale.name} mode"
+        utils.tweet text:text, url:url
+
+  vue.$watch 'scale', (val)->
+    window.location.replace "##{@scale},#{@tuning}"
+    changeScale = scales[val]
+    changeScale.tuning changeTuning
+
+  vue.$watch 'tuning', (val)->
+    window.location.replace "##{@scale},#{@tuning}"
+    changeTuning = tunings[val]
+    changeScale.tuning changeTuning
+
+  changeScale  = scales[s]
+  changeTuning = tunings[t]
+
+  vue.scale  = s
+  vue.tuning = t
 
   0
