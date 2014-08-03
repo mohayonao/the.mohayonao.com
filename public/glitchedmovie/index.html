@@ -14,13 +14,10 @@
     <div id="wrap">
       <h1 class="title">glitched movie player</h1>
       <div id="app">
-        <div style="border:solid 1px gray">
-          <div id="tips">
-            <div>drag a movie files(*.mp4) to play</div><small>System Requirements: Google Chrome</small>
-          </div>
-          <canvas id="preview"></canvas>
+        <div id="preview">
+          <div id="tips">drag & drop a movie files(*.mp4) to play</div>
+          <canvas id="canvas"></canvas>
         </div>
-        <input type="range" max="10000" value="0" id="currentTime" class="form-control">
         <div class="form-group">
           <button id="play" class="btn btn-default">Play</button>
           <button id="pause" class="btn btn-default">Pause</button>

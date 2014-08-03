@@ -15,29 +15,14 @@ $ ->
       app.setFiles e.originalEvent.dataTransfer.files
     false
 
-  resizeContainer = do ->
-    $container = $('#app')
-    -> $container.height ($container.width() * 0.75)|0
-
-  $(window).on 'resize', resizeContainer
-  resizeContainer()
-
   unless AudioContext          then return
   unless createObjectURL       then return
   unless requestAnimationFrame then return
 
-  $('#full-screen').on 'click', ->
-    app.fullScreen()
   $('#play').on 'click', ->
     app.play()
   $('#pause').on 'click', ->
     app.pause()
-  $('#processing').on 'change', ->
-    app.setProcessing !!$(this).attr('checked')
-  $('#loop').on 'change', ->
-    app.loop = !!$(this).attr('checked')
-  $('#currentTime').on 'change', ->
-    app.setCurrentTime ($(this).val()|0) / 10000
 
   class App
     constructor: ->
@@ -266,6 +251,6 @@ $ ->
       stream
 
   app = new App
-  app.addProcessor new VideoProcessor(document.getElementById 'preview')
+  app.addProcessor new VideoProcessor(document.getElementById 'canvas')
   app.addProcessor new AudioProcessor(new AudioContext)
   app.addSubProcessor new GlitchProcessor()

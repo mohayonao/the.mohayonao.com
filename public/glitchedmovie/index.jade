@@ -8,12 +8,9 @@ block content
   h1.title #{$.title}
 
   #app
-    div(style="border:solid 1px gray")
-      div#tips
-        div drag a movie files(*.mp4) to play
-        small System Requirements: Google Chrome
-      canvas#preview
-    input.form-control(type="range",max="10000",value="0",id="currentTime")
+    #preview
+      #tips drag & drop a movie files(*.mp4) to play
+      canvas#canvas
     .form-group
       button.btn.btn-default#play Play
       button.btn.btn-default#pause Pause

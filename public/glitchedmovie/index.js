@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var App, AudioProcessor, GlitchProcessor, PREVIEW_HEIGHT, PREVIEW_WIDTH, VideoProcessor, app, resizeContainer;
+    var App, AudioProcessor, GlitchProcessor, PREVIEW_HEIGHT, PREVIEW_WIDTH, VideoProcessor, app;
     PREVIEW_WIDTH = 480;
     PREVIEW_HEIGHT = 360;
     app = null;
@@ -15,15 +15,6 @@
       }
       return false;
     });
-    resizeContainer = (function() {
-      var $container;
-      $container = $('#app');
-      return function() {
-        return $container.height(($container.width() * 0.75) | 0);
-      };
-    })();
-    $(window).on('resize', resizeContainer);
-    resizeContainer();
     if (!AudioContext) {
       return;
     }
@@ -33,23 +24,11 @@
     if (!requestAnimationFrame) {
       return;
     }
-    $('#full-screen').on('click', function() {
-      return app.fullScreen();
-    });
     $('#play').on('click', function() {
       return app.play();
     });
     $('#pause').on('click', function() {
       return app.pause();
-    });
-    $('#processing').on('change', function() {
-      return app.setProcessing(!!$(this).attr('checked'));
-    });
-    $('#loop').on('change', function() {
-      return app.loop = !!$(this).attr('checked');
-    });
-    $('#currentTime').on('change', function() {
-      return app.setCurrentTime(($(this).val() | 0) / 10000);
     });
     App = (function() {
       function App() {
@@ -411,7 +390,7 @@
 
     })();
     app = new App;
-    app.addProcessor(new VideoProcessor(document.getElementById('preview')));
+    app.addProcessor(new VideoProcessor(document.getElementById('canvas')));
     app.addProcessor(new AudioProcessor(new AudioContext));
     return app.addSubProcessor(new GlitchProcessor());
   });
