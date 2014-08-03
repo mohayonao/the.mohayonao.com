@@ -62,7 +62,7 @@ $ ->
         x = (@x + dx * rate + 0.5)|0
         y = (@y + dy * rate + 0.5)|0
         ctx.save()
-        ctx.fillStyle = "rgba(#{@rgb}, 0.5)"
+        ctx.fillStyle = "rgb(#{@rgb})"
         ctx.fillRect x, y, @size, @size
         ctx.restore()
 
@@ -70,24 +70,25 @@ $ ->
       @ctx = opts.canvas.getContext '2d'
       @imgData  = getImgData opts.img
       @cellsize = opts.cellsize ? 3
-      @mosaic   = m = getMosaic @imgData, @cellsize, @cellsize
+      @mosaic   = getMosaic @imgData, @cellsize, @cellsize
       @tile     = opts.tile ? 4
-      @cells    = cells = []
-      for y in [0...m.height]
-        for x in [0...m.width]
-          d = m.data[y][x]
+      @cells    = []
+
+      for y in [0...@mosaic.height] by 1
+        for x in [0...@mosaic.width] by 1
+          d = @mosaic.data[y][x]
           c = new Cell("#{d.R}, #{d.G}, #{d.B}", @tile, x * @tile, y * @tile)
-          dx = (m.width  / 2) - x
-          dy = (m.height / 4) - y
-          c.z = -Math.sqrt(dx*dx + dy*dy)
-          cells.push c
-      cells.sort (a, b) -> a.z - b.z
+          dx = (@mosaic.width  / 2) - x
+          dy = (@mosaic.height / 4) - y
+          c.z = -Math.sqrt(dx * dx + dy * dy)
+          @cells.push c
+      @cells.sort (a, b) -> a.z - b.z
 
       @anime_prev = Date.now()
-      [@x_index, @x_speed, @x_rate] = [0, 0, 1.0]
-      [@y_index, @y_speed, @y_rate] = [0, 0, 1.0]
+      [ @x_index, @x_speed, @x_rate ] = [ 0, 0, 1.0 ]
+      [ @y_index, @y_speed, @y_rate ] = [ 0, 0, 1.0 ]
 
-    animate: ->
+    animate: ()->
       ctx = @ctx
 
       now = Date.now()
@@ -96,27 +97,26 @@ $ ->
 
       dx = @x_index
       dy = sinetable[@y_index|0] * @y_rate
-      for c in @cells
-          c.draw(ctx, dx, dy)
-      i %= sinetable.length
+      @cells.forEach (cell)->
+        cell.draw(ctx, dx, dy)
 
       @y_index += @y_speed * elapsed
       if @y_index >= sinetable.length then @y_index -= sinetable.length
 
     getImgData = (img)->
-        canvas = document.createElement('canvas')
-        canvas.width  = img.width
-        canvas.height = img.height
+      canvas = document.createElement('canvas')
+      canvas.width  = img.width
+      canvas.height = img.height
 
-        ctx = canvas.getContext '2d'
-        ctx.drawImage img, 0,  0
-        ctx.getImageData 0, 0, img.width, img.height
+      ctx = canvas.getContext '2d'
+      ctx.drawImage img, 0, 0
+      ctx.getImageData 0, 0, img.width, img.height
 
     getMosaic = (imgData, w, h)->
       average = (x, y)->
         [R, G, B] = [0, 0, 0]
-        for _y in [y...y+h]
-          for _x in [x...x+w]
+        for _y in [y...y+h] by 1
+          for _x in [x...x+w] by 1
             R += imgData.data[(imgData.width * _y + _x) * 4 + 0]
             G += imgData.data[(imgData.width * _y + _x) * 4 + 1]
             B += imgData.data[(imgData.width * _y + _x) * 4 + 2]
@@ -408,11 +408,12 @@ $ ->
 
       sys.setMode mode
       if sys.toggle()
+        $canvas.css opacity: 1.0
         if mode == 'markov'
           isAnimate = true
-          if utils.isDesktop()
-            requestAnimationFrame animate
+          requestAnimationFrame animate
       else
+        $canvas.css opacity: 0.5
         isAnimate = false
 
     $canvas.on 'mousemove', (e)->

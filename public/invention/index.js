@@ -38,7 +38,7 @@
           x = (this.x + dx * rate + 0.5) | 0;
           y = (this.y + dy * rate + 0.5) | 0;
           ctx.save();
-          ctx.fillStyle = "rgba(" + this.rgb + ", 0.5)";
+          ctx.fillStyle = "rgb(" + this.rgb + ")";
           ctx.fillRect(x, y, this.size, this.size);
           return ctx.restore();
         };
@@ -48,24 +48,24 @@
       })();
 
       function DancingPortrait(opts) {
-        var c, cells, d, dx, dy, m, x, y, _i, _j, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
+        var c, d, dx, dy, x, y, _i, _j, _ref, _ref1, _ref2, _ref3, _ref4, _ref5;
         this.ctx = opts.canvas.getContext('2d');
         this.imgData = getImgData(opts.img);
         this.cellsize = (_ref = opts.cellsize) != null ? _ref : 3;
-        this.mosaic = m = getMosaic(this.imgData, this.cellsize, this.cellsize);
+        this.mosaic = getMosaic(this.imgData, this.cellsize, this.cellsize);
         this.tile = (_ref1 = opts.tile) != null ? _ref1 : 4;
-        this.cells = cells = [];
-        for (y = _i = 0, _ref2 = m.height; 0 <= _ref2 ? _i < _ref2 : _i > _ref2; y = 0 <= _ref2 ? ++_i : --_i) {
-          for (x = _j = 0, _ref3 = m.width; 0 <= _ref3 ? _j < _ref3 : _j > _ref3; x = 0 <= _ref3 ? ++_j : --_j) {
-            d = m.data[y][x];
+        this.cells = [];
+        for (y = _i = 0, _ref2 = this.mosaic.height; _i < _ref2; y = _i += 1) {
+          for (x = _j = 0, _ref3 = this.mosaic.width; _j < _ref3; x = _j += 1) {
+            d = this.mosaic.data[y][x];
             c = new Cell("" + d.R + ", " + d.G + ", " + d.B, this.tile, x * this.tile, y * this.tile);
-            dx = (m.width / 2) - x;
-            dy = (m.height / 4) - y;
+            dx = (this.mosaic.width / 2) - x;
+            dy = (this.mosaic.height / 4) - y;
             c.z = -Math.sqrt(dx * dx + dy * dy);
-            cells.push(c);
+            this.cells.push(c);
           }
         }
-        cells.sort(function(a, b) {
+        this.cells.sort(function(a, b) {
           return a.z - b.z;
         });
         this.anime_prev = Date.now();
@@ -74,19 +74,16 @@
       }
 
       DancingPortrait.prototype.animate = function() {
-        var c, ctx, dx, dy, elapsed, now, _i, _len, _ref;
+        var ctx, dx, dy, elapsed, now;
         ctx = this.ctx;
         now = Date.now();
         elapsed = now - this.anime_prev;
         this.anime_prev = now;
         dx = this.x_index;
         dy = sinetable[this.y_index | 0] * this.y_rate;
-        _ref = this.cells;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          c = _ref[_i];
-          c.draw(ctx, dx, dy);
-        }
-        i %= sinetable.length;
+        this.cells.forEach(function(cell) {
+          return cell.draw(ctx, dx, dy);
+        });
         this.y_index += this.y_speed * elapsed;
         if (this.y_index >= sinetable.length) {
           return this.y_index -= sinetable.length;
@@ -108,8 +105,8 @@
         average = function(x, y) {
           var B, G, R, _i, _j, _ref, _ref1, _ref2, _x, _y;
           _ref = [0, 0, 0], R = _ref[0], G = _ref[1], B = _ref[2];
-          for (_y = _i = y, _ref1 = y + h; y <= _ref1 ? _i < _ref1 : _i > _ref1; _y = y <= _ref1 ? ++_i : --_i) {
-            for (_x = _j = x, _ref2 = x + w; x <= _ref2 ? _j < _ref2 : _j > _ref2; _x = x <= _ref2 ? ++_j : --_j) {
+          for (_y = _i = y, _ref1 = y + h; _i < _ref1; _y = _i += 1) {
+            for (_x = _j = x, _ref2 = x + w; _j < _ref2; _x = _j += 1) {
               R += imgData.data[(imgData.width * _y + _x) * 4 + 0];
               G += imgData.data[(imgData.width * _y + _x) * 4 + 1];
               B += imgData.data[(imgData.width * _y + _x) * 4 + 2];
@@ -631,13 +628,17 @@
         mode = vue.mode;
         sys.setMode(mode);
         if (sys.toggle()) {
+          $canvas.css({
+            opacity: 1.0
+          });
           if (mode === 'markov') {
             isAnimate = true;
-            if (utils.isDesktop()) {
-              return requestAnimationFrame(animate);
-            }
+            return requestAnimationFrame(animate);
           }
         } else {
+          $canvas.css({
+            opacity: 0.5
+          });
           return isAnimate = false;
         }
       });
