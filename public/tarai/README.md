@@ -2,7 +2,7 @@
 
 > algorithmic composition using tak-function
 
-## Using Libraries
+## Dependencies
 
   - [mohayonao/timbre.js](https://github.com/mohayonao/timbre.js/)
     - JavaScript library for objective sound programming

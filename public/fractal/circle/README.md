@@ -12,7 +12,7 @@
 
   ![example](http://f.st-hatena.com/images/fotolife/m/mohayonao/20140802/20140802084550.png?1406936771)
 
-## Using Libraries
+## Dependencies
 
   - [harthur/color](https://github.com/harthur/color)
     - JavaScript color conversion and manipulation library

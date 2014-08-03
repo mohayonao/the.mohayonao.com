@@ -1,6 +1,6 @@
 # [formant khoomii](http://the.mohayonao.com/khoomii/)
 
-## Using Libraries
+## Dependencies
 
   - [vue.js](http://vuejs.org)
     - Intuitive, fast & composable MVVM for building interactive interfaces.

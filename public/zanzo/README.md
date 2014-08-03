@@ -10,7 +10,7 @@
   ![gif](http://f.st-hatena.com/images/fotolife/m/mohayonao/20140729/20140729211926.gif)
   ![png](http://f.st-hatena.com/images/fotolife/m/mohayonao/20140729/20140729211941.png)
 
-## Using Libralies
+## Dependencies
 
   - [deanm/omggif](https://github.com/deanm/omggif)
     - JavaScript implementation of a GIF 89a encoder and decoder
