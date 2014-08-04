@@ -83,7 +83,7 @@ $ ->
       ]
 
     methods:
-      update: ->
+      update: _.debounce(->
         params = _.pluck @params, 'value'
         window.location.replace "#" + params.join ','
 
@@ -94,6 +94,7 @@ $ ->
 
         renderer.init 0.2, hsv.rgbString()
         renderer.generate 0, 0, 300, sr, br, n
+      , 150)
 
       tweet: ->
         text = utils.lang

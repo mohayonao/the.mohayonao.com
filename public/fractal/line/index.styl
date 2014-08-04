@@ -1,0 +1,54 @@
+@import "../../layout"
+
+#editor svg
+  width  480px
+  height 480px
+  margin 0 44px
+  background: #fff
+
+  circle
+    cursor pointer
+    fill #ecf0f1
+
+  .selected
+    fill #3498db
+
+  .goal
+    fill #e74c3c
+    &:hover
+      fill #3498db
+
+  .enabled
+    &:hover
+      fill #3498db
+
+  .disabled
+    cursor auto
+    opacity 0.25
+
+#canvas
+  width  480px
+  height 480px
+  margin 0 124px
+  background white
+
+input[type="range"]
+  width 728px
+
+
+@media screen and (max-width: 640px)
+  #editor svg
+    width  240px
+    height 240px
+    margin 0 15px
+
+  #editor button
+    width 80px
+
+  #canvas
+    width  280px
+    height 280px
+    margin 0 15px
+
+  input[type="range"]
+    width 310px

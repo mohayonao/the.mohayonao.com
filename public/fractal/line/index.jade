@@ -1,0 +1,53 @@
+extend ../../layout
+
+block config
+  - $.title = "fractal/line"
+  - $.path  = "/fractal/line/"
+  - $.use("//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
+  - $.use("../color-0.7.1.min.js")
+
+block content
+  h1.title #{$.title}
+
+  script(type="text/x-template", id="editor-template")
+    svg(width="320", height="320")
+      circle(
+        v-component="point"
+        v-repeat="points"
+        v-on="click:select"
+        v-attr="cx:cx, cy:cy, r:r"
+        class="{{ state() }}"
+      )
+      polyline(
+        v-component="path"
+        v-attr="points: svg_points"
+        stroke="#3498db"
+        stroke-width="8px"
+        stroke-linecap="butt"
+        fill="none"
+        pointer-events="none"
+      )
+
+  #app
+    canvas#canvas(v-attr="width: width, height: height")
+    .form-group(v-repeat="params")
+      input(type="range", v-model="value", min="1", max="100", v-on="change:update")
+    button.btn.btn-default(v-on="click:edit") Edit
+    button.btn.btn-default(v-on="click:tweet") Tweet
+
+    #editor.modal.fade(role="dialog",aria-hidden="true")
+      .modal-dialog
+        .modal-content
+          .modal-header
+            .close(type="button", data-dismiss="modal")
+              span(aria-hidden="true") &times;
+              span.sr-only Close
+            h4 Generator Editor
+          .modal-body
+            svg(v-component="editor")
+          .modal-footer
+            .form-group
+              button.btn.btn-default(v-on="click:undo") Undo
+              button.btn.btn-default(v-on="click:clear") Clear
+              button.btn.btn-default(v-on="click:ok", disabled="{{ isFinished() ? '' : 'disabled' }}") OK

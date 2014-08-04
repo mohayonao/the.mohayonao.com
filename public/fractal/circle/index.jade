@@ -12,5 +12,5 @@ block content
   #app
     canvas#canvas(v-attr="width: width, height: height")
     .form-group(v-repeat="params")
-      input(type="range", v-model="value", min="1", max="100", v-on="change: update()")
-    button.btn.btn-default#tweet(v-on="click: tweet()") Tweet
+      input(type="range", v-model="value", min="1", max="100", v-on="change:update")
+    button.btn.btn-default#tweet(v-on="click:tweet") Tweet

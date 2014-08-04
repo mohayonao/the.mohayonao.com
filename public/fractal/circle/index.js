@@ -117,7 +117,7 @@
         ]
       },
       methods: {
-        update: function() {
+        update: _.debounce(function() {
           var br, h, hsv, n, params, sr;
           params = _.pluck(this.params, 'value');
           window.location.replace("#" + params.join(','));
@@ -130,7 +130,7 @@
           });
           renderer.init(0.2, hsv.rgbString());
           return renderer.generate(0, 0, 300, sr, br, n);
-        },
+        }, 150),
         tweet: function() {
           var text;
           text = utils.lang({

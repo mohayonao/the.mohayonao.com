@@ -2,23 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>fractal/circle</title>
+    <title>fractal/line</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta property="og:title" content="fractal/circle">
-    <meta property="og:url" content="http://the.mohayonao.com/fractal/circle/">
+    <meta property="og:title" content="fractal/line">
+    <meta property="og:url" content="http://the.mohayonao.com/fractal/line/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
     <div id="wrap">
-      <h1 class="title">fractal/circle</h1>
+      <h1 class="title">fractal/line</h1>
+      <script type="text/x-template" id="editor-template">
+        <svg width="320" height="320">
+          <circle v-component="point" v-repeat="points" v-on="click:select" v-attr="cx:cx, cy:cy, r:r" class="{{ state() }}"></circle>
+          <polyline v-component="path" v-attr="points: svg_points" stroke="#3498db" stroke-width="8px" stroke-linecap="butt" fill="none" pointer-events="none"></polyline>
+        </svg>
+      </script>
       <div id="app">
         <canvas id="canvas" v-attr="width: width, height: height"></canvas>
         <div v-repeat="params" class="form-group">
           <input type="range" v-model="value" min="1" max="100" v-on="change:update">
         </div>
-        <button id="tweet" v-on="click:tweet" class="btn btn-default">Tweet</button>
+        <button v-on="click:edit" class="btn btn-default">Edit</button>
+        <button v-on="click:tweet" class="btn btn-default">Tweet</button>
+        <div id="editor" role="dialog" aria-hidden="true" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <div type="button" data-dismiss="modal" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></div>
+                <h4>Generator Editor</h4>
+              </div>
+              <div class="modal-body">
+                <svg v-component="editor"></svg>
+              </div>
+              <div class="modal-footer">
+                <div class="form-group">
+                  <button v-on="click:undo" class="btn btn-default">Undo</button>
+                  <button v-on="click:clear" class="btn btn-default">Clear</button>
+                  <button v-on="click:ok" disabled="{{ isFinished() ? '' : 'disabled' }}" class="btn btn-default">OK</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="google-adsense">
         <script>
@@ -43,8 +70,8 @@
       <div class="container">
         <ul class="list-inline">
           <li><a href="/"><img src="/favicon.ico"><span>Top Page</span></a></li>
-          <li><a href="javascript:void(utils.tweet({text:'@mohayonao',url:'http://the.mohayonao.com/fractal/circle/'}));"><img src="/twitter.png"><span>Contact</span></a></li>
-          <li><a href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public/fractal/circle/" target="github"><img src="/github.png"><span>View Source on GitHub</span></a></li>
+          <li><a href="javascript:void(utils.tweet({text:'@mohayonao',url:'http://the.mohayonao.com/fractal/line/'}));"><img src="/twitter.png"><span>Contact</span></a></li>
+          <li><a href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public/fractal/line/" target="github"><img src="/github.png"><span>View Source on GitHub</span></a></li>
         </ul>
       </div>
     </div>
@@ -59,6 +86,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="/utils.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
     <script src="../color-0.7.1.min.js"></script>
     <script src="index.js"></script>
