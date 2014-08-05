@@ -6,7 +6,11 @@
 
   http://the.mohayonao.com/fractal/line/#AGDGDBFBFMMMMG,71,41
 
+  ![example](http://f.st-hatena.com/images/fotolife/m/mohayonao/20140805/20140805201526.png?1407237359)
+
   http://the.mohayonao.com/fractal/line/#AGEGFEGIHBIJJGMG,88,11
+
+  ![example](http://f.st-hatena.com/images/fotolife/m/mohayonao/20140805/20140805201531.png?1407237400)
 
 ## Dependencies
 

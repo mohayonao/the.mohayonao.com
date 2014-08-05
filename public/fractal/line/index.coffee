@@ -150,7 +150,7 @@ $ ->
         { x: 12, y: 8 }
       ]
       params: [
-        { name: 'n', value:  5 }
+        { name: 'n', value: 75 }
         { name: 'h', value: 60 }
       ]
       points: _.range(SIZE * SIZE).map (i)->
