@@ -1,0 +1,21 @@
+extend ../../layout
+
+block config
+  - $.title = "web-audio-api/buffer-source-rate"
+  - $.path  = "/web-audio-api/buffer-source-rate/"
+
+block content
+  h1.title #{$.title}
+
+  #app
+    button.btn.btn-default#test test
+
+    .well
+      h4 Can modulate AudioBufferSource#playbackRate ?
+      ul.list-unstyled
+        li
+          span.glyphicon.glyphicon-remove
+          span  Chrome(Win7 / 37.0.2062.120 m)
+        li
+          span.glyphicon.glyphicon-ok
+          span  Firefox(Win7 / 32.0.1)
