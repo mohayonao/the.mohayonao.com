@@ -1,0 +1,10 @@
+extend ../layout
+
+block config
+  - $.title = "music"
+  - $.path  = "/music/"
+
+block content
+  h1.title #{$.title}
+
+  #app

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>piano - neume.js</title>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href=//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css>
+  <style>
+    #start {
+      margin: 10px 0;
+    }
+    #canvas {
+      width: 100%;
+      height: 240px;
+      background: black;
+    }
+    #code {
+      padding: 0;
+      margin: 0;
+      background: white;
+      border: none;
+    }
+  </style>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script src="./neume.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>neume.js piano</h1>
+    <canvas id="canvas"></canvas>
+    <div id="app">
+      <button id="start" v-on="click: toggle" class="btn btn-default">{{ isPlaying ? 'Stop' : 'Start' }}</button>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">source</h3>
+      </div>
+      <div class="panel-body">
+        <pre class="prettyprint" id="code"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script id="example">
+  var Neume = neume(new AudioContext());
+
+  var visualizer = null;
+  var notes = [ 4, 10, 14 ];
+
+  var buffers = [];
+  Neume.Buffer.load("./piano.ogg").then(function(buffer) {
+    buffers = buffer.split(17);
+  });
+
+  var Piano = new Neume(function($, note) {
+    if (!buffers[note]) {
+      return;
+    }
+
+    var cutoff = $("cutoff", { releaseTime: 2, level: 0.65 },
+      $(buffers[note]), $(buffers[note], { rate: 0.25 }),
+      $("delay", { delayTime: 0.5, mul: 0.125 }, $(buffers[note], { rate: 0.9876 }))
+    ).on("end", function(e) {
+      this.stop(e.playbackTime);
+    });
+
+    $.timeout(2.000, cutoff.release);
+
+    return cutoff;
+  });
+
+  var Beep = new Neume(function($, midi) {
+    var freq = midicps(midi);
+
+    var beat = $(_.range(13).map(function(i) {
+      return Math.random() < 0.25 ? 0.0025 : 0;
+    }));
+
+    $.interval(1/16, beat.next);
+    $.timeout(2, function(e) {
+      this.stop(e.playbackTime);
+    });
+
+    return $("*", beat, $("hpf", { freq: freq, Q: 12.5 }, $("sin", { freq: freq })));
+  });
+
+  var Beat = new Neume(function($, amp) {
+    return $("xline", { start: amp * 0.5, end: 0.001, dur: 0.05 },
+      $("lpf", { freq: 2400, Q: 18 }, $("pink"))
+    ).on("end", function(e) {
+      this.stop(e.playbackTime);
+    });
+  });
+
+  var Bass = new Neume(function($) {
+    return $("lpf", { freq: $.param("cutoff", 220), Q: 36 }, $("white"));
+  });
+
+  var Out = new Neume(function($) {
+    return $("comp", { mul: 0.6 }, $.in(0));
+  });
+
+  var players = [];
+
+  function start() {
+    var out = new Out();
+    var bass = new Bass().connect(out);
+
+    var music = new Neume.Interval(2.000, function(e) {
+      piano(e, out);
+
+      new Beep(notes[0] + 96).connect(out).start(e.playbackTime);
+
+      bass.cutoff = midicps(notes[0] + 48);
+    });
+
+    var beat = new Neume.Interval(0.25, function(e) {
+      var amp = _.sample([
+        [ 0.8, 0.8, 0.6, 0.6 ],
+        [ 0.2, 0.1, 0.1, 0.1 ],
+        [ 0.6, 0.4, 0.4, 0.2 ],
+        [ 0.4, 0.3, 0.2, 0.1 ],
+      ][e.count % 4]);
+
+      new Beat(amp).connect(out).start(e.playbackTime);
+    });
+
+    players = [ out, music, beat, bass, visualizer ];
+
+    players.forEach(function(player) {
+      player.start();
+    });
+  }
+
+  function stop() {
+    players.forEach(function(player) {
+      player.stop();
+    })
+  }
+
+  function piano(e, out) {
+    if (e.count % 4 === 1) {
+      return;
+    }
+    notes.forEach(function(midi, i) {
+      if (Math.random() < 0.6) {
+        new Piano(midi).connect(out).start(e.playbackTime);
+      }
+      for (var i = 0; i < 3; i ++) {
+        if (Math.random() < 0.2) {
+          if (0 < notes[i] && notes.indexOf(notes[i] - 1) === -1) {
+            notes[i] -= 1;
+          }
+        }
+        if (Math.random() < 0.2) {
+          if (notes[i] < 16 && notes.indexOf(notes[i] + 1) === -1) {
+            notes[i] += 1;
+          }
+        }
+      }
+    });
+  }
+
+  function midicps(midi) {
+    return 440 * Math.pow(Math.pow(2, 1/12), midi - 69);
+  }
+  </script>
+
+  <script>
+  $(function() {
+    "use strict";
+
+    var WaveVisualizer = (function() {
+      var X = 0, Y = 1;
+
+      function WaveVisualizer(analyser, spec) {
+        this.width  = spec.width;
+        this.height = spec.height;
+
+        this._analyser = analyser
+        this._analyser.fftSize = 512;
+        this._state = "init";
+        this._timeData = new Uint8Array(analyser.frequencyBinCount);
+
+        this._canvas = spec.canvas;
+        this._canvas.width  = this.width;
+        this._canvas.height = this.height;
+        this._context = this._canvas.getContext("2d");
+        this._context.fillStyle   = "rgba(0, 0, 0, 0.05)";
+        this._context.strokeStyle = "white";
+        this._xy = X;
+
+        this.fps = 15;
+      }
+
+      WaveVisualizer.prototype.start = function() {
+        if (this._state !== "start") {
+          this._state = "start";
+          this._prevT = Date.now();
+          requestAnimationFrame(this.render.bind(this));
+        }
+        return this;
+      };
+
+      WaveVisualizer.prototype.stop = function() {
+        if (this._state === "start") {
+          this._state = "stop";
+        }
+        return this;
+      };
+
+      WaveVisualizer.prototype.render = function() {
+        var t = Date.now();
+        var dt = (t - this._prevT) * 0.001;
+
+        if (1 / this.fps < dt) {
+          this._prevT = t;
+          this._analyser.getByteFrequencyData(this._timeData);
+          this._render(t);
+        }
+
+        if (this._state === "start") {
+          requestAnimationFrame(this.render.bind(this));
+        }
+      };
+
+      WaveVisualizer.prototype._render = function(t) {
+        this._context.fillRect(0, 0, this.width, this.height);
+
+        var data = this._timeData;
+        var maxValue = 0, minValue = 256;
+        var maxIndex = 0, minIndex = 0;
+
+        for (var i = 0, imax = data.length; i < imax; i++) {
+          if (maxValue <= data[i] && data[i] < 16) {
+            maxValue = data[i];
+            maxIndex = i;
+          }
+          if (data[i] <= minValue && 128 < data[i]) {
+            minValue = data[i];
+            minIndex = i;
+          }
+        }
+
+        var x = ((minIndex / data.length) * this.width)|0;
+
+        this._context.beginPath();
+        this._context.moveTo(x, 0);
+        this._context.lineTo(x, this.height);
+        this._context.stroke();
+
+        var y = ((maxIndex / data.length) * this.height)|0;
+        this._context.beginPath();
+        this._context.moveTo(0, y);
+        this._context.lineTo(this.width, y);
+        this._context.stroke();
+      };
+
+      return WaveVisualizer;
+    })();
+
+    var canvas = document.getElementById("canvas");
+
+    visualizer = new WaveVisualizer(Neume.analyser, {
+      canvas: canvas, width: $(canvas).width(), height: 240
+    });
+
+    var vue = new Vue({
+      el: "#app",
+      data: {
+        isPlaying: false
+      },
+      methods: {
+        toggle: function() {
+          this.isPlaying = !this.isPlaying;
+          if (this.isPlaying) {
+            start(this.$data.score);
+          } else {
+            stop();
+          }
+        }
+      }
+    });
+
+    $("#code").text($("#example").text());
+    prettyPrint();
+  });
+  </script>
+</body>
+</html>
