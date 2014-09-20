@@ -25,6 +25,7 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+  <script src="//cdn.jsdelivr.net/es6-promise/1.0.0/promise.min.js"></script>
   <script src="./neume.js"></script>
 </head>
 <body>
@@ -51,7 +52,7 @@
   var notes = [ 4, 10, 14 ];
 
   var buffers = [];
-  Neume.Buffer.load("./piano.ogg").then(function(buffer) {
+  Neume.Buffer.load("./piano.wav").then(function(buffer) {
     buffers = buffer.split(17);
   });
 
