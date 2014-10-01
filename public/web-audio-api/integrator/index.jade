@@ -1,0 +1,37 @@
+extend ../../layout
+
+block config
+  - $.title = "web-audio-api/integrator"
+  - $.path  = "/web-audio-api/integrator/"
+
+block content
+  h1.title #{$.title}
+
+  #app
+    pre.
+      NOT WORK WELL (Minimum delay time is 128 / sampleRate)
+
+      +---------+
+      | Impulse |
+      +---------+
+        |
+        |      +-----------------------------+
+        |      |                             |
+      +----------+                           |
+      | GainNode |                           |
+      +----------+                           |
+        |      |                             |
+        |   +-----------------------------+  |
+        |   | DelayNode                   |  |
+        |   | - delayTime: 1 / sampleRate |  |
+        |   +-----------------------------+  |
+        |      |                             |
+        |   +--------------+                 |
+        |   | GainNode     |                 |
+        |   | - gain: coef |                 |
+        |   +--------------+                 |
+        |               |                    |
+        |               +--------------------+
+        |
+
+    button#play.btn.btn-default Play
