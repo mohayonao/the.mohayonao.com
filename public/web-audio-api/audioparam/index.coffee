@@ -86,25 +86,35 @@ $ ->
 
     context.restore()
 
-  getValues = (code, duration)->
-    audioContext = new AudioContext()
+  getValues = (code, duration, callback)->
+    audioContext = new OfflineAudioContext(1, 30 * SAMPLERATE, SAMPLERATE)
     sampleRate = audioContext.sampleRate
 
     gain = audioContext.createGain()
+    bufSrc = audioContext.createBufferSource()
+
+    bufSrc.buffer = audioContext.createBuffer(1, 2, 44100)
+    bufSrc.buffer.getChannelData(0).set new Float32Array([ 1, 1 ])
+    bufSrc.loop = true
+    bufSrc.start 0
+    bufSrc.connect gain
+
     gain.connect audioContext.destination
 
     param = gain.gain
     eval code
 
-    audioContext.$process duration
+    audioContext.oncomplete = (e)->
+      buffer = e.renderedBuffer.getChannelData(0)
+      length = Math.floor buffer.length / CONTROL_SAMPLES
 
-    length = Math.floor duration * sampleRate / CONTROL_SAMPLES
-    values = new Float32Array(length)
+      values = new Float32Array(length)
+      for i in [0...length] by 1
+        values[i] = buffer[i * CONTROL_SAMPLES]
 
-    for i in [0...length] by 1
-      values[i] = gain.gain.$valueAtTime i * (128 / sampleRate)
+      callback values
 
-    values
+    audioContext.startRendering()
 
   calcY = (value, height, min, max)->
     value = value / (max - min)
@@ -133,8 +143,9 @@ $ ->
         if window.location.hash isnt hash
           window.location.replace hash
 
-        @values[0] = getValues code, 30
-        @draw()
+        getValues code, 30, (values)=>
+          @values[0] = values
+          @draw()
 
       draw: ->
         length = Math.floor @durationVal * SAMPLERATE / CONTROL_SAMPLES

@@ -82,21 +82,31 @@
       context.stroke();
       return context.restore();
     };
-    getValues = function(code, duration) {
-      var audioContext, gain, i, length, sampleRate, values, _i;
-      audioContext = new AudioContext();
+    getValues = function(code, duration, callback) {
+      var audioContext, bufSrc, gain, sampleRate;
+      audioContext = new OfflineAudioContext(1, 30 * SAMPLERATE, SAMPLERATE);
       sampleRate = audioContext.sampleRate;
       gain = audioContext.createGain();
+      bufSrc = audioContext.createBufferSource();
+      bufSrc.buffer = audioContext.createBuffer(1, 2, 44100);
+      bufSrc.buffer.getChannelData(0).set(new Float32Array([1, 1]));
+      bufSrc.loop = true;
+      bufSrc.start(0);
+      bufSrc.connect(gain);
       gain.connect(audioContext.destination);
       param = gain.gain;
       eval(code);
-      audioContext.$process(duration);
-      length = Math.floor(duration * sampleRate / CONTROL_SAMPLES);
-      values = new Float32Array(length);
-      for (i = _i = 0; _i < length; i = _i += 1) {
-        values[i] = gain.gain.$valueAtTime(i * (128 / sampleRate));
-      }
-      return values;
+      audioContext.oncomplete = function(e) {
+        var buffer, i, length, values, _i;
+        buffer = e.renderedBuffer.getChannelData(0);
+        length = Math.floor(buffer.length / CONTROL_SAMPLES);
+        values = new Float32Array(length);
+        for (i = _i = 0; _i < length; i = _i += 1) {
+          values[i] = buffer[i * CONTROL_SAMPLES];
+        }
+        return callback(values);
+      };
+      return audioContext.startRendering();
     };
     calcY = function(value, height, min, max) {
       value = value / (max - min);
@@ -131,8 +141,12 @@
           if (window.location.hash !== hash) {
             window.location.replace(hash);
           }
-          this.values[0] = getValues(code, 30);
-          return this.draw();
+          return getValues(code, 30, (function(_this) {
+            return function(values) {
+              _this.values[0] = values;
+              return _this.draw();
+            };
+          })(this));
         },
         draw: function() {
           var length, values;
