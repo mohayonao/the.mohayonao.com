@@ -119,7 +119,8 @@
         height: 350,
         duration: 1,
         range: 1,
-        values: [[]]
+        values: [[]],
+        shared: ''
       },
       computed: {
         durationVal: {
@@ -134,21 +135,18 @@
         }
       },
       methods: {
-        update: function() {
-          var code, hash;
-          code = editor.getValue();
-          hash = '#' + window.encodeURIComponent(code.trim());
-          if (window.location.hash !== hash) {
-            window.location.replace(hash);
-          }
+        draw: function() {
+          return this.update(editor.getValue());
+        },
+        update: function(code) {
           return getValues(code, 30, (function(_this) {
             return function(values) {
               _this.values[0] = values;
-              return _this.draw();
+              return _this.change();
             };
           })(this));
         },
-        draw: function() {
+        change: function() {
           var length, values;
           length = Math.floor(this.durationVal * SAMPLERATE / CONTROL_SAMPLES);
           values = this.values[0].subarray(0, length);
@@ -156,6 +154,12 @@
         },
         clear: function() {
           return editor.setValue('');
+        },
+        share: function(e) {
+          var code, hash;
+          code = editor.getValue();
+          hash = '#' + window.encodeURIComponent(code.trim());
+          return this.shared = "" + window.location.protocol + "//" + window.location.host + window.location.pathname + hash;
         }
       }
     });
@@ -168,7 +172,7 @@
       editor.setValue(window.decodeURIComponent(window.location.hash.substr(1)));
     } else {
       editor.setValue('var t0 = 0;\nvar t1 = 0.1;\nvar t2 = 0.2;\nvar t3 = 0.3;\nvar t4 = 0.4;\nvar t5 = 0.6;\nvar t6 = 0.7;\nvar t7 = 1.0;\n\nvar curveLength = 44100;\nvar curve = new Float32Array(curveLength);\nfor (var i = 0; i < curveLength; ++i)\n    curve[i] = Math.sin(Math.PI * i / curveLength);\n\nparam.setValueAtTime(0.2, t0);\nparam.setValueAtTime(0.3, t1);\nparam.setValueAtTime(0.4, t2);\nparam.linearRampToValueAtTime(1, t3);\nparam.linearRampToValueAtTime(0.15, t4);\nparam.exponentialRampToValueAtTime(0.75, t5);\nparam.exponentialRampToValueAtTime(0.05, t6);\nparam.setValueCurveAtTime(curve, t6, t7 - t6);');
-      vue.update();
+      vue.update(editor.getValue());
     }
     return hljs.initHighlightingOnLoad();
   });

@@ -127,7 +127,8 @@ $ ->
       height: 350
       duration: 1
       range: 1
-      values: [ [] ]
+      values: [ [] ],
+      shared: ''
     computed:
       durationVal:
         $get: ->
@@ -136,18 +137,15 @@ $ ->
         $get: ->
           [ 0.5, 1, 5, 10, 50, 100, 500, 1000, 5000, 10000, 150000 ][@range]
     methods:
-      update: ->
-        code = editor.getValue()
-        hash = '#' + window.encodeURIComponent code.trim()
+      draw: ->
+        @update editor.getValue()
 
-        if window.location.hash isnt hash
-          window.location.replace hash
-
+      update: (code)->
         getValues code, 30, (values)=>
           @values[0] = values
-          @draw()
+          @change()
 
-      draw: ->
+      change: ->
         length = Math.floor @durationVal * SAMPLERATE / CONTROL_SAMPLES
         values = @values[0].subarray 0, length
 
@@ -155,6 +153,12 @@ $ ->
 
       clear: ->
         editor.setValue ''
+
+      share: (e)->
+        code = editor.getValue()
+        hash = '#' + window.encodeURIComponent code.trim()
+
+        @shared = "#{window.location.protocol}//#{window.location.host}#{window.location.pathname}#{hash}"
 
   editor = CodeMirror document.getElementById('editor'),
     mode: 'javascript', theme: 'monokai', workTime: 200
@@ -186,6 +190,6 @@ $ ->
     param.exponentialRampToValueAtTime(0.05, t6);
     param.setValueCurveAtTime(curve, t6, t7 - t6);
     '''
-    vue.update()
+    vue.update editor.getValue()
 
   hljs.initHighlightingOnLoad()

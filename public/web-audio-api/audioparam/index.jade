@@ -18,12 +18,14 @@ block content
   #app
     #view
       canvas#canvas(v-attr="width: width, height: height")
-      input#range(type="range",orient="vertical",min=0,max=10,v-model="range",v-on="change:draw")
-      input#duration(type="range",min=0,max=10,v-model="duration",v-on="change:draw")
+      input#range(type="range",orient="vertical",min=0,max=10,v-model="range",v-on="change:change")
+      input#duration(type="range",min=0,max=10,v-model="duration",v-on="change:change")
       span duration: {{ (+durationVal).toFixed(1) }} sec / range: 0.0 to {{ (+rangeVal).toFixed(1) }}
     #ctrl
-      button(v-on="click:update") draw
+      button(v-on="click:draw") draw
       button(v-on="click:clear") clear
+      button(v-on="click:share") share
+      input(value="{{ shared }}")
     #editor
     #reference
       a(href="http://www.w3.org/TR/2013/WD-webaudio-20131010/#AudioParam",traget="wa") The AudioParam Interface
