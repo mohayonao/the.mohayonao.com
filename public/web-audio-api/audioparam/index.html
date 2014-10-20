@@ -8,7 +8,7 @@
     <meta property="og:url" content="http://the.mohayonao.com/web-audio-api/audioparam/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/styles/default.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/codemirror.min.css">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/theme/monokai.min.css">
     <link rel="stylesheet" href="index.css">
@@ -22,13 +22,13 @@
           <input id="range" type="range" orient="vertical" min="0" max="10" v-model="range" v-on="change:draw">
           <input id="duration" type="range" min="0" max="10" v-model="duration" v-on="change:draw"><span>duration: {{ (+durationVal).toFixed(1) }} sec / range: 0.0 to {{ (+rangeVal).toFixed(1) }}</span>
         </div>
-        <div id="editor"></div>
         <div id="ctrl">
-          <button v-on="click:update">eval</button>
+          <button v-on="click:update">draw</button>
           <button v-on="click:clear">clear</button>
         </div>
+        <div id="editor"></div>
         <div id="reference"><a href="http://www.w3.org/TR/2013/WD-webaudio-20131010/#AudioParam" traget="wa">The AudioParam Interface</a><span class="jp"><span>(</span><a href="http://g200kg.github.io/web-audio-api-ja/#AudioParam" target="wa">日本語訳</a><span>)</span></span>
-          <pre class="prettyprint">interface AudioParam {
+          <pre><code class="cpp">interface AudioParam {
 
   attribute float value;
   readonly attribute float defaultValue;
@@ -48,7 +48,7 @@
   // Cancels all scheduled parameter changes with times greater than or equal to startTime.
   void cancelScheduledValues(double startTime);
 
-};</pre>
+};</code></pre>
         </div>
       </div>
       <div class="google-adsense">
@@ -91,7 +91,8 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
     <script src="/utils.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.3/languages/cpp.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/codemirror.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/mode/javascript/javascript.min.js"></script>
     <script src="index.js"></script>

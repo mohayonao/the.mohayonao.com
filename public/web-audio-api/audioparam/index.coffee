@@ -157,7 +157,12 @@ $ ->
         editor.setValue ''
 
   editor = CodeMirror document.getElementById('editor'),
-    mode: 'javascript', theme: 'monokai', workTime: 200, value: '''
+    mode: 'javascript', theme: 'monokai', workTime: 200
+
+  if window.location.hash
+    editor.setValue window.decodeURIComponent window.location.hash.substr(1)
+  else
+    editor.setValue '''
     var t0 = 0;
     var t1 = 0.1;
     var t2 = 0.2;
@@ -181,9 +186,6 @@ $ ->
     param.exponentialRampToValueAtTime(0.05, t6);
     param.setValueCurveAtTime(curve, t6, t7 - t6);
     '''
+    vue.update()
 
-  if window.location.hash
-    editor.setValue window.decodeURIComponent window.location.hash.substr(1)
-
-  vue.update()
-  prettyPrint()
+  hljs.initHighlightingOnLoad()
