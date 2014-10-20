@@ -1,0 +1,55 @@
+extend ../../layout
+
+block config
+  - $.title = "AudioParam Viewer"
+  - $.path  = "/web-audio-api/audioparam/"
+  - $.use("./web-audio-test-api.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.min.css")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/codemirror.min.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/mode/javascript/javascript.min.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/codemirror.min.css")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/theme/monokai.min.css")
+
+block content
+  h1.title #{$.title}
+
+  #app
+    #view
+      canvas#canvas(v-attr="width: width, height: height")
+      input#range(type="range",orient="vertical",min=0,max=10,v-model="range",v-on="change:draw")
+      input#duration(type="range",min=0,max=10,v-model="duration",v-on="change:draw")
+      span duration: {{ (+durationVal).toFixed(1) }} sec / range: 0.0 to {{ (+rangeVal).toFixed(1) }}
+    #editor
+    #ctrl
+      button(v-on="click:update") eval
+      button(v-on="click:clear") clear
+    #reference
+      a(href="http://www.w3.org/TR/2013/WD-webaudio-20131010/#AudioParam",traget="wa") The AudioParam Interface
+      span.jp
+        span (
+        a(href="http://g200kg.github.io/web-audio-api-ja/#AudioParam",target="wa") 日本語訳
+        span )
+      pre.prettyprint.
+        interface AudioParam {
+
+          attribute float value;
+          readonly attribute float defaultValue;
+
+          // Parameter automation.
+          void setValueAtTime(float value, double startTime);
+          void linearRampToValueAtTime(float value, double endTime);
+          void exponentialRampToValueAtTime(float value, double endTime);
+
+          // Exponentially approach the target value with a rate having the given time constant.
+          void setTargetAtTime(float target, double startTime, double timeConstant);
+
+          // Sets an array of arbitrary parameter values starting at time for the given duration.
+          // The number of values will be scaled to fit into the desired duration.
+          void setValueCurveAtTime(Float32Array values, double startTime, double duration);
+
+          // Cancels all scheduled parameter changes with times greater than or equal to startTime.
+          void cancelScheduledValues(double startTime);
+
+        };
