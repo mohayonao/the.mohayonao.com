@@ -166,8 +166,21 @@
     editor = CodeMirror(document.getElementById('editor'), {
       mode: 'javascript',
       theme: 'monokai',
-      workTime: 200
+      workTime: 200,
+      extraKeys: {
+        'Ctrl-Space': 'autocomplete'
+      }
     });
+    CodeMirror.commands.autocomplete = function(cm) {
+      return CodeMirror.showHint(cm, CodeMirror.hint.audioparam);
+    };
+    CodeMirror.hint.audioparam = function(cm) {
+      return {
+        from: cm.getCursor(),
+        to: cm.getCursor(),
+        list: ['setValueAtTime', 'linearRampToValueAtTime', 'exponentialRampToValueAtTime', 'setTargetAtTime', 'setValueCurveAtTime', 'cancelScheduledValues']
+      };
+    };
     if (window.location.hash) {
       editor.setValue(window.decodeURIComponent(window.location.hash.substr(1)));
     } else {

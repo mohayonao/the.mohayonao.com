@@ -161,7 +161,20 @@ $ ->
         @shared = "#{window.location.protocol}//#{window.location.host}#{window.location.pathname}#{hash}"
 
   editor = CodeMirror document.getElementById('editor'),
-    mode: 'javascript', theme: 'monokai', workTime: 200
+    mode: 'javascript', theme: 'monokai', workTime: 200, extraKeys: 'Ctrl-Space': 'autocomplete'
+
+  CodeMirror.commands.autocomplete = (cm)->
+    CodeMirror.showHint cm, CodeMirror.hint.audioparam
+
+  CodeMirror.hint.audioparam = (cm)->
+    from: cm.getCursor(), to: cm.getCursor(), list: [
+      'setValueAtTime'
+      'linearRampToValueAtTime'
+      'exponentialRampToValueAtTime'
+      'setTargetAtTime'
+      'setValueCurveAtTime'
+      'cancelScheduledValues'
+    ]
 
   if window.location.hash
     editor.setValue window.decodeURIComponent window.location.hash.substr(1)
