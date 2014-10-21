@@ -161,7 +161,8 @@ $ ->
         @shared = "#{window.location.protocol}//#{window.location.host}#{window.location.pathname}#{hash}"
 
   editor = CodeMirror document.getElementById('editor'),
-    mode: 'javascript', theme: 'monokai', workTime: 200, extraKeys: 'Ctrl-Space': 'autocomplete'
+    mode: 'javascript', theme: 'monokai', workTime: 200,
+    extraKeys: 'Ctrl-Space': 'autocomplete', 'Ctrl-O': 'autocomplete'
 
   CodeMirror.commands.autocomplete = (cm)->
     CodeMirror.showHint cm, CodeMirror.hint.audioparam

@@ -168,7 +168,8 @@
       theme: 'monokai',
       workTime: 200,
       extraKeys: {
-        'Ctrl-Space': 'autocomplete'
+        'Ctrl-Space': 'autocomplete',
+        'Ctrl-O': 'autocomplete'
       }
     });
     CodeMirror.commands.autocomplete = function(cm) {
