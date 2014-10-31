@@ -1,7 +1,7 @@
 (function() {
   $(function() {
     'use strict';
-    var audioContext, buffer, canvas, context, draw, main, range, render, zoom;
+    var audioContext, buffer, canvas, context, draw, main, range, render, renderSize, timerId, zoom, _render;
     audioContext = new AudioContext();
     canvas = document.getElementById('canvas');
     canvas.width = 1024;
@@ -13,30 +13,40 @@
     zoom = 1;
     range = 1;
     buffer = null;
+    timerId = 0;
+    renderSize = audioContext.sampleRate;
     render = function() {
-      var ch, data, i, _i, _results;
       if (buffer) {
         context.clearRect(0, 0, canvas.width, canvas.height);
-        ch = buffer.numberOfChannels;
-        _results = [];
-        for (i = _i = 0; _i < ch; i = _i += 1) {
-          data = buffer.getChannelData(i);
-          data = data.subarray(0, Math.floor(data.length * range));
-          _results.push(draw(data, i));
-        }
-        return _results;
+        return requestAnimationFrame(function() {
+          return _render(0);
+        });
       }
     };
-    draw = function(data, index) {
-      var cY, height, i, length, width, x, y, _i, _ref;
+    _render = function(index) {
+      var ch, data, length, _i, _ref;
+      length = Math.floor(buffer.length * range);
+      for (ch = _i = 0, _ref = buffer.numberOfChannels; _i < _ref; ch = _i += 1) {
+        data = buffer.getChannelData(ch);
+        data = data.subarray(index * renderSize, index * renderSize + renderSize);
+        draw(data, length, ch, index);
+      }
+      if (index * renderSize < length) {
+        return requestAnimationFrame(function() {
+          return _render(index + 1);
+        });
+      }
+    };
+    draw = function(data, length, ch, index) {
+      var cX, cY, height, i, width, x, y, _i, _ref;
       width = canvas.width;
       height = canvas.height * 0.5;
-      cY = height * 0.5 + height * index;
-      length = data.length;
+      cX = index * renderSize;
+      cY = height * 0.5 + height * ch;
       context.beginPath();
       for (i = _i = 0, _ref = data.length; _i < _ref; i = _i += 1) {
-        x = (i / length) * width;
-        y = cY - data[i] * height * zoom;
+        x = ((i + cX) / length) * width;
+        y = cY - data[i] * height * zoom * 0.5;
         context.lineTo(x, y);
       }
       return context.stroke();

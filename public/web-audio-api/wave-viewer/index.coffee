@@ -12,29 +12,36 @@ $ ->
   context.strokeStyle = '#2c3e50'
   context.lineWidth = 0.1
 
-  zoom   = 1
-  range  = 1
-  buffer = null
+  zoom    = 1
+  range   = 1
+  buffer  = null
+  timerId = 0
+  renderSize = audioContext.sampleRate
 
   render = ->
     if buffer
       context.clearRect 0, 0, canvas.width, canvas.height
-      ch = buffer.numberOfChannels
-      for i in [0...ch] by 1
-        data = buffer.getChannelData(i)
-        data = data.subarray 0, Math.floor(data.length * range)
-        draw data, i
+      requestAnimationFrame -> _render 0
 
-  draw = (data, index)->
+  _render = (index)->
+    length = Math.floor(buffer.length * range)
+    for ch in [0...buffer.numberOfChannels] by 1
+      data = buffer.getChannelData(ch)
+      data = data.subarray index * renderSize, index * renderSize + renderSize
+      draw data, length, ch, index
+    if index * renderSize < length
+      requestAnimationFrame -> _render index + 1
+
+  draw = (data, length, ch, index)->
     width  = canvas.width
     height = canvas.height * 0.5
-    cY = height * 0.5 + height * index
-    length = data.length
+    cX = index * renderSize
+    cY = height * 0.5 + height * ch
 
     context.beginPath()
     for i in [0...data.length] by 1
-      x = (i / length) * width
-      y = cY - data[i] * height * zoom
+      x = ((i + cX) / length) * width
+      y = cY - data[i] * height * zoom * 0.5
       context.lineTo x, y
     context.stroke()
 
