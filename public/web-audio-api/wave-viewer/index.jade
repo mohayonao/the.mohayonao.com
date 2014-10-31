@@ -1,0 +1,15 @@
+extend ../../layout
+
+block config
+  - $.title = "wave-viewer"
+  - $.path  = "/web-audio-api/wave-viewer/"
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore.js")
+
+block content
+  h1.title #{$.title}
+
+  #app
+    div drag & drop an audio file
+    canvas(id="canvas")
+    input(type="range",min="0",max="50",value="5",id="zoom")
+    input(type="range",min="0",max="50",value="50",id="range")
