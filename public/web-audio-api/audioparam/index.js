@@ -83,13 +83,14 @@
       return context.restore();
     };
     getValues = function(code, duration, callback) {
-      var audioContext, bufSrc, gain, sampleRate;
+      var audioContext, bufSrc, buffer, gain, sampleRate;
       audioContext = new OfflineAudioContext(1, 30 * SAMPLERATE, SAMPLERATE);
       sampleRate = audioContext.sampleRate;
       gain = audioContext.createGain();
       bufSrc = audioContext.createBufferSource();
-      bufSrc.buffer = audioContext.createBuffer(1, 2, 44100);
-      bufSrc.buffer.getChannelData(0).set(new Float32Array([1, 1]));
+      buffer = audioContext.createBuffer(1, 2, 44100);
+      buffer.getChannelData(0).set([1, 1]);
+      bufSrc.buffer = buffer;
       bufSrc.loop = true;
       bufSrc.start(0);
       bufSrc.connect(gain);
@@ -97,7 +98,7 @@
       param = gain.gain;
       eval(code);
       audioContext.oncomplete = function(e) {
-        var buffer, i, length, values, _i;
+        var i, length, values, _i;
         buffer = e.renderedBuffer.getChannelData(0);
         length = Math.floor(buffer.length / CONTROL_SAMPLES);
         values = new Float32Array(length);

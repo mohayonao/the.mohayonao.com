@@ -93,8 +93,10 @@ $ ->
     gain = audioContext.createGain()
     bufSrc = audioContext.createBufferSource()
 
-    bufSrc.buffer = audioContext.createBuffer(1, 2, 44100)
-    bufSrc.buffer.getChannelData(0).set new Float32Array([ 1, 1 ])
+    buffer = audioContext.createBuffer(1, 2, 44100)
+    buffer.getChannelData(0).set [ 1, 1 ]
+
+    bufSrc.buffer = buffer
     bufSrc.loop = true
     bufSrc.start 0
     bufSrc.connect gain
