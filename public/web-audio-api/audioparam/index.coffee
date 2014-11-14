@@ -93,10 +93,12 @@ $ ->
     gain = audioContext.createGain()
     bufSrc = audioContext.createBufferSource()
 
-    buffer = audioContext.createBuffer(1, 2, 44100)
-    buffer.getChannelData(0).set [ 1, 1 ]
+    bufSrc.buffer = audioContext.createBuffer(1, 2, 44100)
+    bufSrc.buffer.getChannelData(0).set [ 1, 1 ]
 
-    bufSrc.buffer = buffer
+    # fix for Firefox
+    bufSrc.buffer = bufSrc.buffer
+
     bufSrc.loop = true
     bufSrc.start 0
     bufSrc.connect gain
