@@ -1,8 +1,8 @@
 (function() {
   $(function() {
     'use strict';
-    var SAMPLE_RATE, Settings, capture, draw;
-    SAMPLE_RATE = 44100;
+    var SAMPLERATE, Settings, capture, draw;
+    SAMPLERATE = 44100;
     Settings = [
       {
         type: "sine",
@@ -55,13 +55,13 @@
       }
     ];
     capture = function(type, freq, callback) {
-      var audioContext, oscillator;
-      audioContext = new OfflineAudioContext(1, SAMPLE_RATE, SAMPLE_RATE);
+      var audioContext, length, oscillator;
+      length = Math.ceil(SAMPLERATE / freq);
+      audioContext = new OfflineAudioContext(1, length, SAMPLERATE);
       audioContext.oncomplete = function(e) {
-        var buffer, length;
+        var buffer;
         buffer = e.renderedBuffer.getChannelData(0);
-        length = Math.ceil(SAMPLE_RATE / freq);
-        return callback(new Float32Array(buffer.subarray(0, length)));
+        return callback(buffer);
       };
       oscillator = audioContext.createOscillator();
       oscillator.type = type;

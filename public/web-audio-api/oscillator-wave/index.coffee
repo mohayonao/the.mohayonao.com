@@ -1,7 +1,7 @@
 $ ->
   'use strict'
 
-  SAMPLE_RATE = 44100
+  SAMPLERATE = 44100
 
   Settings = [
     { type: "sine", freq: 1 }
@@ -23,13 +23,13 @@ $ ->
   ]
 
   capture = (type, freq, callback)->
-    audioContext = new OfflineAudioContext(1, SAMPLE_RATE, SAMPLE_RATE)
+    length = Math.ceil SAMPLERATE / freq
+    audioContext = new OfflineAudioContext(1, length, SAMPLERATE)
 
     audioContext.oncomplete = (e)->
       buffer = e.renderedBuffer.getChannelData 0
-      length = Math.ceil SAMPLE_RATE / freq
 
-      callback new Float32Array(buffer.subarray(0, length))
+      callback buffer
 
     oscillator = audioContext.createOscillator()
     oscillator.type = type
