@@ -22,6 +22,9 @@ $ ->
   drawGrid = (context, width, height, duration)->
     context.save()
 
+    context.fillStyle = '#ecf0f1'
+    context.fillRect 0, 0, width, height
+
     context.strokeStyle = '#bdc3c7'
     context.lineWidth = 1
 

@@ -24,6 +24,8 @@
     drawGrid = function(context, width, height, duration) {
       var i, x, y, _i;
       context.save();
+      context.fillStyle = '#ecf0f1';
+      context.fillRect(0, 0, width, height);
       context.strokeStyle = '#bdc3c7';
       context.lineWidth = 1;
       for (i = _i = 1; _i <= 9; i = ++_i) {
