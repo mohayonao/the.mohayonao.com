@@ -1,0 +1,14 @@
+extend ../../layout
+
+block config
+  - $.title = "web-audio-api/periodic-wave"
+  - $.path  = "/web-audio-api/periodic-wave/"
+  - $.use("./periodic-wave.js")
+
+block content
+  h1.title #{$.title}
+
+  #app
+    ul
+      - for (var i = 0; i < 16; i++)
+        li: canvas      
