@@ -2,6 +2,8 @@
 
 ## Dependencies
 
+  - [neume.js](https://github.com/mohayonao/neume.js)
+    - Library for web music programming
   - [vue.js](http://vuejs.org)
     - Intuitive, fast & composable MVVM for building interactive interfaces.
 

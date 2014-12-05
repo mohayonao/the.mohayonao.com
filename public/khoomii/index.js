@@ -1,6 +1,16 @@
 (function() {
   'use strict';
-  var Khoomii, app, clip, hash, items, linexp, linlin, vue;
+  var FORMANT_PARAMS, Khoomii, KhoomiiVoice, Neume, app, clip, hash, items, linexp, linlin, vue;
+
+  Neume = neume(new AudioContext());
+
+  FORMANT_PARAMS = {
+    a: [700, 1200, 2900],
+    i: [300, 2700, 2700],
+    u: [390, 1200, 2500],
+    e: [450, 1750, 2750],
+    o: [460, 880, 2800]
+  };
 
   clip = function(num, min, max) {
     return Math.max(min, Math.min(num, max));
@@ -14,99 +24,83 @@
     return Math.pow(outMax / outMin, (num - inMin) / (inMax - inMin)) * outMin;
   };
 
+  KhoomiiVoice = function($, formants) {
+    var out, spiritual, voiceBand, voiceDepth, voiceFreq, voiceMod;
+    voiceFreq = $.param('voiceFreq', 174.61412048339844);
+    voiceMod = $.param('voiceMod', 0.8);
+    voiceDepth = $.param('voiceDepth', 6);
+    voiceBand = $.param('voiceBand', 830);
+    spiritual = $.param('spiritual', 0.125);
+    out = $('saw', {
+      freq: voiceFreq,
+      detune: $('sin', {
+        freq: voiceMod,
+        mul: voiceDepth
+      })
+    });
+    out = _.map(formants, function(freq, index) {
+      return $('bpf', {
+        freq: $(formants, {
+          key: index,
+          timeConstant: 0.25
+        }),
+        Q: 12
+      }, out);
+    });
+    out = $('bpf', {
+      freq: voiceBand,
+      Q: 0.45
+    }, out);
+    out = [
+      out, $('comb', {
+        delay: 0.25,
+        fbGain: spiritual,
+        gain: 1,
+        mul: 0.45
+      }, out)
+    ];
+    return out = $('lpf', {
+      freq: 3200,
+      Q: 2,
+      mul: 0.8
+    }, out);
+  };
+
   Khoomii = (function() {
-    var FORMANT_PARAMS;
-
-    FORMANT_PARAMS = {
-      a: [700, 1200, 2900],
-      i: [300, 2700, 2700],
-      u: [390, 1200, 2500],
-      e: [450, 1750, 2750],
-      o: [460, 880, 2800]
-    };
-
     function Khoomii() {
-      this.context = new AudioContext;
-      this.freq = 174.61412048339844;
-      this.out = this.context.createGain();
-      this.mod = this.context.createOscillator();
-      this.mod.frequency.value = 0.8;
-      this.modGain = this.context.createGain();
-      this.modGain.gain.value = 6;
-      this.mod.connect(this.modGain);
-      this.voice = this.context.createOscillator();
-      this.voice.type = 'sawtooth';
-      this.voice.frequency.value = this.freq;
-      this.modGain.connect(this.voice.detune);
-      this.mod.start(0);
-      this.voice.start(0);
-      this.bpf = this.context.createBiquadFilter();
-      this.bpf.type = "bandpass";
-      this.bpf.frequency.value = 830;
-      this.bpf.Q.value = 0.45;
-      this.formants = _.sample(FORMANT_PARAMS).map((function(_this) {
-        return function(freq) {
-          var formant;
-          formant = _this.context.createBiquadFilter();
-          formant.type = "bandpass";
-          formant.frequency.value = freq;
-          formant.Q.value = 12;
-          _this.voice.connect(formant);
-          formant.connect(_this.bpf);
-          return formant;
-        };
-      })(this));
-      this.delay = this.context.createDelay();
-      this.delay.delayTime.value = 0.25;
-      this.delayFB = this.context.createGain();
-      this.delayFB.gain.value = 0.125;
-      this.delayDry = this.context.createGain();
-      this.delayDry.gain.value = 0.7;
-      this.delayWet = this.context.createGain();
-      this.delayWet.gain.value = 0.3;
-      this.bpf.connect(this.delay);
-      this.bpf.connect(this.delayDry);
-      this.delay.connect(this.delayFB);
-      this.delay.connect(this.delayWet);
-      this.delayFB.connect(this.delay);
-      this.delayDry.connect(this.out);
-      this.delayWet.connect(this.out);
-      this.destination = this.out;
+      this._voice = null;
+      this._formants = new Float32Array(3);
+      this._formants.set(_.sample(FORMANT_PARAMS));
     }
 
     Khoomii.prototype.change = function() {
-      return _.sample(FORMANT_PARAMS).map((function(_this) {
-        return function(freq, i) {
-          var time;
-          freq *= (Math.random() * 0.15) + 0.925;
-          time = _this.context.currentTime + 0.25;
-          return _this.formants[i].frequency.linearRampToValueAtTime(freq, time);
+      return this._formants.set(_.sample(FORMANT_PARAMS).map((function(_this) {
+        return function(freq) {
+          return freq * ((Math.random() * 0.15) + 0.925);
         };
-      })(this));
+      })(this)));
     };
 
     Khoomii.prototype.setValue = function(type, value) {
-      switch (type) {
-        case 'voice.freq':
-          return this.voice.frequency.value = value;
-        case 'voice.mod':
-          return this.mod.frequency.value = value;
-        case 'voice.depth':
-          return this.modGain.gain.value = value;
-        case 'voice.band':
-          return this.bpf.frequency.value = value;
-        case 'spiritual':
-          return this.delayFB.gain.value = value;
+      if (this._voice) {
+        return this._voice[type] = value;
       }
     };
 
     Khoomii.prototype.play = function() {
-      this.change();
-      return this.destination.connect(this.context.destination);
+      var _ref;
+      if ((_ref = this._voice) != null) {
+        _ref.stop();
+      }
+      return this._voice = Neume.Synth(KhoomiiVoice, this._formants).start();
     };
 
     Khoomii.prototype.stop = function() {
-      return this.destination.disconnect();
+      var _ref;
+      if ((_ref = this._voice) != null) {
+        _ref.stop();
+      }
+      return this._voice = null;
     };
 
     return Khoomii;
@@ -122,16 +116,16 @@
         switch (type) {
           case 'voice.freq':
             freq = linexp(value, 1, 100, 65.40639132514966, 261.6255653005986);
-            return this.khoomii.setValue('voice.freq', freq);
+            return this.khoomii.setValue('voiceFreq', freq);
           case 'voice.mod':
             freq = linexp(value, 1, 100, 0.05, 25);
             depth = 100 - Math.abs(value - 50) * 2;
             depth = linlin(depth, 1, 100, 1, 30);
-            this.khoomii.setValue('voice.mod', freq);
-            return this.khoomii.setValue('voice.depth', depth);
+            this.khoomii.setValue('voiceMod', freq);
+            return this.khoomii.setValue('voiceDepth', depth);
           case 'voice.band':
             freq = linexp(value, 1, 100, 130.8127826502993, 2 * 4186.009044809578);
-            return this.khoomii.setValue('voice.band', freq);
+            return this.khoomii.setValue('voiceBand', freq);
           case 'spiritual':
             level = linlin(value, 1, 100, 0.2, 0.99);
             return this.khoomii.setValue('spiritual', level);
