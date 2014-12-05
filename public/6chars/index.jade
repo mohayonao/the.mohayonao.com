@@ -3,11 +3,10 @@ extend ../layout
 block config
   - $.title = "6chars drums"
   - $.path  = "/6chars/"
-  - $.use("pico.js")
-  - $.use("wav-decoder.js")
+  - $.use("//mohayonao.github.io/neume.js/build/neume.min.js")
+  - $.use("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
   - $.use("String_random.js")
   - $.use("HexRhythmMachine.js")
-  - $.use("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
 
 block content
   h1.title #{$.title}

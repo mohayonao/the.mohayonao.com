@@ -1,108 +1,105 @@
 (function() {
   "use strict";
 
-  var HexRhythmMachine = (function() {
-    function HexRhythmMachine() {
-      this.initialize.apply(this, arguments);
+  var BD = 0, SD = 1, HH = 2;
+
+  var Neume = neume(new AudioContext());
+  var rePattern = /^(?:(\d+(?:\.\d+)?);)?(\s*(?:[0-9a-fA-F]{6})+)$/;
+
+  function HexRhythmMachine(path) {
+    var _this = this;
+
+    this._waves = [];
+    this._pattern = [ [ ], [ ], [ ] ];
+    this._timer = null;
+
+    Neume.Buffer.load(path).then(function(buffer) {
+      _this._waves = buffer.split(4);
+    });
+  }
+
+  HexRhythmMachine.prototype.start = function() {
+    if (this._timer) {
+      this._timer.stop();
     }
-    HexRhythmMachine.prototype.initialize = function(samplerate, waves) {
-      this.samplerate = samplerate;
-      this.waves = waves;
-      this.bpm = 120.0;
-      this.pattern = [ [ ], [ ], [ ] ];
-      this.phases  = [ Infinity, Infinity, Infinity ];
-      this.phaseStep = waves.samplerate / samplerate;
-      this.vols    = [ 0, 0, 0 ];
-      this.index    = 0;
-      this.count    = 0;
-      this.countMax = 0;
-      this.isPlaying = false;
-      this.volume = 1.0;
-      this.mute = false;
-    };
-    HexRhythmMachine.prototype.play = function(pattern) {
-      if (!!pattern) {
-        if (this.setPattern(pattern)) {
-          this.isPlaying = true;
-        } else {
-          this.isPlaying = false;
-        }
-      } else if (this.isPlaying) {
-        this.isPlaying = false;
-      } else {
-        this.isPlaying = true;
+    if (this._waves) {
+      this._timer = Neume.Interval("16n", process.bind(this));
+      this._timer.start();
+    }
+  };
+
+  HexRhythmMachine.prototype.stop = function() {
+    if (this._timer) {
+      this._timer.stop();
+    }
+    this._timer = null;
+  };
+
+  HexRhythmMachine.prototype.setPattern = function(pattern) {
+    var matches = rePattern.exec(pattern.replace(/\s+/g, ""));
+
+    if (!matches) {
+      return;
+    }
+
+    Neume.bpm = toBPM(matches[1]);
+
+    pattern = matches[2];
+
+    this._pattern = [ [ ], [ ], [ ] ];
+
+    for (var i = 0, imax = pattern.length / 6; i < imax; i++) {
+      var hh = parseInt(pattern.substr(i * 6 + 0, 2), 16);
+      var sd = parseInt(pattern.substr(i * 6 + 2, 2), 16);
+      var bd = parseInt(pattern.substr(i * 6 + 4, 2), 16);
+      for (var j = 7; j >= 0; j--) {
+        this._pattern[HH].push(!!(hh & (1 << j)));
+        this._pattern[SD].push(!!(sd & (1 << j)));
+        this._pattern[BD].push(!!(bd & (1 << j)));
       }
-      return this.isPlaying;
-    };
-    var re = /^(?:(\d+(?:\.\d+)?);)?(\s*(?:[0-9a-fA-F]{6})+)$/;
-    HexRhythmMachine.prototype.validate = function(pattern) {
-      return re.test(pattern.replace(/\s+/g, ""));
-    };
-    HexRhythmMachine.prototype.setPattern = function(pattern) {
-      var matches, bpm, bd, sd, hh;
-      var i, imax, j;
-      matches= re.exec(pattern.replace(/\s+/g, ""));
-      if (matches) {
-        bpm     = matches[1] || 0.0;
-        pattern = matches[2];
-        if (20 <= bpm && bpm <= 300) {
-          this.bpm = Number(bpm);
-        } else {
-          this.bpm = 120;
-        }
-        this.pattern = [ [ ], [ ], [ ] ];
-        this.phases  = [ Infinity, Infinity, Infinity ];
-        for (i = 0, imax = pattern.length/6; i < imax; i++) {
-          bd = Number("0x" + pattern.substr(i * 6 + 0, 2));
-          sd = Number("0x" + pattern.substr(i * 6 + 2, 2));
-          hh = Number("0x" + pattern.substr(i * 6 + 4, 2));
-          for (j = 7; j >= 0; j--) {
-            this.pattern[0].push(!!(hh & (1 << j)));
-            this.pattern[1].push(!!(sd & (1 << j)));
-            this.pattern[2].push(!!(bd & (1 << j)));
-          }
-        }
-        this.countMax = (60/this.bpm) * this.samplerate * (4/16);
-        return true;
-      }
-      return false;
-    };
-    HexRhythmMachine.prototype.process = function(L, R) {
-      var inNumSamples = L.length;
-      
-      this.count -= inNumSamples;
-      if (this.count <= 0) {
-        if (this.pattern[0][this.index]) { // bd
-          this.phases[0] = 0;
-          this.vols[0] = [0.6, 0.5][this.index % 2];
-        }
-        if (this.pattern[1][this.index]) { // sd
-          this.phases[1] = 0;
-          this.vols[1] = [0.8, 0.5][this.index % 2];
-        }
-        if (this.pattern[2][this.index]) { // hh
-          this.phases[2] = 0;
-          this.vols[2] = [0.2, 0.05][this.index % 2];
-        }
-        this.index += 1;
-        if (this.index >= this.pattern[0].length) {
-          this.index = 0;
-        }
-        this.count += this.countMax;
-      }
-      for (var i = 0; i < inNumSamples; i++) {
-        var x = 0;
-        x += (this.waves[0][this.phases[0]|0] || 0.0) * this.vols[0];
-        x += (this.waves[1][this.phases[1]|0] || 0.0) * this.vols[1];
-        x += (this.waves[2][this.phases[2]|0] || 0.0) * this.vols[2];
-        this.phases[0] += this.phaseStep;
-        this.phases[1] += this.phaseStep;
-        this.phases[2] += this.phaseStep;
-        L[i] = R[i] = x;
-      }
-    };
-    return HexRhythmMachine;
-  })();
+    }
+  };
+
+  HexRhythmMachine.prototype.validate = function(pattern) {
+    return rePattern.test(pattern.replace(/\s+/g, ""));
+  };
+
+  function toBPM(value) {
+    value = +value || 0;
+    if (value < 20 || 300 < value) {
+      value = 120;
+    }
+    return value;
+  }
+
+  function wrapAt(list, index) {
+    return list[index % list.length];
+  }
+
+  function Dub($, buffer, amp) {
+    return $(buffer, { mul: amp }).on("end", function(e) {
+      this.stop(e.playbackTime);
+    });
+  }
+
+  function process(e) {
+    var amp;
+
+    if (wrapAt(this._pattern[HH], e.count)) {
+      amp = [ 0.2, 0.05, 0.15, 0.05 ][e.count % 4];
+      Neume.Synth(Dub, this._waves[HH], amp).start();
+    }
+
+    if (wrapAt(this._pattern[SD], e.count)) {
+      amp = [ 0.8, 0.4, 0.6, 0.4 ][e.count % 4];
+      Neume.Synth(Dub, this._waves[SD], amp).start();
+    }
+
+    if (wrapAt(this._pattern[BD], e.count)) {
+      amp = [ 0.6, 0.25, 0.5, 0.3 ][e.count % 4];
+      Neume.Synth(Dub, this._waves[BD], amp).start();
+    }
+  }
 
   window.HexRhythmMachine = HexRhythmMachine;
 

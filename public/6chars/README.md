@@ -17,8 +17,8 @@ BD: x------x x-x----- (81 a0)
 
 ## Dependencies
 
-  - [mohayonao/pico.js](https://github.com/mohayonao/pico.js)
-    - Simple interface for a real-time audio processing
+  - [neume.js](https://github.com/mohayonao/neume.js)
+    - Library for web music programming
   - [cho45/String_random.js](https://github.com/cho45/String_random.js)
     - String_random.js is for generating random string from regexp pattern
   - [vue.js](http://vuejs.org)

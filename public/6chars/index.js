@@ -32,9 +32,9 @@
       this.isPlaying = !this.isPlaying;
       if (this.isPlaying) {
         this.hrm.setPattern(this.pattern);
-        pico.play(this.hrm);
+        this.hrm.start();
       } else {
-        pico.pause();
+        this.hrm.stop();
       }
       return this.isPlaying;
     };
@@ -97,31 +97,25 @@
   });
 
   vue.$watch('value', function() {
-    var ok;
-    ok = app.validate(this.value);
-    if (ok) {
+    if (app.validate(this.value)) {
       app.set(this.value);
+      this.hasError = false;
+      return location.replace("#" + (encodeURI(this.value)));
+    } else {
+      return this.hasError = true;
     }
-    return this.hasError = !ok;
   });
 
   window.onhashchange = function() {
     return vue.value = decodeURI(location.hash.substr(1).trim());
   };
 
-  WavDecoder.load('./drumkit.wav').then(function(wav) {
-    var len, waves;
-    waves = [];
-    len = wav.buffer[0].length >> 2;
-    waves[0] = wav.buffer[0].subarray(len * 0, len * 1);
-    waves[1] = wav.buffer[0].subarray(len * 1, len * 2);
-    waves[2] = wav.buffer[0].subarray(len * 2, len * 3);
-    waves.samplerate = wav.samplerate;
-    app.init(new HexRhythmMachine(pico.samplerate, waves));
-    vue.random();
-    if (location.hash) {
-      return window.onhashchange();
-    }
-  });
+  app.init(new HexRhythmMachine('./drumkit.wav'));
+
+  vue.random();
+
+  if (location.hash) {
+    window.onhashchange();
+  }
 
 }).call(this);

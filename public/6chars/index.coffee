@@ -23,9 +23,9 @@ app = new class App
     @isPlaying = not @isPlaying
     if @isPlaying
       @hrm.setPattern @pattern
-      pico.play @hrm
+      @hrm.start()
     else
-      pico.pause()
+      @hrm.stop()
     @isPlaying
 
   set: (pattern)->
@@ -66,23 +66,19 @@ vue = new Vue
       utils.tweet text:text, url:url
 
 vue.$watch 'value', ->
-  ok = app.validate @value
-  app.set @value if ok
-  @hasError = not ok
+  if app.validate @value
+    app.set @value
+    @hasError = false
+    location.replace "##{encodeURI @value}"
+  else
+    @hasError = true
+
 
 window.onhashchange = ->
   vue.value = decodeURI location.hash.substr(1).trim()
 
-WavDecoder.load('./drumkit.wav').then (wav)->
-  waves = []
-  len = wav.buffer[0].length >> 2
-  waves[0] = wav.buffer[0].subarray len * 0, len * 1
-  waves[1] = wav.buffer[0].subarray len * 1, len * 2
-  waves[2] = wav.buffer[0].subarray len * 2, len * 3
-  waves.samplerate = wav.samplerate
+app.init new HexRhythmMachine('./drumkit.wav')
 
-  app.init new HexRhythmMachine(pico.samplerate, waves)
+vue.random()
 
-  vue.random()
-
-  window.onhashchange() if location.hash
+window.onhashchange() if location.hash
