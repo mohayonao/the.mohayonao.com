@@ -8,11 +8,9 @@
 
   if (typeof window !== 'undefined') {
     $(function() {
-      var DetectProcessor, ImageProcessor, SoundProcessor, canvas, onerror, onsuccess, processor, sound, video;
+      var DetectProcessor, ImageProcessor, Neume, SoundProcessor, ThereminTone, canvas, onerror, onsuccess, processor, sound, video;
       sc.use('prototype');
-      timbre.setup({
-        samplerate: timbre.samplerate * 0.5
-      });
+      Neume = neume(new AudioContext());
       DetectProcessor = (function() {
         var _onmessage, _send;
 
@@ -105,7 +103,7 @@
           context.putImageData(imageData, 0, 0);
           scale = this.width / this.detector.width;
           x = (this.width / 5) | 0;
-          y = (this.height / 3) | 0;
+          y = (this.height / 2) | 0;
           context.fillStyle = 'rgba(255,255,255,0.25)';
           context.fillRect(0, this.height - y, x, y);
           context.fillRect(this.width - x, 0, x, this.height);
@@ -140,37 +138,45 @@
         return ImageProcessor;
 
       })();
+      ThereminTone = function($) {
+        var amp, freq, out;
+        freq = $.param('freq', 880);
+        amp = $.param('amp', 0);
+        out = $('sin', {
+          mul: amp,
+          freq: $('+', {
+            mul: 0.5
+          }, $('sin', {
+            freq: 4,
+            mul: 2
+          }), freq)
+        });
+        return out = $('comb', {
+          gain: 0.5,
+          delay: 0.15,
+          fbGain: 0.5
+        }, out);
+      };
       SoundProcessor = (function() {
         function SoundProcessor() {
-          this.freq = T("param", {
-            value: 880
-          });
-          this.vco = T("sin", {
-            freq: T("+", T("sin", {
-              kr: true,
-              freq: 4,
-              mul: 2
-            }), {
-              mul: 0.5
-            }, this.freq)
-          });
-          this.amp = T("param", {
-            value: 0
-          });
-          this.vca = T("*", this.amp, this.vco);
-          this.master = T("delay", {
-            time: 150,
-            fb: 0.5
-          }, this.vca);
           this.scale = sc.Scale.major();
+          this.synth = null;
         }
 
         SoundProcessor.prototype.play = function() {
-          return this.master.play();
+          var _ref;
+          if ((_ref = this.synth) != null) {
+            _ref.stop();
+          }
+          return this.synth = Neume.Synth(ThereminTone).start();
         };
 
         SoundProcessor.prototype.pause = function() {
-          return this.master.pause();
+          var _ref;
+          if ((_ref = this.synth) != null) {
+            _ref.stop();
+          }
+          return this.synth = null;
         };
 
         return SoundProcessor;
@@ -188,25 +194,25 @@
           if (this.degree == null) {
             this.degree = degree;
             freq = sound.scale.degreeToFreq(degree, 220);
-            sound.freq.value = freq;
+            sound.synth.freq = freq;
           } else if (this.degree !== degree) {
             this.degree = degree;
             freq = sound.scale.degreeToFreq(degree, 220);
-            sound.freq.linTo(freq, 250);
+            sound.synth.freq.targetAt(freq, Neume.currentTime, 0.25);
           }
         }
         amp = opts.left !== -1;
         if (this.amp == null) {
           if (amp) {
-            sound.amp.value = 1;
+            sound.synth.amp = 1;
           } else {
-            sound.amp.value = 0;
+            sound.synth.amp = 0;
           }
         } else if (this.amp !== amp) {
           if (amp) {
-            sound.amp.linTo(1, 250);
+            sound.synth.amp.targetAt(1, Neume.currentTime, 0.5);
           } else {
-            sound.amp.linTo(0, 1000);
+            sound.synth.amp.targetAt(0, Neume.currentTime, 0.5);
           }
         }
         return this.amp = amp;

@@ -6,7 +6,8 @@ slice = [].slice
 if typeof window != 'undefined'
   $ ->
     sc.use 'prototype'
-    timbre.setup samplerate:timbre.samplerate * 0.5
+
+    Neume = neume(new AudioContext())
 
     class DetectProcessor
       constructor: ->
@@ -77,7 +78,7 @@ if typeof window != 'undefined'
         scale = @width / @detector.width
 
         x = (@width  / 5)|0
-        y = (@height / 3)|0
+        y = (@height / 2)|0
 
         context.fillStyle   = 'rgba(255,255,255,0.25)'
 
@@ -110,20 +111,25 @@ if typeof window != 'undefined'
             right: if right.y is -1 then -1 else right.y * scale / @height
           )
 
+    ThereminTone = ($)->
+      freq = $.param('freq', 880)
+      amp  = $.param('amp', 0)
+
+      out = $('sin', mul:amp, freq: $('+', mul:0.5, $('sin', freq: 4, mul: 2), freq))
+      out = $('comb', gain: 0.5, delay: 0.15, fbGain: 0.5, out)
+
     class SoundProcessor
       constructor: ->
-        @freq = T("param", value:880)
-        @vco  = T("sin", freq:T("+", T("sin", kr:true, freq:4, mul:2), mul:0.5, @freq))
-        @amp  = T("param", value:0)
-        @vca  = T("*", @amp, @vco)
-        @master = T("delay", time:150, fb:0.5, @vca)
         @scale = sc.Scale.major()
+        @synth = null
 
       play: ->
-        @master.play()
+        @synth?.stop()
+        @synth = Neume.Synth(ThereminTone).start()
 
       pause: ->
-        @master.pause()
+        @synth?.stop()
+        @synth = null
 
     video  = document.getElementById 'cam'
     canvas = document.getElementById 'canvas'
@@ -137,23 +143,23 @@ if typeof window != 'undefined'
         if not @degree?
           @degree = degree
           freq = sound.scale.degreeToFreq degree, 220
-          sound.freq.value = freq
+          sound.synth.freq = freq
         else if @degree != degree
           @degree = degree
           freq = sound.scale.degreeToFreq degree, 220
-          sound.freq.linTo freq, 250
+          sound.synth.freq.targetAt freq, Neume.currentTime, 0.25
 
       amp = opts.left != -1
       if not @amp?
         if amp
-          sound.amp.value = 1
+          sound.synth.amp = 1
         else
-          sound.amp.value = 0
+          sound.synth.amp = 0
       else if @amp != amp
         if amp
-          sound.amp.linTo 1, 250
+          sound.synth.amp.targetAt 1, Neume.currentTime, 0.5
         else
-          sound.amp.linTo 0, 1000
+          sound.synth.amp.targetAt 0, Neume.currentTime, 0.5
       @amp = amp
 
     onsuccess = (stream)->
@@ -238,6 +244,7 @@ else do (worker = @)->
     else
       right.x = -1
       right.y = -1
+
     left:left, center:center, right:right
 
   worker.addEventListener 'message', (e)->
