@@ -4,8 +4,8 @@
 
 ## Dependencies
 
-  - [mohayonao/timbre.js](https://github.com/mohayonao/timbre.js/)
-    - JavaScript library for objective sound programming
+  - [mohayonao/neume.js](https://github.com/mohayonao/neume.js/)
+    - Library for web music programming
   - [mohayonao/subcollider.js](https://github.com/mohayonao/subcollider.js)
     - JavaScript library that provides like SuperCollider functions
   - [vue.js](http://vuejs.org)

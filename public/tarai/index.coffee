@@ -20,6 +20,8 @@ class Tarai
   reset: ->
     @index = 0
 
+Neume = neume(new AudioContext())
+
 tarai = new Tarai
 scale = new sc.Scale [ 0, 2, 3, 7, 9 ], 12, 'Kumoi'
 baseRoot  = 62 # D3
@@ -27,12 +29,23 @@ baseRoot  = 62 # D3
 pattern = [ 0, 0, 1, 1, 2, 2, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1 ]
 car     = []
 
-synth  = T('PluckGen')
-master = T('chorus', delay:4, rate:1, depth:40, synth)
-master = T('delay', time:'bpm120 l8.', fb:0.4, mix:0.3, master)
+Pluck = ($, freq)->
+  out = [ 0.995, 1.005 ].map (x)-> $('saw', freq: freq * x)
+  out = $('lpf', freq: $('xline', start: 3200, end: 440, dur: 0.1), Q: 7.5, out)
+  out = $('xline', start: 0.2, end: 0.0001, dur: 1.5, out).on 'end', (e)->
+    @stop e.playbackTime
+  out = $('out', bus: 1, out)
 
-timer = T('interval', interval:'bpm120 l16', (count)->
-  i = count & 15
+Destination = ($)->
+  out = $('in', 1)
+  out = $('+', out, $('local-in', 1))
+
+  $('local-out', { bus: 1 }, $('delay', delay: 0.375, mul: 0.4, out))
+
+  $('lpf', freq: 2400, out)
+
+process = (e)->
+  i = e.count % 16
 
   if i is 0
     car = tarai.fetch()?.sort()
@@ -45,28 +58,36 @@ timer = T('interval', interval:'bpm120 l16', (count)->
       when 1 then vue.y = clip(i, 0, 10)
       when 2 then vue.z = clip(i, 0, 10)
     noteNum = Math.round( scale.performDegreeToKey(i) ) + baseRoot
-    noteNum += 12 * (count % 2)
+    noteNum += 12 * (e.count % 2)
 
-    synth.noteOn noteNum, 100
-)
+  Neume.Synth(Pluck, noteNum.midicps()).start(e.playbackTime)
 
 app = new class
   constructor: ->
     @isPlaying = false
+    @_dst = null
+    @_timer = null
 
   init: (x, y, z)->
     tarai.init x, y, z
 
   play: ->
     @isPlaying = true
+
+    @_dst?.stop()
+    @_timer?.stop()
+    @_dst = Neume.Synth(Destination).start()
+    @_timer = Neume.Interval(0.125, process).start()
+
     tarai.reset()
-    master.play()
-    timer.start()
 
   stop: ->
     @isPlaying = false
-    master.pause()
-    timer.stop()
+
+    @_dst?.stop()
+    @_timer?.stop()
+    @_dst = null
+    @_timer = null
 
 vue = new Vue
   el: '#app'

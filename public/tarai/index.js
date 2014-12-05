@@ -1,6 +1,6 @@
 (function() {
   'use strict';
-  var Tarai, app, baseRoot, car, clip, master, pattern, scale, synth, tarai, timer, vue;
+  var Destination, Neume, Pluck, Tarai, app, baseRoot, car, clip, pattern, process, scale, tarai, vue;
 
   clip = function(num, min, max) {
     return Math.max(min, Math.min(num, max));
@@ -36,6 +36,8 @@
 
   })();
 
+  Neume = neume(new AudioContext());
+
   tarai = new Tarai;
 
   scale = new sc.Scale([0, 2, 3, 7, 9], 12, 'Kumoi');
@@ -46,25 +48,51 @@
 
   car = [];
 
-  synth = T('PluckGen');
+  Pluck = function($, freq) {
+    var out;
+    out = [0.995, 1.005].map(function(x) {
+      return $('saw', {
+        freq: freq * x
+      });
+    });
+    out = $('lpf', {
+      freq: $('xline', {
+        start: 3200,
+        end: 440,
+        dur: 0.1
+      }),
+      Q: 7.5
+    }, out);
+    out = $('xline', {
+      start: 0.2,
+      end: 0.0001,
+      dur: 1.5
+    }, out).on('end', function(e) {
+      return this.stop(e.playbackTime);
+    });
+    return out = $('out', {
+      bus: 1
+    }, out);
+  };
 
-  master = T('chorus', {
-    delay: 4,
-    rate: 1,
-    depth: 40
-  }, synth);
+  Destination = function($) {
+    var out;
+    out = $('in', 1);
+    out = $('+', out, $('local-in', 1));
+    $('local-out', {
+      bus: 1
+    }, $('delay', {
+      delay: 0.375,
+      mul: 0.4
+    }, out));
+    return $('lpf', {
+      freq: 2400
+    }, out);
+  };
 
-  master = T('delay', {
-    time: 'bpm120 l8.',
-    fb: 0.4,
-    mix: 0.3
-  }, master);
-
-  timer = T('interval', {
-    interval: 'bpm120 l16'
-  }, function(count) {
+  process = function(e) {
     var i, noteNum, p, _ref;
-    i = count & 15;
+    i = e.count % 16;
     if (i === 0) {
       car = (_ref = tarai.fetch()) != null ? _ref.sort() : void 0;
     }
@@ -82,14 +110,16 @@
           vue.z = clip(i, 0, 10);
       }
       noteNum = Math.round(scale.performDegreeToKey(i)) + baseRoot;
-      noteNum += 12 * (count % 2);
-      return synth.noteOn(noteNum, 100);
+      noteNum += 12 * (e.count % 2);
     }
-  });
+    return Neume.Synth(Pluck, noteNum.midicps()).start(e.playbackTime);
+  };
 
   app = new ((function() {
     function _Class() {
       this.isPlaying = false;
+      this._dst = null;
+      this._timer = null;
     }
 
     _Class.prototype.init = function(x, y, z) {
@@ -97,16 +127,30 @@
     };
 
     _Class.prototype.play = function() {
+      var _ref, _ref1;
       this.isPlaying = true;
-      tarai.reset();
-      master.play();
-      return timer.start();
+      if ((_ref = this._dst) != null) {
+        _ref.stop();
+      }
+      if ((_ref1 = this._timer) != null) {
+        _ref1.stop();
+      }
+      this._dst = Neume.Synth(Destination).start();
+      this._timer = Neume.Interval(0.125, process).start();
+      return tarai.reset();
     };
 
     _Class.prototype.stop = function() {
+      var _ref, _ref1;
       this.isPlaying = false;
-      master.pause();
-      return timer.stop();
+      if ((_ref = this._dst) != null) {
+        _ref.stop();
+      }
+      if ((_ref1 = this._timer) != null) {
+        _ref1.stop();
+      }
+      this._dst = null;
+      return this._timer = null;
     };
 
     return _Class;
