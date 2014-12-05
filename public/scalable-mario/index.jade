@@ -3,12 +3,14 @@ extend ../layout
 block config
   - $.title = "scalable mario"
   - $.path  = "/scalable-mario/"
+  - $.use("//mohayonao.github.io/mml-emitter/build/mml-emitter.min.js")
+  - $.use("//mohayonao.github.io/neume.js/build/neume.min.js")
   - $.use("//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js")
   - $.use("//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js")
-  - $.use("timbre.js")
   - $.use("subcollider.js")
   - $.use("scales.js")
   - $.use("tunings.js")
+  - $.use("scalable-sequencer.js")
 
 block content
   h1.title #{$.title}
@@ -16,18 +18,10 @@ block content
   #app
     .form-group
       button.btn.btn-default(v-on="click: play") {{ isPlaying ? 'Stop' : 'Play' }}
+      button.btn.btn-default(v-on="click: random") Random
       button.btn.btn-default(v-on="click: tweet") Tweet
     .form-group
       label(for="scale") Scale
       ul.list-inline
         li(v-repeat="scales")
           span(v-on="click: scale=key", class="{{ scale == key ? 'selected' : '' }}") {{ name }}
-      button.btn.btn-default(v-on="click: random('scale')")
-        span(class="glyphicon glyphicon-random")
-    .form-group
-      label(for="tuning") Tuning
-      ul.list-inline
-        li(v-repeat="tunings")
-          span(v-on="click: tuning=key", class="{{ tuning == key ? 'selected' : '' }}") {{ name }}
-      button.btn.btn-default(v-on="click: random('tuning')")
-        span(class="glyphicon glyphicon-random")
