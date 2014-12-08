@@ -20,7 +20,6 @@
           <button v-on="click: tweet" class="btn btn-default">Tweet</button>
         </div>
         <div class="form-group">
-          <label for="scale">Scale</label>
           <ul class="list-inline">
             <li v-repeat="scales"><span v-on="click: scale=key" class="{{ scale == key ? 'selected' : '' }}">{{ name }}</span></li>
           </ul>

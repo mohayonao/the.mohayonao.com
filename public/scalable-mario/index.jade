@@ -21,7 +21,6 @@ block content
       button.btn.btn-default(v-on="click: random") Random
       button.btn.btn-default(v-on="click: tweet") Tweet
     .form-group
-      label(for="scale") Scale
       ul.list-inline
         li(v-repeat="scales")
           span(v-on="click: scale=key", class="{{ scale == key ? 'selected' : '' }}") {{ name }}
