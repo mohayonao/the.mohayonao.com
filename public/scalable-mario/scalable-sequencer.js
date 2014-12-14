@@ -10,7 +10,7 @@
   function SynthTone($, freq) {
     var out;
 
-    out = $("pulse", { freq: freq });
+    out = $("square", { freq: freq });
     out = $("xline", { start: 0.1, end: 0.001, dur: 0.25 }, out).on("end", function (e) {
       this.stop(e.playbackTime);
     });
