@@ -42,7 +42,8 @@
       return $('bpf', {
         freq: $(formants, {
           key: index,
-          timeConstant: 0.25
+          lag: 0.25,
+          curve: 'exp'
         }),
         Q: 12
       }, out);
@@ -52,10 +53,9 @@
       Q: 0.45
     }, out);
     out = [
-      out, $('comb', {
+      out, $('delay', {
         delay: 0.25,
-        fbGain: spiritual,
-        gain: 1,
+        feedback: spiritual,
         mul: 0.45
       }, out)
     ];
@@ -83,7 +83,7 @@
 
     Khoomii.prototype.setValue = function(type, value) {
       if (this._voice) {
-        return this._voice[type] = value;
+        return this._voice[type].value = value;
       }
     };
 

@@ -26,9 +26,9 @@ KhoomiiVoice = ($, formants)->
   spiritual  = $.param 'spiritual' , 0.125
 
   out = $('saw', freq: voiceFreq, detune: $('sin', freq: voiceMod, mul: voiceDepth))
-  out = _.map formants, (freq, index)-> $('bpf', { freq: $(formants, key: index, timeConstant: 0.25), Q: 12 }, out)
+  out = _.map formants, (freq, index)-> $('bpf', { freq: $(formants, key: index, lag: 0.25, curve: 'exp'), Q: 12 }, out)
   out = $('bpf', { freq: voiceBand, Q: 0.45 }, out)
-  out = [ out, $('comb', { delay: 0.25, fbGain: spiritual, gain: 1, mul: 0.45 }, out) ]
+  out = [ out, $('delay', { delay: 0.25, feedback: spiritual, mul: 0.45 }, out) ]
   out = $('lpf', { freq: 3200, Q: 2, mul: 0.8 }, out)
 
 class Khoomii
@@ -43,7 +43,7 @@ class Khoomii
       freq * ((Math.random() * 0.15) + 0.925)
 
   setValue: (type, value)->
-    @_voice[type] = value if @_voice
+    @_voice[type].value = value if @_voice
 
   play: ->
     @_voice?.stop()
