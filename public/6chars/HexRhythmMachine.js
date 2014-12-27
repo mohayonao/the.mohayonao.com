@@ -3,7 +3,7 @@
 
   var BD = 0, SD = 1, HH = 2;
 
-  var Neume = neume(new AudioContext());
+  var neu = neume();
   var rePattern = /^(?:(\d+(?:\.\d+)?);)?(\s*(?:[0-9a-fA-F]{6})+)$/;
 
   function HexRhythmMachine(path) {
@@ -13,7 +13,7 @@
     this._pattern = [ [ ], [ ], [ ] ];
     this._timer = null;
 
-    Neume.Buffer.load(path).then(function(buffer) {
+    neu.Buffer.load(path).then(function(buffer) {
       _this._waves = buffer.split(4);
     });
   }
@@ -23,7 +23,7 @@
       this._timer.stop();
     }
     if (this._waves) {
-      this._timer = Neume.Interval("16n", process.bind(this));
+      this._timer = neu.Interval("16n", process.bind(this));
       this._timer.start();
     }
   };
@@ -42,7 +42,7 @@
       return;
     }
 
-    Neume.bpm = toBPM(matches[1]);
+    neu.bpm = toBPM(matches[1]);
 
     pattern = matches[2];
 
@@ -77,9 +77,7 @@
   }
 
   function Dub($, buffer, amp) {
-    return $(buffer, { mul: amp }).on("end", function(e) {
-      this.stop(e.playbackTime);
-    });
+    return $(buffer, { mul: amp }).on("end", $.stop);
   }
 
   function process(e) {
@@ -87,17 +85,17 @@
 
     if (wrapAt(this._pattern[HH], e.count)) {
       amp = [ 0.2, 0.05, 0.15, 0.05 ][e.count % 4];
-      Neume.Synth(Dub, this._waves[HH], amp).start();
+      neu.Synth(Dub, this._waves[HH], amp).start(e.playbackTime);
     }
 
     if (wrapAt(this._pattern[SD], e.count)) {
       amp = [ 0.8, 0.4, 0.6, 0.4 ][e.count % 4];
-      Neume.Synth(Dub, this._waves[SD], amp).start();
+      neu.Synth(Dub, this._waves[SD], amp).start(e.playbackTime);
     }
 
     if (wrapAt(this._pattern[BD], e.count)) {
       amp = [ 0.6, 0.25, 0.5, 0.3 ][e.count % 4];
-      Neume.Synth(Dub, this._waves[BD], amp).start();
+      neu.Synth(Dub, this._waves[BD], amp).start(e.playbackTime);
     }
   }
 

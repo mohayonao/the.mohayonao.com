@@ -2,7 +2,7 @@ $ ->
   'use strict'
 
   MML_DATA = '''
-  t104 l16 q4 $
+  t104 l16 q4 r16 $
   o6 eere rcer gr8. > gr8.<
   o6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<
   o6 cr8>gr8er rarb rb-ar l12g<eg l16arfg rerc d>br8<
@@ -16,7 +16,7 @@ $ ->
   o6 ecr>g r8g+r a<frf> ar8. l12b<aa agf l16ecr>a gr8.< ecr>g r8g+r a<frf> ar8. l12b<ff fed l16c>grg cr8.<
   o6 ccrc rcdr ecr>a gr8.< ccrc rcde r2 ccrc rcdr ecr>a gr8.;
 
-  t104 l16 q4 $
+  t104 l16 q4 r16 $
   o5 f+f+rf+ rf+f+r gr8. >gr8.
   o5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8
   o5 er8cr8>gr <rcrd rd-cr l12cg<c l16cr>ab rgre fdr8
@@ -30,7 +30,7 @@ $ ->
   o6 c>gre r8er  f<drd> fr8. l12g<ff fed l16c>grf er8.< c>gre r8er  f<drd> fr8. l12g<dd dc>b l16er8.r4
   o5 a-a-ra- ra-b-r <c>grf er8. a-a-ra- ra-b-g r2 a-a-ra- ra-b-r <c>grf er8.;
 
-  t104 l16 q4 $
+  t104 l16 q4 r16 $
   o4 ddrd rddr <br8.>gr8.
   o4 gr8er8cr rfrg rg-fr l12e<ce l16frde rcr>a bgr8
   o4 gr8er8cr rfrg rg-fr l12e<ce l16frde rcr>a bgr8

@@ -1,6 +1,6 @@
 'use strict'
 
-Neume = neume(new AudioContext())
+neu = neume()
 
 FORMANT_PARAMS =
   a: [ 700, 1200, 2900 ]
@@ -19,11 +19,11 @@ linexp = (num, inMin, inMax, outMin, outMax)->
   Math.pow(outMax / outMin, (num - inMin) / (inMax - inMin)) * outMin
 
 KhoomiiVoice = ($, formants)->
-  voiceFreq  = $.param 'voiceFreq' , 174.61412048339844
-  voiceMod   = $.param 'voiceMod'  , 0.8
-  voiceDepth = $.param 'voiceDepth', 6
-  voiceBand  = $.param 'voiceBand' , 830
-  spiritual  = $.param 'spiritual' , 0.125
+  voiceFreq  = $('@voiceFreq' , 174.61412048339844)
+  voiceMod   = $('@voiceMod'  , 0.8)
+  voiceDepth = $('@voiceDepth', 6)
+  voiceBand  = $('@voiceBand' , 830)
+  spiritual  = $('@spiritual' , 0.125)
 
   out = $('saw', freq: voiceFreq, detune: $('sin', freq: voiceMod, mul: voiceDepth))
   out = _.map formants, (freq, index)-> $('bpf', { freq: $(formants, key: index, lag: 0.25, curve: 'exp'), Q: 12 }, out)
@@ -47,7 +47,7 @@ class Khoomii
 
   play: ->
     @_voice?.stop()
-    @_voice = Neume.Synth(KhoomiiVoice, @_formants).start()
+    @_voice = neu.Synth(KhoomiiVoice, @_formants).start()
 
   stop: ->
     @_voice?.stop()

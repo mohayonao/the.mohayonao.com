@@ -1,8 +1,8 @@
 (function() {
   'use strict';
-  var FORMANT_PARAMS, Khoomii, KhoomiiVoice, Neume, app, clip, hash, items, linexp, linlin, vue;
+  var FORMANT_PARAMS, Khoomii, KhoomiiVoice, app, clip, hash, items, linexp, linlin, neu, vue;
 
-  Neume = neume(new AudioContext());
+  neu = neume();
 
   FORMANT_PARAMS = {
     a: [700, 1200, 2900],
@@ -26,11 +26,11 @@
 
   KhoomiiVoice = function($, formants) {
     var out, spiritual, voiceBand, voiceDepth, voiceFreq, voiceMod;
-    voiceFreq = $.param('voiceFreq', 174.61412048339844);
-    voiceMod = $.param('voiceMod', 0.8);
-    voiceDepth = $.param('voiceDepth', 6);
-    voiceBand = $.param('voiceBand', 830);
-    spiritual = $.param('spiritual', 0.125);
+    voiceFreq = $('@voiceFreq', 174.61412048339844);
+    voiceMod = $('@voiceMod', 0.8);
+    voiceDepth = $('@voiceDepth', 6);
+    voiceBand = $('@voiceBand', 830);
+    spiritual = $('@spiritual', 0.125);
     out = $('saw', {
       freq: voiceFreq,
       detune: $('sin', {
@@ -92,7 +92,7 @@
       if ((_ref = this._voice) != null) {
         _ref.stop();
       }
-      return this._voice = Neume.Synth(KhoomiiVoice, this._formants).start();
+      return this._voice = neu.Synth(KhoomiiVoice, this._formants).start();
     };
 
     Khoomii.prototype.stop = function() {
