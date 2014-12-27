@@ -19,6 +19,8 @@
   }
 
   HexRhythmMachine.prototype.start = function() {
+    neu.start();
+
     if (this._timer) {
       this._timer.stop();
     }
@@ -33,6 +35,8 @@
       this._timer.stop();
     }
     this._timer = null;
+
+    neu.stop();
   };
 
   HexRhythmMachine.prototype.setPattern = function(pattern) {

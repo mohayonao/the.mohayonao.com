@@ -62,6 +62,8 @@
   ScalableSequencer.prototype.start = function() {
     var _this = this;
 
+    neu.start();
+
     if (this._dst) {
       this._dst.stop();
     }
@@ -96,6 +98,8 @@
     }
     this._dst = null;
     this._mml = null;
+
+    neu.stop();
   };
 
   ScalableSequencer.prototype.setScale = function(name) {

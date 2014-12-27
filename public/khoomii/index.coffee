@@ -46,12 +46,14 @@ class Khoomii
     @_voice[type].value = value if @_voice
 
   play: ->
+    neu.start()
     @_voice?.stop()
     @_voice = neu.Synth(KhoomiiVoice, @_formants).start()
 
   stop: ->
     @_voice?.stop()
     @_voice = null
+    neu.stop()
 
 app = new class
   constructor: ->

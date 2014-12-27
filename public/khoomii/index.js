@@ -89,6 +89,7 @@
 
     Khoomii.prototype.play = function() {
       var _ref;
+      neu.start();
       if ((_ref = this._voice) != null) {
         _ref.stop();
       }
@@ -100,7 +101,8 @@
       if ((_ref = this._voice) != null) {
         _ref.stop();
       }
-      return this._voice = null;
+      this._voice = null;
+      return neu.stop();
     };
 
     return Khoomii;
