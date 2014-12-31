@@ -112,11 +112,9 @@ if typeof window != 'undefined'
           )
 
     ThereminTone = ($)->
-      freq = $.param('freq', 880)
-      amp  = $.param('amp', 0)
-
-      out = $('sin', mul:amp, freq: $('+', mul:0.5, $('sin', freq: 4, mul: 2), freq))
-      out = $('comb', gain: 0.5, delay: 0.15, fbGain: 0.5, out)
+      $('sin', mul: 0.5, freq: [ $('@freq', value: 440), $('sin', freq: 4, mul: 2) ])
+      .mul($('@amp', value: 0))
+      .$('delay', delay: 0.15, feedback: 0.5)
 
     class SoundProcessor
       constructor: ->
@@ -142,19 +140,19 @@ if typeof window != 'undefined'
         degree = ((1 - freq) * 20)|0
         if not @degree?
           @degree = degree
-          freq = sound.scale.degreeToFreq degree, 220
-          sound.synth.freq = freq
+          freq = sound.scale.degreeToFreq degree, 110
+          sound.synth.freq.value = freq
         else if @degree != degree
           @degree = degree
-          freq = sound.scale.degreeToFreq degree, 220
+          freq = sound.scale.degreeToFreq degree, 110
           sound.synth.freq.targetAt freq, Neume.currentTime, 0.25
 
       amp = opts.left != -1
       if not @amp?
         if amp
-          sound.synth.amp = 1
+          sound.synth.amp.value = 1
         else
-          sound.synth.amp = 0
+          sound.synth.amp.vaue = 0
       else if @amp != amp
         if amp
           sound.synth.amp.targetAt 1, Neume.currentTime, 0.5

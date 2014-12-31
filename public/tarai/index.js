@@ -49,45 +49,37 @@
   car = [];
 
   Pluck = function($, freq) {
-    var out;
-    out = [0.995, 1.005].map(function(x) {
+    return $([0.995, 1.005].map(function(x) {
       return $('saw', {
         freq: freq * x
       });
-    });
-    out = $('lpf', {
+    })).$('lpf', {
       freq: $('xline', {
         start: 3200,
         end: 440,
         dur: 0.1
       }),
       Q: 7.5
-    }, out);
-    out = $('xline', {
+    }).$('xline', {
       start: 0.2,
       end: 0.0001,
       dur: 1.5
-    }, out).on('end', function(e) {
-      return this.stop(e.playbackTime);
-    });
-    return out = $('out', {
+    }).on('end', $.stop).$('out', {
       bus: 1
-    }, out);
+    });
   };
 
   Destination = function($) {
-    var out;
-    out = $('in', 1);
-    out = $('+', out, $('local-in', 1));
-    $('local-out', {
+    return $('in', {
       bus: 1
-    }, $('delay', {
-      delay: 0.375,
-      mul: 0.4
-    }, out));
-    return $('lpf', {
+    }).mul(0.125).$('delay', {
+      delay: "8nd",
+      feedback: 0.45
+    }).$('lpf', {
       freq: 2400
-    }, out);
+    }, $('in', {
+      bus: 1
+    }).mul(0.5));
   };
 
   process = function(e) {

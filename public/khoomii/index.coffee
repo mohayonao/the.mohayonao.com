@@ -19,11 +19,11 @@ linexp = (num, inMin, inMax, outMin, outMax)->
   Math.pow(outMax / outMin, (num - inMin) / (inMax - inMin)) * outMin
 
 KhoomiiVoice = ($, formants)->
-  voiceFreq  = $('@voiceFreq' , 174.61412048339844)
-  voiceMod   = $('@voiceMod'  , 0.8)
-  voiceDepth = $('@voiceDepth', 6)
-  voiceBand  = $('@voiceBand' , 830)
-  spiritual  = $('@spiritual' , 0.125)
+  voiceFreq  = $('@voiceFreq' , value: 174.61412048339844)
+  voiceMod   = $('@voiceMod'  , value: 0.8)
+  voiceDepth = $('@voiceDepth', value: 6)
+  voiceBand  = $('@voiceBand' , value: 830)
+  spiritual  = $('@spiritual' , value: 0.125)
 
   out = $('saw', freq: voiceFreq, detune: $('sin', freq: voiceMod, mul: voiceDepth))
   out = _.map formants, (freq, index)-> $('bpf', { freq: $(formants, key: index, lag: 0.25, curve: 'exp'), Q: 12 }, out)

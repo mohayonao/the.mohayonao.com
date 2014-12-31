@@ -30,19 +30,15 @@ pattern = [ 0, 0, 1, 1, 2, 2, 1, 1, 0, 0, 1, 1, 2, 2, 1, 1 ]
 car     = []
 
 Pluck = ($, freq)->
-  out = [ 0.995, 1.005 ].map (x)-> $('saw', freq: freq * x)
-  out = $('lpf', freq: $('xline', start: 3200, end: 440, dur: 0.1), Q: 7.5, out)
-  out = $('xline', start: 0.2, end: 0.0001, dur: 1.5, out).on 'end', (e)->
-    @stop e.playbackTime
-  out = $('out', bus: 1, out)
+  $([ 0.995, 1.005 ].map (x)-> $('saw', freq: freq * x))
+  .$('lpf', freq: $('xline', start: 3200, end: 440, dur: 0.1), Q: 7.5)
+  .$('xline', start: 0.2, end: 0.0001, dur: 1.5).on('end', $.stop)
+  .$('out', bus: 1)
 
 Destination = ($)->
-  out = $('in', 1)
-  out = $('+', out, $('local-in', 1))
-
-  $('local-out', { bus: 1 }, $('delay', delay: 0.375, mul: 0.4, out))
-
-  $('lpf', freq: 2400, out)
+  $('in', bus: 1)
+  .mul(0.125).$('delay', delay: "8nd", feedback: 0.45)
+  .$('lpf', freq: 2400, $('in', bus: 1).mul(0.5))
 
 process = (e)->
   i = e.count % 16
