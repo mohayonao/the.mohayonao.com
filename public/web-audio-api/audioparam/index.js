@@ -92,7 +92,11 @@
       bufSrc = audioContext.createBufferSource();
       bufSrc.buffer = audioContext.createBuffer(1, 2, 44100);
       bufSrc.buffer.getChannelData(0).set([1, 1]);
-      bufSrc.buffer = bufSrc.buffer;
+      try {
+        bufSrc.buffer = bufSrc.buffer;
+      } catch (e) {
+        
+      }
       bufSrc.loop = true;
       bufSrc.start(0);
       bufSrc.connect(gain);
