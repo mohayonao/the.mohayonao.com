@@ -211,7 +211,7 @@ $ ->
     param.linearRampToValueAtTime(0.15, t4);
     param.exponentialRampToValueAtTime(0.75, t5);
     param.exponentialRampToValueAtTime(0.05, t6);
-    param.setValueCurveAtTime(curve, t6, t7 - t6);
+    param.setValueCurveAtTime(curve, t6 + 1e-6, t7 - t6);
     '''
     vue.update editor.getValue()
 

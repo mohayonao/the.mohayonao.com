@@ -95,7 +95,7 @@
       try {
         bufSrc.buffer = bufSrc.buffer;
       } catch (e) {
-        
+
       }
       bufSrc.loop = true;
       bufSrc.start(0);
@@ -192,7 +192,7 @@
     if (window.location.hash) {
       editor.setValue(window.decodeURIComponent(window.location.hash.substr(1)));
     } else {
-      editor.setValue('var t0 = 0;\nvar t1 = 0.1;\nvar t2 = 0.2;\nvar t3 = 0.3;\nvar t4 = 0.4;\nvar t5 = 0.6;\nvar t6 = 0.7;\nvar t7 = 1.0;\n\nvar curveLength = 44100;\nvar curve = new Float32Array(curveLength);\nfor (var i = 0; i < curveLength; ++i)\n    curve[i] = Math.sin(Math.PI * i / curveLength);\n\nparam.setValueAtTime(0.2, t0);\nparam.setValueAtTime(0.3, t1);\nparam.setValueAtTime(0.4, t2);\nparam.linearRampToValueAtTime(1, t3);\nparam.linearRampToValueAtTime(0.15, t4);\nparam.exponentialRampToValueAtTime(0.75, t5);\nparam.exponentialRampToValueAtTime(0.05, t6);\nparam.setValueCurveAtTime(curve, t6, t7 - t6);');
+      editor.setValue('var t0 = 0;\nvar t1 = 0.1;\nvar t2 = 0.2;\nvar t3 = 0.3;\nvar t4 = 0.4;\nvar t5 = 0.6;\nvar t6 = 0.7;\nvar t7 = 1.0;\n\nvar curveLength = 44100;\nvar curve = new Float32Array(curveLength);\nfor (var i = 0; i < curveLength; ++i)\n    curve[i] = Math.sin(Math.PI * i / curveLength);\n\nparam.setValueAtTime(0.2, t0);\nparam.setValueAtTime(0.3, t1);\nparam.setValueAtTime(0.4, t2);\nparam.linearRampToValueAtTime(1, t3);\nparam.linearRampToValueAtTime(0.15, t4);\nparam.exponentialRampToValueAtTime(0.75, t5);\nparam.exponentialRampToValueAtTime(0.05, t6);\nparam.setValueCurveAtTime(curve, t6 + 1e-6, t7 - t6);');
       vue.update(editor.getValue());
     }
     return hljs.initHighlightingOnLoad();
