@@ -1,0 +1,18 @@
+module.exports = [
+  { type: "sine"    , frequency: 1 },
+  { type: "square"  , frequency: 1 },
+  { type: "sawtooth", frequency: 1 },
+  { type: "triangle", frequency: 1 },
+  { type: "sine"    , frequency: 10 },
+  { type: "square"  , frequency: 10 },
+  { type: "sawtooth", frequency: 10 },
+  { type: "triangle", frequency: 10 },
+  { type: "sine"    , frequency: 441 },
+  { type: "square"  , frequency: 441 },
+  { type: "sawtooth", frequency: 441 },
+  { type: "triangle", frequency: 441},
+  { type: "sine"    , frequency: 882 },
+  { type: "square"  , frequency: 882 },
+  { type: "sawtooth", frequency: 882 },
+  { type: "triangle", frequency: 882 },
+];
