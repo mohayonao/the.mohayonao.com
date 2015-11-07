@@ -1,0 +1,16 @@
+interface AudioParam {
+  // Parameter automation.
+  void setValueAtTime(float value, double startTime);
+  void linearRampToValueAtTime(float value, double endTime);
+  void exponentialRampToValueAtTime(float value, double endTime);
+
+  // Exponentially approach the target value with a rate having the given time constant.
+  void setTargetAtTime(float target, double startTime, double timeConstant);
+
+  // Sets an array of arbitrary parameter values starting at time for the given duration.
+  // The number of values will be scaled to fit into the desired duration.
+  void setValueCurveAtTime(Float32Array values, double startTime, double duration);
+
+  // Cancels all scheduled parameter changes with times greater than or equal to startTime.
+  void cancelScheduledValues(double startTime);
+};

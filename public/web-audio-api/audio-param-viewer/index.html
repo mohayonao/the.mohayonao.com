@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>web-audio-api/audio-param-viewer</title>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/codemirror.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/theme/monokai.min.css">
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <h1>web-audio-api/audio-param-viewer</h1>
+  <div id="app">
+    <div>
+      <select v-model="preset" v-on:change="changePreset">
+        <option v-for="preset in presets">{{ preset.name }}</option>
+      </select>
+      <span id="message"></span>
+    </div>
+    <div id="container"><div id="editor"></div><canvas id="canvas"></canvas></div>
+    <pre id="reference"></pre>
+  </div>
+  <script src="main.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.6/vue.min.js"></script>
+  <script src="//cdn.rawgit.com/jquery/esprima/2.7.0/esprima.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/codemirror.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/codemirror/4.6.0/mode/javascript/javascript.min.js"></script>
+  <script>
+    google_ad_client = "ca-pub-2530516645891329";
+    google_ad_slot = "4193847114";
+    google_ad_width = 728;
+    google_ad_height = 90;
+  </script>
+  <script src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+</body>
+</html>

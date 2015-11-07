@@ -1,0 +1,34 @@
+#app {
+  margin: 10px 0 25px;
+}
+
+#container {
+  width: 100%;
+}
+
+#editor {
+  display: inline-block;
+  width: 50%;
+  height: 400px;
+}
+
+#canvas {
+  display: inline-block;
+  width: 50%;
+  height: 400px;
+}
+
+#reference {
+  padding: 5px;
+  font-family: 'Courier new', monospace;
+  background: #e0e0e0;
+}
+
+.CodeMirror {
+  font-size: 12px;
+  font-family: 'Courier new', monospace;
+  margin-top: 0;
+  padding-top: 0;
+  width: 100%;
+  height: 100%;
+}
