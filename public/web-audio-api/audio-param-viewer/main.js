@@ -1,10 +1,31 @@
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 window.OfflineAudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext;
 
+window.fetch = window.fetch || function(url) {
+  return new Promise(function(resolve, reject) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.open("GET", url);
+
+    xhr.onload = function() {
+      resolve({
+        text: function() {
+          return xhr.response;
+        },
+        json: function() {
+          return JSON.parse(xhr.response);
+        },
+      });
+    };
+    xhr.onerror = reject;
+    xhr.send();
+  });
+};
+
 window.addEventListener("DOMContentLoaded", function() {
   "use strict";
 
-  var SAMPLERATE = 8000;
+  var SAMPLERATE = 44100;
   var PRESETS = [
     "web-audio-api-example6",
     "value-curve",
