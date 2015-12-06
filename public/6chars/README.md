@@ -17,8 +17,8 @@ BD: x------x x-x----- (81 a0)
 
 ## Dependencies
 
-  - [neume.js](https://github.com/mohayonao/neume.js)
-    - Library for web music programming
+  - [mohayonao/seq-emitter](https://github.com/mohayonao/seq-emitter)
+    - sequencer template for Web Audio API
   - [cho45/String_random.js](https://github.com/cho45/String_random.js)
     - String_random.js is for generating random string from regexp pattern
   - [vue.js](http://vuejs.org)

@@ -1,72 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
     <meta charset="utf-8">
     <title>6chars drums</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta property="og:title" content="6chars drums">
     <meta property="og:url" content="http://the.mohayonao.com/6chars/">
-    <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./index.css">
   </head>
   <body>
-    <div id="wrap">
+    <div id="wrap" class="container">
       <h1 class="title">6chars drums</h1>
       <div id="app">
-        <input v-model="value" spellcheck="false" class="form-control {{ hasError ? 'error' : '' }}">
+        <input spellcheck="false" class="form-control" v-model="score" v-bind:class="hasError ? 'error' : ''">
         <div class="form-group">
-          <button v-on="click: play()" class="btn btn-default">  {{ isPlaying ? 'Stop' : 'Play' }}</button>
-          <button v-on="click: random()" class="btn btn-default">Random</button>
-          <button v-on="click: tweet()" class="btn btn-default"> Tweet</button>
+          <button v-on:click="play" class="btn btn-default">{{ isPlaying ? 'Stop' : 'Play' }}</button>
+          <button v-on:click="random" class="btn btn-default">Random</button>
+          <button v-on:click="tweet" class="btn btn-default"> Tweet</button>
         </div>
-        <ul v-repeat="list">
-          <li><a href="#{{encodeURI(value)}}" v-model="value">{{value}}</a></li>
+        <ul v-for="score in list">
+          <li><a href="#{{ encodeURI(score) }}">{{ score }}</a></li>
         </ul>
       </div>
-      <div class="google-adsense">
-        <script>
-          google_ad_client = "ca-pub-2530516645891329";
-          if (window.screen.width > 700) {
-            /* the-mohayonao-com */
-            google_ad_slot = "4193847114";
-            google_ad_width = 728;
-            google_ad_height = 90;
-          } else {
-            /* the-mohayonao-com-mobile */
-            google_ad_slot = "1312602715";
-            google_ad_width = 320;
-            google_ad_height = 50;
-          }
-        </script>
-        <script src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
-      </div>
-      <div id="push"></div>
+      <script>
+        google_ad_client = "ca-pub-2530516645891329";
+        google_ad_slot = "4193847114";
+        google_ad_width = 728;
+        google_ad_height = 90;
+      </script>
+      <script src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
     </div>
-    <div id="footer">
-      <div class="container">
-        <ul class="list-inline">
-          <li><a href="/"><img src="/favicon.ico"><span>Top Page</span></a></li>
-          <li><a href="javascript:void(utils.tweet({text:'@mohayonao',url:'http://the.mohayonao.com/6chars/'}));"><img src="/twitter.png"><span>Contact</span></a></li>
-          <li><a href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public/6chars/" target="github"><img src="/github.png"><span>View Source on GitHub</span></a></li>
-        </ul>
-      </div>
-    </div>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-21613416-9', 'auto');
-      ga('send', 'pageview');
-    </script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="/utils.js"></script>
-    <script src="//mohayonao.github.io/neume.js/build/neume.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
-    <script src="String_random.js"></script>
-    <script src="HexRhythmMachine.js"></script>
-    <script src="index.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.10/vue.min.js"></script>
+    <script src="./assets/string_random.js"></script>
+    <script src="./bundle.js"></script>
   </body>
 </html>

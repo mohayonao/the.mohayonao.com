@@ -1,0 +1,27 @@
+{
+  "name": "6chars",
+  "description": "6chars drums",
+  "version": "1.0.0",
+  "dependencies": {
+    "@mohayonao/web-audio-utils": "^0.7.1",
+    "lodash.memoize": "^3.0.4",
+    "lodash.range": "^3.0.1",
+    "lodash.sample": "^3.1.0",
+    "seq-emitter": "^1.0.0",
+    "worker-timer": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel": "^6.3.13",
+    "babel-preset-es2015": "^6.3.13",
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1",
+    "watchify": "^3.6.1"
+  },
+  "keywords": [],
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "browserify src -t babelify -o bundle.js",
+    "watch": "watchify src -t babelify -o bundle.js --verbose"
+  }
+}
