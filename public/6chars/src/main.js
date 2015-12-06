@@ -1,8 +1,8 @@
-import range from "lodash.range";
 import sample from "lodash.sample";
 import HexRhythmMachine from "./HexRhythmMachine";
 
 const AudioContext = window.AudioContext || window.webkitAudioContext;
+const ExamplePatterns = [ 2, 2, 4, 4, 8, 8, 0, 0, 0, 0 ];
 
 export default function main() {
   let audioContext = new AudioContext();
@@ -12,7 +12,7 @@ export default function main() {
     el: "#app",
     data: {
       score: "",
-      list: range(10).map((i) => "" + i),
+      list: ExamplePatterns.map(() => ""),
       hasError: false,
       isPlaying: false,
     },
@@ -29,7 +29,7 @@ export default function main() {
         }
       },
       random() {
-        [ 2, 2, 4, 4, 8, 8, 0, 0, 0, 0 ].forEach((n, i) => {
+        ExamplePatterns.forEach((n, i) => {
           let cnt = n !== 0 ? `{${n}}` : "+";
 
           this.list.$set(i, sequencer.makeRandomScore(cnt));
