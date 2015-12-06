@@ -1,13 +1,11 @@
 import SeqEmitter from "seq-emitter";
 import WorkerTimer from "worker-timer";
 import HexRhythmIterator from "./HexRhythmIterator";
-import BufferSourceGain from "./BufferSourceGain";
 import memoize from "lodash.memoize";
 import fetchAudioBuffer from "@mohayonao/web-audio-utils/fetchAudioBuffer";
 import splitAudioBuffer from "@mohayonao/web-audio-utils/splitAudioBuffer";
 
 const rePattern = /^(?:(\d+(?:\.\d+)?);)?(\s*(?:[0-9a-fA-F]{6})+)$/;
-
 const HH = "55|55|55|88|88|88|88|88|88|aa|aa|aa|aa|aa|aa|aa|aa|aa|aa|aa|aa|bb|bb|bb|ff|ff|ff|ff|ff|ff|ff|ff|ff|ae|ae|ae|ae|ae|ae|[0-9a-f]{2}";
 const SD = "[002][8899b]|[002][8899b]|[002][8899b]|[002][8899b]|[002][8899b]|[0-9a-f]{2}";
 const BD = "[8a][288aab]|[8a][288aab]|[8a][288aab]|[8a][288aab]|[8a][288aab]|[0-9a-f]{2}";
@@ -43,12 +41,11 @@ export default class HexRhythmMachine {
   }
 
   reset() {
-    this._hexRhythmIterator = new HexRhythmIterator();
-    this._hexRhythmIterator.setScore(this._score);
+    this._hexRhythmIterator = new HexRhythmIterator(this._score);
     this._sequencer = new SeqEmitter([ this._hexRhythmIterator ], {
       context: this.audioContext, timerAPI: WorkerTimer,
     });
-    this._sequencer.on("note", ({ time, playbackTime, noteNumber }) => {
+    this._sequencer.on("note", ({ playbackTime, noteNumber }) => {
       noteNumber.forEach((amp, index) => {
         this.playNote(playbackTime, index, amp)
       });
@@ -69,24 +66,28 @@ export default class HexRhythmMachine {
     return String_random(`(1[046]0; )?((${HH})(${SD})(${BD}) )${cnt}`).trim();
   }
 
-  playNote(playbackTime, noteNumber, amp) {
-    if (amp === 0 || !this._drumkit[noteNumber]) {
+  playNote(playbackTime, noteType, amp) {
+    if (amp === 0 || !this._drumkit[noteType]) {
       return;
     }
 
-    let buffer = this._drumkit[noteNumber];
+    let buffer = this._drumkit[noteType];
     let t0 = playbackTime;
     let t1 = t0 + buffer.duration;
-    let bufGain = new BufferSourceGain(this.audioContext);
+    let bufSrc = this.audioContext.createBufferSource();
+    let gain = this.audioContext.createGain();
 
-    bufGain.buffer = buffer;
-    bufGain.gain.value = amp;
-    bufGain.start(t0);
-    bufGain.stop(t1);
-    bufGain.connect(this.audioContext.destination);
+    bufSrc.buffer = buffer;
+    bufSrc.start(t0);
+    bufSrc.stop(t1);
+    bufSrc.connect(gain);
 
-    bufGain.onended = () => {
-      bufGain.dispose();
+    gain.gain.value = amp;
+    gain.connect(this.audioContext.destination);
+
+    bufSrc.onended = () => {
+      bufSrc.disconnect();
+      gain.disconnect();
     };
   }
 

@@ -1,12 +1,14 @@
-const rePattern = /^(?:(\d+(?:\.\d+)?);)?(\s*(?:[0-9a-fA-F]{6})+)$/;
 const BD = 0, SD = 1, HH = 2;
+const rePattern = /^(?:(\d+(?:\.\d+)?);)?(\s*(?:[0-9a-fA-F]{6})+)$/;
 
 export default class HexRhythmIterator {
-  constructor() {
+  constructor(score = "") {
     this._bpm = 120;
     this._pattern = [ [], [], [] ];
     this._index = 0;
     this._time = 0;
+
+    this.setScore(score);
   }
 
   setScore(score) {
