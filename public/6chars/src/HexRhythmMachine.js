@@ -20,6 +20,8 @@ export default class HexRhythmMachine {
   constructor(audioContext) {
     this.audioContext = audioContext;
 
+    this._hexRhythmIterator = null;
+    this._sequencer = null;
     this._score = "";
     this._drumkit = [];
     this._isPlaying = false;
@@ -28,8 +30,6 @@ export default class HexRhythmMachine {
     fetchDrumKit("./drumkit.wav", audioContext).then((drumkit) => {
       this._drumkit = drumkit;
     });
-
-    this.reset();
   }
 
   get state() {
@@ -40,21 +40,37 @@ export default class HexRhythmMachine {
     return this._hasError;
   }
 
-  reset() {
-    this._hexRhythmIterator = new HexRhythmIterator(this._score);
-    this._sequencer = new SeqEmitter([ this._hexRhythmIterator ], {
-      context: this.audioContext, timerAPI: WorkerTimer,
-    });
-    this._sequencer.on("note", ({ playbackTime, noteNumber }) => {
-      noteNumber.forEach((amp, index) => {
-        this.playNote(playbackTime, index, amp)
+  start() {
+    if (!this._isPlaying) {
+      this._hexRhythmIterator = new HexRhythmIterator();
+      this._hexRhythmIterator.setScore(this._score);
+      this._sequencer = new SeqEmitter([ this._hexRhythmIterator ], {
+        context: this.audioContext, timerAPI: WorkerTimer,
       });
-    });
+      this._sequencer.on("note", ({ playbackTime, pattern }) => {
+        pattern.forEach((amp, index) => {
+          this.playNote(playbackTime, this._drumkit[index], amp)
+        });
+      });
+      this._sequencer.start(this.audioContext.currentTime + 0.05);
+    }
+    this._isPlaying = true;
+  }
+
+  stop() {
+    if (this._isPlaying) {
+      this._sequencer.stop();
+      this._hexRhythmIterator = null;
+      this._sequencer = null;
+    }
+    this._isPlaying = false;
   }
 
   setScore(score) {
     if (rePattern.test(score.replace(/\s+/g, ""))) {
-      this._hexRhythmIterator.setScore(score);
+      if (this._hexRhythmIterator) {
+        this._hexRhythmIterator.setScore(score);
+      }
       this._score = score;
       this._hasError = false;
     } else {
@@ -66,12 +82,11 @@ export default class HexRhythmMachine {
     return String_random(`(1[046]0; )?((${HH})(${SD})(${BD}) )${cnt}`).trim();
   }
 
-  playNote(playbackTime, noteType, amp) {
-    if (amp === 0 || !this._drumkit[noteType]) {
+  playNote(playbackTime, buffer, amp) {
+    if (amp === 0 || !buffer) {
       return;
     }
 
-    let buffer = this._drumkit[noteType];
     let t0 = playbackTime;
     let t1 = t0 + buffer.duration;
     let bufSrc = this.audioContext.createBufferSource();
@@ -89,20 +104,5 @@ export default class HexRhythmMachine {
       bufSrc.disconnect();
       gain.disconnect();
     };
-  }
-
-  start() {
-    if (!this._isPlaying) {
-      this._sequencer.start();
-    }
-    this._isPlaying = true;
-  }
-
-  stop() {
-    if (this._isPlaying) {
-      this._sequencer.stop();
-      this.reset();
-    }
-    this._isPlaying = false;
   }
 }

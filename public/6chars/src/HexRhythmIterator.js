@@ -40,18 +40,20 @@ export default class HexRhythmIterator {
   }
 
   next() {
+    let type = "note";
     let time = this._time;
     let interval = (60 / this._bpm) * 0.25;
     let hh = (wrapAt(this._pattern[HH], this._index) * wrapAt([ 0.20, 0.05, 0.15, 0.05 ], this._index)) || 0;
     let sd = (wrapAt(this._pattern[SD], this._index) * wrapAt([ 0.80, 0.40, 0.60, 0.40 ], this._index)) || 0;
     let bd = (wrapAt(this._pattern[BD], this._index) * wrapAt([ 0.60, 0.25, 0.50, 0.30 ], this._index)) || 0;
+    let pattern = [ bd, sd, hh ];
 
     this._time += interval;
     this._index += 1;
 
     return {
       done: false,
-      value: { time, noteNumber: [ bd, sd, hh ] },
+      value: { type, time, pattern },
     };
   }
 }

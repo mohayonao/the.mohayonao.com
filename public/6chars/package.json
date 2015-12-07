@@ -6,7 +6,7 @@
     "@mohayonao/web-audio-utils": "^0.7.1",
     "lodash.memoize": "^3.0.4",
     "lodash.sample": "^3.1.0",
-    "seq-emitter": "^1.0.0",
+    "seq-emitter": "^1.1.0",
     "worker-timer": "^1.0.0"
   },
   "devDependencies": {
