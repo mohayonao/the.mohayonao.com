@@ -1,0 +1,23 @@
+{
+  "name": "scalable-mario",
+  "description": "scaleble mario",
+  "version": "1.0.0",
+  "dependencies": {
+    "lodash.findindex": "^3.2.1",
+    "lodash.sortby": "^3.1.5",
+    "mml-emitter": "^1.0.0",
+    "worker-timer": "^1.0.0"
+  },
+  "devDependencies": {
+    "babel": "^6.3.13",
+    "babel-preset-es2015": "^6.3.13",
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1",
+    "watchify": "^3.6.1"
+  },
+  "private": true,
+  "scripts": {
+    "build": "browserify src -t babelify -o bundle.js",
+    "watch": "watchify src -t babelify -o bundle.js --verbose"
+  }
+}

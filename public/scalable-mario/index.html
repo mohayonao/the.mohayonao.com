@@ -7,71 +7,26 @@
     <meta property="og:title" content="scalable mario">
     <meta property="og:url" content="http://the.mohayonao.com/scalable-mario/">
     <link rel="shortcut icon" href="/favicon.ico" id="favicon">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./index.css">
   </head>
   <body>
-    <div id="wrap">
+    <div class="container">
       <h1 class="title">scalable mario</h1>
       <div id="app">
         <div class="form-group">
-          <button v-on="click: play" class="btn btn-default">{{ isPlaying ? 'Stop' : 'Play' }}</button>
-          <button v-on="click: random" class="btn btn-default">Random</button>
-          <button v-on="click: tweet" class="btn btn-default">Tweet</button>
+          <button v-on:click="play" class="btn btn-default">{{ isPlaying ? 'Stop' : 'Play' }}</button>
+          <button v-on:click="random" class="btn btn-default">Random</button>
+          <button v-on:click="tweet" class="btn btn-default">Tweet</button>
         </div>
         <div class="form-group">
           <ul class="list-inline">
-            <li v-repeat="scales"><span v-on="click: scale=key" class="{{ scale == key ? 'selected' : '' }}">{{ name }}</span></li>
+            <li v-for="scale in scales"><span v-on:click="select($index)" v-bind:class="{ 'selected': selected === scale.name }">{{ scale.name }}</span></li>
           </ul>
         </div>
       </div>
-      <div class="google-adsense">
-        <script>
-          google_ad_client = "ca-pub-2530516645891329";
-          if (window.screen.width > 700) {
-            /* the-mohayonao-com */
-            google_ad_slot = "4193847114";
-            google_ad_width = 728;
-            google_ad_height = 90;
-          } else {
-            /* the-mohayonao-com-mobile */
-            google_ad_slot = "1312602715";
-            google_ad_width = 320;
-            google_ad_height = 50;
-          }
-        </script>
-        <script src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
-      </div>
-      <div id="push"></div>
     </div>
-    <div id="footer">
-      <div class="container">
-        <ul class="list-inline">
-          <li><a href="/"><img src="/favicon.ico"><span>Top Page</span></a></li>
-          <li><a href="javascript:void(utils.tweet({text:'@mohayonao',url:'http://the.mohayonao.com/scalable-mario/'}));"><img src="/twitter.png"><span>Contact</span></a></li>
-          <li><a href="https://github.com/mohayonao/the.mohayonao.com/tree/master/public/scalable-mario/" target="github"><img src="/github.png"><span>View Source on GitHub</span></a></li>
-        </ul>
-      </div>
-    </div>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-21613416-9', 'auto');
-      ga('send', 'pageview');
-    </script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
-    <script src="/utils.js"></script>
-    <script src="//mohayonao.github.io/mml-emitter/build/mml-emitter.min.js"></script>
-    <script src="//mohayonao.github.io/neume.js/build/neume.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/0.10.5/vue.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="subcollider.js"></script>
-    <script src="scales.js"></script>
-    <script src="tunings.js"></script>
-    <script src="scalable-sequencer.js"></script>
-    <script src="index.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.10/vue.min.js"></script>
+    <script src="./bundle.js"></script>
   </body>
 </html>
